@@ -1,0 +1,156 @@
+[
+ {
+  "id": "descobrir",
+  "titulo": "Descobrir",
+  "passos": [
+   {
+    "img": "descobrir-1.jpg",
+    "cap": "A tela inicial abre com o que está acontecendo em Dallas–Fort Worth.",
+    "tap": {
+     "x": 160,
+     "y": 883
+    }
+   },
+   {
+    "img": "descobrir-2.jpg",
+    "cap": "Explorar reúne 414 lugares. Filtros rápidos: aberto agora, fala português, gratuitos.",
+    "tap": {
+     "x": 327,
+     "y": 320
+    }
+   },
+   {
+    "img": "descobrir-3.jpg",
+    "cap": "Um toque filtra só o que não cobra entrada.",
+    "tap": {
+     "x": 114,
+     "y": 558
+    }
+   },
+   {
+    "img": "descobrir-4.jpg",
+    "cap": "A página do lugar traz preço conferido, horário, distância e nota.",
+    "tap": {
+     "x": 335,
+     "y": 816
+    }
+   },
+   {
+    "img": "descobrir-5.jpg",
+    "cap": "Avaliações reais de quem foi, e links para Google, Yelp e Tripadvisor.",
+    "tap": {
+     "x": 322,
+     "y": 897
+    }
+   }
+  ]
+ },
+ {
+  "id": "planejar",
+  "titulo": "Planejar",
+  "passos": [
+   {
+    "img": "planejar-1.jpg",
+    "cap": "Roteiros prontos, com o tempo de carro entre as paradas.",
+    "tap": {
+     "x": 114,
+     "y": 330
+    }
+   },
+   {
+    "img": "planejar-2.jpg",
+    "cap": "Cada roteiro mostra paradas, custo total e o caminho.",
+    "tap": {
+     "x": 127,
+     "y": 466
+    }
+   },
+   {
+    "img": "planejar-3.jpg",
+    "cap": "\"Quero esse roteiro\" vira um checklist pessoal.",
+    "tap": {
+     "x": 53,
+     "y": 388
+    }
+   },
+   {
+    "img": "planejar-4.jpg",
+    "cap": "Marcou a parada? Avalie na hora, de 1 a 5.",
+    "tap": {
+     "x": 255,
+     "y": 498
+    }
+   },
+   {
+    "img": "planejar-5.jpg",
+    "cap": "A avaliação entra na nota do lugar, com o seu nome.",
+    "tap": {
+     "x": 215,
+     "y": 614
+    }
+   }
+  ]
+ },
+ {
+  "id": "morar",
+  "titulo": "Morar",
+  "passos": [
+   {
+    "img": "morar-1.jpg",
+    "cap": "Custo de vida em 14 cidades: aluguel, escola, impostos e contas.",
+    "swipe": {
+     "x": 215,
+     "y1": 700,
+     "y2": 200
+    }
+   },
+   {
+    "img": "morar-2.jpg",
+    "cap": "Valores com fonte e data, em dólar e em real. Pelo menu, o visitante chega ao Mural.",
+    "tap": {
+     "x": 95,
+     "y": 883
+    }
+   },
+   {
+    "img": "morar-3.jpg",
+    "cap": "Mural de vagas, quartos e classificados entre brasileiros.",
+    "tap": {
+     "x": 323,
+     "y": 103
+    }
+   }
+  ]
+ },
+ {
+  "id": "anunciar",
+  "titulo": "Anunciar",
+  "passos": [
+   {
+    "img": "anunciar-1.jpg",
+    "cap": "A empresa vê os planos e preços na página Anuncie.",
+    "swipe": {
+     "x": 215,
+     "y1": 700,
+     "y2": 200
+    }
+   },
+   {
+    "img": "anunciar-2.jpg",
+    "cap": "Básico a US$ 10 ou Destaque a US$ 25 por mês, sem fidelidade.",
+    "tap": {
+     "x": 215,
+     "y": 111
+    }
+   },
+   {
+    "img": "anunciar-3.jpg",
+    "cap": "Cadastro em uma tela. O anúncio entra no ar na hora.",
+    "tap": {
+     "x": 215,
+     "y": 371
+    }
+   }
+  ]
+ }
+]

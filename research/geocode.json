@@ -1,0 +1,397 @@
+{
+ "sixth-floor-museum": {
+  "lat": 32.778734,
+  "lng": -96.809252,
+  "fonte": "census"
+ },
+ "jfk-memorial-plaza": {
+  "lat": 32.779022,
+  "lng": -96.806546,
+  "fonte": "census"
+ },
+ "reunion-tower": {
+  "lat": 32.77521,
+  "lng": -96.809851,
+  "fonte": "census"
+ },
+ "perot-museum": {
+  "lat": 32.788246,
+  "lng": -96.806561,
+  "fonte": "census"
+ },
+ "dallas-museum-of-art": {
+  "lat": 32.787042,
+  "lng": -96.799484,
+  "fonte": "census"
+ },
+ "nasher-sculpture-center": {
+  "lat": 32.787831,
+  "lng": -96.80019,
+  "fonte": "census"
+ },
+ "crow-museum-of-asian-art": {
+  "lat": 32.787797,
+  "lng": -96.800036,
+  "fonte": "census"
+ },
+ "klyde-warren-park": {
+  "lat": 32.788973,
+  "lng": -96.801395,
+  "fonte": "census"
+ },
+ "dallas-arboretum": {
+  "lat": 32.821691,
+  "lng": -96.71624,
+  "fonte": "census"
+ },
+ "dallas-zoo": {
+  "lat": 32.745117,
+  "lng": -96.812101,
+  "fonte": "census"
+ },
+ "dallas-world-aquarium": {
+  "lat": 32.783291,
+  "lng": -96.804814,
+  "fonte": "census"
+ },
+ "pioneer-plaza": {
+  "lat": 32.777304,
+  "lng": -96.798284,
+  "fonte": "census"
+ },
+ "fair-park": {
+  "lat": 32.779635,
+  "lng": -96.761971,
+  "fonte": "census"
+ },
+ "state-fair-of-texas": {
+  "lat": 32.779635,
+  "lng": -96.761971,
+  "fonte": "census"
+ },
+ "texas-discovery-gardens": {
+  "lat": 32.775731,
+  "lng": -96.760813,
+  "fonte": "census"
+ },
+ "white-rock-lake": {
+  "lat": 32.819311,
+  "lng": -96.71985,
+  "fonte": "osm"
+ },
+ "katy-trail": {
+  "lat": 32.80267,
+  "lng": -96.812698,
+  "fonte": "census"
+ },
+ "george-w-bush-presidential-center": {
+  "lat": 32.842003,
+  "lng": -96.777431,
+  "fonte": "osm"
+ },
+ "meadows-museum": {
+  "lat": 32.838496,
+  "lng": -96.785031,
+  "fonte": "census"
+ },
+ "dallas-holocaust-museum": {
+  "lat": 32.780743,
+  "lng": -96.808251,
+  "fonte": "census"
+ },
+ "african-american-museum": {
+  "lat": 32.779316,
+  "lng": -96.762959,
+  "fonte": "census"
+ },
+ "american-airlines-center": {
+  "lat": 32.785645,
+  "lng": -96.809942,
+  "fonte": "census"
+ },
+ "northpark-center": {
+  "lat": 32.869462,
+  "lng": -96.770782,
+  "fonte": "census"
+ },
+ "galleria-dallas": {
+  "lat": 32.930506,
+  "lng": -96.820998,
+  "fonte": "census"
+ },
+ "dallas-farmers-market": {
+  "lat": 32.777416,
+  "lng": -96.790653,
+  "fonte": "census"
+ },
+ "thanks-giving-square": {
+  "lat": 32.782312,
+  "lng": -96.799108,
+  "fonte": "census"
+ },
+ "margaret-hunt-hill-bridge": {
+  "lat": 32.782578,
+  "lng": -96.819555,
+  "fonte": "census"
+ },
+ "highland-park-village": {
+  "lat": 32.836333,
+  "lng": -96.80652,
+  "fonte": "census"
+ },
+ "frontiers-of-flight-museum": {
+  "lat": 32.841689,
+  "lng": -96.834754,
+  "fonte": "census"
+ },
+ "old-city-park": {
+  "lat": 32.774206,
+  "lng": -96.786914,
+  "fonte": "census"
+ },
+ "cedar-ridge-preserve": {
+  "lat": 32.638149,
+  "lng": -96.954024,
+  "fonte": "census"
+ },
+ "trinity-river-audubon-center": {
+  "lat": 32.700681,
+  "lng": -96.753748,
+  "fonte": "osm"
+ },
+ "dallas-contemporary": {
+  "lat": 32.790231,
+  "lng": -96.822407,
+  "fonte": "census"
+ },
+ "att-discovery-district": {
+  "lat": 32.779735,
+  "lng": -96.799211,
+  "fonte": "census"
+ },
+ "fort-worth-stockyards": {
+  "lat": 32.788939,
+  "lng": -97.347411,
+  "fonte": "census"
+ },
+ "kimbell-art-museum": {
+  "lat": 32.749617,
+  "lng": -97.365022,
+  "fonte": "census"
+ },
+ "fort-worth-zoo": {
+  "lat": 32.722764,
+  "lng": -97.359892,
+  "fonte": "census"
+ },
+ "fort-worth-water-gardens": {
+  "lat": 32.748547,
+  "lng": -97.32609,
+  "fonte": "census"
+ },
+ "fort-worth-botanic-garden": {
+  "lat": 32.735718,
+  "lng": -97.366648,
+  "fonte": "osm"
+ },
+ "att-stadium": {
+  "lat": 32.747913,
+  "lng": -97.08942,
+  "fonte": "osm"
+ },
+ "globe-life-field": {
+  "lat": 32.746446,
+  "lng": -97.082299,
+  "fonte": "census"
+ },
+ "six-flags-over-texas": {
+  "lat": 32.752538,
+  "lng": -97.064977,
+  "fonte": "census"
+ },
+ "grapevine-historic-main-street": {
+  "lat": 32.9353,
+  "lng": -97.078428,
+  "fonte": "census"
+ },
+ "grapevine-mills": {
+  "lat": 32.962839,
+  "lng": -97.045605,
+  "fonte": "census"
+ },
+ "allen-premium-outlets": {
+  "lat": 33.130026,
+  "lng": -96.661892,
+  "fonte": "census"
+ },
+ "mustangs-of-las-colinas": {
+  "lat": 32.87009,
+  "lng": -96.939479,
+  "fonte": "census"
+ },
+ "kiosk-brazil": {
+  "lat": 33.04111,
+  "lng": -96.714946,
+  "fonte": "census"
+ },
+ "brazil-latino-market": {
+  "lat": 32.99861,
+  "lng": -96.825899,
+  "fonte": "census"
+ },
+ "rodeio-brazilian-market": {
+  "lat": 33.162114,
+  "lng": -96.935237,
+  "fonte": "census"
+ },
+ "brazil-latino-food-music": {
+  "lat": 32.99861,
+  "lng": -96.825899,
+  "fonte": "census"
+ },
+ "casa-pollastro": {
+  "lat": 32.996234,
+  "lng": -96.828579,
+  "fonte": "osm"
+ },
+ "vila-brazil-irving": {
+  "lat": 32.837654,
+  "lng": -96.974665,
+  "fonte": "census"
+ },
+ "fogo-de-chao-uptown-dallas": {
+  "lat": 32.797287,
+  "lng": -96.801545,
+  "fonte": "census"
+ },
+ "texas-de-brazil-dallas": {
+  "lat": 32.800855,
+  "lng": -96.805718,
+  "fonte": "census"
+ },
+ "chama-gaucha-grapevine": {
+  "lat": 32.891962,
+  "lng": -97.097897,
+  "fonte": "osm"
+ },
+ "12-cuts-brazilian-steakhouse": {
+  "lat": 32.99539,
+  "lng": -96.828473,
+  "fonte": "osm"
+ },
+ "brasao-brazilian-steakhouse-plano": {
+  "lat": 33.078098,
+  "lng": -96.820441,
+  "fonte": "census"
+ },
+ "fazenda-gaucha-bedford": {
+  "lat": 32.823574,
+  "lng": -97.159697,
+  "fonte": "census"
+ },
+ "eg-steak-frisco": {
+  "lat": 33.096656,
+  "lng": -96.80844,
+  "fonte": "census"
+ },
+ "acai-brasil-victory-park": {
+  "lat": 32.788363,
+  "lng": -96.809396,
+  "fonte": "census"
+ },
+ "bom-acai-dallas": {
+  "lat": 32.795784,
+  "lng": -96.788608,
+  "fonte": "census"
+ },
+ "cafe-brazil-deep-ellum": {
+  "lat": 32.784794,
+  "lng": -96.783443,
+  "fonte": "census"
+ },
+ "pecan-lodge": {
+  "lat": 32.783786,
+  "lng": -96.784067,
+  "fonte": "census"
+ },
+ "terry-blacks-barbecue-dallas": {
+  "lat": 32.78464,
+  "lng": -96.780137,
+  "fonte": "census"
+ },
+ "hutchins-bbq-frisco": {
+  "lat": 33.152894,
+  "lng": -96.803618,
+  "fonte": "census"
+ },
+ "cattleack-barbeque": {
+  "lat": 32.933725,
+  "lng": -96.836654,
+  "fonte": "census"
+ },
+ "goldees-barbecue": {
+  "lat": 32.62147,
+  "lng": -97.234215,
+  "fonte": "census"
+ },
+ "el-fenix-downtown": {
+  "lat": 32.787485,
+  "lng": -96.80465,
+  "fonte": "census"
+ },
+ "joe-t-garcias": {
+  "lat": 32.78449,
+  "lng": -97.34804,
+  "fonte": "census"
+ },
+ "mi-cocina-highland-park-village": {
+  "lat": 32.836189,
+  "lng": -96.80629,
+  "fonte": "census"
+ },
+ "pappas-bros-steakhouse-dallas": {
+  "lat": 32.866664,
+  "lng": -96.900522,
+  "fonte": "census"
+ },
+ "cattlemens-steak-house": {
+  "lat": 32.789112,
+  "lng": -97.349066,
+  "fonte": "census"
+ },
+ "kellers-drive-in": {
+  "lat": 32.86579,
+  "lng": -96.793265,
+  "fonte": "census"
+ },
+ "rodeo-goat-design-district": {
+  "lat": 32.796935,
+  "lng": -96.82437,
+  "fonte": "census"
+ },
+ "bread-winners-uptown": {
+  "lat": 32.804341,
+  "lng": -96.799429,
+  "fonte": "census"
+ },
+ "oddfellows": {
+  "lat": 32.748878,
+  "lng": -96.826834,
+  "fonte": "census"
+ },
+ "consulado-geral-do-brasil-houston": {
+  "lat": 29.756327,
+  "lng": -95.455023,
+  "fonte": "census"
+ },
+ "grand-prairie-premium-outlets": {
+  "lat": 32.676091,
+  "lng": -97.00816,
+  "fonte": "osm"
+ },
+ "buc-ees-fort-worth": {
+  "lat": 33.023874,
+  "lng": -97.278187,
+  "fonte": "osm"
+ }
+}

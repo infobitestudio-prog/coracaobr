@@ -1,0 +1,406 @@
+<title>CoraçãoBR · 5 direções de layout</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Página de apresentação: faixa de abas fixa, cada direção numa seção com texto à esquerda e dois celulares à direita.
+   As telas dentro dos celulares têm paleta própria (é o que está sendo proposto) e não mudam com o tema. */
+:root {
+  --bg: #F3F4F1; --fg: #15201A; --mut: #5E6A63; --line: #DCDFD8; --card: #FFFFFF; --acc: #024E25; --acc2: #E3A600;
+  --ui: "Geist", "Segoe UI", system-ui, sans-serif; --brand: "Outfit", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #101512; --fg: #E9EDE9; --mut: #9AA59E; --line: #27302B; --card: #171E1A; --acc: #4CC27A; --acc2: #FFC20E; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #101512; --fg: #E9EDE9; --mut: #9AA59E; --line: #27302B; --card: #171E1A; --acc: #4CC27A; --acc2: #FFC20E; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.55 var(--ui); margin: 0 }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+header.top { padding-block: 40px 22px }
+.marca { display: flex; align-items: center; gap: 10px; font: 700 20px var(--brand); letter-spacing: -.01em }
+.marca svg { width: 34px; height: 25px } .marca em { font-style: normal; color: #E3A600 }
+h1 { font: 600 clamp(30px, 4.4vw, 52px)/1.05 var(--ui); letter-spacing: -.03em; margin: 22px 0 10px; text-wrap: balance; max-width: 22ch }
+.lead { color: var(--mut); font-size: 18px; max-width: 64ch; margin: 0 }
+nav.abas { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-block: 1px solid var(--line) }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg) }
+nav.abas .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none }
+nav.abas a { flex: none; text-decoration: none; color: var(--mut); font: 500 14px var(--ui); padding: 8px 14px; border-radius: 99px; border: 1px solid transparent; white-space: nowrap }
+nav.abas a:hover { color: var(--fg); border-color: var(--line) }
+nav.abas a:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px }
+nav.abas a b { font-variant-numeric: tabular-nums; color: var(--fg); margin-right: 6px }
+section.op { padding-block: 64px; border-bottom: 1px solid var(--line); scroll-margin-top: 70px }
+.op-grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 56px; align-items: start }
+.num { font: 500 13px var(--ui); color: var(--mut); letter-spacing: .14em; text-transform: uppercase }
+.op h2 { font: 600 36px/1.08 var(--ui); letter-spacing: -.025em; margin: 10px 0 12px; text-wrap: balance }
+.op p { color: var(--mut); margin: 0 0 14px }
+.ficha { display: grid; gap: 14px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line) }
+.ficha dt { font: 600 12px var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--mut) }
+.ficha dd { margin: 4px 0 0 }
+.cores { display: flex; gap: 6px; flex-wrap: wrap } .cores i { width: 34px; height: 34px; border-radius: 9px; border: 1px solid rgba(0,0,0,.08); display: block }
+.tipo { font-size: 15px }
+.pros { padding-left: 18px; margin: 0; color: var(--fg) } .pros li { margin: 4px 0 }
+.telas { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap }
+.fig { display: grid; gap: 10px; justify-items: center; margin: 0; min-width: 0 }
+.fig figcaption { font-size: 13px; color: var(--mut) }
+
+/* moldura de celular genérica */
+.fone { width: 300px; height: 640px; border-radius: 46px; padding: 9px; background: #1D1F1E; box-shadow: 0 30px 60px -20px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.08); position: relative; max-width: 100% }
+.tela { width: 100%; height: 100%; border-radius: 38px; overflow: hidden; position: relative; isolation: isolate }
+.tela .ilha { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 88px; height: 25px; border-radius: 99px; background: #000; z-index: 9 }
+.tela .sb { position: absolute; top: 0; left: 0; right: 0; height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 4px 26px 0 30px; font: 600 13px var(--ui); z-index: 8 }
+.tela .sb i { width: 44px; height: 11px; background: currentColor; mask: linear-gradient(90deg, #000 0 52%, transparent 52% 58%, #000 58% 76%, transparent 76% 82%, #000 82%); -webkit-mask: linear-gradient(90deg, #000 0 52%, transparent 52% 58%, #000 58% 76%, transparent 76% 82%, #000 82%); border-radius: 2px; opacity: .9 }
+.rol { position: absolute; inset: 0; overflow: hidden }
+.sym { display: inline-block; vertical-align: middle }
+.ph { background-size: cover; background-position: center }
+.ex { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; border-radius: 9px; background: currentColor; opacity: .35; z-index: 9 }
+
+/* ===== 1 · Galeria ===== */
+.o1 { background: #FAFAF8; color: #111613; font-family: "Geist", sans-serif }
+.o1 .sb { color: #fff }
+.o1 .hero { height: 300px; position: relative }
+.o1 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 30%, transparent 45%, rgba(0,0,0,.72)) }
+.o1 .hero .tp { position: absolute; top: 50px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 2; color: #fff; font: 700 15px "Outfit" }
+.o1 .hero .tp span em { font-style: normal; color: #FFC20E }
+.o1 .hero .tx { position: absolute; left: 20px; right: 20px; bottom: 20px; color: #fff; z-index: 2 }
+.o1 .hero small { font: 500 10px "Geist"; letter-spacing: .18em; text-transform: uppercase; opacity: .85 }
+.o1 .hero h3 { font: 400 34px/1.02 "Newsreader", serif; margin: 6px 0 12px; letter-spacing: -.01em }
+.o1 .busca { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(8px); color: #fff; padding: 10px 14px; border-radius: 99px; font-size: 13px }
+.o1 .cats { display: flex; gap: 16px; padding: 16px 20px 10px; font-size: 13px; color: #6B716D; border-bottom: 1px solid #ECECE8 }
+.o1 .cats b { color: #111613; font-weight: 600; border-bottom: 1.5px solid #024E25; padding-bottom: 6px }
+.o1 .sec { padding: 12px 20px 0 }
+.o1 .sec h4 { font: 400 22px "Newsreader", serif; margin: 0 0 10px; display: flex; justify-content: space-between; align-items: baseline }
+.o1 .sec h4 a { font: 500 11px "Geist"; color: #024E25; text-decoration: none }
+.o1 .item { display: grid; grid-template-columns: 22px 50px 1fr auto; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid #ECECE8; font-size: 12.5px }
+.o1 .item i { font: italic 400 18px "Newsreader", serif; color: #9AA19C; font-style: italic }
+.o1 .item .ph { width: 50px; height: 50px; border-radius: 4px }
+.o1 .item b { display: block; font-weight: 600; font-size: 13px } .o1 .item small { color: #7C837E }
+.o1 .item span:last-child { text-align: right; font-weight: 600 } .o1 .item span:last-child small { display: block; font-weight: 400 }
+.o1 .tab { position: absolute; left: 0; right: 0; bottom: 0; height: 74px; background: rgba(250,250,248,.94); border-top: 1px solid #ECECE8; display: flex; justify-content: space-around; padding-top: 12px; font-size: 10px; color: #8A908C }
+.o1 .tab span { display: grid; justify-items: center; gap: 4px } .o1 .tab span::before { content: ""; width: 18px; height: 18px; border: 1.5px solid currentColor; border-radius: 5px }
+.o1 .tab .on { color: #024E25 }
+.o1d .ph.big { height: 270px }
+.o1d .vol { position: absolute; top: 52px; left: 16px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.9); display: grid; place-items: center; font-size: 16px; z-index: 3 }
+.o1d .ct { padding: 18px 20px }
+.o1d .ct small { font: 500 10px "Geist"; letter-spacing: .18em; text-transform: uppercase; color: #6B716D }
+.o1d .ct h3 { font: 400 28px/1.05 "Newsreader", serif; margin: 6px 0 14px }
+.o1d .fatos { display: grid; grid-template-columns: repeat(3, 1fr); border-block: 1px solid #ECECE8; margin-bottom: 14px }
+.o1d .fatos div { padding: 12px 0; font-size: 11px; color: #6B716D } .o1d .fatos div + div { border-left: 1px solid #ECECE8; padding-left: 12px }
+.o1d .fatos b { display: block; font: 400 20px "Newsreader", serif; color: #111613 }
+.o1d p { font-size: 12.5px; color: #3C443F; line-height: 1.55; margin: 0 }
+.o1d .cta { position: absolute; left: 16px; right: 16px; bottom: 26px; display: flex; gap: 10px }
+.o1d .cta span { flex: 1; text-align: center; padding: 13px; border-radius: 99px; font: 600 13px "Geist"; border: 1px solid #111613 } .o1d .cta span.p { background: #024E25; color: #fff; border-color: #024E25 }
+
+/* ===== 2 · Concierge ===== */
+.o2 { background: #0D241A; color: #EEE8DA; font-family: "Manrope", sans-serif }
+.o2 .sb { color: #EEE8DA }
+.o2 .tp { position: absolute; top: 50px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; font: 700 15px "Outfit" }
+.o2 .tp em { font-style: normal; color: #E8B21A } .o2 .tp .av { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #C9A24A; display: grid; place-items: center; font: 600 12px "Manrope"; color: #E8B21A }
+.o2 .ola { position: absolute; top: 96px; left: 20px; right: 20px }
+.o2 .ola small { color: #C9A24A; font-size: 11px; letter-spacing: .16em; text-transform: uppercase }
+.o2 .ola h3 { font: 500 31px/1.02 "Cormorant Garamond", serif; margin: 6px 0 0 }
+.o2 .ola h3 i { color: #E8B21A }
+.o2 .hcard { position: absolute; top: 188px; left: 20px; right: 20px; height: 150px; border-radius: 22px; overflow: hidden }
+.o2 .hcard::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(5,20,13,.9)) }
+.o2 .hcard div { position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 2; font-size: 11px; color: #D8D1C1 }
+.o2 .hcard b { display: block; font: 500 21px "Cormorant Garamond", serif; color: #fff }
+.o2 .hcard em { position: absolute; top: 12px; left: 12px; z-index: 2; font-style: normal; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; background: rgba(13,36,26,.75); border: 1px solid #C9A24A; color: #E8B21A; padding: 5px 9px; border-radius: 99px }
+.o2 .pills { position: absolute; top: 352px; left: 20px; right: 0; display: flex; gap: 8px; font-size: 12px; overflow: hidden }
+.o2 .pills span { flex: none; border: 1px solid rgba(201,162,74,.5); padding: 7px 13px; border-radius: 99px; color: #D8D1C1 } .o2 .pills .on { background: #E8B21A; border-color: #E8B21A; color: #0D241A; font-weight: 700 }
+.o2 .lin { position: absolute; top: 398px; left: 20px; right: 20px }
+.o2 .lin h4 { font: 500 19px "Cormorant Garamond", serif; margin: 0 0 8px; display: flex; justify-content: space-between } .o2 .lin h4 a { font: 500 11px "Manrope"; color: #C9A24A }
+.o2 .mini { display: grid; grid-template-columns: 48px 1fr auto; gap: 12px; align-items: center; padding: 9px 0; border-top: 1px solid rgba(238,232,218,.1); font-size: 12px }
+.o2 .mini .ph { width: 48px; height: 48px; border-radius: 12px } .o2 .mini b { display: block; font-weight: 600; color: #fff } .o2 .mini small { color: #A9A291 }
+.o2 .mini .st { color: #E8B21A; font-weight: 700 }
+.o2 .tab { position: absolute; left: 16px; right: 16px; bottom: 22px; height: 56px; border-radius: 20px; background: rgba(238,232,218,.07); border: 1px solid rgba(238,232,218,.12); display: flex; justify-content: space-around; align-items: center }
+.o2 .tab span { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid #8F8A7C } .o2 .tab .on { border-color: #E8B21A; background: rgba(232,178,26,.15) }
+.o2d .ph.big { position: absolute; inset: 0 0 auto; height: 300px }
+.o2d .ph.big::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,36,26,.4), transparent 30%, #0D241A 98%) }
+.o2d .ct { position: absolute; top: 236px; left: 20px; right: 20px }
+.o2d .ct small { color: #C9A24A; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase }
+.o2d .ct h3 { font: 500 30px/1.02 "Cormorant Garamond", serif; margin: 6px 0 4px; color: #fff }
+.o2d .rate { color: #E8B21A; font-size: 12px }
+.o2d .fatos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 16px 0 }
+.o2d .fatos div { background: rgba(238,232,218,.06); border: 1px solid rgba(238,232,218,.1); border-radius: 14px; padding: 11px 12px; font-size: 10.5px; color: #A9A291 } .o2d .fatos b { display: block; font: 600 15px "Manrope"; color: #fff }
+.o2d p { font-size: 12.5px; color: #CFC8B8; line-height: 1.55; margin: 0 }
+.o2d .cta { position: absolute; left: 20px; right: 20px; bottom: 26px; padding: 15px; border-radius: 16px; background: #E8B21A; color: #0D241A; text-align: center; font: 700 13px "Manrope" }
+
+/* ===== 3 · Mapa vivo ===== */
+.o3 { background: #EEF1EC; color: #142019; font-family: "Manrope", sans-serif }
+.o3 .sb { color: #142019 }
+.o3 .mapa { position: absolute; inset: 0 0 auto; height: 400px }
+.o3 .busca { position: absolute; top: 52px; left: 14px; right: 14px; background: #fff; border-radius: 16px; padding: 11px 14px; font-size: 13px; color: #6A746E; box-shadow: 0 6px 20px rgba(20,32,25,.12); display: flex; align-items: center; gap: 10px; z-index: 3 }
+.o3 .busca .sym { width: 24px } .o3 .busca span { flex: 1 } .o3 .busca b { width: 26px; height: 26px; border-radius: 50%; background: #024E25; color: #FFC20E; display: grid; place-items: center; font: 700 11px "Outfit" }
+.o3 .chips { position: absolute; top: 106px; left: 14px; right: 0; display: flex; gap: 6px; z-index: 3; font-size: 11.5px }
+.o3 .chips span { white-space: nowrap; background: #fff; padding: 6px 11px; border-radius: 99px; box-shadow: 0 2px 8px rgba(20,32,25,.08); font-weight: 600 } .o3 .chips .on { background: #024E25; color: #fff }
+.o3 .pin { position: absolute; z-index: 2; transform: translate(-50%, -100%); background: #fff; color: #142019; font: 700 11px "Sora"; padding: 5px 9px; border-radius: 10px; box-shadow: 0 4px 12px rgba(20,32,25,.2); white-space: nowrap }
+.o3 .pin::after { content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%) rotate(45deg); width: 9px; height: 9px; background: inherit }
+.o3 .pin.g { background: #0AA23C; color: #fff } .o3 .pin.y { background: #FFBC04 } .o3 .pin.sel { background: #024E25; color: #fff; transform: translate(-50%, -100%) scale(1.12) }
+.o3 .eu { position: absolute; z-index: 2; width: 16px; height: 16px; border-radius: 50%; background: #2F7DF6; border: 3px solid #fff; box-shadow: 0 0 0 8px rgba(47,125,246,.18) }
+.o3 .folha { position: absolute; left: 0; right: 0; top: 330px; bottom: 0; background: #fff; border-radius: 26px 26px 0 0; padding: 10px 16px; box-shadow: 0 -8px 24px rgba(20,32,25,.08) }
+.o3 .folha::before { content: ""; display: block; width: 38px; height: 4px; border-radius: 9px; background: #D5DAD5; margin: 0 auto 10px }
+.o3 .folha h4 { font: 600 15px "Sora"; margin: 0 0 2px } .o3 .folha > small { color: #6A746E; font-size: 11.5px }
+.o3 .hrow { display: flex; gap: 10px; margin-top: 12px }
+.o3 .pc { flex: none; width: 150px } .o3 .pc .ph { height: 100px; border-radius: 14px; position: relative }
+.o3 .pc .ph em { position: absolute; left: 8px; top: 8px; font-style: normal; background: #fff; border-radius: 8px; padding: 3px 7px; font: 700 10px "Sora" }
+.o3 .pc b { display: block; font-size: 12.5px; margin-top: 7px; line-height: 1.25 } .o3 .pc small { color: #6A746E; font-size: 11px }
+.o3 .tab { position: absolute; left: 0; right: 0; bottom: 0; height: 70px; background: #fff; border-top: 1px solid #EDF0EC; display: flex; justify-content: space-around; padding-top: 12px }
+.o3 .tab span { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #9AA39D } .o3 .tab .on { background: #024E25; border-color: #024E25 }
+.o3d .mapa { height: 250px } .o3d .folha { top: 200px; padding: 10px 18px }
+.o3d h3 { font: 600 20px/1.15 "Sora"; margin: 4px 0 6px } .o3d .meta { font-size: 11.5px; color: #6A746E }
+.o3d .rotas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 14px 0 }
+.o3d .rotas div { border: 1px solid #E3E8E3; border-radius: 12px; padding: 9px 6px; text-align: center; font-size: 10px; color: #6A746E } .o3d .rotas div.on { border-color: #024E25; background: #EAF5EE } .o3d .rotas b { display: block; font: 600 13px "Sora"; color: #142019 }
+.o3d .ph.mini { height: 110px; border-radius: 16px } .o3d p { font-size: 12px; color: #39443E; margin: 10px 0 0 }
+.o3d .cta { position: absolute; left: 18px; right: 18px; bottom: 26px; display: flex; gap: 8px } .o3d .cta span { flex: 1; text-align: center; padding: 13px; border-radius: 14px; background: #024E25; color: #fff; font: 600 13px "Sora" } .o3d .cta span.s { flex: none; width: 48px; background: #EAF5EE; color: #024E25 }
+
+/* ===== 4 · Bento ===== */
+.o4 { background: #F2F3EF; color: #18201B; font-family: "Figtree", sans-serif }
+.o4 .sb { color: #18201B }
+.o4 .tp { position: absolute; top: 50px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; font: 700 15px "Outfit" } .o4 .tp em { font-style: normal; color: #D99A00 }
+.o4 .tp .av { width: 30px; height: 30px; border-radius: 10px; background: #024E25; color: #FFC20E; display: grid; place-items: center; font: 700 12px "Outfit" }
+.o4 .ttl { position: absolute; top: 92px; left: 16px; right: 16px; font: 800 26px/1 "Bricolage Grotesque"; letter-spacing: -.02em }
+.o4 .grid { position: absolute; top: 132px; left: 12px; right: 12px; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 62px; gap: 7px }
+.o4 .t { border-radius: 18px; padding: 10px 11px; position: relative; overflow: hidden; font-size: 10.5px }
+.o4 .t b { display: block; font: 800 22px/1 "Bricolage Grotesque"; letter-spacing: -.02em }
+.o4 .t.hero { grid-column: span 4; grid-row: span 2; color: #fff; padding: 14px } .o4 .t.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.65)) }
+.o4 .t.hero div { position: absolute; left: 14px; bottom: 12px; right: 14px; z-index: 2 } .o4 .t.hero div b { font-size: 19px; margin-bottom: 3px } .o4 .t.hero em { position: absolute; top: 12px; left: 12px; z-index: 2; font-style: normal; background: #FFBC04; color: #18201B; font-weight: 700; font-size: 10px; padding: 4px 8px; border-radius: 8px }
+.o4 .t.y { background: #FFBC04; grid-column: span 2 } .o4 .t.g { background: #024E25; color: #fff; grid-column: span 2 } .o4 .t.w { background: #fff; grid-column: span 2 } .o4 .t.l { background: #DCEFE2; color: #024E25; grid-column: span 2 }
+.o4 .t small { opacity: .8 }
+.o4 .sec { position: absolute; top: 418px; left: 16px; right: 0 } .o4 .sec h4 { font: 700 15px "Bricolage Grotesque"; margin: 0 0 8px }
+.o4 .hrow { display: flex; gap: 8px } .o4 .c { flex: none; width: 128px; background: #fff; border-radius: 16px; padding: 6px } .o4 .c .ph { height: 80px; border-radius: 11px } .o4 .c b { display: block; font-size: 11.5px; margin: 6px 3px 0; line-height: 1.2 } .o4 .c small { display: block; margin: 2px 3px 3px; font-size: 10.5px; color: #6B746E }
+.o4 .tab { position: absolute; left: 50%; transform: translateX(-50%); bottom: 20px; height: 54px; width: 240px; border-radius: 18px; background: #18201B; display: flex; justify-content: space-around; align-items: center }
+.o4 .tab span { width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid #6D766F } .o4 .tab .on { background: #FFBC04; border-color: #FFBC04 }
+.o4d .ph.big { position: absolute; top: 46px; left: 12px; right: 12px; height: 230px; border-radius: 22px }
+.o4d .ttl2 { position: absolute; top: 288px; left: 16px; right: 16px; font: 800 23px/1.05 "Bricolage Grotesque"; letter-spacing: -.02em } .o4d .ttl2 small { display: block; font: 500 11px "Figtree"; color: #6B746E; letter-spacing: 0; margin-bottom: 4px }
+.o4d .grid { top: 352px; grid-auto-rows: 58px } .o4d .t b { font-size: 18px }
+.o4d .cta { position: absolute; left: 12px; right: 12px; bottom: 24px; padding: 15px; border-radius: 16px; background: #18201B; color: #FFBC04; text-align: center; font: 700 13px "Figtree" }
+
+/* ===== 5 · Postal ===== */
+.o5 { background: #FFF8E6; color: #062C17; font-family: "DM Sans", sans-serif }
+.o5 .sb { color: #fff }
+.o5 .topo { position: absolute; inset: 0 0 auto; height: 330px; background: #024E25; border-radius: 0 0 34px 34px; overflow: hidden }
+.o5 .topo::before { content: ""; position: absolute; right: -60px; top: 120px; width: 260px; height: 260px; border-radius: 50%; background: #0AA23C; opacity: .35 }
+.o5 .tp { position: absolute; top: 50px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; color: #fff; font: 700 15px "Outfit"; z-index: 2 } .o5 .tp em { font-style: normal; color: #FFBC04 }
+.o5 .grande { position: absolute; top: 92px; left: 20px; right: 20px; color: #fff; font: 800 40px/.95 "Outfit"; letter-spacing: -.035em; z-index: 2 } .o5 .grande span { color: #FFBC04 }
+.o5 .postal { position: absolute; top: 210px; right: 18px; width: 150px; height: 112px; background: #fff; padding: 6px; border-radius: 6px; transform: rotate(5deg); box-shadow: 0 10px 22px rgba(0,0,0,.25); z-index: 3 } .o5 .postal .ph { height: 100%; border-radius: 3px }
+.o5 .selo { position: absolute; top: 196px; right: 128px; z-index: 4; width: 58px; height: 58px; border-radius: 50%; background: #FFBC04; color: #024E25; display: grid; place-items: center; text-align: center; font: 800 9px/1.05 "Outfit"; transform: rotate(-10deg); border: 2px dashed #024E25 }
+.o5 .busca { position: absolute; top: 262px; left: 20px; width: 130px; background: #fff; border-radius: 14px; padding: 11px 12px; font-size: 12px; color: #4F6357; z-index: 3 }
+.o5 .cats { position: absolute; top: 352px; left: 16px; right: 0; display: flex; gap: 8px; overflow: hidden }
+.o5 .cats span { flex: none; background: #fff; border: 2px solid #062C17; border-radius: 14px; padding: 8px 12px; font: 700 12px "Outfit" } .o5 .cats .on { background: #FFBC04 }
+.o5 .sec { position: absolute; top: 410px; left: 16px; right: 0 } .o5 .sec h4 { font: 800 18px "Outfit"; letter-spacing: -.02em; margin: 0 0 8px }
+.o5 .hrow { display: flex; gap: 10px } .o5 .c { flex: none; width: 140px; position: relative } .o5 .c .ph { height: 120px; border-radius: 18px; border: 2px solid #062C17 }
+.o5 .c em { position: absolute; top: -6px; right: 6px; font-style: normal; background: #FFBC04; border: 2px solid #062C17; border-radius: 10px; padding: 3px 7px; font: 800 11px "Outfit"; transform: rotate(4deg) }
+.o5 .c b { display: block; font: 700 12px "Outfit"; margin-top: 6px; line-height: 1.2 } .o5 .c small { font-size: 10.5px; color: #4F6357 }
+.o5 .tab { position: absolute; left: 14px; right: 14px; bottom: 20px; height: 56px; border-radius: 18px; background: #062C17; display: flex; justify-content: space-around; align-items: center }
+.o5 .tab span { width: 20px; height: 20px; border-radius: 7px; border: 2px solid #4F7A60 } .o5 .tab .on { background: #FFBC04; border-color: #FFBC04 }
+.o5d .ph.big { position: absolute; top: 0; left: 0; right: 0; height: 310px; border-radius: 0 0 34px 34px }
+.o5d .ct { position: absolute; top: 278px; left: 16px; right: 16px; background: #fff; border: 2px solid #062C17; border-radius: 22px; padding: 16px }
+.o5d .ct small { font: 800 10px "Outfit"; letter-spacing: .12em; text-transform: uppercase; background: #FFBC04; padding: 3px 8px; border-radius: 8px }
+.o5d .ct h3 { font: 800 23px/1 "Outfit"; letter-spacing: -.025em; margin: 10px 0 12px }
+.o5d .fatos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px } .o5d .fatos div { background: #FFF8E6; border-radius: 12px; padding: 8px; font-size: 10px; color: #4F6357 } .o5d .fatos b { display: block; font: 800 15px "Outfit"; color: #062C17 }
+.o5d p { font-size: 12px; color: #2E4537; margin: 12px 0 0 }
+.o5d .cta { position: absolute; left: 16px; right: 16px; bottom: 24px; padding: 15px; border-radius: 16px; background: #024E25; color: #FFBC04; text-align: center; font: 800 14px "Outfit"; border: 2px solid #062C17 }
+
+footer.fim { padding-block: 44px 64px; color: var(--mut); font-size: 14px }
+@media (max-width: 920px) { .op-grid { grid-template-columns: 1fr; gap: 30px } section.op { padding-block: 44px } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
+html { scroll-behavior: smooth }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gL" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#0AA23C"/><stop offset=".6" stop-color="#088F36"/><stop offset="1" stop-color="#05692A"/></linearGradient>
+<linearGradient id="gF" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#05501F"/><stop offset="1" stop-color="#0B7A32" stop-opacity="0"/></linearGradient>
+<linearGradient id="gY" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7B500"/><stop offset="1" stop-color="#FFC20E"/></linearGradient>
+<linearGradient id="gC" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#078A35"/><stop offset=".8" stop-color="#0A9A3D"/><stop offset="1" stop-color="#46B86E"/></linearGradient>
+<symbol id="simbolo" viewBox="0 0 270 200"><g transform="scale(0.3333)">
+<path fill="url(#gL)" d="M270 30 C330 32 365 60 385 100 L330 190 C300 165 250 150 200 160 C160 168 148 200 152 240 C160 330 230 430 330 520 L368 556 C240 520 110 430 50 340 C10 270 15 160 70 90 C120 40 200 28 270 30 Z"/>
+<path fill="url(#gF)" d="M152 200 C160 120 195 66 250 38 L292 34 C238 66 210 112 206 162 C180 166 160 176 152 200 Z"/>
+<path fill="url(#gY)" d="M322 188 C360 110 440 30 540 22 C610 18 670 50 705 105 L640 148 C600 122 540 112 480 132 C440 146 410 190 386 255 Z"/>
+<path fill="none" stroke="url(#gC)" stroke-width="108" stroke-linecap="round" stroke-linejoin="round" d="M270 382 L394 518 L748 172"/></g></symbol>
+</defs></svg>
+
+<header class="top wrap">
+  <div class="marca"><svg viewBox="0 0 270 200" aria-hidden="true"><use href="#simbolo"/></svg><span>Coração<em>BR</em></span></div>
+  <h1>Cinco direções para o novo visual</h1>
+  <p class="lead">Mesmo conteúdo real do guia, cinco personalidades diferentes. Em todas, o logo e o verde e amarelo da marca ficam. Muda a tipografia, a organização e o jeito de mostrar as fotos. Escolha uma, ou misture partes, e eu aplico no site inteiro.</p>
+</header>
+
+<nav class="abas" aria-label="Direções"><div class="wrap">
+  <a href="#galeria"><b>1</b>Galeria</a><a href="#concierge"><b>2</b>Concierge</a><a href="#mapa"><b>3</b>Mapa vivo</a><a href="#bento"><b>4</b>Bento</a><a href="#postal"><b>5</b>Postal</a>
+</div></nav>
+
+<main>
+<!-- 1 GALERIA -->
+<section class="op" id="galeria"><div class="wrap op-grid">
+  <div>
+    <div class="num">Opção 1</div><h2>Galeria</h2>
+    <p>Editorial e silencioso, como uma revista de viagem. Fotos grandes de ponta a ponta, títulos em serifa e listas numeradas separadas por linhas finas. O verde aparece só onde importa.</p>
+    <dl class="ficha">
+      <div><dt>Sensação</dt><dd>Sofisticado, calmo, curadoria de verdade</dd></div>
+      <div><dt>Cores</dt><dd class="cores"><i style="background:#FAFAF8"></i><i style="background:#111613"></i><i style="background:#024E25"></i><i style="background:#FFC20E"></i><i style="background:#ECECE8"></i></dd></div>
+      <div><dt>Tipografia</dt><dd class="tipo"><span style="font:400 22px Newsreader,serif">Newsreader</span> nos títulos · <span style="font-family:Geist">Geist</span> no texto</dd></div>
+      <div><dt>Melhor para</dt><dd><ul class="pros"><li>Valorizar as fotos dos lugares</li><li>Passar confiança e seriedade</li><li>Leitura confortável no celular</li></ul></dd></div>
+    </dl>
+  </div>
+  <div class="telas">
+    <figure class="fig"><div class="fone"><div class="tela o1"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="hero ph" style="background-image:url({{reunion}})"><div class="tp"><span>Coração<em>BR</em></span><span>PT</span></div>
+        <div class="tx"><small>Dallas–Fort Worth · Texas</small><h3>A cidade inteira,<br><i>em português.</i></h3><div class="busca">⌕ <span>Lugares, eventos, serviços</span></div></div></div>
+      <div class="cats"><b>Destaques</b><span>Passeios</span><span>Comer</span><span>Eventos</span><span>Grátis</span></div>
+      <div class="sec"><h4>Mais bem avaliados <a href="#galeria">Ver todos</a></h4>
+        <div class="item"><i>01</i><span class="ph" style="background-image:url({{arbo}})"></span><span><b>Dallas Arboretum</b><small>Natureza · Dallas</small></span><span>★ 5,0<small>US$ 21,95</small></span></div>
+        <div class="item"><i>02</i><span class="ph" style="background-image:url({{stock}})"></span><span><b>Fort Worth Stockyards</b><small>Histórico · Fort Worth</small></span><span>★ 5,0<small>Grátis</small></span></div>
+        <div class="item"><i>03</i><span class="ph" style="background-image:url({{sixth}})"></span><span><b>The Sixth Floor Museum</b><small>Museu · Dallas</small></span><span>★ 5,0<small>US$ 24</small></span></div>
+      </div></div>
+      <div class="tab"><span class="on">Início</span><span>Explorar</span><span>Salvos</span><span>Conta</span></div>
+    </div></div><figcaption>Início</figcaption></figure>
+    <figure class="fig"><div class="fone"><div class="tela o1 o1d"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="ph big" style="background-image:url({{stock}})"></div><span class="vol">‹</span>
+      <div class="ct"><small>Histórico · Fort Worth</small><h3>Fort Worth Stockyards</h3>
+        <div class="fatos"><div><b>Grátis</b>entrada</div><div><b>3–4 h</b>de visita</div><div><b>★ 5,0</b>curadoria</div></div>
+        <p>O antigo mercado de gado virou o bairro mais texano da região: desfile de longhorns duas vezes por dia, lojas de botas e música ao vivo.</p></div></div>
+      <div class="cta"><span>Salvar</span><span class="p">Como chegar</span></div>
+    </div></div><figcaption>Página do lugar</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- 2 CONCIERGE -->
+<section class="op" id="concierge"><div class="wrap op-grid">
+  <div>
+    <div class="num">Opção 2</div><h2>Concierge</h2>
+    <p>Escuro e premium, como o balcão de um hotel cinco estrelas. Verde-floresta profundo, detalhes em dourado e serifa elegante. O guia fala com você pelo nome.</p>
+    <dl class="ficha">
+      <div><dt>Sensação</dt><dd>Exclusivo, acolhedor, noturno</dd></div>
+      <div><dt>Cores</dt><dd class="cores"><i style="background:#0D241A"></i><i style="background:#16352A"></i><i style="background:#E8B21A"></i><i style="background:#C9A24A"></i><i style="background:#EEE8DA"></i></dd></div>
+      <div><dt>Tipografia</dt><dd class="tipo"><span style="font:500 24px 'Cormorant Garamond',serif">Cormorant Garamond</span> · <span style="font-family:Manrope">Manrope</span></dd></div>
+      <div><dt>Melhor para</dt><dd><ul class="pros"><li>Posicionar a marca como premium</li><li>Atrair anunciantes de alto padrão</li><li>Uso à noite, menos brilho na tela</li></ul></dd></div>
+    </dl>
+  </div>
+  <div class="telas">
+    <figure class="fig"><div class="fone"><div class="tela o2"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="tp"><span>Coração<em>BR</em></span><span class="av">C</span></div>
+      <div class="ola"><small>Boa tarde, Carlos</small><h3>O que vamos<br>descobrir <i>hoje?</i></h3></div>
+      <div class="hcard ph" style="background-image:url({{rodeo}})"><em>Evento</em><div><b>Fort Worth Stock Show &amp; Rodeo</b>15 jan a 6 fev de 2027 · a partir de US$ 15</div></div>
+      <div class="pills"><span class="on">Para você</span><span>Passeios</span><span>Comer</span><span>Grátis</span></div>
+      <div class="lin"><h4>Seleção da curadoria <a href="#concierge">Ver tudo</a></h4>
+        <div class="mini"><span class="ph" style="background-image:url({{arbo}})"></span><span><b>Dallas Arboretum</b><small>Natureza · US$ 21,95</small></span><span class="st">★ 5,0</span></div>
+        <div class="mini"><span class="ph" style="background-image:url({{pecan}})"></span><span><b>Pecan Lodge</b><small>Churrasco texano · Deep Ellum</small></span><span class="st">★ 4,5</span></div>
+      </div></div>
+      <div class="tab"><span class="on"></span><span></span><span></span><span></span></div>
+    </div></div><figcaption>Início</figcaption></figure>
+    <figure class="fig"><div class="fone"><div class="tela o2 o2d"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="ph big" style="background-image:url({{sixth}})"></div>
+      <div class="ct"><small>Museu · Dallas</small><h3>The Sixth Floor Museum</h3><div class="rate">★★★★★ 5,0 · curadoria</div>
+        <div class="fatos"><div><b>US$ 24</b>adulto</div><div><b>2 h</b>de visita</div><div><b>Downtown</b>Dealey Plaza</div><div><b>Com hora</b>ingresso marcado</div></div>
+        <p>O museu conta, no prédio de onde partiram os tiros, a história do assassinato de John F. Kennedy em 1963.</p></div></div>
+      <div class="cta">Reservar ingresso</div>
+    </div></div><figcaption>Página do lugar</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- 3 MAPA VIVO -->
+<section class="op" id="mapa"><div class="wrap op-grid">
+  <div>
+    <div class="num">Opção 3</div><h2>Mapa vivo</h2>
+    <p>O mapa é a tela inicial. Os lugares aparecem como etiquetas com preço ou nota, e uma folha desliza de baixo com o que está perto. Organizado como um app de mobilidade.</p>
+    <dl class="ficha">
+      <div><dt>Sensação</dt><dd>Prático, organizado, "estou aqui, o que faço agora?"</dd></div>
+      <div><dt>Cores</dt><dd class="cores"><i style="background:#EEF1EC"></i><i style="background:#FFFFFF"></i><i style="background:#024E25"></i><i style="background:#0AA23C"></i><i style="background:#FFBC04"></i></dd></div>
+      <div><dt>Tipografia</dt><dd class="tipo"><span style="font:600 20px Sora">Sora</span> nos títulos · <span style="font-family:Manrope">Manrope</span> no texto</dd></div>
+      <div><dt>Melhor para</dt><dd><ul class="pros"><li>Turistas que estão na rua</li><li>Mostrar distância e tempo de carro</li><li>Aproveitar os alertas de proximidade</li></ul></dd></div>
+    </dl>
+  </div>
+  <div class="telas">
+    <figure class="fig"><div class="fone"><div class="tela o3"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <svg class="mapa" viewBox="0 0 282 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="282" height="400" fill="#E4EAE3"/><path d="M-10 250 C60 230 90 280 150 260 S240 200 300 215" fill="none" stroke="#BFD9E6" stroke-width="16"/><rect x="170" y="60" width="90" height="70" rx="10" fill="#D3E6D2"/><rect x="20" y="290" width="70" height="60" rx="10" fill="#D3E6D2"/><g stroke="#fff" stroke-width="7" fill="none"><path d="M0 170 H282"/><path d="M120 0 V400"/><path d="M0 330 L282 120"/><path d="M210 0 V400"/></g><g stroke="#F2D27A" stroke-width="5" fill="none"><path d="M40 0 C60 120 30 220 70 400"/></g></svg>
+      <div class="busca"><svg class="sym" viewBox="0 0 270 200" aria-hidden="true"><use href="#simbolo"/></svg><span>Para onde vamos?</span><b>C</b></div>
+      <div class="chips"><span class="on">Perto</span><span>Aberto agora</span><span>Grátis</span><span>Comer</span></div>
+      <span class="pin g" style="left:226px;top:214px">Grátis</span><span class="pin sel" style="left:120px;top:236px">★ 5,0</span><span class="pin" style="left:58px;top:214px">US$ 24</span><span class="pin y" style="left:236px;top:286px">Evento</span><span class="pin" style="left:176px;top:168px">US$ 21</span>
+      <span class="eu" style="left:150px;top:270px"></span>
+      <div class="folha"><h4>Perto de você</h4><small>12 lugares a menos de 10 minutos</small>
+        <div class="hrow"><div class="pc"><div class="ph" style="background-image:url({{klyde}})"><em>4 min</em></div><b>Klyde Warren Park</b><small>Parque · Grátis</small></div><div class="pc"><div class="ph" style="background-image:url({{sixth}})"><em>6 min</em></div><b>The Sixth Floor Museum</b><small>Museu · US$ 24</small></div></div></div>
+      <div class="tab"><span class="on"></span><span></span><span></span><span></span></div>
+    </div></div><figcaption>Início</figcaption></figure>
+    <figure class="fig"><div class="fone"><div class="tela o3 o3d"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <svg class="mapa" viewBox="0 0 282 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="282" height="250" fill="#E4EAE3"/><g stroke="#fff" stroke-width="7" fill="none"><path d="M0 120 H282"/><path d="M90 0 V250"/><path d="M200 0 V250"/></g><path d="M60 200 C90 150 120 140 150 120 S200 70 220 60" fill="none" stroke="#024E25" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"/><circle cx="60" cy="200" r="7" fill="#2F7DF6" stroke="#fff" stroke-width="3"/><circle cx="220" cy="60" r="9" fill="#024E25" stroke="#fff" stroke-width="3"/></svg>
+      <div class="folha"><h3>Reunion Tower GeO-Deck</h3><div class="meta">Mirante · Dallas · ★ 4,0 · US$ 21</div>
+        <div class="rotas"><div class="on"><b>8 min</b>carro</div><div><b>22 min</b>a pé</div><div><b>14 min</b>trem</div><div><b>US$ 9</b>Uber</div></div>
+        <div class="ph mini" style="background-image:url({{reunion}})"></div><p>A bola iluminada do skyline: vista de 360° da cidade a 143 m de altura.</p></div>
+      <div class="cta"><span class="s">♡</span><span>Iniciar rota</span></div>
+    </div></div><figcaption>Página do lugar</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- 4 BENTO -->
+<section class="op" id="bento"><div class="wrap op-grid">
+  <div>
+    <div class="num">Opção 4</div><h2>Bento</h2>
+    <p>Tudo em blocos de tamanhos diferentes, como uma marmita japonesa. Os números do guia viram atalhos visuais e cada bloco tem uma função. É a opção mais organizada e a que mostra mais coisas sem poluir.</p>
+    <dl class="ficha">
+      <div><dt>Sensação</dt><dd>Moderno, organizado, cheio de informação sem bagunça</dd></div>
+      <div><dt>Cores</dt><dd class="cores"><i style="background:#F2F3EF"></i><i style="background:#18201B"></i><i style="background:#024E25"></i><i style="background:#FFBC04"></i><i style="background:#DCEFE2"></i></dd></div>
+      <div><dt>Tipografia</dt><dd class="tipo"><span style="font:800 21px 'Bricolage Grotesque'">Bricolage Grotesque</span> · <span style="font-family:Figtree">Figtree</span></dd></div>
+      <div><dt>Melhor para</dt><dd><ul class="pros"><li>Mostrar o tamanho do guia</li><li>Atalhos rápidos para cada seção</li><li>Funciona igual no celular e no computador</li></ul></dd></div>
+    </dl>
+  </div>
+  <div class="telas">
+    <figure class="fig"><div class="fone"><div class="tela o4"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="tp"><span>Coração<em>BR</em></span><span class="av">C</span></div>
+      <div class="ttl">Dallas, hoje</div>
+      <div class="grid">
+        <div class="t hero ph" style="background-image:url({{autumn}})"><em>Outono 2026</em><div><b>Autumn at the Arboretum</b>Abóboras, jardins e festival de outono</div></div>
+        <div class="t y"><b>91</b>lugares e eventos grátis</div>
+        <div class="t g"><b>77</b><small>eventos com data</small></div>
+        <div class="t w"><b>R$ 5,78</b><small>dólar hoje</small></div>
+        <div class="t l"><b>28</b>negócios brasileiros</div>
+      </div>
+      <div class="sec"><h4>Mais bem avaliados</h4><div class="hrow">
+        <div class="c"><div class="ph" style="background-image:url({{arbo}})"></div><b>Dallas Arboretum</b><small>★ 5,0 · US$ 21,95</small></div>
+        <div class="c"><div class="ph" style="background-image:url({{stock}})"></div><b>Fort Worth Stockyards</b><small>★ 5,0 · Grátis</small></div>
+        <div class="c"><div class="ph" style="background-image:url({{fair}})"></div><b>State Fair</b><small>★ 4,5</small></div></div></div></div>
+      <div class="tab"><span class="on"></span><span></span><span></span><span></span></div>
+    </div></div><figcaption>Início</figcaption></figure>
+    <figure class="fig"><div class="fone"><div class="tela o4 o4d"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="ph big" style="background-image:url({{arbo}})"></div>
+      <div class="ttl2"><small>Natureza · Dallas</small>Dallas Arboretum and Botanical Garden</div>
+      <div class="grid">
+        <div class="t y"><b>★ 5,0</b>curadoria</div><div class="t w"><b>US$ 21,95</b><small>adulto</small></div>
+        <div class="t l"><b>27 min</b>de carro</div><div class="t g"><b>3 h</b><small>de visita</small></div>
+      </div></div>
+      <div class="cta">Como chegar</div>
+    </div></div><figcaption>Página do lugar</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- 5 POSTAL -->
+<section class="op" id="postal"><div class="wrap op-grid">
+  <div>
+    <div class="num">Opção 5</div><h2>Postal</h2>
+    <p>A mais brasileira e com mais personalidade. Blocos de verde e amarelo, letras grandes no estilo do logo, fotos como cartões-postais e etiquetas de preço como adesivos. Alegre, mas com contornos firmes e organizados.</p>
+    <dl class="ficha">
+      <div><dt>Sensação</dt><dd>Brasileiro, vibrante, fácil de reconhecer de longe</dd></div>
+      <div><dt>Cores</dt><dd class="cores"><i style="background:#024E25"></i><i style="background:#0AA23C"></i><i style="background:#FFBC04"></i><i style="background:#FFF8E6"></i><i style="background:#062C17"></i></dd></div>
+      <div><dt>Tipografia</dt><dd class="tipo"><span style="font:800 21px Outfit">Outfit</span> (a mesma do logo) · <span style="font-family:'DM Sans'">DM Sans</span></dd></div>
+      <div><dt>Melhor para</dt><dd><ul class="pros"><li>Marca forte e memorável</li><li>Redes sociais e Instagram</li><li>Público jovem e famílias</li></ul></dd></div>
+    </dl>
+  </div>
+  <div class="telas">
+    <figure class="fig"><div class="fone"><div class="tela o5"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="topo"></div><div class="tp"><span>Coração<em>BR</em></span><span>PT</span></div>
+      <div class="grande">Dallas em<br><span>português.</span></div>
+      <div class="selo">PERTO<br>DE<br>VOCÊ</div><div class="postal"><div class="ph" style="background-image:url({{klyde}})"></div></div>
+      <div class="busca">⌕ Para onde?</div>
+      <div class="cats"><span class="on">Tudo</span><span>Passeios</span><span>Comer</span><span>Grátis</span><span>Eventos</span></div>
+      <div class="sec"><h4>Mais bem avaliados</h4><div class="hrow">
+        <div class="c"><div class="ph" style="background-image:url({{arbo}})"></div><em>★ 5,0</em><b>Dallas Arboretum</b><small>US$ 21,95</small></div>
+        <div class="c"><div class="ph" style="background-image:url({{br}})"></div><em>BR</em><b>Brazil Latino Food &amp; Music</b><small>Restaurante brasileiro</small></div></div></div></div>
+      <div class="tab"><span class="on"></span><span></span><span></span><span></span></div>
+    </div></div><figcaption>Início</figcaption></figure>
+    <figure class="fig"><div class="fone"><div class="tela o5 o5d"><div class="ilha"></div><div class="sb"><span>9:41</span><i></i></div><div class="rol">
+      <div class="ph big" style="background-image:url({{rodeo}})"></div>
+      <div class="ct"><small>Evento · Fort Worth</small><h3>Fort Worth Stock Show &amp; Rodeo</h3>
+        <div class="fatos"><div><b>US$ 15</b>adulto</div><div><b>15 jan</b>a 6 fev</div><div><b>58 min</b>de carro</div></div>
+        <p>O maior rodeio do Texas: 23 dias de montaria, gado premiado e comida de feira.</p></div></div>
+      <div class="cta">Lembrar-me deste evento</div>
+    </div></div><figcaption>Página do evento</figcaption></figure>
+  </div>
+</div></section>
+</main>
+
+<footer class="fim wrap">Fotos, notas, preços e datas são do próprio guia. Tempos de rota, distâncias e saudações nas telas são exemplos para mostrar o layout. Depois da escolha, aplico a direção em todas as páginas: início, explorar, lugar, roteiros, mural, conta, login, painel do anunciante e painel master, no celular e no computador.</footer>

@@ -1,0 +1,47 @@
+CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
+
+1. ENVIAR OS ARQUIVOS
+   Envie todo o conteúdo desta pasta para a pasta do site (ex.: public_html/coracaobr/),
+   substituindo os arquivos antigos. Inclua os arquivos ocultos: .htaccess
+   (no Gerenciador de Arquivos do hPanel, eles aparecem normalmente).
+
+2. CRIAR A CONTA MASTER (só uma vez, com a chave de instalação)
+   Abra https://SEU-SITE/coracaobr/#painel
+   Aparece "Criar a conta master". A chave está no arquivo dados/CHAVE-INSTALACAO.txt
+   (hPanel → Gerenciador de Arquivos → public_html/coracaobr/dados/). Preencha a chave, nome, e-mail e senha.
+   Depois disso esse formulário some sozinho. Essa é a SUA conta de administrador.
+
+3. PRONTO
+   - Visitantes navegam sem conta.
+   - Para avaliar, salvar na conta e publicar no Mural: criar conta de usuário (menu Conta).
+   - Para anunciar: Anuncie → escolher o plano → criar conta de anunciante → preencher o anúncio.
+   - Você (master): Painel → aba Contas lista todo mundo, muda papel, suspende e gera link de nova senha.
+
+ONDE FICAM OS DADOS
+   - Banco: pasta dados/ (criada sozinha no primeiro acesso, bloqueada para a web).
+   - Fotos enviadas por anunciantes: pasta uploads/ (criada sozinha).
+   - FAÇA BACKUP dessas duas pastas. Ao atualizar o site no futuro, NÃO apague dados/ nem uploads/.
+
+E-MAIL DE "ESQUECI MINHA SENHA"
+   Usa o envio de e-mail do próprio PHP. Para não cair no spam, crie no hPanel uma caixa
+   como nao-responda@seudominio e informe em api/config.php (copie de api/config.exemplo.php).
+   Se o e-mail não chegar, o master gera o link de nova senha em Painel → Contas e manda pelo WhatsApp.
+
+SEGURANÇA
+   - Senhas guardadas só como hash (bcrypt). Ninguém, nem o master, vê a senha de alguém.
+   - Proteção contra tentativas repetidas de senha, contra pedidos forjados (CSRF) e cookie de sessão HttpOnly.
+   - As permissões de cada papel são conferidas no servidor.
+   - Opcional e mais seguro: mova o banco para fora de public_html (veja api/config.exemplo.php).
+
+RECURSOS NOVOS (Painel → Recursos, Parceiros, Newsletter, Pesquisa)
+   - Cada recurso tem um botão de liga e desliga em Painel → Recursos.
+   - O mapa usa as imagens do OpenStreetMap (grátis, com crédito, uso moderado). Para muito tráfego,
+     troque em Painel → Recursos → Mapa por um serviço pago (Mapbox, MapTiler).
+
+NEWSLETTER POR E-MAIL
+   - Envio manual: Painel → Newsletter → Pré-visualizar, Enviar teste para mim, Enviar para todos.
+   - Envio automático semanal: Painel → Newsletter mostra um endereço. No hPanel: Avançado → Cron Jobs,
+     crie uma tarefa semanal com o comando:  curl -s "ENDEREÇO-MOSTRADO-NO-PAINEL"
+     e marque "Enviar sozinho toda semana" no painel.
+   - A Hostinger limita quantos e-mails a conta envia por dia (veja o seu plano no hPanel → E-mails).
+     Com muitos inscritos, use um serviço de envio de e-mail; fale com a equipe técnica.

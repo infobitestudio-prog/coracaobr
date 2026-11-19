@@ -1,0 +1,433 @@
+<title>CoraçãoBR Mapa vivo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Página: cabeçalho curto, alternância Celular/Computador, o protótipo no centro e notas embaixo.
+   O protótipo tem paleta própria (a proposta); a página em volta segue o tema de quem vê. */
+:root {
+  --bg: #EEF1EC; --fg: #142019; --mut: #5F6B64; --line: #D9DED8; --card: #FFFFFF; --acc: #024E25;
+  --ui: "Manrope", "Segoe UI", system-ui, sans-serif; --head: "Sora", "Segoe UI", system-ui, sans-serif; --brand: "Outfit", "Segoe UI", system-ui, sans-serif;
+  /* paleta do Mapa vivo */
+  --m-terra: #E6ECE4; --m-verde: #D2E5D0; --m-agua: #BFDCEA; --m-rua: #FFFFFF; --m-via: #F3D98A; --m-ink: #142019; --m-mut: #66726B;
+  --m-vf: #024E25; --m-vb: #0AA23C; --m-am: #FFBC04; --m-azul: #2F7DF6; --m-sup: #FFFFFF; --m-sup2: #F3F6F2; --m-linha: #E4E9E3;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0F1512; --fg: #E7ECE8; --mut: #98A49D; --line: #26302A; --card: #161D19; --acc: #4CC27A; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #0F1512; --fg: #E7ECE8; --mut: #98A49D; --line: #26302A; --card: #161D19; --acc: #4CC27A; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.5 var(--ui); margin: 0 }
+.wrap { max-width: 1280px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.topo { padding-block: 28px 18px; display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: end; justify-content: space-between }
+.topo .eye { font: 600 12px var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--mut) }
+.topo h1 { font: 600 clamp(28px, 4vw, 44px)/1.05 var(--head); letter-spacing: -.02em; margin: 6px 0 6px }
+.topo p { margin: 0; color: var(--mut); max-width: 62ch }
+.modo { display: inline-flex; padding: 4px; border-radius: 99px; background: var(--card); border: 1px solid var(--line) }
+.modo button { font: 600 14px var(--ui); color: var(--mut); background: none; border: 0; padding: 9px 18px; border-radius: 99px; cursor: pointer }
+.modo button[aria-pressed="true"] { background: var(--acc); color: #fff }
+.modo button:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px }
+.palco { display: flex; justify-content: center; padding-block: 8px 40px }
+.aparelho { position: relative; transition: width .35s ease, height .35s ease }
+.palco[data-modo="cel"] .aparelho { width: 390px; height: 800px; max-width: 100%; border-radius: 52px; padding: 10px; background: #1B1D1C; box-shadow: 0 40px 80px -30px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.08) }
+.palco[data-modo="cel"] .aparelho::before { content: ""; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 104px; height: 30px; border-radius: 99px; background: #000; z-index: 50 }
+.palco[data-modo="pc"] .aparelho { width: 100%; max-width: 1240px; height: 760px; border-radius: 16px; padding: 30px 0 0; background: #D7DCD6; box-shadow: 0 30px 70px -30px rgba(0,0,0,.35) }
+.palco[data-modo="pc"] .aparelho::before { content: ""; position: absolute; top: 11px; left: 16px; width: 52px; height: 9px; background: radial-gradient(circle, #E46B5F 4px, transparent 4.5px) 0 0/18px 9px repeat-x; }
+.palco[data-modo="pc"] .aparelho::after { content: "coracaobr.com · mapa"; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); font: 500 11px var(--ui); color: #5F6B64; background: #EEF1EC; padding: 2px 40px; border-radius: 7px }
+@media (max-width: 520px) {
+  .palco[data-modo="cel"] .aparelho { width: 100%; height: min(760px, calc(100vh - 120px)); border-radius: 0; padding: 0; background: none; box-shadow: none }
+  .palco[data-modo="cel"] .aparelho::before { display: none }
+  .palco { padding-block: 0 24px } .modo { display: none }
+}
+.notas { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; padding-block: 10px 60px }
+.notas div { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px }
+.notas h3 { font: 600 16px var(--head); margin: 0 0 6px } .notas p { margin: 0; color: var(--mut); font-size: 14.5px }
+
+/* ================= o app ================= */
+.app { position: relative; width: 100%; height: 100%; border-radius: 42px; overflow: hidden; background: var(--m-terra); color: var(--m-ink); font: 400 14px/1.45 "Manrope", sans-serif; container-type: inline-size; isolation: isolate; user-select: none; -webkit-user-select: none }
+.palco[data-modo="pc"] .app { border-radius: 0 0 16px 16px }
+@media (max-width: 520px) { .palco[data-modo="cel"] .app { border-radius: 0 } }
+.app button { font: inherit; color: inherit; cursor: pointer }
+.app :focus-visible { outline: 2px solid var(--m-vb); outline-offset: 2px }
+.sym { display: inline-block; flex: none }
+
+/* mapa */
+.mapa { position: absolute; inset: 0; touch-action: none; cursor: grab; overflow: hidden }
+.mapa.arrasta { cursor: grabbing }
+.mapa svg { position: absolute; inset: 0; width: 100%; height: 100% }
+.cam { position: absolute; inset: 0; pointer-events: none }
+.cid-l { position: absolute; transform: translate(-50%, -50%); font: 700 11px "Sora"; letter-spacing: .12em; text-transform: uppercase; color: #8A968F; white-space: nowrap; text-shadow: 0 0 3px var(--m-terra), 0 0 3px var(--m-terra) }
+.via-l { position: absolute; transform: translate(-50%, -50%); font: 700 9px "Manrope"; background: #fff; color: #5D5233; border: 1.5px solid #E2C46B; padding: 1px 5px; border-radius: 5px; white-space: nowrap }
+.pin { position: absolute; transform: translate(-50%, -100%); pointer-events: auto; background: var(--m-sup); color: var(--m-ink); border: 0; font: 700 11px "Sora"; padding: 5px 9px; border-radius: 10px; box-shadow: 0 3px 10px rgba(20,32,25,.22); white-space: nowrap; transition: transform .15s }
+.pin::after { content: ""; position: absolute; left: 50%; bottom: -4px; width: 9px; height: 9px; background: inherit; transform: translateX(-50%) rotate(45deg); border-radius: 2px }
+.pin.g { background: var(--m-vb); color: #fff } .pin.e { background: var(--m-am) } .pin.b { background: var(--m-vf); color: var(--m-am) }
+.pin.sel { background: var(--m-ink); color: #fff; transform: translate(-50%, -100%) scale(1.15); z-index: 5 }
+.pin:hover { transform: translate(-50%, -100%) scale(1.08) }
+.ponto { position: absolute; width: 11px; height: 11px; margin: -5.5px; border-radius: 50%; background: var(--m-vf); border: 2px solid #fff; pointer-events: auto; padding: 0; box-shadow: 0 1px 4px rgba(0,0,0,.25) }
+.ponto.e { background: #D99A00 } .ponto.g { background: var(--m-vb) }
+.eu { position: absolute; width: 18px; height: 18px; margin: -9px; border-radius: 50%; background: var(--m-azul); border: 3px solid #fff; box-shadow: 0 0 0 10px rgba(47,125,246,.18), 0 2px 6px rgba(0,0,0,.25) }
+
+/* topo do app */
+.barra { position: absolute; z-index: 20; top: 56px; left: 14px; right: 14px; display: grid; gap: 8px }
+.busca { display: flex; align-items: center; gap: 10px; background: var(--m-sup); border-radius: 18px; padding: 8px 8px 8px 14px; box-shadow: 0 6px 22px rgba(20,32,25,.14) }
+.busca .sym { width: 30px; height: 22px } .busca input { flex: 1; min-width: 0; border: 0; background: none; font: 500 14px "Manrope"; color: var(--m-ink); outline: none; padding: 6px 0 }
+.busca input::placeholder { color: var(--m-mut) }
+.app .av { width: 34px; height: 34px; border-radius: 50%; background: var(--m-vf); color: var(--m-am); border: 0; font: 700 13px "Outfit"; flex: none }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 6px }
+.chips::-webkit-scrollbar { display: none }
+.chip { flex: none; border: 0; background: var(--m-sup); padding: 7px 12px; border-radius: 99px; font: 600 12px "Manrope"; box-shadow: 0 2px 8px rgba(20,32,25,.10); white-space: nowrap }
+.chip[aria-pressed="true"] { background: var(--m-vf); color: #fff }
+.ctrls { position: absolute; z-index: 15; right: 14px; display: grid; gap: 8px; bottom: calc(var(--folha, 300px) + 14px); transition: bottom .3s }
+.ctrls button { width: 42px; height: 42px; border-radius: 14px; border: 0; background: var(--m-sup); box-shadow: 0 4px 14px rgba(20,32,25,.16); font: 600 18px "Sora"; display: grid; place-items: center }
+.ctrls svg { width: 18px; height: 18px }
+
+/* folha que sobe */
+.folha { position: absolute; z-index: 18; left: 0; right: 0; bottom: 0; height: var(--folha, 300px); background: var(--m-sup); border-radius: 26px 26px 0 0; box-shadow: 0 -10px 30px rgba(20,32,25,.12); display: flex; flex-direction: column; transition: height .3s cubic-bezier(.2,.8,.2,1); padding-bottom: 74px }
+.folha.solta { transition: none }
+.alca { flex: none; height: 26px; border: 0; background: none; display: grid; place-items: center; cursor: grab; touch-action: none }
+.alca::before { content: ""; width: 40px; height: 5px; border-radius: 9px; background: #D3D9D3 }
+.corpo { flex: 1; overflow-y: auto; padding: 0 16px 16px; overscroll-behavior: contain }
+.cab { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 10px }
+.cab h2 { font: 600 17px "Sora"; margin: 0 } .cab small { color: var(--m-mut); font-size: 12px }
+.lista { display: grid; gap: 2px }
+.row { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px; border: 0; background: none; text-align: left; border-radius: 14px; width: 100% }
+.row:hover { background: var(--m-sup2) }
+.row .ft { display: block; width: 64px; height: 64px; border-radius: 12px; background-size: cover; background-position: center }
+.row b { display: block; font: 600 14px/1.25 "Manrope"; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.row small { display: block; color: var(--m-mut); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.row .km { text-align: right; font: 600 12px "Sora"; white-space: nowrap } .row .km small { font: 500 11px "Manrope" }
+.tag { display: inline-block; font: 700 10px "Manrope"; padding: 2px 7px; border-radius: 6px; background: #EAF5EE; color: var(--m-vf); margin-right: 4px }
+.tag.am { background: #FFF2C7; color: #6B4E00 } .tag.vf { background: var(--m-vf); color: var(--m-am) }
+.vazio { padding: 30px 10px; text-align: center; color: var(--m-mut) }
+
+/* detalhe do lugar */
+.det .foto { position: relative; height: 200px; margin: 0 -16px 14px; background-size: cover; background-position: center }
+.det .foto small { position: absolute; right: 10px; bottom: 8px; font-size: 9.5px; color: #fff; background: rgba(0,0,0,.45); padding: 2px 6px; border-radius: 5px }
+.det .volta, .det .cora { position: absolute; top: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(255,255,255,.94); display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.15) }
+.det .volta { left: 12px } .det .cora { right: 12px } .det .cora[aria-pressed="true"] svg { fill: #E0443A; stroke: #E0443A }
+.det .cora svg, .det .volta svg { width: 18px; height: 18px; fill: none; stroke: var(--m-ink); stroke-width: 2 }
+.det h2 { font: 600 21px/1.15 "Sora"; margin: 0 0 4px } .det .meta { color: var(--m-mut); font-size: 12.5px; margin-bottom: 10px }
+.fatos { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 6px; margin: 12px 0 }
+.fatos div { border: 1px solid var(--m-linha); border-radius: 12px; padding: 9px 8px; text-align: center; font-size: 10.5px; color: var(--m-mut) }
+.fatos b { display: block; font: 600 14px "Sora"; color: var(--m-ink) }
+.det p { margin: 0 0 10px; color: #33403A; font-size: 13.5px; line-height: 1.55 }
+.det .quando { background: #FFF6D8; border-radius: 12px; padding: 10px 12px; font-size: 12.5px; margin-bottom: 10px }
+.acoes { display: flex; gap: 8px; margin-top: 6px }
+.acoes a, .acoes button { flex: 1; text-align: center; padding: 13px; border-radius: 14px; font: 600 13px "Sora"; text-decoration: none; border: 0 }
+.acoes .p { background: var(--m-vf); color: #fff } .acoes .s { flex: none; width: 50px; background: #EAF5EE; color: var(--m-vf) }
+.est { font-size: 10.5px; color: var(--m-mut); margin-top: 8px }
+
+/* telas cheias (Explorar, Salvos, Conta) */
+.tela { position: absolute; inset: 0; z-index: 30; background: var(--m-sup2); overflow-y: auto; padding: 56px 16px 96px }
+.tela h2 { font: 600 24px "Sora"; margin: 4px 0 4px } .tela .sub { color: var(--m-mut); font-size: 13px; margin: 0 0 14px }
+.tela .busca { box-shadow: none; border: 1px solid var(--m-linha) }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 12px }
+.card { border: 0; background: var(--m-sup); border-radius: 16px; padding: 6px; text-align: left; box-shadow: 0 1px 2px rgba(20,32,25,.06) }
+.card .ft { display: block; height: 108px; border-radius: 11px; background-size: cover; background-position: center; position: relative }
+.card .ft em { position: absolute; left: 7px; top: 7px; font-style: normal; background: #fff; border-radius: 8px; padding: 2px 7px; font: 700 10.5px "Sora" }
+.card b { display: block; font: 600 13px/1.25 "Manrope"; margin: 7px 4px 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.card small { display: block; color: var(--m-mut); font-size: 11.5px; margin: 0 4px 4px }
+.form { display: grid; gap: 12px; background: var(--m-sup); border-radius: 20px; padding: 18px; margin-top: 8px }
+.form label { display: grid; gap: 5px; font: 600 12px "Manrope"; color: var(--m-mut) }
+.form input[type=email], .form input[type=password], .form input[type=text] { border: 1px solid var(--m-linha); border-radius: 12px; padding: 12px; font: 500 14px "Manrope"; color: var(--m-ink); background: #fff }
+.form .op { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
+.form .op label { border: 1.5px solid var(--m-linha); border-radius: 14px; padding: 10px; color: var(--m-ink); cursor: pointer; font-weight: 500 }
+.form .op label:has(input:checked) { border-color: var(--m-vf); background: #EAF5EE }
+.form .op input { position: absolute; opacity: 0 } .form .op b { font: 600 13px "Sora" }
+.form button { padding: 13px; border-radius: 14px; border: 0; background: var(--m-vf); color: #fff; font: 600 14px "Sora" }
+.form .lk { display: flex; justify-content: space-between; font-size: 12.5px } .form .lk a { color: var(--m-vf); font-weight: 600; text-decoration: none; cursor: pointer }
+.aviso { background: #FFF6D8; border-radius: 12px; padding: 10px 12px; font-size: 12.5px }
+
+/* barra de abas */
+.abas { position: absolute; z-index: 40; left: 0; right: 0; bottom: 0; height: 74px; background: var(--m-sup); border-top: 1px solid var(--m-linha); display: grid; grid-template-columns: repeat(4, 1fr); padding: 6px 8px 14px }
+.abas button { border: 0; background: none; display: grid; justify-items: center; align-content: center; gap: 3px; font: 600 10.5px "Manrope"; color: var(--m-mut); border-radius: 12px }
+.abas svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8 }
+.abas button[aria-pressed="true"] { color: var(--m-vf) } .abas button[aria-pressed="true"] svg { stroke-width: 2.3 }
+.marca-pc { display: none }
+
+/* ===== computador: painel à esquerda, mapa à direita ===== */
+@container (min-width: 760px) {
+  .app { font-size: 14.5px }
+  .barra { top: 18px; left: 456px; right: 18px; grid-template-columns: minmax(0, 420px) 1fr; align-items: start }
+  .barra .chips { padding-top: 4px }
+  .folha { top: 0; bottom: 0; left: 0; right: auto; width: 440px; height: auto !important; border-radius: 0; box-shadow: 4px 0 24px rgba(20,32,25,.08); padding: 74px 0 0 }
+  .alca { display: none }
+  .corpo { padding: 6px 20px 20px }
+  .ctrls { bottom: 24px !important; right: 18px }
+  .abas { top: 0; bottom: auto; left: 0; right: auto; width: 440px; height: 64px; border-top: 0; border-bottom: 1px solid var(--m-linha); grid-template-columns: auto repeat(4, auto); justify-content: start; gap: 2px; padding: 12px 16px; align-items: center }
+  .abas button { grid-auto-flow: column; gap: 5px; padding: 8px 8px; font-size: 12.5px }
+  .abas button svg { width: 18px; height: 18px }
+  .marca-pc { display: flex; align-items: center; gap: 7px; font: 700 15px "Outfit"; margin-right: 10px } .marca-pc em { font-style: normal; color: #D99A00 } .marca-pc .sym { width: 26px; height: 19px }
+  .tela { left: 0; right: auto; width: 440px; padding: 80px 20px 30px; box-shadow: 4px 0 24px rgba(20,32,25,.08) }
+  .grade { grid-template-columns: 1fr 1fr }
+  .det .foto { height: 220px; margin: 0 -20px 16px }
+}
+@media (prefers-reduced-motion: reduce) { .folha, .ctrls, .pin, .aparelho { transition: none } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gL" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#0AA23C"/><stop offset=".6" stop-color="#088F36"/><stop offset="1" stop-color="#05692A"/></linearGradient>
+<linearGradient id="gF" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#05501F"/><stop offset="1" stop-color="#0B7A32" stop-opacity="0"/></linearGradient>
+<linearGradient id="gY" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7B500"/><stop offset="1" stop-color="#FFC20E"/></linearGradient>
+<linearGradient id="gC" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#078A35"/><stop offset=".8" stop-color="#0A9A3D"/><stop offset="1" stop-color="#46B86E"/></linearGradient>
+<symbol id="simbolo" viewBox="0 0 270 200"><g transform="scale(0.3333)">
+<path fill="url(#gL)" d="M270 30 C330 32 365 60 385 100 L330 190 C300 165 250 150 200 160 C160 168 148 200 152 240 C160 330 230 430 330 520 L368 556 C240 520 110 430 50 340 C10 270 15 160 70 90 C120 40 200 28 270 30 Z"/>
+<path fill="url(#gF)" d="M152 200 C160 120 195 66 250 38 L292 34 C238 66 210 112 206 162 C180 166 160 176 152 200 Z"/>
+<path fill="url(#gY)" d="M322 188 C360 110 440 30 540 22 C610 18 670 50 705 105 L640 148 C600 122 540 112 480 132 C440 146 410 190 386 255 Z"/>
+<path fill="none" stroke="url(#gC)" stroke-width="108" stroke-linecap="round" stroke-linejoin="round" d="M270 382 L394 518 L748 172"/></g></symbol>
+</defs></svg>
+
+<header class="wrap topo">
+  <div><div class="eye">Opção 3 · protótipo</div><h1>Mapa vivo</h1>
+    <p>Arraste o mapa, use os filtros, toque nas etiquetas e na lista. Os 96 lugares estão nas coordenadas reais do guia, com fotos, notas e preços de verdade.</p></div>
+  <div class="modo" role="group" aria-label="Ver como"><button type="button" data-modo="cel" aria-pressed="true">Celular</button><button type="button" data-modo="pc" aria-pressed="false">Computador</button></div>
+</header>
+
+<div class="wrap"><div class="palco" id="palco" data-modo="cel"><div class="aparelho"><div class="app" id="app">
+  <div class="mapa" id="mapa" aria-label="Mapa de Dallas–Fort Worth"><svg id="svg" aria-hidden="true"></svg><div class="cam" id="cam"></div></div>
+  <div class="barra">
+    <div class="busca"><svg class="sym" viewBox="0 0 270 200" aria-hidden="true"><use href="#simbolo"/></svg><label for="q" style="position:absolute;left:-9999px">Buscar lugar</label><input id="q" placeholder="Para onde vamos?" autocomplete="off"><button type="button" class="av" data-aba="conta" aria-label="Conta">C</button></div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="ctrls"><button type="button" id="zmais" aria-label="Aproximar">+</button><button type="button" id="zmenos" aria-label="Afastar">−</button><button type="button" id="local" aria-label="Voltar para minha localização"><svg viewBox="0 0 24 24" fill="none" stroke="#2F7DF6" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button></div>
+  <div class="folha" id="folha"><button type="button" class="alca" id="alca" aria-label="Aumentar ou diminuir a lista"></button><div class="corpo" id="corpo"></div></div>
+  <div class="tela" id="tela" hidden></div>
+  <nav class="abas" id="abas" aria-label="Abas">
+    <span class="marca-pc"><svg class="sym" viewBox="0 0 270 200" aria-hidden="true"><use href="#simbolo"/></svg>Coração<em>BR</em></span>
+    <button type="button" data-aba="mapa" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Mapa</button>
+    <button type="button" data-aba="explorar" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Explorar</button>
+    <button type="button" data-aba="salvos" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Salvos</button>
+    <button type="button" data-aba="conta" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Conta</button>
+  </nav>
+</div></div></div></div>
+
+<section class="wrap notas">
+  <div><h3>O que muda no site</h3><p>O mapa vira a tela inicial. Quem está na rua vê o que está perto, quanto custa e quanto tempo leva, sem procurar em listas.</p></div>
+  <div><h3>No computador</h3><p>A lista fica num painel à esquerda e o mapa ocupa o resto da tela. Toque em "Computador" acima para ver.</p></div>
+  <div><h3>Mapa da versão final</h3><p>Aqui o mapa é desenhado à mão com as principais rodovias, rios e lagos, para mostrar o estilo. No site, entra um mapa real com ruas (OpenStreetMap), no mesmo visual.</p></div>
+  <div><h3>Sobre os números</h3><p>Fotos, notas, preços e datas vêm do guia. Os tempos de carro e a pé são estimativas pela distância, a partir de um ponto de exemplo no centro de Dallas.</p></div>
+</section>
+
+<script>
+const LUG = /*DADOS*/[];
+(function () {
+  "use strict";
+  const LA0 = 32.85, LN0 = -96.95, KX = 111.32 * Math.cos(LA0 * Math.PI / 180), KY = 110.57;
+  const xy = (la, ln) => [(ln - LN0) * KX, (LA0 - la) * KY];
+  const EU = { la: 32.7894, ln: -96.8017 }; // exemplo: Klyde Warren Park, centro de Dallas
+  const [EUX, EUY] = xy(EU.la, EU.ln);
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const app = $("#app"), mapa = $("#mapa"), svg = $("#svg"), cam = $("#cam"), folha = $("#folha"), corpo = $("#corpo"), tela = $("#tela");
+
+  /* distância e tempos estimados */
+  function km(a, b, c, d) { const R = 6371, r = Math.PI / 180, x = Math.sin((c - a) * r / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin((d - b) * r / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); }
+  LUG.forEach(l => { l.r = Number(l.r) || null; l.p = Number(l.p) || null; l.d = km(EU.la, EU.ln, l.la, l.ln); [l.x, l.y] = xy(l.la, l.ln); });
+  const carro = l => Math.max(3, Math.round(l.d * 1.3 / 50 * 60 + 3));
+  const pe = l => Math.round(l.d * 1.25 / 4.8 * 60);
+  const fmtKm = d => d < 1 ? Math.round(d * 1000) + " m" : d.toFixed(d < 10 ? 1 : 0).replace(".", ",") + " km";
+  const nota = l => l && l.r ? "★ " + l.r.toFixed(1).replace(".", ",") : "";
+  const preco = l => l.f ? "Grátis" : l.p ? "US$ " + String(l.p).replace(".", ",") : l.fx || "";
+  function etiqueta(l) { if (l.g === "eventos") { const m = (l.q || "").match(/^(\d{1,2}(?: a \d{1,2})? (?:de )?[a-zç]{3})/i); if (filtro === "eventos" || !l.f) return m ? m[1].replace(" de ", " ") : "Evento"; } if (l.f) return "Grátis"; if (filtro === "comer" || filtro === "brasileiros") return nota(l) || preco(l); return nota(l) || preco(l) || l.c; }
+
+  /* ---------- desenho do mapa (rodovias, rios, lagos e cidades em coordenadas reais aproximadas) ---------- */
+  const VIAS = [
+    ["I-30", [[32.737, -97.47], [32.75, -97.33], [32.745, -97.1], [32.765, -96.97], [32.776, -96.8], [32.8, -96.62], [32.87, -96.43]]],
+    ["I-20", [[32.67, -97.47], [32.68, -97.1], [32.68, -96.8], [32.72, -96.45]]],
+    ["I-35E", [[32.5, -96.86], [32.7, -96.83], [32.78, -96.81], [32.85, -96.89], [32.95, -96.92], [33.05, -97.0], [33.25, -97.13]]],
+    ["I-35W", [[32.5, -97.32], [32.75, -97.32], [32.9, -97.31], [33.25, -97.13]]],
+    ["I-635", [[32.83, -97.03], [32.92, -96.95], [32.925, -96.8], [32.91, -96.68], [32.83, -96.61], [32.75, -96.62]]],
+    ["US-75", [[32.79, -96.8], [32.9, -96.77], [33.02, -96.71], [33.22, -96.63]]],
+    ["Tollway", [[32.8, -96.81], [33.0, -96.83], [33.25, -96.82]]],
+    ["SH-183", [[32.82, -97.28], [32.84, -97.05], [32.81, -96.88]]],
+    ["I-820", [[32.73, -97.43], [32.84, -97.38], [32.86, -97.25], [32.8, -97.2], [32.68, -97.25]]],
+    ["SH-121", [[32.9, -97.1], [33.0, -96.95], [33.1, -96.77], [33.2, -96.62]]]
+  ];
+  const RIOS = [[[32.77, -97.48], [32.76, -97.33], [32.79, -97.18], [32.8, -97.05], [32.8, -96.9], [32.77, -96.82], [32.7, -96.75], [32.5, -96.62]]];
+  const LAGOS = [[33.07, -96.98, 7, 4.5], [32.97, -97.07, 3.5, 2.2], [32.835, -96.72, 1.4, 1.1], [32.86, -96.52, 2.6, 5], [32.62, -97.0, 4, 2.2], [32.88, -97.48, 3, 2.4], [32.98, -97.48, 2.5, 2.8]];
+  const VERDES = [[32.705, -96.88, 3, 1.6], [32.86, -96.73, 1.5, 1.2], [32.74, -97.36, 1.2, 0.9], [33.0, -96.74, 1.4, 1], [32.66, -97.02, 2, 1.4]];
+  const CIDADES = [["Dallas", 32.79, -96.78], ["Fort Worth", 32.755, -97.33], ["Arlington", 32.73, -97.11], ["Irving", 32.86, -96.97], ["Plano", 33.02, -96.7], ["Frisco", 33.15, -96.82], ["Grapevine", 32.94, -97.08], ["Garland", 32.91, -96.64], ["Grand Prairie", 32.7, -97.0], ["McKinney", 33.2, -96.62], ["Denton", 33.21, -97.13], ["Mesquite", 32.77, -96.6]];
+  const NS = "http://www.w3.org/2000/svg";
+  function el(t, a) { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; }
+  function pts(p) { return p.map(q => xy(q[0], q[1]).map(v => v.toFixed(2)).join(",")).join(" "); }
+  svg.appendChild(el("rect", { x: -200, y: -200, width: 400, height: 400, fill: "#E6ECE4" }));
+  // malha fina de ruas (só desenho de fundo)
+  const malha = el("g", { stroke: "#F7F9F6", "stroke-width": 1.2, "vector-effect": "non-scaling-stroke" });
+  for (let i = -70; i <= 70; i += 2.2) { malha.appendChild(el("line", { x1: i, y1: -60, x2: i + 3, y2: 60, "vector-effect": "non-scaling-stroke" })); malha.appendChild(el("line", { x1: -80, y1: i, x2: 80, y2: i - 2, "vector-effect": "non-scaling-stroke" })); }
+  svg.appendChild(malha);
+  VERDES.forEach(v => { const [x, y] = xy(v[0], v[1]); svg.appendChild(el("ellipse", { cx: x, cy: y, rx: v[2], ry: v[3], fill: "#D2E5D0" })); });
+  RIOS.forEach(r => svg.appendChild(el("polyline", { points: pts(r), fill: "none", stroke: "#BFDCEA", "stroke-width": 7, "stroke-linecap": "round", "stroke-linejoin": "round", "vector-effect": "non-scaling-stroke" })));
+  LAGOS.forEach(v => { const [x, y] = xy(v[0], v[1]); svg.appendChild(el("ellipse", { cx: x, cy: y, rx: v[2], ry: v[3], fill: "#BFDCEA" })); });
+  const [ax, ay] = xy(32.8998, -97.0403); svg.appendChild(el("rect", { x: ax - 3, y: ay - 3.5, width: 6, height: 7, rx: 1, fill: "#DCE2DB" }));
+  VIAS.forEach(v => { svg.appendChild(el("polyline", { points: pts(v[1]), fill: "none", stroke: "#E2C46B", "stroke-width": 7, "stroke-linecap": "round", "stroke-linejoin": "round", "vector-effect": "non-scaling-stroke" })); svg.appendChild(el("polyline", { points: pts(v[1]), fill: "none", stroke: "#F8E3A0", "stroke-width": 4.5, "stroke-linecap": "round", "stroke-linejoin": "round", "vector-effect": "non-scaling-stroke" })); });
+
+  /* ---------- câmera ---------- */
+  let V = { cx: EUX, cy: EUY + 1.2, w: 10 };
+  const tam = () => ({ W: mapa.clientWidth || 1, H: mapa.clientHeight || 1 });
+  function painelPc() { return app.clientWidth >= 760 ? 440 : 0; }
+  function proj(x, y) { const { W, H } = tam(), s = W / V.w; return [(x - V.cx) * s + W / 2, (y - V.cy) * s + H / 2]; }
+  function aplica() {
+    const { W, H } = tam(), h = V.w * H / W;
+    svg.setAttribute("viewBox", `${V.cx - V.w / 2} ${V.cy - h / 2} ${V.w} ${h}`);
+    desenhaPins();
+  }
+
+  /* ---------- filtros ---------- */
+  const FILTROS = [["perto", "Perto de mim"], ["gratis", "Grátis"], ["passeios", "Passeios"], ["comer", "Comer"], ["eventos", "Eventos"], ["brasileiros", "Brasileiros"], ["compras", "Compras"]];
+  let filtro = "perto", busca = "", sel = null, estado = "meio", aba = "mapa";
+  $("#chips").innerHTML = FILTROS.map(f => `<button type="button" class="chip" data-f="${f[0]}" aria-pressed="${f[0] === filtro}">${f[1]}</button>`).join("");
+  function passa(l) {
+    if (busca && !(l.n + " " + l.c + " " + l.ci + " " + l.b).toLowerCase().includes(busca)) return false;
+    if (filtro === "gratis") return l.f; if (filtro === "brasileiros") return l.br;
+    if (["passeios", "comer", "eventos", "compras"].includes(filtro)) return l.g === filtro;
+    return true;
+  }
+  const visiveis = () => LUG.filter(passa).sort((a, b) => a.d - b.d);
+
+  /* ---------- etiquetas no mapa ---------- */
+  function desenhaPins() {
+    const { W, H } = tam(), lst = visiveis(), dentro = [], esq = painelPc();
+    const fundo = esq ? H : H - (folha.offsetHeight || 0), topo = esq ? 70 : 150;
+    lst.forEach(l => { const [sx, sy] = proj(l.x, l.y); if (sx > esq + 8 && sx < W - 8 && sy > topo && sy < fundo - 4) dentro.push([l, sx, sy]); });
+    // perto do centro primeiro; no máximo 18 etiquetas, o resto vira ponto
+    const cx = esq + (W - esq) / 2, cy = (topo + fundo) / 2;
+    dentro.sort((a, b) => (a[0] === sel ? -1 : b[0] === sel ? 1 : 0) || ((a[1] - cx) ** 2 + (a[2] - cy) ** 2) - ((b[1] - cx) ** 2 + (b[2] - cy) ** 2));
+    const ocup = [];
+    let html = CIDADES.map(c => { const [x, y] = xy(c[1], c[2]), [sx, sy] = proj(x, y); return sx > esq && sx < W && sy > 0 && sy < H ? `<span class="cid-l" style="left:${sx}px;top:${sy}px">${c[0]}</span>` : ""; }).join("");
+    VIAS.forEach(v => { const m = v[1][Math.floor(v[1].length / 2)], [x, y] = xy(m[0], m[1]), [sx, sy] = proj(x, y); if (sx > esq + 10 && sx < W - 10 && sy > 120 && sy < H - 40) html += `<span class="via-l" style="left:${sx}px;top:${sy}px">${v[0]}</span>`; });
+    const [ex, ey] = proj(EUX, EUY); html += `<span class="eu" style="left:${ex}px;top:${ey}px" title="Você (exemplo)"></span>`;
+    let n = 0;
+    dentro.forEach(([l, sx, sy]) => {
+      const livre = !ocup.some(o => Math.abs(o[0] - sx) < 62 && Math.abs(o[1] - sy) < 26);
+      const cls = l.g === "eventos" ? "e" : l.f ? "g" : l.br ? "b" : "";
+      if ((n < 18 && livre && V.w < 70) || l === sel) { ocup.push([sx, sy]); n++; html += `<button type="button" class="pin ${cls}${l === sel ? " sel" : ""}" data-id="${l.id}" style="left:${sx}px;top:${sy}px" aria-label="${esc(l.n)}">${esc(etiqueta(l))}</button>`; }
+      else html += `<button type="button" class="ponto ${cls}" data-id="${l.id}" style="left:${sx}px;top:${sy}px" aria-label="${esc(l.n)}"></button>`;
+    });
+    cam.innerHTML = html;
+  }
+
+  /* ---------- folha (lista e detalhe) ---------- */
+  const ALT = { baixo: 0.30, meio: 0.50, alto: 0.86 };
+  function alturaFolha() { const H = app.clientHeight; app.style.setProperty("--folha", Math.round(H * ALT[estado]) + "px"); setTimeout(desenhaPins, 320); }
+  function linha(l) {
+    const tags = (l.f ? '<span class="tag">Grátis</span>' : "") + (l.br ? '<span class="tag vf">BR</span>' : "") + (l.g === "eventos" ? '<span class="tag am">Evento</span>' : "");
+    return `<button type="button" class="row" data-id="${l.id}"><span class="ft" style="background-image:url(${l.img})"></span><span><b>${esc(l.n)}</b><small>${tags}${esc(l.c)} · ${esc(l.ci)}</small><small>${esc([nota(l), preco(l)].filter(Boolean).join(" · "))}</small></span><span class="km">${carro(l)} min<small>${fmtKm(l.d)}</small></span></button>`;
+  }
+  function lista() {
+    const lst = visiveis(), nome = FILTROS.find(f => f[0] === filtro)[1];
+    corpo.innerHTML = `<div class="cab"><h2>${filtro === "perto" ? "Perto de você" : esc(nome)}</h2><small>${lst.length} ${lst.length === 1 ? "lugar" : "lugares"}${busca ? " · “" + esc(busca) + "”" : ""}</small></div>` +
+      (lst.length ? `<div class="lista">${lst.slice(0, 40).map(linha).join("")}</div>` : `<p class="vazio">Nada encontrado com este filtro. Tente outro ou limpe a busca.</p>`);
+  }
+  const SALV = new Set((() => { try { return JSON.parse(localStorage.getItem("mv-salvos") || "[]"); } catch (e) { return []; } })());
+  function guardaSalvos() { try { localStorage.setItem("mv-salvos", JSON.stringify([...SALV])); } catch (e) { /* ok */ } }
+  function detalhe(l) {
+    const salvo = SALV.has(l.id);
+    corpo.innerHTML = `<div class="det"><div class="foto" style="background-image:url(${l.img})"><button type="button" class="volta" data-volta aria-label="Voltar para a lista"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="cora" data-salva="${l.id}" aria-pressed="${salvo}" aria-label="Salvar"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>${l.cr ? `<small>Foto: ${esc(l.cr)}</small>` : ""}</div>
+      <h2>${esc(l.n)}</h2><div class="meta">${esc(l.c)} · ${esc(l.b || l.ci)}${l.r ? " · " + nota(l) + " curadoria" : ""}</div>
+      ${l.q ? `<div class="quando"><b>Quando:</b> ${esc(l.q)}</div>` : ""}
+      <div class="fatos"><div><b>~${carro(l)} min</b>de carro</div>${l.d < 6 ? `<div><b>~${pe(l)} min</b>a pé</div>` : `<div><b>${fmtKm(l.d)}</b>de distância</div>`}<div><b>${esc(preco(l) || "—")}</b>${l.f ? "entrada" : l.p ? "a partir de" : "faixa"}</div>${l.r ? `<div><b>${nota(l)}</b>curadoria</div>` : ""}</div>
+      ${l.t ? `<p>${esc(l.t)}</p>` : ""}
+      <div class="acoes"><button type="button" class="s" data-salva="${l.id}" aria-label="Salvar">${salvo ? "♥" : "♡"}</button><a class="p" href="https://www.google.com/maps/dir/?api=1&destination=${l.la},${l.ln}" target="_blank" rel="noopener">Como chegar</a></div>
+      <p class="est">Tempos estimados pela distância, a partir do ponto de exemplo no centro de Dallas.</p></div>`;
+    corpo.scrollTop = 0;
+  }
+  function abre(id) {
+    const l = LUG.find(x => x.id === id); if (!l) return;
+    sel = l; trocaAba("mapa", true);
+    if (estado === "baixo") estado = "meio"; alturaFolha();
+    const { W, H } = tam(), s = W / V.w, esq = painelPc(), fh = esq ? 0 : app.clientHeight * ALT[estado];
+    // centraliza o lugar na parte visível do mapa
+    V.cx = l.x - ((esq + (W - esq) / 2) - W / 2) / s; V.cy = l.y - ((H - fh) / 2 + 40 - H / 2) / s;
+    if (V.w > 30) V.w = 18;
+    detalhe(l); aplica();
+  }
+
+  /* ---------- telas: Explorar, Salvos, Conta ---------- */
+  function card(l) { return `<button type="button" class="card" data-id="${l.id}"><span class="ft" style="background-image:url(${l.img})">${l.r || l.f ? `<em>${esc(l.f ? "Grátis" : nota(l))}</em>` : ""}</span><b>${esc(l.n)}</b><small>${esc(l.c)} · ${esc(l.ci)}</small></button>`; }
+  function telaExplorar() {
+    const lst = LUG.filter(passa).sort((a, b) => (b.r || 0) - (a.r || 0) || a.d - b.d);
+    tela.innerHTML = `<h2>Explorar</h2><p class="sub">Amostra de ${LUG.length} dos 414 lugares do guia, pelos mais bem avaliados.</p>
+      <div class="busca"><svg class="sym" viewBox="0 0 270 200" aria-hidden="true" style="width:26px;height:19px"><use href="#simbolo"/></svg><label for="q2" style="position:absolute;left:-9999px">Buscar</label><input id="q2" placeholder="Nome, bairro ou tipo" value="${esc(busca)}" autocomplete="off"></div>
+      <div class="chips" style="margin-top:10px">${FILTROS.map(f => `<button type="button" class="chip" data-f="${f[0]}" aria-pressed="${f[0] === filtro}">${f[0] === "perto" ? "Tudo" : f[1]}</button>`).join("")}</div>
+      ${lst.length ? `<div class="grade">${lst.map(card).join("")}</div>` : `<p class="vazio">Nada encontrado.</p>`}`;
+    const q2 = $("#q2", tela); q2.oninput = () => { busca = q2.value.trim().toLowerCase(); const p = q2.selectionStart; telaExplorar(); const n = $("#q2", tela); n.focus(); n.setSelectionRange(p, p); };
+  }
+  function telaSalvos() {
+    const lst = LUG.filter(l => SALV.has(l.id));
+    tela.innerHTML = `<h2>Salvos</h2><p class="sub">Toque no coração de um lugar para guardar aqui.</p>` + (lst.length ? `<div class="lista" style="background:var(--m-sup);border-radius:18px;padding:6px">${lst.map(linha).join("")}</div>` : `<div class="vazio" style="background:var(--m-sup);border-radius:18px">Nenhum lugar salvo ainda.<br>Abra um lugar no mapa e toque no coração.</div>`);
+  }
+  let modoConta = "entrar";
+  function telaConta() {
+    const cad = modoConta === "criar";
+    tela.innerHTML = `<h2>${cad ? "Criar conta" : "Entrar"}</h2><p class="sub">${cad ? "Leva menos de um minuto." : "Use o e-mail e a senha da sua conta."}</p>
+      <form class="form" id="fconta" novalidate>
+        ${cad ? `<div class="op"><label><input type="radio" name="tipo" checked><b>Quero usar o guia</b><br><small>Salvos, roteiros e avaliações</small></label><label><input type="radio" name="tipo"><b>Quero anunciar</b><br><small>Publicar e editar meu negócio</small></label></div><label for="cn">Nome<input type="text" id="cn" autocomplete="name"></label>` : ""}
+        <label for="ce">E-mail<input type="email" id="ce" autocomplete="username"></label>
+        <label for="cs">Senha<input type="password" id="cs" autocomplete="${cad ? "new-password" : "current-password"}"></label>
+        <p class="aviso" id="cmsg" hidden></p>
+        <button type="submit">${cad ? "Criar conta" : "Entrar"}</button>
+        <div class="lk">${cad ? `<span>Já tem conta?</span><a data-conta="entrar">Entrar</a>` : `<a data-conta="esqueci">Esqueci minha senha</a><a data-conta="criar">Criar conta</a>`}</div>
+      </form>`;
+    $("#fconta", tela).onsubmit = e => { e.preventDefault(); const m = $("#cmsg", tela); m.hidden = false; m.textContent = "Protótipo de layout: no site, este formulário usa as contas reais da CoraçãoBR."; };
+  }
+  function trocaAba(a, semTela) {
+    aba = a;
+    document.querySelectorAll("#abas [data-aba]").forEach(b => b.setAttribute("aria-pressed", b.dataset.aba === a));
+    if (a === "mapa") { tela.hidden = true; if (!semTela) { sel = null; lista(); aplica(); } return; }
+    tela.hidden = false; tela.scrollTop = 0;
+    ({ explorar: telaExplorar, salvos: telaSalvos, conta: telaConta })[a]();
+  }
+
+  /* ---------- eventos ---------- */
+  app.addEventListener("click", e => {
+    const t = e.target;
+    const ab = t.closest("[data-aba]"); if (ab) { trocaAba(ab.dataset.aba); return; }
+    const f = t.closest("[data-f]");
+    if (f) { filtro = f.dataset.f; document.querySelectorAll("[data-f]").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === filtro)); sel = null; if (aba === "explorar") telaExplorar(); else { lista(); aplica(); } return; }
+    const sv = t.closest("[data-salva]"); if (sv) { const id = sv.dataset.salva; SALV.has(id) ? SALV.delete(id) : SALV.add(id); guardaSalvos(); detalhe(LUG.find(x => x.id === id)); return; }
+    if (t.closest("[data-volta]")) { sel = null; lista(); aplica(); return; }
+    const c = t.closest("[data-conta]"); if (c) { modoConta = c.dataset.conta === "criar" ? "criar" : "entrar"; telaConta(); if (c.dataset.conta === "esqueci") { const m = $("#cmsg", tela); m.hidden = false; m.textContent = "No site, aqui você recebe por e-mail um link para criar uma nova senha."; } return; }
+    const p = t.closest("[data-id]"); if (p && !arrastou) abre(p.dataset.id);
+  });
+  $("#q").addEventListener("input", e => { busca = e.target.value.trim().toLowerCase(); sel = null; if (estado === "baixo") { estado = "meio"; alturaFolha(); } lista(); aplica(); });
+  $("#zmais").onclick = () => { V.w = Math.max(3, V.w / 1.6); aplica(); };
+  $("#zmenos").onclick = () => { V.w = Math.min(120, V.w * 1.6); aplica(); };
+  $("#local").onclick = () => { V.w = painelPc() ? 16 : 10; V.cx = EUX - (painelPc() / 2) / (tam().W / V.w); V.cy = EUY + (painelPc() ? 0 : 1.2); aplica(); };
+
+  /* arrastar e aproximar o mapa (mouse, toque e pinça) */
+  const ptrs = new Map(); let arrastou = false, ini = null;
+  mapa.addEventListener("pointerdown", e => { if (e.target.closest(".pin, .ponto")) return; ptrs.set(e.pointerId, [e.clientX, e.clientY]); arrastou = false; ini = { V: { ...V }, p: [...ptrs.values()].map(p => [...p]) }; mapa.setPointerCapture(e.pointerId); mapa.classList.add("arrasta"); });
+  mapa.addEventListener("pointermove", e => {
+    if (!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+    const s = tam().W / ini.V.w, P = [...ptrs.values()];
+    if (P.length === 1 && ini.p.length === 1) { const dx = P[0][0] - ini.p[0][0], dy = P[0][1] - ini.p[0][1]; if (Math.abs(dx) + Math.abs(dy) > 4) arrastou = true; V.cx = ini.V.cx - dx / s; V.cy = ini.V.cy - dy / s; }
+    else if (P.length >= 2 && ini.p.length >= 2) { arrastou = true; const d0 = Math.hypot(ini.p[0][0] - ini.p[1][0], ini.p[0][1] - ini.p[1][1]), d1 = Math.hypot(P[0][0] - P[1][0], P[0][1] - P[1][1]); V.w = Math.min(120, Math.max(3, ini.V.w * d0 / Math.max(10, d1))); }
+    aplica();
+  });
+  const solta = e => { ptrs.delete(e.pointerId); mapa.classList.remove("arrasta"); ini = { V: { ...V }, p: [...ptrs.values()].map(p => [...p]) }; setTimeout(() => { arrastou = false; }, 0); };
+  mapa.addEventListener("pointerup", solta); mapa.addEventListener("pointercancel", solta);
+  mapa.addEventListener("wheel", e => {
+    e.preventDefault(); const r = mapa.getBoundingClientRect(), { W, H } = tam(), s = W / V.w;
+    const mx = (e.clientX - r.left - W / 2) / s + V.cx, my = (e.clientY - r.top - H / 2) / s + V.cy, k = Math.exp(e.deltaY * 0.0015);
+    const nw = Math.min(120, Math.max(3, V.w * k)); V.cx = mx - (mx - V.cx) * nw / V.w; V.cy = my - (my - V.cy) * nw / V.w; V.w = nw; aplica();
+  }, { passive: false });
+
+  /* alça da folha: tocar alterna, arrastar escolhe a altura */
+  let fy = null, fh0 = 0;
+  const alca = $("#alca");
+  alca.addEventListener("pointerdown", e => { fy = e.clientY; fh0 = folha.offsetHeight; alca.setPointerCapture(e.pointerId); folha.classList.add("solta"); });
+  alca.addEventListener("pointermove", e => { if (fy == null) return; app.style.setProperty("--folha", Math.max(140, Math.min(app.clientHeight * .9, fh0 + fy - e.clientY)) + "px"); });
+  alca.addEventListener("pointerup", e => {
+    folha.classList.remove("solta"); const dy = fy - e.clientY; fy = null;
+    if (Math.abs(dy) < 6) estado = estado === "baixo" ? "meio" : estado === "meio" ? "alto" : "baixo";
+    else { const r = folha.offsetHeight / app.clientHeight; estado = r < .4 ? "baixo" : r < .68 ? "meio" : "alto"; }
+    alturaFolha();
+  });
+
+  /* Celular / Computador */
+  document.querySelectorAll(".modo [data-modo]").forEach(b => b.onclick = () => {
+    $("#palco").dataset.modo = b.dataset.modo;
+    document.querySelectorAll(".modo [data-modo]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    setTimeout(() => { $("#local").onclick(); alturaFolha(); }, 380);
+  });
+  new ResizeObserver(() => { alturaFolha(); aplica(); }).observe(app);
+  alturaFolha(); lista(); aplica();
+})();
+</script>

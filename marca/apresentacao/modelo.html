@@ -1,0 +1,471 @@
+<title>CoraçãoBR em movimento</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<style>
+/* Layout: palco de tela cheia, um slide por vez; slides de demonstração com texto à esquerda e celular à direita. Visual único (verde da marca). */
+:root {
+  --bg: #033A1C; --bg2: #024E25; --ink: #F4F2EA; --mut: rgba(244,242,234,.70); --dim: rgba(244,242,234,.45);
+  --am: #FFBC04; --vb: #0AA23C; --vc: #3DCB6E; --line: rgba(244,242,234,.14); --card: rgba(244,242,234,.06);
+  --ar: #F5F3EC; --ink2: #0F2A1A; --mut2: #56635B; --line2: #E1DED3;
+  --display: "Outfit", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --text: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.5 var(--text); overflow: hidden; -webkit-font-smoothing: antialiased; }
+.deck { position: fixed; inset: 0; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.slide { position: absolute; inset: 0 0 64px; display: flex; align-items: center; padding-block: clamp(20px, 5vh, 64px); padding-left: max(clamp(16px, 6vw, 110px), env(safe-area-inset-left, 0px)); padding-right: max(clamp(16px, 6vw, 110px), env(safe-area-inset-right, 0px)); visibility: hidden; opacity: 0; transition: opacity .5s ease, visibility 0s linear .5s; overflow-y: auto; }
+.slide.on { visibility: visible; opacity: 1; transition: opacity .5s ease; }
+.slide.claro { background: var(--ar); color: var(--ink2); }
+.in { width: 100%; max-width: 1320px; margin: 0 auto; }
+.ey { font: 700 clamp(11px, 1vw, 14px)/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--am); }
+.claro .ey { color: #078A35; }
+h1, h2 { font-family: var(--display); font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+h1 { font-size: clamp(38px, 6.2vw, 96px); line-height: 1; }
+h2 { font-size: clamp(30px, 4vw, 60px); line-height: 1.05; margin: 12px 0 18px; }
+.claro h2 { color: #024E25; }
+.lead { font-size: clamp(16px, 1.55vw, 23px); color: var(--mut); max-width: 56ch; }
+.claro .lead { color: var(--mut2); }
+.src { font-size: 12px; color: var(--dim); margin-top: 18px; max-width: 110ch; }
+.claro .src { color: #8A938E; }
+
+/* entrada encenada: o estado final é o normal; a animação só parte de um ponto anterior */
+.on .r { animation: sobe .7s cubic-bezier(.2,.7,.2,1) both; }
+.on .r:nth-child(2) { animation-delay: .08s } .on .r:nth-child(3) { animation-delay: .16s } .on .r:nth-child(4) { animation-delay: .24s }
+.on .r:nth-child(5) { animation-delay: .32s } .on .r:nth-child(6) { animation-delay: .40s } .on .r:nth-child(7) { animation-delay: .48s } .on .r:nth-child(8) { animation-delay: .56s }
+@keyframes sobe { from { opacity: 0; transform: translateY(18px) } }
+
+/* capa */
+.capa .in { display: grid; gap: 34px; }
+.capa .lg { width: min(560px, 82vw); height: auto; }
+.capa .simb-wrap { position: absolute; right: -4vw; bottom: -8vh; width: min(52vw, 760px); opacity: .10; pointer-events: none; }
+.capa .simb-wrap svg { width: 100%; height: auto; }
+.on .lg path { animation: peca .9s cubic-bezier(.2,.7,.2,1) both; }
+.on .lg g path:nth-child(2) { animation-delay: .1s } .on .lg g path:nth-child(3) { animation-delay: .25s } .on .lg g path:nth-child(4) { animation-delay: .4s }
+@keyframes peca { from { opacity: 0; transform: scale(.92); transform-box: fill-box; transform-origin: center } }
+.capa .meta { display: flex; gap: 22px; flex-wrap: wrap; color: var(--dim); font-size: 14px; }
+
+/* problema */
+.prob { display: grid; grid-template-columns: 1fr auto 1fr; gap: clamp(16px, 3vw, 48px); align-items: center; margin-top: 36px; }
+.prob .lista { display: grid; gap: 14px; }
+.chip { display: flex; gap: 14px; align-items: center; padding: 18px 20px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); font-size: clamp(15px, 1.3vw, 19px); }
+.chip b { font-family: var(--display); }
+.chip i { font-style: normal; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.08); flex: none; color: var(--mut); font: 700 15px var(--display); }
+.seta { width: clamp(40px, 6vw, 90px); height: 4px; background: linear-gradient(90deg, transparent, var(--am)); position: relative; border-radius: 2px; }
+.seta::after { content: ""; position: absolute; right: -2px; top: -7px; border: 9px solid transparent; border-left: 12px solid var(--am); border-right: 0; }
+.alvo { padding: 30px; border-radius: 18px; background: var(--ink); color: var(--ink2); display: grid; gap: 14px; }
+.alvo .lg { width: 100%; max-width: 320px; height: auto; }
+.alvo ul { list-style: none; display: grid; gap: 8px; font-size: clamp(14px, 1.2vw, 17px); }
+.alvo li { padding-left: 26px; position: relative; } .alvo li::before { content: ""; position: absolute; left: 3px; top: 7px; width: 11px; height: 6px; border-left: 3px solid #078A35; border-bottom: 3px solid #078A35; transform: rotate(-45deg); }
+
+/* números */
+.nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 34px) clamp(16px, 3vw, 44px); margin-top: 30px; }
+.n b { display: block; font: 700 clamp(36px, 4.8vw, 74px)/1 var(--display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.n span { display: block; margin-top: 8px; color: var(--mut); font-size: clamp(13px, 1.15vw, 17px); line-height: 1.35; }
+.n small { display: block; margin-top: 6px; color: var(--dim); font-size: 11.5px; line-height: 1.35; }
+.claro .n b { color: #024E25; } .claro .n span { color: var(--mut2); } .claro .n small { color: #8A938E; }
+.n.am b { color: var(--am); }
+
+/* como funciona */
+.flux { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 36px; position: relative; }
+.flux::before { content: ""; position: absolute; left: 30px; right: 30px; top: 30px; height: 3px; background: var(--line2); }
+.on .flux::after { content: ""; position: absolute; left: 30px; right: 30px; top: 30px; height: 3px; background: #0AA23C; transform-origin: left; animation: linha 1.6s .3s ease both; }
+@keyframes linha { from { transform: scaleX(0) } }
+.passo { position: relative; z-index: 1; }
+.passo .bol { width: 60px; height: 60px; border-radius: 50%; background: #024E25; color: var(--am); display: grid; place-items: center; font: 700 22px var(--display); box-shadow: 0 0 0 6px var(--ar); }
+.passo h3 { font: 700 clamp(18px, 1.6vw, 24px) var(--display); color: #024E25; margin: 18px 0 6px; }
+.passo p { color: var(--mut2); font-size: clamp(14px, 1.15vw, 16px); }
+.robo { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+.robo span { font: 600 13px var(--text); padding: 7px 12px; border-radius: 99px; background: #E3F1E7; color: #076A2C; }
+
+/* demo */
+.demo .in { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(24px, 5vw, 90px); align-items: center; }
+.passos { list-style: none; display: grid; gap: 6px; margin-top: 22px; counter-reset: p; }
+.passos li { counter-increment: p; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 12px 14px; border-radius: 12px; color: var(--dim); cursor: pointer; transition: background .3s, color .3s; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.4; border: 1px solid transparent; }
+.passos li::before { content: counter(p); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 700 14px var(--display); background: rgba(255,255,255,.08); color: var(--mut); transition: background .3s, color .3s; }
+.passos li.at { background: var(--card); color: var(--ink); border-color: var(--line); }
+.passos li.at::before { background: var(--am); color: var(--ink2); }
+.passos li.ok::before { background: var(--vb); color: #fff; }
+.passos li:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+.ctl { display: flex; gap: 10px; margin-top: 18px; align-items: center; flex-wrap: wrap; }
+.btn { font: 600 14px var(--text); color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 9px 16px; cursor: pointer; }
+.btn:hover { background: rgba(255,255,255,.12); } .btn:focus-visible { outline: 2px solid var(--am); outline-offset: 2px; }
+.legenda { font-size: 12.5px; color: var(--dim); }
+
+/* celular genérico, proporção de tela de 6,9" */
+.fone { --h: min(76vh, 780px); height: var(--h); aspect-ratio: 450 / 952; position: relative; border-radius: calc(var(--h) * .075); padding: calc(var(--h) * .011); background: linear-gradient(135deg, #8E9590, #3E4441 30%, #9DA39F 52%, #2F3431 75%, #858C88); box-shadow: 0 40px 80px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.25); flex: none; max-width: 100%; }
+.fone::before, .fone::after { content: ""; position: absolute; width: 4px; border-radius: 2px; background: #5E6561; }
+.fone::before { left: -3px; top: 18%; height: 7%; box-shadow: 0 calc(var(--h) * .09) 0 #5E6561; }
+.fone::after { right: -3px; top: 24%; height: 11%; }
+.tela { position: relative; width: 100%; height: 100%; border-radius: calc(var(--h) * .066); overflow: hidden; background: #111; }
+.tela img { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; transition: opacity .45s ease; }
+.tela img.sai { opacity: 0; }
+.ilha { position: absolute; top: 1.3%; left: 50%; transform: translateX(-50%); width: 29%; height: 3.6%; border-radius: 99px; background: #050505; z-index: 4; }
+.barra { position: absolute; bottom: .9%; left: 50%; transform: translateX(-50%); width: 34%; height: .55%; border-radius: 99px; background: rgba(20,20,20,.55); z-index: 4; }
+/* assistive touch: mostra onde o dedo toca */
+.toque { position: absolute; z-index: 5; width: 13%; aspect-ratio: 1; margin: -6.5% 0 0 -6.5%; left: 88%; top: 52%; border-radius: 26%; background: rgba(28,30,29,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: grid; place-items: center; transition: left .7s cubic-bezier(.5,0,.2,1), top .7s cubic-bezier(.5,0,.2,1), transform .18s ease, border-radius .3s; box-shadow: 0 6px 18px rgba(0,0,0,.3); }
+.toque i { width: 62%; aspect-ratio: 1; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); display: grid; place-items: center; }
+.toque i::after { content: ""; width: 58%; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.92); }
+.toque.vai { border-radius: 50%; }
+.toque.aperta { transform: scale(.78); }
+.toque.desliza { transition: left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1); }
+.onda { position: absolute; z-index: 4; width: 13%; aspect-ratio: 1; margin: -6.5% 0 0 -6.5%; border-radius: 50%; border: 3px solid var(--am); pointer-events: none; animation: onda .7s ease-out forwards; }
+@keyframes onda { from { transform: scale(.4); opacity: 1 } to { transform: scale(2.2); opacity: 0 } }
+.bolha { position: absolute; z-index: 6; transform: translate(-50%, -150%); font: 700 11px var(--display); letter-spacing: .08em; text-transform: uppercase; background: var(--am); color: var(--ink2); padding: 4px 8px; border-radius: 99px; white-space: nowrap; pointer-events: none; transition: opacity .3s; }
+.nota { margin-top: 10px; text-align: center; font-size: 12px; color: var(--dim); }
+
+/* negócio */
+.planos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 30px; }
+.plano { background: #fff; border: 1px solid var(--line2); border-radius: 16px; padding: 24px; }
+.plano.top { border: 2px solid var(--am); }
+.plano h3 { font: 700 18px var(--display); color: #024E25; }
+.plano b { display: block; font: 700 clamp(32px, 3.6vw, 52px)/1.05 var(--display); color: #024E25; margin: 10px 0 2px; }
+.plano small { color: var(--mut2); font-size: 13px; }
+.plano p { color: var(--mut2); font-size: 14px; margin-top: 12px; }
+.regras { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 30px; }
+.regras h3 { font: 700 18px var(--display); color: #024E25; } .regras p { color: var(--mut2); font-size: 14.5px; }
+
+/* métricas */
+.dois { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; }
+.met { display: grid; gap: 12px; }
+.met div { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 16px 18px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
+.met b { font-family: var(--display); font-size: 18px; } .met span { color: var(--mut); font-size: 14px; display: block; }
+.met em { font-style: normal; font: 600 12px var(--text); padding: 5px 10px; border-radius: 99px; background: rgba(10,162,60,.2); color: var(--vc); }
+.lista2 { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
+.lista2 li { padding: 14px 0 14px 32px; position: relative; border-bottom: 1px solid var(--line); font-size: clamp(15px, 1.3vw, 18px); }
+.lista2 li::before { content: ""; position: absolute; left: 4px; top: 22px; width: 12px; height: 7px; border-left: 3px solid var(--am); border-bottom: 3px solid var(--am); transform: rotate(-45deg); }
+.claro .lista2 li { border-color: var(--line2); } .claro .lista2 li::before { border-color: #0AA23C; }
+
+/* mapa de expansão */
+.rota { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+.cid { border-radius: 16px; padding: 22px; border: 1px solid var(--line); background: var(--card); }
+.cid.agora { background: var(--am); color: var(--ink2); border-color: var(--am); }
+.cid b { font: 700 24px var(--display); display: block; } .cid span { font-size: 14px; opacity: .75; }
+
+/* fim */
+.fim .in { display: grid; gap: 30px; justify-items: start; }
+.fim .lg { width: min(620px, 86vw); height: auto; }
+
+/* barra de navegação */
+.nav { position: fixed; left: 0; right: 0; bottom: 0; height: calc(64px + env(safe-area-inset-bottom, 0px)); padding: 0 max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 14px; background: rgba(2,40,20,.92); border-top: 1px solid var(--line); z-index: 20; }
+.nav .lg-top { width: 120px; height: auto; flex: none; }
+.pontos { flex: 1; display: flex; gap: 6px; justify-content: center; min-width: 0; overflow: hidden; }
+.pontos button { width: 26px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.2); border: 0; cursor: pointer; padding: 0; flex: 0 1 26px; transition: background .3s; }
+.pontos button.on { background: var(--am); }
+.pontos button:focus-visible { outline: 2px solid var(--am); outline-offset: 3px; }
+.nav .num { font: 600 13px var(--text); color: var(--mut); font-variant-numeric: tabular-nums; min-width: 46px; text-align: right; }
+.nav .btn { padding: 8px 14px; }
+
+@media (max-width: 860px) {
+  .prob { grid-template-columns: 1fr; } .seta { transform: rotate(90deg); margin: 4px auto; }
+  .nums, .planos, .rota { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flux, .regras, .dois { grid-template-columns: 1fr; } .flux::before, .on .flux::after { display: none; }
+  .demo .in { grid-template-columns: 1fr; justify-items: center; } .demo .txt { width: 100%; }
+  .fone { --h: min(70vh, 640px); }
+  .slide { align-items: flex-start; }
+  .nav .lg-top { display: none; }
+}
+@media (max-width: 860px) and (orientation: portrait) { .demo .passos li:not(.at) { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .on .r, .on .lg path, .on .flux::after { animation: none !important; }
+  .slide, .toque, .tela img { transition: none !important; }
+}
+</style>
+
+<div class="deck" id="deck">
+
+<section class="slide capa" data-nome="capa" aria-label="Capa">
+  <div class="simb-wrap"><!--SIMB--></div>
+  <div class="in">
+    <div class="ey r">Apresentação institucional · novembro de 2026</div>
+    <div class="r"><!--LOGO--></div>
+    <h1 class="r">Coração brasileiro,<br>em qualquer lugar.</h1>
+    <p class="lead r">A plataforma em português para brasileiros fora do Brasil. Começamos por Dallas–Fort Worth, no Texas. Use as setas, o teclado ou deslize para avançar.</p>
+    <div class="meta r"><span>Mercado de lançamento: Dallas–Fort Worth</span><span>Português · English · Español</span><span>Dados reais, fontes citadas</span></div>
+  </div>
+</section>
+
+<section class="slide" data-nome="problema" aria-label="O problema">
+  <div class="in">
+    <div class="ey r">Por que existimos</div>
+    <h2 class="r">A informação que o brasileiro precisa está espalhada.</h2>
+    <div class="prob">
+      <div class="lista">
+        <div class="chip r"><i>1</i><span><b>Grupos de WhatsApp</b><br>dicas que somem no meio de centenas de mensagens</span></div>
+        <div class="chip r"><i>2</i><span><b>Sites em inglês</b><br>preço, horário e regras sem tradução nem contexto</span></div>
+        <div class="chip r"><i>3</i><span><b>Boca a boca</b><br>indicação boa, mas sem data, sem fonte, sem nota</span></div>
+      </div>
+      <div class="seta r" aria-hidden="true"></div>
+      <div class="alvo r"><!--LOGOFIM--><ul><li>Um lugar só, em português</li><li>Preço e horário com data de conferência</li><li>Avaliações reais de quem foi</li><li>Atualização automática todo dia</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide claro" data-nome="publico" aria-label="O público">
+  <div class="in">
+    <div class="ey r">O público</div>
+    <h2 class="r">Uma comunidade grande, espalhada pelo mundo</h2>
+    <div class="nums">
+      <div class="n am r"><b class="cnt" data-to="5.29" data-dec="2" data-suf=" mi">5,29 mi</b><span>brasileiros vivendo fora do Brasil</span><small>Itamaraty, Relatório Consular 2025</small></div>
+      <div class="n r"><b class="cnt" data-to="2.07" data-dec="2" data-suf=" mi">2,07 mi</b><span>brasileiros nos EUA, estimativa consular</span><small>Itamaraty, Relatório Consular 2025</small></div>
+      <div class="n r"><b class="cnt" data-to="43" data-suf=" mil">43 mil</b><span>nascidos no Brasil vivendo no Texas</span><small>Census ACS 2024 (±7,5 mil)</small></div>
+      <div class="n r"><b class="cnt" data-to="110" data-suf=" mil">110 mil</b><span>brasileiros na jurisdição do consulado em Houston</span><small>Itamaraty 2023 · TX, AR, CO, KS, LA, NM, OK</small></div>
+      <div class="n r"><b class="cnt" data-to="8.48" data-dec="2" data-suf=" mi">8,48 mi</b><span>habitantes na região de Dallas–Fort Worth</span><small>Census, Vintage 2025</small></div>
+      <div class="n r"><b class="cnt" data-to="1.9" data-dec="1" data-pre="≈ " data-suf=" mi">≈ 1,9 mi</b><span>visitantes brasileiros nos EUA em 2025</span><small>NTTO, via PANROTAS</small></div>
+      <div class="n r"><b class="cnt" data-to="9" data-pre="US$ " data-suf=" bi+">US$ 9 bi+</b><span>gastos por visitantes brasileiros nos EUA em 2024</span><small>U.S. International Trade Administration</small></div>
+            <div class="n r"><b class="cnt" data-to="94.3" data-dec="1" data-suf="%">94,3%</b><span>dos internautas no Brasil usam WhatsApp</span><small>DataReportal Digital 2027: Brazil</small></div>
+    </div>
+    <p class="src r">O Census tende a subcontar imigrantes; o Itamaraty inclui pessoas sem documentos. Mostramos as duas fontes lado a lado. Visitantes brasileiros no Texas e número de empresas de brasileiros: dado público confiável não encontrado.</p>
+  </div>
+</section>
+
+<section class="slide" data-nome="plataforma" aria-label="A plataforma em números">
+  <div class="in">
+    <div class="ey r">A plataforma em números</div>
+    <h2 class="r">Já está no ar, com conteúdo de verdade</h2>
+    <div class="nums">
+      <div class="n am r"><b class="cnt" data-to="414">414</b><span>lugares publicados</span></div>
+      <div class="n r"><b class="cnt" data-to="77">77</b><span>eventos e shows com datas e preços</span></div>
+      <div class="n r"><b class="cnt" data-to="684">684</b><span>fotos de edições anteriores, com crédito e licença</span></div>
+      <div class="n r"><b class="cnt" data-to="45">45</b><span>cidades atendidas na região</span></div>
+      <div class="n r"><b class="cnt" data-to="91">91</b><span>lugares e eventos gratuitos</span></div>
+      <div class="n r"><b class="cnt" data-to="28">28</b><span>negócios brasileiros listados</span></div>
+      <div class="n r"><b class="cnt" data-to="14">14</b><span>cidades com custo de vida detalhado</span></div>
+      <div class="n r"><b class="cnt" data-to="3">3</b><span>idiomas: português, inglês e espanhol</span></div>
+    </div>
+    <p class="src r">Base de produção em 18/11/2026. Plataforma em pré-lançamento: ainda não há números de audiência para divulgar.</p>
+  </div>
+</section>
+
+<section class="slide claro" data-nome="como-funciona" aria-label="Como funciona">
+  <div class="in">
+    <div class="ey r">Como funciona</div>
+    <h2 class="r">Quatro engrenagens mantêm o guia confiável</h2>
+    <div class="flux">
+      <div class="passo r"><div class="bol">1</div><h3>Curadoria</h3><p>A equipe confere preço, horário e endereço no site oficial. Cada lugar mostra a data da última conferência.</p></div>
+      <div class="passo r"><div class="bol">2</div><h3>Robô diário</h3><p>Toda madrugada, no horário de Dallas, busca eventos e hotéis novos, alertas do clima e a cotação do dólar, e registra as fontes.</p></div>
+      <div class="passo r"><div class="bol">3</div><h3>Comunidade</h3><p>Quem visita avalia com nota e comentário. Nada de depoimento inventado.</p></div>
+      <div class="passo r"><div class="bol">4</div><h3>Anunciantes</h3><p>A empresa publica o próprio anúncio, sempre marcado como Patrocinado, e acompanha os resultados no painel.</p></div>
+    </div>
+    <div class="robo r"><span>Último relatório do robô: 5 eventos de fim de ano e 6 hotéis adicionados</span><span>Dólar: R$ 5,78 em 17/11/2026</span><span>Fontes oficiais registradas a cada execução</span></div>
+  </div>
+</section>
+
+<!--DEMOS-->
+
+<section class="slide claro" data-nome="negocio" aria-label="Modelo de negócio">
+  <div class="in">
+    <div class="ey r">Modelo de negócio</div>
+    <h2 class="r">Gratuito para quem usa. Pago por quem anuncia.</h2>
+    <div class="planos">
+      <div class="plano r"><h3>Básico</h3><b>US$ 10</b><small>por mês</small><p>Na frente dos lugares comuns, página com fotos, cardápio, contatos e cupom com QR Code.</p></div>
+      <div class="plano top r"><h3>Destaque</h3><b>US$ 25</b><small>por mês</small><p>Acima de todos os anunciantes, banners da página inicial e selo Destaque.</p></div>
+      <div class="plano r"><h3>Classificado</h3><b>US$ 3</b><small>por anúncio, 30 dias</small><p>Vagas, quartos, compra e venda no Mural, com contato por WhatsApp.</p></div>
+      <div class="plano r"><h3>Caixinha</h3><b>US$ 5–20</b><small>voluntária</small><p>Quem usa e gosta pode apoiar o projeto com uma contribuição.</p></div>
+    </div>
+    <div class="regras">
+      <div class="r"><h3>Sem fidelidade</h3><p>Renovação mensal e cancelamento no próprio painel, sem multa.</p></div>
+      <div class="r"><h3>Sempre sinalizado</h3><p>Conteúdo pago aparece como Patrocinado. A nota de um lugar não se vende.</p></div>
+      <div class="r"><h3>Pagamento simples</h3><p>Cartão, Zelle ou PIX. Valores em dólar com conversão para real na tela.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-nome="metricas" aria-label="Métricas do anunciante">
+  <div class="in dois">
+    <div>
+      <div class="ey r">Para o anunciante</div>
+      <h2 class="r">Resultado medido, sem expor quem visitou</h2>
+      <p class="lead r">O painel do anunciante soma, por dia, o que a plataforma registra para cada negócio. As estatísticas são anônimas.</p>
+    </div>
+    <div class="met">
+      <div class="r"><span><b>Visualizações</b><span>aberturas da página do negócio</span></span><em>por dia</em></div>
+      <div class="r"><span><b>Pedidos de rota</b><span>Como chegar, Uber e Lyft</span></span><em>por dia</em></div>
+      <div class="r"><span><b>Contatos</b><span>WhatsApp, telefone, site, Instagram e Facebook</span></span><em>por dia</em></div>
+      <div class="r"><span><b>Avisos por perto</b><span>quando o cliente passa perto e é lembrado</span></span><em>por dia</em></div>
+      <div class="r"><span><b>Cupons</b><span>gerados no app e validados no balcão por QR Code</span></span><em>por cupom</em></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide claro" data-nome="transparencia" aria-label="Transparência">
+  <div class="in dois">
+    <div>
+      <div class="ey r">Transparência</div>
+      <h2 class="r">Em que estágio estamos</h2>
+      <p class="lead r">Preferimos mostrar o que existe a prometer números que ainda não temos.</p>
+    </div>
+    <ul class="lista2">
+      <li class="r"><b>Produto pronto e no ar</b>, com conteúdo, atualização diária e painel de anunciantes funcionando.</li>
+      <li class="r"><b>Pré-lançamento:</b> ainda não há visitas e usuários para divulgar.</li>
+      <li class="r"><b>Depois do lançamento</b>, o mídia kit passa a trazer audiência e cliques do mês anterior, medidos pela própria plataforma.</li>
+      <li class="r"><b>Nenhuma avaliação inventada</b>, nenhum preço sem data, nenhum anúncio disfarçado.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide" data-nome="expansao" aria-label="Expansão">
+  <div class="in">
+    <div class="ey r">Visão</div>
+    <h2 class="r">Dallas–Fort Worth foi só o começo.</h2>
+    <p class="lead r">O modelo foi feito para se repetir em qualquer cidade com comunidade brasileira. A demanda é registrada no próprio site, no botão Avise-me, e a próxima cidade é a que mais pedir.</p>
+    <div class="rota">
+      <div class="cid agora r"><b>Dallas–Fort Worth</b><span>Cidade piloto · no ar</span></div>
+      <div class="cid r"><b>Texas</b><span>Houston, Austin e San Antonio</span></div>
+      <div class="cid r"><b>Estados Unidos</b><span>Outras cidades com grandes comunidades brasileiras</span></div>
+      <div class="cid r"><b>Europa e o mundo</b><span>Onde houver brasileiro querendo se sentir em casa</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide fim" data-nome="contato" aria-label="Encerramento">
+  <div class="in">
+    <div class="r"><!--LOGOFIM2--></div>
+    <h1 class="r">Seriedade, transparência<br>e dados reais.</h1>
+    <p class="lead r">Para anunciar ou fazer parceria, fale com a equipe pelo WhatsApp da página Sobre. Manual da marca e mídia kit acompanham esta apresentação.</p>
+  </div>
+</section>
+
+</div>
+
+<nav class="nav" aria-label="Navegação da apresentação">
+  <!--LOGOTOP-->
+  <button class="btn" id="ant" aria-label="Slide anterior">‹</button>
+  <div class="pontos" id="pontos"></div>
+  <span class="num" id="num">1/1</span>
+  <button class="btn" id="auto" aria-pressed="false">Apresentar</button>
+  <button class="btn" id="prox" aria-label="Próximo slide">›</button>
+</nav>
+
+<script>
+const DEMO = /*DEMO*/[];
+const deck = document.getElementById('deck');
+// slides de demonstração, um por fluxo
+const marco = deck.querySelector('[data-nome="como-funciona"]');
+const textos = {
+  descobrir: ['Descobrir', 'Do primeiro toque ao lugar certo', 'Explorar, filtrar e abrir um lugar com preço, horário, distância e avaliações.'],
+  planejar: ['Planejar', 'Um roteiro que vira checklist', 'O visitante escolhe um roteiro pronto, marca as paradas e avalia cada uma na hora.'],
+  morar: ['Morar', 'Para quem chegou para ficar', 'Custo de vida por cidade e o Mural de vagas, quartos e classificados.'],
+  anunciar: ['Anunciar', 'A empresa entra no ar sozinha', 'Planos claros e cadastro em uma tela, sem contrato.']
+};
+let ancora = marco;
+DEMO.forEach((f, k) => {
+  const t = textos[f.id] || [f.titulo, f.titulo, ''];
+  const s = document.createElement('section');
+  s.className = 'slide demo'; s.dataset.nome = 'demo-' + f.id; s.dataset.fluxo = k; s.setAttribute('aria-label', 'Demonstração: ' + t[0]);
+  s.innerHTML = '<div class="in"><div class="txt"><div class="ey r">Na prática · ' + t[0] + '</div><h2 class="r">' + t[1] + '</h2><p class="lead r">' + t[2] + '</p>' +
+    '<ol class="passos">' + f.passos.map((p, i) => '<li tabindex="0" data-i="' + i + '">' + p.cap + '</li>').join('') + '</ol>' +
+    '<div class="ctl"><button class="btn" data-pausa aria-pressed="false">Pausar</button><button class="btn" data-repete>Repetir</button><span class="legenda">O círculo mostra cada toque, como o assistive touch.</span></div></div>' +
+    '<div><div class="fone"><div class="tela"><img alt="" data-a><img alt="" class="sai" data-b><div class="ilha"></div><div class="barra"></div><div class="toque" aria-hidden="true"><i></i></div></div></div><p class="nota">Telas reais da CoraçãoBR, gravadas num celular de 6,9″</p></div></div>';
+  ancora.after(s); ancora = s;
+});
+
+const slides = [...deck.querySelectorAll('.slide')];
+const pontos = document.getElementById('pontos');
+slides.forEach((s, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'Ir para o slide ' + (i + 1)); b.onclick = () => ir(i); pontos.appendChild(b); });
+let atual = -1, autoplay = false, autoT = null;
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function conta(s) {
+  s.querySelectorAll('.cnt').forEach(el => {
+    const to = parseFloat(el.dataset.to), dec = +(el.dataset.dec || 0), pre = el.dataset.pre || '', suf = el.dataset.suf || '';
+    const fmt = v => pre + v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf;
+    if (reduz) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 1400;
+    const passo = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(to * e); if (k < 1 && s.classList.contains('on')) requestAnimationFrame(passo); else el.textContent = fmt(to); };
+    requestAnimationFrame(passo);
+  });
+}
+
+function ir(i, deHash) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  if (i === atual) return;
+  if (atual >= 0) { slides[atual].classList.remove('on'); para(slides[atual]); }
+  atual = i; const s = slides[i];
+  void s.offsetWidth; s.classList.add('on'); s.scrollTop = 0;
+  [...pontos.children].forEach((b, k) => { b.classList.toggle('on', k === i); b.setAttribute('aria-current', k === i ? 'step' : 'false'); });
+  document.getElementById('num').textContent = (i + 1) + '/' + slides.length;
+  conta(s);
+  if (s.dataset.fluxo != null) roda(s);
+  if (!deHash) { try { history.replaceState(null, '', '#' + s.dataset.nome); } catch (e) {} }
+  agenda();
+}
+function agenda() {
+  clearTimeout(autoT);
+  if (!autoplay) return;
+  const s = slides[atual];
+  if (s.dataset.fluxo != null) return; // a demo avança sozinha ao terminar
+  autoT = setTimeout(() => { if (atual < slides.length - 1) ir(atual + 1); else alterna(false); }, 8000);
+}
+function alterna(v) { autoplay = v; const b = document.getElementById('auto'); b.textContent = v ? 'Parar' : 'Apresentar'; b.setAttribute('aria-pressed', v); agenda(); }
+document.getElementById('auto').onclick = () => alterna(!autoplay);
+document.getElementById('ant').onclick = () => ir(atual - 1);
+document.getElementById('prox').onclick = () => ir(atual + 1);
+addEventListener('keydown', e => {
+  if (e.target.closest('input,textarea')) return;
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); ir(atual + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); ir(atual - 1); }
+  if (e.key === 'Home') ir(0); if (e.key === 'End') ir(slides.length - 1);
+});
+let x0 = null, y0 = null;
+deck.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+deck.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) ir(atual + (dx < 0 ? 1 : -1)); x0 = null; }, { passive: true });
+addEventListener('hashchange', () => { const k = slides.findIndex(s => '#' + s.dataset.nome === location.hash); if (k >= 0) ir(k, true); });
+
+/* motor da demonstração */
+const estado = new WeakMap();
+function para(s) { const st = estado.get(s); if (st) { st.vivo = false; st.timers.forEach(clearTimeout); } }
+function roda(s, desde) {
+  para(s);
+  const f = DEMO[+s.dataset.fluxo], st = { vivo: true, timers: [], pausa: false, i: desde || 0 }; estado.set(s, st);
+  const tela = s.querySelector('.tela'), A = s.querySelector('[data-a]'), Bm = s.querySelector('[data-b]'), dedo = s.querySelector('.toque'), lis = [...s.querySelectorAll('.passos li')];
+  let frente = A, tras = Bm;
+  const T = (fn, ms) => { const id = setTimeout(() => { if (st.vivo) fn(); }, reduz ? Math.min(ms, 600) : ms); st.timers.push(id); };
+  const pos = (x, y) => { dedo.style.left = (x / 430 * 100) + '%'; dedo.style.top = (y / 932 * 100) + '%'; };
+  const mostra = (src, inst) => { tras.src = src; tras.style.transform = ''; if (inst) { frente.src = src; return; } tras.classList.remove('sai'); frente.classList.add('sai'); [frente, tras] = [tras, frente]; frente.style.zIndex = 2; tras.style.zIndex = 1; };
+  const bolha = (txt, x, y) => { const b = document.createElement('div'); b.className = 'bolha'; b.textContent = txt; b.style.left = (x / 430 * 100) + '%'; b.style.top = (y / 932 * 100) + '%'; tela.appendChild(b); T(() => { b.style.opacity = 0; }, 900); T(() => b.remove(), 1300); };
+  const onda = (x, y) => { const o = document.createElement('div'); o.className = 'onda'; o.style.left = (x / 430 * 100) + '%'; o.style.top = (y / 932 * 100) + '%'; tela.appendChild(o); T(() => o.remove(), 800); };
+  frente.style.transform = ''; frente.classList.remove('sai'); tras.classList.add('sai');
+  frente.src = f.passos[st.i].src; dedo.classList.remove('vai', 'desliza', 'aperta'); pos(380, 480);
+  function passo() {
+    const p = f.passos[st.i];
+    lis.forEach((li, k) => { li.classList.toggle('at', k === st.i); li.classList.toggle('ok', k < st.i); });
+    if (st.i > 0 || frente.src !== p.src) mostra(p.src);
+    T(() => {
+      if (p.swipe) {
+        dedo.classList.add('vai'); pos(p.swipe.x, p.swipe.y1);
+        T(() => { bolha('Deslize', p.swipe.x, p.swipe.y1); dedo.classList.add('aperta', 'desliza'); pos(p.swipe.x, p.swipe.y2); frente.style.transition = 'transform .9s cubic-bezier(.4,0,.2,1), opacity .45s'; frente.style.transform = 'translateY(' + (-(p.swipe.y1 - p.swipe.y2) / 932 * 100 * (932 / 932)) + '%)'; }, 800);
+        T(() => { dedo.classList.remove('aperta', 'desliza'); }, 1800);
+        T(prox, 2600);
+      } else if (p.tap) {
+        dedo.classList.add('vai'); pos(p.tap.x, p.tap.y);
+        T(() => { dedo.classList.add('aperta'); onda(p.tap.x, p.tap.y); bolha('Toque', p.tap.x, p.tap.y); }, 850);
+        T(() => dedo.classList.remove('aperta'), 1100);
+        T(prox, 2400);
+      } else T(prox, 2400);
+    }, 900);
+  }
+  function prox() {
+    if (st.pausa) { st.espera = true; return; }
+    if (st.i < f.passos.length - 1) { st.i++; frente.style.transition = ''; passo(); return; }
+    lis.forEach(li => { li.classList.remove('at'); li.classList.add('ok'); });
+    dedo.classList.remove('vai'); pos(380, 480);
+    T(() => { if (autoplay && atual < slides.length - 1) ir(atual + 1); else roda(s); }, 2400);
+  }
+  s._pausa = v => { st.pausa = v; if (!v && st.espera) { st.espera = false; prox(); } };
+  passo();
+}
+deck.addEventListener('click', e => {
+  const s = e.target.closest('.slide.demo'); if (!s) return;
+  const li = e.target.closest('.passos li');
+  if (li) { pausaBtn(s, false); roda(s, +li.dataset.i); }
+  if (e.target.closest('[data-repete]')) { pausaBtn(s, false); roda(s, 0); }
+  if (e.target.closest('[data-pausa]')) { const b = e.target.closest('[data-pausa]'); pausaBtn(s, b.getAttribute('aria-pressed') !== 'true'); }
+});
+deck.addEventListener('keydown', e => { const li = e.target.closest('.passos li'); if (li && (e.key === 'Enter')) { e.stopPropagation(); li.click(); } });
+function pausaBtn(s, v) { const b = s.querySelector('[data-pausa]'); b.setAttribute('aria-pressed', v); b.textContent = v ? 'Continuar' : 'Pausar'; if (s._pausa) s._pausa(v); }
+
+const ini = slides.findIndex(s => '#' + s.dataset.nome === location.hash);
+ir(ini >= 0 ? ini : 0, true);
+</script>

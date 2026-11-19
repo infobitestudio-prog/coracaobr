@@ -1,0 +1,1749 @@
+[
+  {
+    "id": "sixth-floor-museum",
+    "nome": "The Sixth Floor Museum at Dealey Plaza",
+    "categoria": "museu",
+    "cidade": "Dallas",
+    "bairro": "West End / Downtown",
+    "endereco": "411 Elm St, Dallas, TX 75202",
+    "lat": 32.77972,
+    "lng": -96.80833,
+    "gratuito": false,
+    "preco": "Adulto US$ 24 online (US$ 27 na bilheteria) · Sênior US$ 22 (US$ 25) · Jovem US$ 20 (US$ 23) · Crianças de 0 a 5 anos grátis",
+    "preco_min_usd": 24,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.jfk.org/visit/",
+    "horario": "Qua–dom 10h–17h (última entrada 16h15) · Fechado seg e ter",
+    "site": "https://www.jfk.org/",
+    "historia": "O museu ocupa o sexto andar do antigo Texas School Book Depository, um depósito de livros didáticos construído em 1901. Foi de uma janela desse andar que, segundo as investigações oficiais, Lee Harvey Oswald atirou contra o presidente John F. Kennedy em 22 de novembro de 1963.\n\nDurante anos o prédio quase foi demolido, até que o condado de Dallas o comprou e o transformou em sede administrativa. O museu abriu em 1989 e reconstitui a vida, a morte e o legado de Kennedy com fotos, filmes e objetos da época. O canto do atirador foi recriado com caixas de papelão e fica protegido por vidro.",
+    "dica": "Compre o ingresso com horário marcado pelo site: sai mais barato que na bilheteria e costuma esgotar nos fins de semana. O audioguia está incluído e tem versão em português.",
+    "tempo_visita": "1h30–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/View%2C_in_2014%2C_of_Dealey_Plaza_and_the_Texas_School_Book_Depository_in_Dallas%2C_Texas.jpg/1280px-View%2C_in_2014%2C_of_Dealey_Plaza_and_the_Texas_School_Book_Depository_in_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/7/7c/View%2C_in_2014%2C_of_Dealey_Plaza_and_the_Texas_School_Book_Depository_in_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:View,_in_2014,_of_Dealey_Plaza_and_the_Texas_School_Book_Depository_in_Dallas,_Texas.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/The_sixth-floor_corner_window_of_the_Texas_School_Book_Depository_in_Dallas%2C_Texas.jpg/1280px-The_sixth-floor_corner_window_of_the_Texas_School_Book_Depository_in_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/f/f3/The_sixth-floor_corner_window_of_the_Texas_School_Book_Depository_in_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:The_sixth-floor_corner_window_of_the_Texas_School_Book_Depository_in_Dallas,_Texas.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dealey-plaza",
+    "nome": "Dealey Plaza",
+    "categoria": "historico",
+    "cidade": "Dallas",
+    "bairro": "West End / Downtown",
+    "endereco": "Elm St com Houston St, Dallas, TX 75202",
+    "lat": 32.77861,
+    "lng": -96.80861,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.jfk.org/visit/",
+    "horario": "Aberto 24 horas (praça pública)",
+    "site": "https://www.dallasparks.org/",
+    "historia": "A praça fica no ponto onde John Neely Bryan fundou Dallas na década de 1840 e, por isso, é chamada de berço da cidade. O conjunto atual, em estilo art déco, foi concluído por volta de 1940 como obra da WPA, o programa de empregos do New Deal, e homenageia George Bannerman Dealey, editor do jornal The Dallas Morning News.\n\nEm 22 de novembro de 1963, a comitiva do presidente John F. Kennedy passava pela Elm Street quando ele foi baleado. O gramado em declive ao lado, o famoso grassy knoll, entrou para a história. A praça é Marco Histórico Nacional desde 1993 e mantém praticamente a mesma aparência daquele dia.",
+    "dica": "Dois X pintados no asfalto da Elm Street marcam os pontos dos disparos, mas a rua tem trânsito normal: não pare no meio da pista para tirar foto. Guias informais abordam turistas; o passeio deles não é oficial.",
+    "tempo_visita": "30–45 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Dealey_Plaza_Dallas_2.JPG/1280px-Dealey_Plaza_Dallas_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Dealey_Plaza_Dallas_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Fredlyfish4",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dealey_Plaza_Dallas_2.JPG"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/DealeyPlaza2_%281_of_1%29.jpg/1280px-DealeyPlaza2_%281_of_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/f/f9/DealeyPlaza2_%281_of_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Renelibrary",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:DealeyPlaza2_(1_of_1).jpg"
+      }
+    ]
+  },
+  {
+    "id": "jfk-memorial-plaza",
+    "nome": "John F. Kennedy Memorial Plaza",
+    "categoria": "historico",
+    "cidade": "Dallas",
+    "bairro": "Downtown",
+    "endereco": "646 Main St, Dallas, TX 75202",
+    "lat": 32.77861,
+    "lng": -96.80639,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.jfk.org/visit/",
+    "horario": "Aberto 24 horas (praça pública)",
+    "site": "https://www.jfk.org/",
+    "historia": "A um quarteirão do local do atentado, o memorial foi projetado pelo arquiteto Philip Johnson, amigo da família Kennedy, e inaugurado em 1970. Johnson concebeu um cenotáfio, ou seja, um túmulo vazio: um grande quadrado sem teto, formado por 72 colunas de concreto branco que parecem flutuar acima do chão.\n\nNo interior há apenas um bloco baixo de granito escuro com o nome John Fitzgerald Kennedy gravado em dourado. A ideia é que o visitante entre, fique isolado do barulho da cidade e reflita em silêncio. O terreno foi cedido pelo condado de Dallas e a obra foi paga inteiramente com doações de moradores.",
+    "dica": "Combine com Dealey Plaza e o Sixth Floor Museum, tudo a pé. Ao lado fica o Old Red Courthouse, o antigo tribunal de arenito vermelho de 1892, ótimo para fotos.",
+    "tempo_visita": "15–20 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Dallas_January_2016_03_%28John_Fitzgerald_Kennedy_Memorial%29.jpg/1280px-Dallas_January_2016_03_%28John_Fitzgerald_Kennedy_Memorial%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/04/Dallas_January_2016_03_%28John_Fitzgerald_Kennedy_Memorial%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_January_2016_03_(John_Fitzgerald_Kennedy_Memorial).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/John_F._Kennedy_Memorial_%286768433547%29.jpg/1280px-John_F._Kennedy_Memorial_%286768433547%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/db/John_F._Kennedy_Memorial_%286768433547%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Tom Ipri",
+        "licenca": "CC BY-SA 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:John_F._Kennedy_Memorial_(6768433547).jpg"
+      }
+    ]
+  },
+  {
+    "id": "reunion-tower",
+    "nome": "Reunion Tower GeO-Deck",
+    "categoria": "mirante",
+    "cidade": "Dallas",
+    "bairro": "Reunion District / Downtown",
+    "endereco": "300 Reunion Blvd E, Dallas, TX 75207",
+    "lat": 32.7753,
+    "lng": -96.8089,
+    "gratuito": false,
+    "preco": "Adulto aprox. US$ 21–28 · Criança (4–12) aprox. US$ 11–17 · até 3 anos grátis. O valor muda conforme dia e horário; faixa informada pelo CityPASS, pois o site oficial estava inacessível na verificação",
+    "preco_min_usd": 21,
+    "preco_confirmado": false,
+    "fonte_preco": "https://www.citypass.com/dallas",
+    "horario": "Em geral aberto todos os dias, com horário que varia por temporada (confirme no site antes de ir)",
+    "site": "https://reuniontower.com/",
+    "historia": "Com 171 metros de altura, a torre da bola iluminada é o cartão-postal mais reconhecível de Dallas. Foi concluída em 1978 como parte do complexo do hotel Hyatt Regency, com projeto do escritório Welton Becket & Associates. A esfera no topo é uma cúpula geodésica coberta por centenas de luzes que fazem shows coloridos à noite.\n\nO mirante foi totalmente reformado e reaberto em 2013 com o nome GeO-Deck. Ele tem área interna com telas interativas e um deque externo com telescópios e vista de 360 graus do centro, do rio Trinity e, em dias limpos, até de Fort Worth. A torre aparece na abertura da série de TV Dallas.",
+    "dica": "Vá perto do pôr do sol para ver a cidade de dia e iluminada com um único ingresso. Está incluída no Dallas CityPASS (US$ 64 por adulto para 4 atrações). O estacionamento do complexo é pago.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Reunion_Tower%2C_Dallas%2C_Texas.jpg/1280px-Reunion_Tower%2C_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Reunion_Tower%2C_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Texas Lane",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Reunion_Tower,_Dallas,_Texas.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Reunion_tower_dallas.jpg/1280px-Reunion_tower_dallas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/65/Reunion_tower_dallas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Batrak",
+        "licenca": "CC BY-SA 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Reunion_tower_dallas.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/View_of_Dallas_from_Reunion_Tower_August_2015_13.jpg/1280px-View_of_Dallas_from_Reunion_Tower_August_2015_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/1/11/View_of_Dallas_from_Reunion_Tower_August_2015_13.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:View_of_Dallas_from_Reunion_Tower_August_2015_13.jpg"
+      }
+    ]
+  },
+  {
+    "id": "perot-museum",
+    "nome": "Perot Museum of Nature and Science",
+    "categoria": "museu",
+    "cidade": "Dallas",
+    "bairro": "Victory Park",
+    "endereco": "2201 N Field St, Dallas, TX 75201",
+    "lat": 32.78689,
+    "lng": -96.80665,
+    "gratuito": false,
+    "preco": "Adulto (13+) US$ 27 · Criança (2–12) US$ 17 · Filmes e exposições especiais à parte",
+    "preco_min_usd": 27,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.perotmuseum.org/visit/",
+    "horario": "Seg–sáb 10h–17h · Dom 11h–17h",
+    "site": "https://www.perotmuseum.org/",
+    "historia": "O museu nasceu em 2006 da fusão de três instituições de Fair Park: o Museu de História Natural de Dallas, o The Science Place e o Museu das Crianças. O nome homenageia o empresário Ross Perot e sua esposa Margot, cujos cinco filhos doaram 50 milhões de dólares para a nova sede.\n\nO prédio atual abriu em dezembro de 2012 e é obra do arquiteto Thom Mayne, vencedor do Pritzker. É um cubo de concreto texturizado cortado por uma escada rolante envidraçada de 16 metros. Lá dentro há onze salas permanentes com esqueletos de dinossauros, pedras preciosas, simulador de terremoto e experimentos de energia e robótica.",
+    "dica": "Comece pelo último andar e vá descendo, que é o percurso pensado pelo museu. Em dias de semana pela manhã há muitas excursões escolares; depois das 14h fica bem mais tranquilo. Faz parte do Dallas CityPASS.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Perot_Museum_of_Nature_and_Science_03.jpg/1280px-Perot_Museum_of_Nature_and_Science_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Perot_Museum_of_Nature_and_Science_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Perot_Museum_of_Nature_and_Science_03.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Perot_Museum_of_Nature_and_Science_pano_02.jpg/1280px-Perot_Museum_of_Nature_and_Science_pano_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/1/17/Perot_Museum_of_Nature_and_Science_pano_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Perot_Museum_of_Nature_and_Science_pano_02.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-museum-of-art",
+    "nome": "Dallas Museum of Art (DMA)",
+    "categoria": "arte",
+    "cidade": "Dallas",
+    "bairro": "Arts District",
+    "endereco": "1717 N Harwood St, Dallas, TX 75201",
+    "lat": 32.78756,
+    "lng": -96.80089,
+    "gratuito": true,
+    "preco": "Entrada geral gratuita (é preciso retirar ingresso) · Exposições especiais pagas, gratuitas no primeiro domingo do mês em 2026",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://cms.dma.org/visit",
+    "horario": "Qua–dom 11h–17h · Fechado seg e ter",
+    "site": "https://dma.org/",
+    "historia": "O DMA começou em 1903, quando a Dallas Art Association passou a expor quadros na biblioteca pública da cidade. Depois de décadas em Fair Park, o museu se mudou em 1984 para o prédio atual, desenhado por Edward Larrabee Barnes, e ajudou a transformar a região no Arts District, o maior distrito de artes urbano dos Estados Unidos.\n\nO acervo tem mais de 25 mil obras que cobrem cinco mil anos, de ouro pré-colombiano e arte africana a Monet, Van Gogh, Pollock e Rothko. Desde 2013 a entrada geral voltou a ser gratuita, política que fez do museu um dos mais visitados do país.",
+    "dica": "A garagem subterrânea do museu custa US$ 25 e só aceita cartão; vale mais ir de DART (estação St. Paul) ou pelo bondinho gratuito M-Line. Reserve o ingresso gratuito pelo site.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Dallas_Museum_of_Art.jpg/1280px-Dallas_Museum_of_Art.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/65/Dallas_Museum_of_Art.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Kent Wang from Austin, TX",
+        "licenca": "CC BY-SA 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Museum_of_Art.jpg"
+      }
+    ]
+  },
+  {
+    "id": "nasher-sculpture-center",
+    "nome": "Nasher Sculpture Center",
+    "categoria": "arte",
+    "cidade": "Dallas",
+    "bairro": "Arts District",
+    "endereco": "2001 Flora St, Dallas, TX 75201",
+    "lat": 32.7882,
+    "lng": -96.8002,
+    "gratuito": false,
+    "preco": "Adulto US$ 10 · Sênior (65+) US$ 7 · Estudante US$ 5 · Menores de 12 anos grátis · Gratuito no primeiro sábado do mês",
+    "preco_min_usd": 10,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.nashersculpturecenter.org/visit",
+    "horario": "Qua–dom 11h–17h · Fechado seg e ter",
+    "site": "https://www.nashersculpturecenter.org/",
+    "historia": "Raymond Nasher, o empresário que construiu o shopping NorthPark, e sua esposa Patsy reuniram ao longo de décadas uma das melhores coleções particulares de escultura moderna do mundo. Para abrigá-la, ele financiou um museu próprio no centro de Dallas, inaugurado em outubro de 2003.\n\nO prédio é do italiano Renzo Piano: pavilhões de travertino com teto de vidro que filtra a luz natural. O jardim, do paisagista Peter Walker, funciona como uma galeria ao ar livre. O acervo inclui obras de Rodin, Picasso, Matisse, Giacometti, Calder, Miró e Richard Serra, expostas em rodízio.",
+    "dica": "No primeiro sábado de cada mês a entrada é gratuita e há atividades para crianças. Quem mostrar o bilhete do DART paga US$ 8.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Nasher_Sculpture_Center_Dallas.jpg/1280px-Nasher_Sculpture_Center_Dallas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Nasher_Sculpture_Center_Dallas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Nasher_Sculpture_Center_Dallas.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Nasher_Sculpture_Center_August_2017_3_%28Nasher_Garden%29.jpg/1280px-Nasher_Sculpture_Center_August_2017_3_%28Nasher_Garden%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Nasher_Sculpture_Center_August_2017_3_%28Nasher_Garden%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Nasher_Sculpture_Center_August_2017_3_(Nasher_Garden).jpg"
+      }
+    ]
+  },
+  {
+    "id": "crow-museum-of-asian-art",
+    "nome": "Crow Museum of Asian Art",
+    "categoria": "arte",
+    "cidade": "Dallas",
+    "bairro": "Arts District",
+    "endereco": "2010 Flora St, Dallas, TX 75201",
+    "lat": 32.78777,
+    "lng": -96.79998,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://crowmuseum.org/visit/",
+    "horario": "Ter–dom 11h–17h · Fechado seg",
+    "site": "https://crowmuseum.org/",
+    "historia": "O incorporador Trammell Crow e sua esposa Margaret começaram a comprar arte asiática na década de 1960, durante viagens de negócios. A coleção cresceu tanto que a família abriu um museu em 1998, no térreo de uma de suas torres de escritórios no Arts District.\n\nO acervo reúne peças da China, Japão, Índia, Coreia e Sudeste Asiático, com destaque para jades chineses, armaduras de samurai e esculturas budistas. Em 2019 a família doou o museu inteiro à Universidade do Texas em Dallas, que abriu uma segunda sede no campus, em Richardson. A entrada sempre foi gratuita.",
+    "dica": "Fica em frente ao Nasher e a dois quarteirões do DMA: dá para fazer os três no mesmo dia a pé. É pequeno e silencioso, bom refúgio no calor do verão.",
+    "tempo_visita": "45 minutos–1 hora",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_2.jpg/1280px-Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/03/Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_2.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_1.jpg/1280px-Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/de/Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Trammell_%26_Margaret_Crow_Collection_of_Asian_Art_August_2017_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "klyde-warren-park",
+    "nome": "Klyde Warren Park",
+    "categoria": "parque",
+    "cidade": "Dallas",
+    "bairro": "Uptown / Arts District",
+    "endereco": "2012 Woodall Rodgers Fwy, Dallas, TX 75201",
+    "lat": 32.78949,
+    "lng": -96.80159,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.klydewarrenpark.org/",
+    "horario": "Diariamente 6h–23h (confirme no site antes de ir)",
+    "site": "https://www.klydewarrenpark.org/",
+    "historia": "Este parque foi construído em cima de uma via expressa. A Woodall Rodgers Freeway corria em trincheira e separava o centro do bairro de Uptown; a solução foi cobri-la com uma laje e plantar um gramado de cerca de dois hectares por cima. O parque abriu em outubro de 2012.\n\nA obra foi paga por uma parceria entre poder público e doadores privados. O nome vem do filho do bilionário Kelcy Warren, que fez a maior doação. Hoje há food trucks todos os dias, parquinho infantil, área para cães, aulas gratuitas de ioga e shows. O projeto virou modelo para outras cidades americanas.",
+    "dica": "Os food trucks ficam na lateral do parque e são uma opção de almoço barata para o padrão do centro. Aos domingos e em feriados fica lotado; o bondinho gratuito M-Line para na porta.",
+    "tempo_visita": "1–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Klyde_Warren_Park.jpg/1280px-Klyde_Warren_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/7/78/Klyde_Warren_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "John P Salvatore",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Klyde_Warren_Park.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Dallas_-_Klyde_Warren_Park_11.jpg/1280px-Dallas_-_Klyde_Warren_Park_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/2/21/Dallas_-_Klyde_Warren_Park_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_-_Klyde_Warren_Park_11.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-arboretum",
+    "nome": "Dallas Arboretum and Botanical Garden",
+    "categoria": "natureza",
+    "cidade": "Dallas",
+    "bairro": "East Dallas / White Rock Lake",
+    "endereco": "8525 Garland Rd, Dallas, TX 75218",
+    "lat": 32.82139,
+    "lng": -96.7175,
+    "gratuito": false,
+    "preco": "Seg–qui: Adulto US$ 21,95 · Criança (3–12) US$ 17,95 · Sex–dom: Adulto US$ 25,95 · Criança US$ 21,95 · Estacionamento US$ 15 por carro",
+    "preco_min_usd": 21.95,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dallasarboretum.org/visitor-information/hours-and-admission/",
+    "horario": "Diariamente 9h–17h · Fechado durante o dia no Thanksgiving, Natal e Ano-Novo",
+    "site": "https://www.dallasarboretum.org/",
+    "historia": "O jardim botânico ocupa 26 hectares na margem do lago White Rock e foi formado a partir de duas propriedades. A principal é o Rancho Encinal, casa em estilo colonial espanhol concluída em 1940 para o geólogo e magnata do petróleo Everette DeGolyer. A outra é a Camp House, vizinha. O jardim abriu ao público em 1984.\n\nO grande evento é o Dallas Blooms, na primavera, quando centenas de milhares de tulipas e outros bulbos florescem. No outono, a Pumpkin Village monta casinhas feitas com dezenas de milhares de abóboras. No fim do ano há decoração e programação natalina, com ingresso noturno vendido à parte.",
+    "dica": "De segunda a quinta o ingresso é mais barato e o jardim fica mais vazio. Compre ingresso e estacionamento pelo site com antecedência. Pode levar comida e fazer piquenique no gramado.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Dallas_Arboretum_and_Botanical_Garden_September_2017_19_%28Lay_Family_Garden%29.jpg/1280px-Dallas_Arboretum_and_Botanical_Garden_September_2017_19_%28Lay_Family_Garden%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/39/Dallas_Arboretum_and_Botanical_Garden_September_2017_19_%28Lay_Family_Garden%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Arboretum_and_Botanical_Garden_September_2017_19_(Lay_Family_Garden).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Dallas_Arboretum_and_Botanical_Garden_September_2017_31_%28McCasland_Sunken_Garden%29.jpg/1280px-Dallas_Arboretum_and_Botanical_Garden_September_2017_31_%28McCasland_Sunken_Garden%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Dallas_Arboretum_and_Botanical_Garden_September_2017_31_%28McCasland_Sunken_Garden%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Arboretum_and_Botanical_Garden_September_2017_31_(McCasland_Sunken_Garden).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/View_of_the_Dallas_skyline_over_White_Rock_Lake_as_seen_from_the_Dallas_Arboretum_02.jpg/1280px-View_of_the_Dallas_skyline_over_White_Rock_Lake_as_seen_from_the_Dallas_Arboretum_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/f/fd/View_of_the_Dallas_skyline_over_White_Rock_Lake_as_seen_from_the_Dallas_Arboretum_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "IcedCowboyCoffee",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:View_of_the_Dallas_skyline_over_White_Rock_Lake_as_seen_from_the_Dallas_Arboretum_02.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-zoo",
+    "nome": "Dallas Zoo",
+    "categoria": "familia",
+    "cidade": "Dallas",
+    "bairro": "Oak Cliff",
+    "endereco": "650 S R.L. Thornton Fwy, Dallas, TX 75203",
+    "lat": 32.74,
+    "lng": -96.815,
+    "gratuito": false,
+    "preco": "A partir de US$ 18 por pessoa (o preço varia conforme a data) · Até 2 anos grátis · Estacionamento US$ 15",
+    "preco_min_usd": 18,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dallaszoo.com/plan-your-visit/buy-tickets/",
+    "horario": "Diariamente 9h–17h (9h–16h em parte do verão e do inverno) · Fechado em 25/12",
+    "site": "https://www.dallaszoo.com/",
+    "historia": "Fundado em 1888, é o zoológico mais antigo do Texas. Tudo começou quando a prefeitura comprou dois cervos e dois pumas para exibir no City Park. Depois de algumas mudanças, o zoológico se instalou em 1912 no Marsalis Park, em Oak Cliff, onde está até hoje, com cerca de 43 hectares.\n\nA área mais famosa é a Giants of the Savanna, aberta em 2010, onde elefantes, girafas, zebras e outros animais africanos dividem o mesmo espaço e o visitante pode alimentar as girafas. Há ainda o Wilds of Africa, com gorilas e chimpanzés, e um monotrilho panorâmico.",
+    "dica": "A linha vermelha do DART tem a estação Dallas Zoo na porta, o que evita os US$ 15 de estacionamento; às segundas e terças, quem mostra o bilhete do DART ganha US$ 2 de desconto na bilheteria. No verão, chegue na abertura.",
+    "tempo_visita": "3–4 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Dallas_Zoo_Giraffe_Family.jpg/1280px-Dallas_Zoo_Giraffe_Family.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Dallas_Zoo_Giraffe_Family.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Kevin1086",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Zoo_Giraffe_Family.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/DallasZooEntrance.jpg/1280px-DallasZooEntrance.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/7/71/DallasZooEntrance.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Kevin1086",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:DallasZooEntrance.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-world-aquarium",
+    "nome": "The Dallas World Aquarium",
+    "categoria": "familia",
+    "cidade": "Dallas",
+    "bairro": "West End / Downtown",
+    "endereco": "1801 N Griffin St, Dallas, TX 75202",
+    "lat": 32.78346,
+    "lng": -96.80513,
+    "gratuito": false,
+    "preco": "Adulto US$ 34,95 · Criança (3–12) US$ 24,95 · Sênior (65+) US$ 28,95 · até 2 anos grátis (valores sem imposto)",
+    "preco_min_usd": 34.95,
+    "preco_confirmado": true,
+    "fonte_preco": "https://dwazoo.com/hours-prices/",
+    "horario": "Diariamente 8h30–17h (última entrada 16h) · Fechado no Thanksgiving e no Natal",
+    "site": "https://www.dwazoo.com/",
+    "historia": "O aquário foi aberto em 1992 pelo empresário Daryl Richardson dentro de galpões de tijolos da década de 1920 no West End, o bairro histórico de armazéns de Dallas. As fachadas antigas foram mantidas e os interiores, escavados para receber os tanques.\n\nApesar do nome, é uma mistura de aquário e zoológico. A ala Orinoco, de 1997, recria uma floresta tropical sul-americana em vários andares, com preguiças, tucanos, macacos, peixes-boi e ariranhas. A ala Mundo Maya, de 2004, tem um túnel de vidro que passa por baixo de um tanque de tubarões. Há ainda pinguins e flamingos.",
+    "dica": "O preço anunciado não inclui o imposto (cerca de 8,25%), como é comum nos EUA. Chegue na abertura: o percurso é estreito e fica cheio no fim da manhã. Não há estacionamento próprio; use os estacionamentos pagos do entorno.",
+    "tempo_visita": "2–2h30",
+    "imagens": []
+  },
+  {
+    "id": "pioneer-plaza",
+    "nome": "Pioneer Plaza",
+    "categoria": "historico",
+    "cidade": "Dallas",
+    "bairro": "Convention Center District / Downtown",
+    "endereco": "1428 Young St, Dallas, TX 75202",
+    "lat": 32.77642,
+    "lng": -96.80133,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dallasparks.org/",
+    "horario": "Aberto 24 horas (praça pública)",
+    "site": "https://www.dallasparks.org/",
+    "historia": "A praça abriga um dos maiores conjuntos de esculturas de bronze do mundo: uma boiada de dezenas de bois da raça Texas Longhorn, em tamanho maior que o natural, conduzida por três vaqueiros a cavalo. As peças são do escultor texano Robert Summers e foram instaladas a partir de 1994.\n\nA obra lembra as comitivas que, no século 19, levavam gado pela Shawnee Trail, rota que passava por Dallas rumo ao norte. O terreno, vizinho ao centro de convenções e a um cemitério de pioneiros, recebeu colina, riacho e cachoeira artificiais com plantas nativas para compor o cenário.",
+    "dica": "É a foto clássica de Dallas e não custa nada. Vá cedo ou no fim da tarde, quando a luz é melhor e há menos gente. Fica a dez minutos a pé da Reunion Tower.",
+    "tempo_visita": "20–30 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/Some_of_the_70_bronze_steers_in_a_large_sculpture_in_Pioneer_Park_in_Dallas%2C_Texas%2C_that_commemorates_nineteenth-_century_cattle_drives_that_took_place_along_the_Shawnee_Trail%2C_the_earliest_and_LCCN2014632597.tif/lossy-page1-1280px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Some_of_the_70_bronze_steers_in_a_large_sculpture_in_Pioneer_Park_in_Dallas%2C_Texas%2C_that_commemorates_nineteenth-_century_cattle_drives_that_took_place_along_the_Shawnee_Trail%2C_the_earliest_and_LCCN2014632597.tif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Some_of_the_70_bronze_steers_in_a_large_sculpture_in_Pioneer_Park_in_Dallas,_Texas,_that_commemorates_nineteenth-_century_cattle_drives_that_took_place_along_the_Shawnee_Trail,_the_earliest_and_LCCN2014632597.tif"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Some_of_the_70_bronze_steers_in_a_large_sculpture_in_Pioneer_Park_in_Dallas%2C_Texas%2C_that_commemorates_nineteenth-_century_cattle_drives_that_took_place_along_the_Shawnee_Trail%2C_the_earliest_and_LCCN2014632596.tif/lossy-page1-1280px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/4/47/Some_of_the_70_bronze_steers_in_a_large_sculpture_in_Pioneer_Park_in_Dallas%2C_Texas%2C_that_commemorates_nineteenth-_century_cattle_drives_that_took_place_along_the_Shawnee_Trail%2C_the_earliest_and_LCCN2014632596.tif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Some_of_the_70_bronze_steers_in_a_large_sculpture_in_Pioneer_Park_in_Dallas,_Texas,_that_commemorates_nineteenth-_century_cattle_drives_that_took_place_along_the_Shawnee_Trail,_the_earliest_and_LCCN2014632596.tif"
+      }
+    ]
+  },
+  {
+    "id": "fair-park",
+    "nome": "Fair Park e Hall of State",
+    "categoria": "historico",
+    "cidade": "Dallas",
+    "bairro": "Fair Park / South Dallas",
+    "endereco": "3809 Grand Ave, Dallas, TX 75210",
+    "lat": 32.78194,
+    "lng": -96.76556,
+    "gratuito": true,
+    "preco": "Acesso ao parque gratuito fora de eventos · Museus e atrações internas cobram à parte · Durante a State Fair é preciso ingresso da feira",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://txdg.org/plan-your-visit/",
+    "horario": "Área externa aberta diariamente; museus têm horários próprios (confirme no site antes de ir)",
+    "site": "https://fairparkdallas.com/",
+    "historia": "Fair Park recebe a feira estadual do Texas desde 1886, mas ganhou a forma atual em 1936, quando sediou a Exposição do Centenário do Texas. Para o evento, o arquiteto George Dahl coordenou a construção de dezenas de pavilhões, murais e esculturas em estilo art déco.\n\nO conjunto, com cerca de 112 hectares, é considerado o maior acervo de arquitetura de exposição art déco dos Estados Unidos e é Marco Histórico Nacional desde 1986. O destaque é o Hall of State, pavilhão monumental dedicado à história do Texas. Ali também ficam o estádio Cotton Bowl, o African American Museum e o Texas Discovery Gardens.",
+    "dica": "A linha verde do DART para na entrada (estação Fair Park). Fora da época da feira o parque fica bem vazio; visite de dia e combine com os museus de dentro do parque.",
+    "tempo_visita": "1h30–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Dallas_Fair_Park_Hall_of_State_2009.jpg/1280px-Dallas_Fair_Park_Hall_of_State_2009.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/2/22/Dallas_Fair_Park_Hall_of_State_2009.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Fair_Park_Hall_of_State_2009.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Fair_Park_August_2016_49_%28Esplanade_Fountain%29.jpg/1280px-Fair_Park_August_2016_49_%28Esplanade_Fountain%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Fair_Park_August_2016_49_%28Esplanade_Fountain%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fair_Park_August_2016_49_(Esplanade_Fountain).jpg"
+      }
+    ]
+  },
+  {
+    "id": "state-fair-of-texas",
+    "nome": "State Fair of Texas",
+    "categoria": "familia",
+    "cidade": "Dallas",
+    "bairro": "Fair Park / South Dallas",
+    "endereco": "3809 Grand Ave, Dallas, TX 75210",
+    "lat": 32.7795,
+    "lng": -96.762,
+    "gratuito": false,
+    "preco": "Preços de 2026: Adulto US$ 15 (seg–qui) ou US$ 25 (sex–dom) · após as 17h US$ 10 / US$ 20 · Criança (3–12) US$ 10 · Sênior (60+) de US$ 7 a US$ 20 · taxa de US$ 2 na compra online · comida e brinquedos pagos à parte com cupons",
+    "preco_min_usd": 10,
+    "preco_confirmado": true,
+    "fonte_preco": "https://bigtex.com/buy-tickets/",
+    "horario": "Evento anual de 24 dias, do fim de setembro a meados de outubro (em 2026, a partir de 25/9) · Datas e preços de 2027 a confirmar",
+    "site": "https://bigtex.com/",
+    "historia": "Realizada desde 1886, a feira estadual do Texas é uma das maiores e mais longas dos Estados Unidos e recebe mais de dois milhões de visitantes por edição. Quem dá as boas-vindas é o Big Tex, um caubói de quase 17 metros de altura que estreou em 1952, pegou fogo em 2012 e foi reconstruído no ano seguinte.\n\nA feira é famosa pelas frituras: o corny dog (salsicha empanada no palito) é vendido ali desde 1942, e todo ano há um concurso de novas comidas fritas. Há também a roda-gigante Texas Star, exposições de gado, salão do automóvel e o clássico de futebol americano universitário entre Texas e Oklahoma no Cotton Bowl.",
+    "dica": "Vá de DART (linha verde, estação Fair Park) para fugir do estacionamento caro. De segunda a quinta o ingresso é bem mais barato. Leve dinheiro extra: comida e brinquedos são pagos com cupons.",
+    "tempo_visita": "4–6 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/State_Fair_of_Texas_September_2019_14_%28Big_Tex%29.jpg/1280px-State_Fair_of_Texas_September_2019_14_%28Big_Tex%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/66/State_Fair_of_Texas_September_2019_14_%28Big_Tex%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:State_Fair_of_Texas_September_2019_14_(Big_Tex).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Texas_State_Fair_2008_with_Big_Tex.jpg/1280px-Texas_State_Fair_2008_with_Big_Tex.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Texas_State_Fair_2008_with_Big_Tex.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Fair_2008_with_Big_Tex.jpg"
+      }
+    ]
+  },
+  {
+    "id": "texas-discovery-gardens",
+    "nome": "Texas Discovery Gardens",
+    "categoria": "natureza",
+    "cidade": "Dallas",
+    "bairro": "Fair Park / South Dallas",
+    "endereco": "3601 Martin Luther King Jr Blvd, Dallas, TX 75210",
+    "lat": 32.7752,
+    "lng": -96.7612,
+    "gratuito": false,
+    "preco": "Adulto (13+) US$ 14 · Sênior (65+) US$ 12 · Criança (4–12) US$ 8 · até 3 anos grátis",
+    "preco_min_usd": 14,
+    "preco_confirmado": true,
+    "fonte_preco": "https://txdg.org/plan-your-visit/",
+    "horario": "Diariamente 10h–17h · Fechado no Thanksgiving e no Natal",
+    "site": "https://txdg.org/",
+    "historia": "O jardim ocupa um dos pavilhões erguidos em Fair Park para a Exposição do Centenário do Texas, em 1936, originalmente dedicado à horticultura. Ao longo das décadas o espaço virou centro de jardinagem da cidade e passou a adotar cultivo totalmente orgânico, com foco em plantas nativas e adaptadas ao clima do Texas.\n\nA principal atração é o borboletário, uma estufa de vidro de dois andares aberta em 2009, onde centenas de borboletas tropicais voam soltas entre os visitantes. Todos os dias, ao meio-dia, novas borboletas são soltas diante do público. Do lado de fora há três hectares de jardins temáticos, lagos e uma área com cobras e répteis.",
+    "dica": "Programe a visita para estar no borboletário ao meio-dia, hora da soltura das borboletas. O estacionamento costuma ser gratuito, exceto durante a State Fair e grandes eventos em Fair Park.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Texas_Discovery_Gardens_August_2016_02.jpg/1280px-Texas_Discovery_Gardens_August_2016_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/03/Texas_Discovery_Gardens_August_2016_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Texas_Discovery_Gardens_August_2016_02.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Texas_Discovery_Gardens_August_2016_18_%28pond%29.jpg/1280px-Texas_Discovery_Gardens_August_2016_18_%28pond%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Texas_Discovery_Gardens_August_2016_18_%28pond%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Texas_Discovery_Gardens_August_2016_18_(pond).jpg"
+      }
+    ]
+  },
+  {
+    "id": "deep-ellum",
+    "nome": "Deep Ellum",
+    "categoria": "bairro",
+    "cidade": "Dallas",
+    "bairro": "Deep Ellum",
+    "endereco": "Elm St com Malcolm X Blvd, Dallas, TX 75226",
+    "lat": 32.78444,
+    "lng": -96.78056,
+    "gratuito": true,
+    "preco": "Gratuito para passear · Bares e casas de show cobram consumação ou ingresso",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://deepellumtexas.com/",
+    "horario": "Bairro aberto; lojas e restaurantes durante o dia, bares e shows à noite, principalmente de qui a sáb",
+    "site": "https://deepellumtexas.com/",
+    "historia": "O bairro surgiu em 1873 a leste do centro, junto à ferrovia, como área comercial e residencial de afro-americanos libertos e de imigrantes europeus. O nome vem do jeito como os moradores pronunciavam Elm Street, a rua principal. Nas décadas de 1920 e 1930, foi um dos grandes polos de blues e jazz do país, com músicos como Blind Lemon Jefferson e Lead Belly.\n\nA construção de uma via expressa e a saída das fábricas esvaziaram a região a partir dos anos 1950. O renascimento veio na década de 1980, com casas de rock e punk em galpões abandonados. Hoje o bairro reúne dezenas de murais, cervejarias, churrascarias, estúdios de tatuagem e palcos de música ao vivo.",
+    "dica": "Para fotografar os murais, vá de dia e a pé, pela Main, Elm e Commerce. À noite use Uber ou o DART (linha verde, estação Deep Ellum) e fique nas ruas movimentadas. Em bares, a gorjeta é de US$ 1–2 por bebida.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Deep_Ellum%2C_Dallas%2C_Texas.jpg/1280px-Deep_Ellum%2C_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Deep_Ellum%2C_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Brittygriffy",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Deep_Ellum,_Dallas,_Texas.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Deep_Ellum_-_Elm_Street_-_Dallas_Baking_Co._etc.jpg/1280px-Deep_Ellum_-_Elm_Street_-_Dallas_Baking_Co._etc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/5/53/Deep_Ellum_-_Elm_Street_-_Dallas_Baking_Co._etc.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Deep_Ellum_-_Elm_Street_-_Dallas_Baking_Co._etc.jpg"
+      }
+    ]
+  },
+  {
+    "id": "bishop-arts-district",
+    "nome": "Bishop Arts District",
+    "categoria": "bairro",
+    "cidade": "Dallas",
+    "bairro": "Oak Cliff",
+    "endereco": "N Bishop Ave com W 7th St, Dallas, TX 75208",
+    "lat": 32.74895,
+    "lng": -96.82834,
+    "gratuito": true,
+    "preco": "Gratuito para passear",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://bishopartsdistrict.com/",
+    "horario": "Lojas em geral 11h–19h; muitas fecham na segunda · Restaurantes e bares até mais tarde",
+    "site": "https://bishopartsdistrict.com/",
+    "historia": "O distrito fica em Oak Cliff, antiga cidade independente anexada por Dallas em 1903. Os sobrados de tijolos foram construídos principalmente na década de 1920, em volta de uma parada de bonde que chegou a ser uma das mais movimentadas da cidade. Com a decadência do bonde e a fuga para os subúrbios, a área ficou meio abandonada.\n\nA recuperação começou nos anos 1980, quando o investidor Jim Lake comprou vários imóveis e passou a alugá-los barato para artistas e pequenos comerciantes. Hoje são dezenas de lojas independentes, galerias, livrarias, cafés e restaurantes concentrados em poucos quarteirões, quase sem redes, com clima de cidade pequena.",
+    "dica": "O Dallas Streetcar liga a Union Station, no centro, ao bairro. Nos fins de semana há espera nos restaurantes mais famosos; coloque o nome na lista e passeie pelas lojas enquanto isso. O estacionamento na rua é disputado.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Bishop_Arts_District_September_2016_2_%28Bishop_Avenue%29.jpg/1280px-Bishop_Arts_District_September_2016_2_%28Bishop_Avenue%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Bishop_Arts_District_September_2016_2_%28Bishop_Avenue%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Bishop_Arts_District_September_2016_2_(Bishop_Avenue).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Bishop_Arts_District1.JPG/1280px-Bishop_Arts_District1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Bishop_Arts_District1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Renelibrary",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Bishop_Arts_District1.JPG"
+      }
+    ]
+  },
+  {
+    "id": "white-rock-lake",
+    "nome": "White Rock Lake Park",
+    "categoria": "parque",
+    "cidade": "Dallas",
+    "bairro": "East Dallas",
+    "endereco": "8300 E Lawther Dr, Dallas, TX 75218",
+    "lat": 32.815,
+    "lng": -96.72528,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dallasparks.org/",
+    "horario": "Diariamente, em geral 5h–23h (horário padrão dos parques de Dallas) (confirme no site antes de ir)",
+    "site": "https://www.whiterocklake.org/",
+    "historia": "O lago é um reservatório artificial formado em 1911, quando a prefeitura represou o riacho White Rock para garantir o abastecimento de água de Dallas. Com a construção de represas maiores, ele perdeu essa função e virou área de lazer a partir de 1929. Na década de 1930, trabalhadores do programa federal CCC construíram píeres, abrigos e áreas de piquenique.\n\nHoje o parque tem mais de 400 hectares de espelho d'água e uma trilha pavimentada de cerca de 15 quilômetros que contorna todo o lago, muito usada por ciclistas e corredores. Há clubes de vela, aluguel de caiaque, observação de aves, área para cães e a antiga casa de banhos art déco, hoje centro cultural.",
+    "dica": "Não é permitido nadar no lago. A margem oeste tem a melhor vista do pôr do sol, com os prédios do centro ao fundo. Combine com o Dallas Arboretum, que fica na margem leste.",
+    "tempo_visita": "1–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/White_Rock_Lake.jpg/1280px-White_Rock_Lake.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/0c/White_Rock_Lake.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "DronePhotographer",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:White_Rock_Lake.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/White_Rock_Lake_2014.JPG/1280px-White_Rock_Lake_2014.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/03/White_Rock_Lake_2014.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Bedelia13",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:White_Rock_Lake_2014.JPG"
+      }
+    ]
+  },
+  {
+    "id": "katy-trail",
+    "nome": "Katy Trail",
+    "categoria": "parque",
+    "cidade": "Dallas",
+    "bairro": "Uptown / Oak Lawn",
+    "endereco": "3505 Maple Ave, Dallas, TX 75219 (sede da Friends of the Katy Trail; a trilha tem vários acessos)",
+    "lat": 32.805,
+    "lng": -96.801,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://katytraildallas.org/",
+    "horario": "Diariamente, em geral 5h–23h (confirme no site antes de ir)",
+    "site": "https://katytraildallas.org/",
+    "historia": "A trilha ocupa o leito de uma antiga linha da ferrovia Missouri–Kansas–Texas, conhecida pela sigla MKT e apelidada de Katy, que cruzava Dallas desde o século 19. Quando os trens pararam de circular, a Union Pacific doou a faixa à prefeitura, em 1993, e moradores se organizaram para transformá-la em parque linear.\n\nSão cerca de 5,6 quilômetros arborizados e elevados em relação às ruas, ligando a região do American Airlines Center, em Victory Park, às proximidades da universidade SMU. Há pista para ciclistas e patinadores e outra, mais macia, para pedestres. A manutenção é feita por uma associação sem fins lucrativos, com doações.",
+    "dica": "O Katy Trail Ice House, bar com mesas ao ar livre encostado na trilha, é parada tradicional para um chope depois da caminhada. No verão, vá antes das 9h ou no fim da tarde por causa do calor.",
+    "tempo_visita": "1–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/KatyTrailDallasSunset.jpg/1280px-KatyTrailDallasSunset.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/39/KatyTrailDallasSunset.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Raysonho @ Open Grid Scheduler / Scalable Grid Engine",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:KatyTrailDallasSunset.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Katy_Trail.jpg/1280px-Katy_Trail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Katy_Trail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Stephenbharrison",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Katy_Trail.jpg"
+      }
+    ]
+  },
+  {
+    "id": "george-w-bush-presidential-center",
+    "nome": "George W. Bush Presidential Library and Museum",
+    "categoria": "museu",
+    "cidade": "Dallas",
+    "bairro": "University Park / SMU",
+    "endereco": "2943 SMU Blvd, Dallas, TX 75205",
+    "lat": 32.8409,
+    "lng": -96.7781,
+    "gratuito": false,
+    "preco": "Adulto (18–61) US$ 26 · Sênior (62+) US$ 23 · Jovem (13–17) US$ 24 · Criança (5–12) US$ 20 · até 4 anos grátis",
+    "preco_min_usd": 26,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.bushcenter.org/plan-your-visit/admission-and-hours",
+    "horario": "Seg–sáb 9h–17h · Dom 12h–17h · Fechado no Thanksgiving, Natal e Ano-Novo",
+    "site": "https://www.bushcenter.org/",
+    "historia": "A biblioteca presidencial do 43º presidente dos Estados Unidos fica no campus da universidade SMU e foi inaugurada em abril de 2013, em cerimônia que reuniu os cinco presidentes americanos vivos na época. O prédio de tijolos e pedra calcária do Texas é do arquiteto Robert A. M. Stern.\n\nO museu percorre os oito anos de governo, com destaque para os atentados de 11 de setembro de 2001: há vigas retorcidas do World Trade Center e o megafone usado por Bush nos escombros. O visitante pode tirar foto em uma réplica em tamanho real do Salão Oval e testar suas decisões em um teatro interativo. Do lado de fora há um parque de plantas nativas.",
+    "dica": "O Presidents Day (terceira segunda-feira de fevereiro) é dia de entrada gratuita. O museu faz parte do Dallas CityPASS. Dá para chegar de DART (estação SMU/Mockingbird) e seguir a pé ou de ônibus gratuito do campus.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/George_W._Bush_Presidential_Center_D6084B68.jpg/1280px-George_W._Bush_Presidential_Center_D6084B68.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/5/54/George_W._Bush_Presidential_Center_D6084B68.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Voice of America",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:George_W._Bush_Presidential_Center_D6084B68.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/George_W_Bush_Presidential_Library_%2826479633234%29.jpg/1280px-George_W_Bush_Presidential_Library_%2826479633234%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/bd/George_W_Bush_Presidential_Library_%2826479633234%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Shannon McGee from Huntsville, USA",
+        "licenca": "CC BY-SA 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:George_W_Bush_Presidential_Library_(26479633234).jpg"
+      }
+    ]
+  },
+  {
+    "id": "meadows-museum",
+    "nome": "Meadows Museum",
+    "categoria": "arte",
+    "cidade": "Dallas",
+    "bairro": "University Park / SMU",
+    "endereco": "5900 Bishop Blvd, Dallas, TX 75205",
+    "lat": 32.8385,
+    "lng": -96.7853,
+    "gratuito": false,
+    "preco": "Adulto US$ 12 · Sênior (65+) US$ 10 · Estudante US$ 4 · Gratuito às quintas depois das 17h (menores de 18 anos tiveram gratuidade por patrocínio até 31/8/2026; confirme)",
+    "preco_min_usd": 12,
+    "preco_confirmado": true,
+    "fonte_preco": "https://meadowsmuseumdallas.org/visit-us/general-information/",
+    "horario": "Ter–sáb 10h–17h (qui até 21h) · Dom 13h–17h · Fechado seg",
+    "site": "https://meadowsmuseumdallas.org/",
+    "historia": "Nos anos 1950, o empresário do petróleo Algur H. Meadows passava longas temporadas em Madri a negócios e se apaixonou pelo Museu do Prado. Decidido a criar um pequeno Prado no Texas, ele formou uma coleção de arte espanhola e a doou à universidade SMU. O museu abriu em 1965 e ganhou o prédio atual em 2001.\n\nHoje é considerado um dos maiores e mais completos acervos de arte espanhola fora da Espanha. Há obras de El Greco, Velázquez, Murillo, Ribera, Goya, Sorolla, Picasso, Miró e Dalí, além de esculturas no pátio de entrada, entre elas uma peça móvel de Santiago Calatrava.",
+    "dica": "Às quintas, depois das 17h, a entrada é gratuita. Em dia de jogo de futebol americano da SMU o trânsito e o estacionamento em volta do museu ficam complicados; consulte o calendário antes.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Dallas_Meadows_Museum_1.jpg/1280px-Dallas_Meadows_Museum_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Dallas_Meadows_Museum_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Meadows_Museum_1.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Dallas_Meadows_Museum_2.jpg/1280px-Dallas_Meadows_Museum_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Dallas_Meadows_Museum_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Meadows_Museum_2.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-holocaust-museum",
+    "nome": "Dallas Holocaust and Human Rights Museum",
+    "categoria": "museu",
+    "cidade": "Dallas",
+    "bairro": "West End / Downtown",
+    "endereco": "300 N Houston St, Dallas, TX 75202",
+    "lat": 32.78028,
+    "lng": -96.8075,
+    "gratuito": false,
+    "preco": "Adulto US$ 19 · Sênior (55+) US$ 17 · Estudante US$ 12",
+    "preco_min_usd": 19,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dhhrm.org/visit/general-admission/",
+    "horario": "Em geral aberto todos os dias, de manhã até 17h (confirme no site antes de ir)",
+    "site": "https://www.dhhrm.org/",
+    "historia": "O museu foi criado em 1984 por sobreviventes do Holocausto que se estabeleceram em Dallas depois da guerra e queriam deixar seu testemunho. Durante anos funcionou no subsolo de um centro comunitário judaico e depois em uma sala alugada. Em setembro de 2019 ganhou uma sede própria de cerca de 5 mil metros quadrados no West End.\n\nA exposição permanente tem quatro alas: o Holocausto, os julgamentos e o nascimento dos direitos humanos, outros genocídios do século 20 e a luta por direitos civis nos Estados Unidos. Um vagão de carga da época da guerra está exposto, e um teatro com tecnologia holográfica permite fazer perguntas à imagem gravada de um sobrevivente.",
+    "dica": "Nas manhãs de dias úteis há muitos grupos escolares; o próprio museu recomenda visitar depois das 13h ou no fim de semana. Não é indicado para crianças pequenas. Faz parte do Dallas CityPASS.",
+    "tempo_visita": "2–2h30",
+    "imagens": []
+  },
+  {
+    "id": "african-american-museum",
+    "nome": "African American Museum of Dallas",
+    "categoria": "museu",
+    "cidade": "Dallas",
+    "bairro": "Fair Park / South Dallas",
+    "endereco": "3536 Grand Ave, Dallas, TX 75210",
+    "lat": 32.7792,
+    "lng": -96.7643,
+    "gratuito": true,
+    "preco": "Gratuito (grupos com mais de 10 pessoas pagam visita guiada)",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://aamdallas.org/plan-your-visit/",
+    "horario": "Em geral ter–sáb, durante o dia (confirme no site antes de ir)",
+    "site": "https://aamdallas.org/",
+    "historia": "O museu foi fundado em 1974 como parte do Bishop College, uma faculdade historicamente negra que funcionava em Dallas. Tornou-se instituição independente e, em 1993, mudou-se para um prédio próprio em Fair Park, de pedra clara, cuja planta em forma de cruz se inspira em motivos africanos.\n\nÉ o único museu do sudoeste dos Estados Unidos dedicado à preservação da arte, da cultura e da história afro-americanas. O destaque é uma das maiores coleções de arte popular afro-americana do país. Há também achados arqueológicos do Freedman's Cemetery, antigo cemitério de ex-escravizados de Dallas, além de exposições temporárias.",
+    "dica": "A entrada é gratuita, mas doações são bem-vindas. Fica a poucos passos do Hall of State e do Texas Discovery Gardens; faça os três na mesma ida a Fair Park.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/African_American_Museum_August_2016_01.jpg/1280px-African_American_Museum_August_2016_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/68/African_American_Museum_August_2016_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:African_American_Museum_August_2016_01.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/African_American_Museum_August_2016_11.jpg/1280px-African_American_Museum_August_2016_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/34/African_American_Museum_August_2016_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:African_American_Museum_August_2016_11.jpg"
+      }
+    ]
+  },
+  {
+    "id": "american-airlines-center",
+    "nome": "American Airlines Center",
+    "categoria": "esporte",
+    "cidade": "Dallas",
+    "bairro": "Victory Park",
+    "endereco": "2500 Victory Ave, Dallas, TX 75219",
+    "lat": 32.79056,
+    "lng": -96.81028,
+    "gratuito": false,
+    "preco": "Varia conforme o evento (jogos do Dallas Mavericks e do Dallas Stars, shows); não há preço fixo — consulte a bilheteria oficial",
+    "preco_min_usd": null,
+    "preco_confirmado": false,
+    "fonte_preco": "https://www.americanairlinescenter.com/",
+    "horario": "Abre apenas em dias de evento, em geral 1h–1h30 antes do início",
+    "site": "https://www.americanairlinescenter.com/",
+    "historia": "A arena foi inaugurada em julho de 2001 para substituir a antiga Reunion Arena. É a casa do Dallas Mavericks, da NBA, e do Dallas Stars, da liga de hóquei no gelo NHL. O projeto de David M. Schwarz usa tijolo, pedra e grandes arcos, lembrando os ginásios e armazéns antigos.\n\nA obra foi o ponto de partida do bairro de Victory Park, erguido sobre um antigo pátio ferroviário e uma usina desativada ao norte do centro. Ali os Mavericks comemoraram o título da NBA de 2011, com Dirk Nowitzki, que hoje tem uma estátua na praça em frente. A arena também recebe grandes shows durante todo o ano.",
+    "dica": "O DART (estação Victory) para na porta e evita o estacionamento, que é caro em dia de jogo. Compre ingresso só pelos canais oficiais e chegue cedo: a revista de segurança é demorada e bolsas grandes são proibidas.",
+    "tempo_visita": "3 horas (jogo ou show)",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Dallas_November_2018_2_%28American_Airlines_Center%29.jpg/1280px-Dallas_November_2018_2_%28American_Airlines_Center%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/9/96/Dallas_November_2018_2_%28American_Airlines_Center%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_November_2018_2_(American_Airlines_Center).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/American_Airlines_Center_02.jpg/1280px-American_Airlines_Center_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/35/American_Airlines_Center_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:American_Airlines_Center_02.jpg"
+      }
+    ]
+  },
+  {
+    "id": "northpark-center",
+    "nome": "NorthPark Center",
+    "categoria": "compras",
+    "cidade": "Dallas",
+    "bairro": "North Dallas",
+    "endereco": "8687 N Central Expy, Dallas, TX 75225",
+    "lat": 32.86861,
+    "lng": -96.77333,
+    "gratuito": true,
+    "preco": "Entrada e estacionamento gratuitos",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.northparkcenter.com/",
+    "horario": "Em geral seg–sáb 10h–20h ou 21h · Dom 12h–18h (confirme no site antes de ir)",
+    "site": "https://www.northparkcenter.com/",
+    "historia": "Quando abriu, em 1965, o NorthPark era o maior shopping climatizado do mundo. Foi construído pelo incorporador Raymond Nasher em uma antiga fazenda ao norte de Dallas, com linhas modernistas, tijolo claro e piso de concreto polido que continuam praticamente iguais até hoje.\n\nO grande diferencial é a arte: Nasher e a esposa, Patsy, espalharam pelos corredores obras de sua coleção, tradição mantida pela família. O visitante passa por esculturas e pinturas de artistas como Andy Warhol, Frank Stella e Mark di Suvero entre uma loja e outra. São mais de 200 lojas, de grifes de luxo a redes populares, além de um jardim interno.",
+    "dica": "É o shopping preferido dos moradores e costuma ter lojas que não existem no Brasil. Lembre que o imposto de 8,25% é somado no caixa. De DART, desça na estação Park Lane e pegue o ônibus gratuito do shopping.",
+    "tempo_visita": "2–4 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/NorthPark_Center_March_2017_4.jpg/1280px-NorthPark_Center_March_2017_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/7/78/NorthPark_Center_March_2017_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:NorthPark_Center_March_2017_4.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/NorthPark_Center_March_2017_1.jpg/1280px-NorthPark_Center_March_2017_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/d8/NorthPark_Center_March_2017_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:NorthPark_Center_March_2017_1.jpg"
+      }
+    ]
+  },
+  {
+    "id": "galleria-dallas",
+    "nome": "Galleria Dallas",
+    "categoria": "compras",
+    "cidade": "Dallas",
+    "bairro": "North Dallas",
+    "endereco": "13350 Dallas Pkwy, Dallas, TX 75240",
+    "lat": 32.93,
+    "lng": -96.81944,
+    "gratuito": true,
+    "preco": "Entrada gratuita · Patinação no gelo paga à parte",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.galleriadallas.com/",
+    "horario": "Seg–sáb 10h–20h · Dom 12h–18h",
+    "site": "https://www.galleriadallas.com/",
+    "historia": "Aberta em 1982 pelo incorporador Gerald Hines, a Galleria Dallas seguiu o modelo da Galleria de Houston, do mesmo grupo. As duas se inspiram na Galleria Vittorio Emanuele II, de Milão, com uma longa abóbada de vidro que cobre os corredores e ilumina os três andares de lojas.\n\nNo centro do shopping há uma pista de patinação no gelo que funciona o ano inteiro. No fim do ano, a pista recebe uma árvore de Natal gigante, anunciada como a mais alta árvore interna do país, e shows de patinação. O complexo, na esquina de duas vias expressas do norte de Dallas, inclui ainda hotel e torres de escritórios.",
+    "dica": "A patinação no gelo é uma boa pausa para as crianças e tem aluguel de patins. O shopping fica longe do centro e do metrô: vá de carro (estacionamento gratuito) ou de Uber.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Ice_rink_in_the_Galleria_Dallas_%283478241581%29.jpg/1280px-Ice_rink_in_the_Galleria_Dallas_%283478241581%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Ice_rink_in_the_Galleria_Dallas_%283478241581%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "David Leo Veksler from Atlanta, USA",
+        "licenca": "CC BY 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Ice_rink_in_the_Galleria_Dallas_(3478241581).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Galleria_dallas_exterior.jpg/1280px-Galleria_dallas_exterior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Galleria_dallas_exterior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Shuwus",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Galleria_dallas_exterior.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-farmers-market",
+    "nome": "Dallas Farmers Market",
+    "categoria": "compras",
+    "cidade": "Dallas",
+    "bairro": "Farmers Market District / Downtown",
+    "endereco": "920 S Harwood St, Dallas, TX 75201",
+    "lat": 32.7773,
+    "lng": -96.7893,
+    "gratuito": true,
+    "preco": "Entrada gratuita",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dallasfarmersmarket.org/",
+    "horario": "The Market (praça de alimentação e lojas): diariamente 10h–19h · The Shed (feira de produtores): sáb 9h–17h e dom 10h–17h",
+    "site": "https://www.dallasfarmersmarket.org/",
+    "historia": "Agricultores vendem frutas e verduras neste ponto do centro desde o fim do século 19, quando carroças se juntavam ali para negociar a colheita. A prefeitura oficializou o mercado municipal em 1941 e construiu os galpões abertos. Em 2013 a gestão passou à iniciativa privada, que reformou todo o conjunto.\n\nHoje o mercado tem duas partes. The Shed é o galpão ao ar livre onde, nos fins de semana, produtores do Texas vendem hortaliças, carnes, mel, pães e artesanato. The Market é o prédio fechado, aberto todos os dias, com restaurantes, cafés e lojinhas. Em volta surgiu um bairro novo de prédios residenciais.",
+    "dica": "Vá no sábado de manhã, quando a feira está completa. Muitos produtores oferecem provas grátis. Leve sacola; a maioria aceita cartão.",
+    "tempo_visita": "1–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/The_Dallas_Farmers_Market.jpg/1280px-The_Dallas_Farmers_Market.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/c6/The_Dallas_Farmers_Market.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Dallasfarmersmarket",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:The_Dallas_Farmers_Market.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Fruit_at_Dallas_farmers%27_market%2C_Texas.jpg/1280px-Fruit_at_Dallas_farmers%27_market%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Fruit_at_Dallas_farmers%27_market%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Travis Isaacs from Grapevine, TX, USA",
+        "licenca": "CC BY 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fruit_at_Dallas_farmers%27_market,_Texas.jpg"
+      }
+    ]
+  },
+  {
+    "id": "thanks-giving-square",
+    "nome": "Thanks-Giving Square",
+    "categoria": "parque",
+    "cidade": "Dallas",
+    "bairro": "Downtown",
+    "endereco": "1627 Pacific Ave, Dallas, TX 75201",
+    "lat": 32.78269,
+    "lng": -96.79846,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.thanksgiving.org/",
+    "horario": "Jardim: diariamente 8h–20h · Capela: diariamente 9h–16h",
+    "site": "https://www.thanksgiving.org/",
+    "historia": "Na década de 1960, um grupo de empresários de Dallas criou uma fundação para construir no centro um espaço dedicado à gratidão, valor comum a todas as religiões. A praça triangular, rebaixada em relação à rua e cercada de arranha-céus, foi projetada por Philip Johnson e inaugurada em 1976.\n\nO ponto alto é a pequena capela branca em espiral. No teto fica a Glory Window, um dos maiores vitrais horizontais do mundo, criado pelo francês Gabriel Loire: 73 painéis coloridos que sobem em caracol do azul ao amarelo. No jardim há fontes, um campanário com três sinos e mosaicos com frases de várias tradições.",
+    "dica": "Entre na capela e olhe para cima: a foto do vitral em espiral é uma das mais bonitas de Dallas. É um lugar de oração e silêncio, então fale baixo. Há guia impresso em espanhol.",
+    "tempo_visita": "20–30 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Dallas_Thanks-Giving_Square_2008.jpg/1280px-Dallas_Thanks-Giving_Square_2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Dallas_Thanks-Giving_Square_2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Thanks-Giving_Square_2008.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Dallas_Chapel_of_Thanksgiving_2008.jpg/1280px-Dallas_Chapel_of_Thanksgiving_2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Dallas_Chapel_of_Thanksgiving_2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Photo: Andreas Praefcke",
+        "licenca": "CC BY 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_Chapel_of_Thanksgiving_2008.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Architect_Philip_Johnson%27s_stained-glass_%22Glory_Window%22_unfolds_in_the_spiraling_1976_Chapel_of_Thanksgiving%2C_part_of_Thanks-Giving_Square_in_Dallas%2C_Texas_LCCN2015630405.tif/lossy-page1-1280px-thumbnail.tif.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Architect_Philip_Johnson%27s_stained-glass_%22Glory_Window%22_unfolds_in_the_spiraling_1976_Chapel_of_Thanksgiving%2C_part_of_Thanks-Giving_Square_in_Dallas%2C_Texas_LCCN2015630405.tif?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Architect_Philip_Johnson%27s_stained-glass_%22Glory_Window%22_unfolds_in_the_spiraling_1976_Chapel_of_Thanksgiving,_part_of_Thanks-Giving_Square_in_Dallas,_Texas_LCCN2015630405.tif"
+      }
+    ]
+  },
+  {
+    "id": "margaret-hunt-hill-bridge",
+    "nome": "Margaret Hunt Hill Bridge e Ronald Kirk Bridge",
+    "categoria": "mirante",
+    "cidade": "Dallas",
+    "bairro": "West Dallas / Trinity Groves",
+    "endereco": "109 Continental Ave, Dallas, TX 75207 (acesso à passarela Ronald Kirk Bridge)",
+    "lat": 32.7809,
+    "lng": -96.82277,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.dallasparks.org/",
+    "horario": "Passarela aberta diariamente, em geral 5h–23h (confirme no site antes de ir)",
+    "site": "https://www.dallasparks.org/",
+    "historia": "A ponte estaiada branca sobre o rio Trinity é obra do arquiteto espanhol Santiago Calatrava e foi aberta em março de 2012. Um único arco de aço de cerca de 120 metros de altura sustenta os cabos que seguram a pista. O nome homenageia Margaret Hunt Hill, herdeira de uma família do petróleo.\n\nAo lado fica a antiga ponte da Continental Avenue, da década de 1930, que foi fechada aos carros e reaberta em 2014 como passarela e parque, rebatizada de Ronald Kirk Bridge em homenagem ao primeiro prefeito negro de Dallas. De lá se tem uma das melhores vistas dos prédios do centro, com a ponte de Calatrava em primeiro plano.",
+    "dica": "Vá no fim da tarde para pegar o pôr do sol e as luzes da cidade acendendo. Depois, jante no Trinity Groves, polo de restaurantes ao pé da ponte, no lado oeste, com estacionamento gratuito.",
+    "tempo_visita": "45 minutos–1 hora",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Margaret_Hunt_Hill_Bridge.jpg/1280px-Margaret_Hunt_Hill_Bridge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/4/48/Margaret_Hunt_Hill_Bridge.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Fkbowen",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Margaret_Hunt_Hill_Bridge.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Margaret_Hunt_Hill_Bridge_designed_by_Santiago_Calatrava.jpg/1280px-Margaret_Hunt_Hill_Bridge_designed_by_Santiago_Calatrava.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Margaret_Hunt_Hill_Bridge_designed_by_Santiago_Calatrava.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "DMHinIrving",
+        "licenca": "CC BY 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Margaret_Hunt_Hill_Bridge_designed_by_Santiago_Calatrava.jpg"
+      }
+    ]
+  },
+  {
+    "id": "highland-park-village",
+    "nome": "Highland Park Village",
+    "categoria": "compras",
+    "cidade": "Highland Park",
+    "bairro": "Highland Park",
+    "endereco": "47 Highland Park Village, Dallas, TX 75205",
+    "lat": 32.83583,
+    "lng": -96.80556,
+    "gratuito": true,
+    "preco": "Entrada gratuita",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://hpvillage.com/",
+    "horario": "Lojas em geral seg–sáb 10h–18h e dom 12h–17h; restaurantes até mais tarde (confirme no site antes de ir)",
+    "site": "https://hpvillage.com/",
+    "historia": "Inaugurado em 1931, o Highland Park Village costuma ser citado como um dos primeiros shopping centers planejados dos Estados Unidos: um conjunto de lojas com estilo único, voltado para dentro e com estacionamento próprio. Os arquitetos Marion Fooshee e James Cheek viajaram à Espanha e à Califórnia em busca de inspiração.\n\nO resultado são prédios em estilo mediterrâneo espanhol, com telhas de barro, torres e arcadas, dentro de um dos municípios mais ricos do Texas, cercado por Dallas. O conjunto é Marco Histórico Nacional desde 2000. Hoje abriga grifes como Chanel, Hermès e Dior, restaurantes badalados e um cinema antigo restaurado.",
+    "dica": "Mesmo sem comprar nada, vale pelo passeio e pela arquitetura. Há manobrista, mas também vagas comuns gratuitas. Em dezembro, as árvores ficam cobertas de luzes de Natal.",
+    "tempo_visita": "1–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Highland_Park_July_2016_08_%28Highland_Park_Village%29.jpg/1280px-Highland_Park_July_2016_08_%28Highland_Park_Village%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Highland_Park_July_2016_08_%28Highland_Park_Village%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Highland_Park_July_2016_08_(Highland_Park_Village).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Highland_Park_July_2016_06_%28Highland_Park_Village_Theatre%29.jpg/1280px-Highland_Park_July_2016_06_%28Highland_Park_Village_Theatre%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/69/Highland_Park_July_2016_06_%28Highland_Park_Village_Theatre%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Highland_Park_July_2016_06_(Highland_Park_Village_Theatre).jpg"
+      }
+    ]
+  },
+  {
+    "id": "frontiers-of-flight-museum",
+    "nome": "Frontiers of Flight Museum",
+    "categoria": "museu",
+    "cidade": "Dallas",
+    "bairro": "Love Field",
+    "endereco": "6911 Lemmon Ave, Dallas, TX 75209",
+    "lat": 32.8424,
+    "lng": -96.8353,
+    "gratuito": false,
+    "preco": "Adulto (13+) US$ 20 · Criança (3–12) US$ 12 · Sênior (65+) US$ 10 · Estacionamento gratuito",
+    "preco_min_usd": 20,
+    "preco_confirmado": true,
+    "fonte_preco": "https://flightmuseum.com/visit/",
+    "horario": "Em geral seg–sáb 10h–17h e dom 13h–17h (confirme no site antes de ir)",
+    "site": "https://flightmuseum.com/",
+    "historia": "O museu nasceu da coleção de história da aviação reunida pelo jornalista George Haddaway e doada a uma universidade de Dallas. Depois de anos em uma sala do terminal do aeroporto Love Field, ganhou em 2004 um hangar próprio de cerca de 9 mil metros quadrados na beira da pista.\n\nO acervo cobre de Leonardo da Vinci à corrida espacial, com mais de 30 aeronaves e veículos. As estrelas são o módulo de comando da Apollo 7, que levou astronautas ao espaço em 1968, um Boeing 737 da Southwest Airlines, companhia nascida ali mesmo em Love Field, aviões das duas guerras mundiais e peças do dirigível Hindenburg.",
+    "dica": "Fica ao lado do aeroporto Love Field: boa opção para quem tem algumas horas antes de um voo doméstico. O estacionamento é gratuito. De uma janela do museu dá para ver pousos e decolagens.",
+    "tempo_visita": "1h30–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Frontiers_of_Flight_Museum_December_2015_001.jpg/1280px-Frontiers_of_Flight_Museum_December_2015_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Frontiers_of_Flight_Museum_December_2015_001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Frontiers_of_Flight_Museum_December_2015_001.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Frontiers_of_Flight_Museum_December_2015_005_%28Lockheed_T-33A_Shooting_Star%29.jpg/1280px-Frontiers_of_Flight_Museum_December_2015_005_%28Lockheed_T-33A_Shooting_Star%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Frontiers_of_Flight_Museum_December_2015_005_%28Lockheed_T-33A_Shooting_Star%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Frontiers_of_Flight_Museum_December_2015_005_(Lockheed_T-33A_Shooting_Star).jpg"
+      }
+    ]
+  },
+  {
+    "id": "old-city-park",
+    "nome": "Old City Park (antigo Dallas Heritage Village)",
+    "categoria": "historico",
+    "cidade": "Dallas",
+    "bairro": "The Cedars",
+    "endereco": "1515 S Harwood St, Dallas, TX 75215",
+    "lat": 32.7727,
+    "lng": -96.787,
+    "gratuito": true,
+    "preco": "Entrada geral gratuita · Eventos especiais e visitas guiadas podem ser cobrados",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://oldcityparkconservancy.org/hours-admissions/",
+    "horario": "Área externa: diariamente 7h–19h · Centro de visitantes e casas históricas: ter–sáb 10h–17h, dom 12h–17h (as fontes divergem; confirme)",
+    "site": "https://oldcityparkconservancy.org/",
+    "historia": "Este é o primeiro parque público de Dallas, criado em 1876 ao sul do centro. Já teve o primeiro zoológico e as primeiras piscinas da cidade. Na década de 1960, moradores se mobilizaram para salvar da demolição o casarão Millermore, de antes da Guerra Civil, e o transferiram para o parque.\n\nA partir daí, dezenas de construções texanas do século 19 e do início do 20 foram trazidas e restauradas: escola, igreja, banco, estação de trem, saloon, fazenda e casas de colonos. Durante décadas o local se chamou Dallas Heritage Village. Em 2024 a prefeitura reassumiu a gestão, o nome original voltou e a entrada passou a ser gratuita.",
+    "dica": "Nem todas as casas ficam abertas todos os dias; pergunte no centro de visitantes quais podem ser visitadas por dentro. Fica a dez minutos a pé do Dallas Farmers Market.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Millermore_Mansion_%28Dallas_Heritage_Village%29.jpg/1280px-Millermore_Mansion_%28Dallas_Heritage_Village%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Millermore_Mansion_%28Dallas_Heritage_Village%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Gail Frederick",
+        "licenca": "CC BY 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Millermore_Mansion_(Dallas_Heritage_Village).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Saloon_%28Dallas_Heritage_Village%29.jpg/1280px-Saloon_%28Dallas_Heritage_Village%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Saloon_%28Dallas_Heritage_Village%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Gail Frederick",
+        "licenca": "CC BY 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Saloon_(Dallas_Heritage_Village).jpg"
+      }
+    ]
+  },
+  {
+    "id": "cedar-ridge-preserve",
+    "nome": "Cedar Ridge Preserve",
+    "categoria": "natureza",
+    "cidade": "Dallas",
+    "bairro": "Southwest Dallas / Mountain Creek",
+    "endereco": "7171 Mountain Creek Pkwy, Dallas, TX 75249",
+    "lat": 32.638,
+    "lng": -96.958,
+    "gratuito": true,
+    "preco": "Gratuito, com doação sugerida (não foi possível abrir o site oficial na verificação)",
+    "preco_min_usd": 0,
+    "preco_confirmado": false,
+    "fonte_preco": "https://audubondallas.org/",
+    "horario": "Em geral ter–dom, do início da manhã ao fim da tarde; fechado às segundas (confirme no site antes de ir)",
+    "site": "https://audubondallas.org/",
+    "historia": "Quem acha que Dallas é toda plana se surpreende aqui. A reserva protege cerca de 240 hectares de morros calcários cobertos de cedros e carvalhos no sudoeste da cidade, em um trecho de relevo que lembra a região serrana do centro do Texas. O ponto mais alto passa de 220 metros de altitude.\n\nA área funcionou por anos como centro de natureza da cidade e, desde 2003, é administrada pela associação de observadores de aves Audubon Dallas, com trabalho voluntário. São cerca de 14 quilômetros de trilhas sinalizadas, de fáceis a puxadas, com mirantes para o lago Joe Pool, jardim de borboletas e boa observação de aves.",
+    "dica": "Leve água e use tênis com boa aderência: as trilhas têm pedras soltas e subidas. Nos fins de semana o estacionamento lota cedo, e os portões fecham quando enche. Não há lanchonete.",
+    "tempo_visita": "1h30–3 horas",
+    "imagens": []
+  },
+  {
+    "id": "trinity-river-audubon-center",
+    "nome": "Trinity River Audubon Center",
+    "categoria": "natureza",
+    "cidade": "Dallas",
+    "bairro": "Southeast Dallas / Great Trinity Forest",
+    "endereco": "6500 Great Trinity Forest Way, Dallas, TX 75217",
+    "lat": 32.7036,
+    "lng": -96.7053,
+    "gratuito": true,
+    "preco": "Gratuito, com inscrição prévia pelo site",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.audubon.org/trinity-river/visit",
+    "horario": "Dias e horários variam (confirme no site antes de ir)",
+    "site": "https://trinityriver.audubon.org/",
+    "historia": "O centro foi aberto em 2008 em um terreno que, durante décadas, funcionou como depósito clandestino de lixo e entulho na zona sul de Dallas. Depois de uma ação judicial, a prefeitura limpou a área e a transformou em 49 hectares de lagos, pradarias e mata recuperados.\n\nO prédio, do arquiteto Antoine Predock, tem a forma de um pássaro em voo quando visto de cima e recebeu certificação ambiental. O centro é a porta de entrada para a Great Trinity Forest, uma das maiores florestas urbanas dos Estados Unidos, com cerca de 2.400 hectares ao longo do rio Trinity. Há oito quilômetros de trilhas e passarelas.",
+    "dica": "Faça a inscrição gratuita pelo site antes de ir. Leve repelente e, se tiver, binóculo. Só se chega de carro; fica a cerca de 15 minutos do centro.",
+    "tempo_visita": "1h30–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Trinity_River_Audubon_Center.jpg/1280px-Trinity_River_Audubon_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Trinity_River_Audubon_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Kairos14",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Trinity_River_Audubon_Center.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Trinity_Audubon_Center.jpg/1280px-Trinity_Audubon_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Trinity_Audubon_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Kairos14",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Trinity_Audubon_Center.jpg"
+      }
+    ]
+  },
+  {
+    "id": "m-line-trolley",
+    "nome": "M-Line Trolley (McKinney Avenue Trolley)",
+    "categoria": "historico",
+    "cidade": "Dallas",
+    "bairro": "Uptown",
+    "endereco": "McKinney Ave com N St Paul St, Dallas, TX 75201 (o bonde tem várias paradas entre o centro e Uptown)",
+    "lat": 32.7985,
+    "lng": -96.8015,
+    "gratuito": true,
+    "preco": "Gratuito (doações voluntárias)",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.mata.org/",
+    "horario": "Circula todos os dias, da manhã à noite, com horário estendido nos fins de semana (confirme no site antes de ir)",
+    "site": "https://www.mata.org/",
+    "historia": "Dallas teve uma extensa rede de bondes até 1956. Nos anos 1980, ao recapear a McKinney Avenue, operários encontraram os trilhos antigos ainda inteiros sob o asfalto. Um grupo de entusiastas fundou então uma entidade sem fins lucrativos para trazer os bondes de volta, e a linha voltou a funcionar em julho de 1989.\n\nA frota é formada por bondes históricos restaurados, alguns com mais de cem anos, vindos de Dallas e de outras cidades do mundo, cada um com nome próprio. Conduzidos em parte por voluntários, eles ligam o centro e o Arts District ao bairro de Uptown, passando pelo Klyde Warren Park e por dezenas de bares e restaurantes.",
+    "dica": "Não se paga nada para andar, e é um jeito divertido de ir do Arts District aos restaurantes de Uptown. Faz conexão com o DART nas estações St. Paul e Cityplace/Uptown. Faça sinal para o bonde parar.",
+    "tempo_visita": "30–45 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Dallas_McKinney_trolley_01.jpg/1280px-Dallas_McKinney_trolley_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Dallas_McKinney_trolley_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_McKinney_trolley_01.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Dallas_McKinney_trolley_10.jpg/1280px-Dallas_McKinney_trolley_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/8/86/Dallas_McKinney_trolley_10.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_McKinney_trolley_10.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dallas-contemporary",
+    "nome": "Dallas Contemporary",
+    "categoria": "arte",
+    "cidade": "Dallas",
+    "bairro": "Design District",
+    "endereco": "161 Glass St, Dallas, TX 75207",
+    "lat": 32.789,
+    "lng": -96.8203,
+    "gratuito": true,
+    "preco": "Gratuito (doação sugerida de US$ 10) · Gratuidade garantida até o fim de 2026",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://dallascontemporary.org/visit",
+    "horario": "Dias e horários variam conforme a exposição; reserva antecipada recomendada (confirme no site antes de ir)",
+    "site": "https://dallascontemporary.org/",
+    "historia": "Fundado em 1978 por artistas locais, o Dallas Contemporary segue o modelo europeu de kunsthalle: não tem acervo próprio e vive só de exposições temporárias, em geral encomendadas a artistas vivos. Em 2010 mudou-se para um antigo galpão industrial de 3.400 metros quadrados no Design District.\n\nO espaço amplo, de pé-direito alto e piso de concreto, permite instalações de grande porte, e muitos artistas internacionais fizeram ali sua primeira mostra individual no Texas. O entorno, antes ocupado por depósitos e showrooms de decoração, virou um polo de galerias, antiquários, cervejarias e restaurantes.",
+    "dica": "O estacionamento ao lado do prédio é gratuito. Antes de ir, veja no site se há exposição em cartaz, porque o espaço fecha nas trocas de mostra. Aproveite para circular pelas galerias da Dragon Street.",
+    "tempo_visita": "45 minutos–1 hora",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/DallasContemporary_Exterior.jpg/1280px-DallasContemporary_Exterior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/68/DallasContemporary_Exterior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Dallas contemporary 16",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:DallasContemporary_Exterior.jpg"
+      }
+    ]
+  },
+  {
+    "id": "att-discovery-district",
+    "nome": "AT&T Discovery District",
+    "categoria": "bairro",
+    "cidade": "Dallas",
+    "bairro": "Downtown",
+    "endereco": "208 S Akard St, Dallas, TX 75202",
+    "lat": 32.7795,
+    "lng": -96.799,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://discoverydistrict.att.com/",
+    "horario": "Praça aberta diariamente · Lobby da AT&T: seg–qui 5h–20h, sex 5h–21h30, sáb 7h–21h30, dom 7h–20h",
+    "site": "https://discoverydistrict.att.com/",
+    "historia": "A operadora AT&T transferiu sua sede mundial para o centro de Dallas em 2008. Anos depois, decidiu abrir o térreo de seus quatro prédios ao público e transformar as ruas internas em praça. O complexo ficou pronto entre 2020 e 2021 e ajudou a devolver movimento a essa parte do centro.\n\nA atração principal é um telão de altíssima definição com cerca de 30 metros de altura, que exibe arte digital, jogos e filmes. Há também uma escultura em forma de globo espelhado em que se pode entrar, gramado, um food hall de dois andares e, no lobby, o Golden Boy, estátua dourada de 1916 que simboliza as telecomunicações.",
+    "dica": "À noite as luzes e o telão ficam mais bonitos, e em dias de jogos importantes há transmissão ao vivo na praça, de graça. O food hall The Exchange é boa opção para comer no centro.",
+    "tempo_visita": "45 minutos–1 hora",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/AT%26T%27s_Spirit_of_Communications_%28Golden_Boy%29_sculpture_in_its_current_location_outside_of_AT%26T%27s_headquarters_in_Dallas%2C_Texas.jpg/1280px-AT%26T%27s_Spirit_of_Communications_%28Golden_Boy%29_sculpture_in_its_current_location_outside_of_AT%26T%27s_headquarters_in_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/4/44/AT%26T%27s_Spirit_of_Communications_%28Golden_Boy%29_sculpture_in_its_current_location_outside_of_AT%26T%27s_headquarters_in_Dallas%2C_Texas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Jackilometresan",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:AT%26T%27s_Spirit_of_Communications_(Golden_Boy)_sculpture_in_its_current_location_outside_of_AT%26T%27s_headquarters_in_Dallas,_Texas.jpg"
+      }
+    ]
+  },
+  {
+    "id": "fort-worth-stockyards",
+    "nome": "Fort Worth Stockyards National Historic District",
+    "categoria": "historico",
+    "cidade": "Fort Worth",
+    "bairro": "Stockyards",
+    "endereco": "131 E Exchange Ave, Fort Worth, TX 76164",
+    "lat": 32.79028,
+    "lng": -97.34611,
+    "gratuito": true,
+    "preco": "Gratuito para passear e assistir ao desfile de gado · Rodeio, museus e atrações cobram à parte",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.fortworthstockyards.org/",
+    "horario": "Aberto diariamente · Desfile do Fort Worth Herd todos os dias às 11h30 e às 16h",
+    "site": "https://www.fortworthstockyards.org/",
+    "historia": "Fort Worth era a última parada das boiadas na trilha Chisholm antes do território indígena, o que lhe rendeu o apelido de Cowtown. Com a chegada da ferrovia, os currais foram organizados em 1890 e, pouco depois de 1900, os frigoríficos Armour e Swift se instalaram ao lado, fazendo do local um dos maiores mercados de gado do país.\n\nO movimento caiu depois da Segunda Guerra, e os currais viraram distrito histórico nacional em 1976. Hoje as ruas de tijolos têm lojas de botas e chapéus, saloons, churrascarias e o Cowtown Coliseum, de 1908, com rodeios semanais. Duas vezes por dia, vaqueiros conduzem uma boiada de longhorns pela Exchange Avenue.",
+    "dica": "Chegue uns 20 minutos antes do desfile das 11h30 ou das 16h para pegar lugar na calçada. De Dallas, o trem TRE vai até Fort Worth; de lá, siga de ônibus ou Uber. Os estacionamentos da área são pagos.",
+    "tempo_visita": "3–4 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Fort_Worth_Stockyards_June_2016_15_%28Exchange_Avenue%29.jpg/1280px-Fort_Worth_Stockyards_June_2016_15_%28Exchange_Avenue%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/9/95/Fort_Worth_Stockyards_June_2016_15_%28Exchange_Avenue%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Stockyards_June_2016_15_(Exchange_Avenue).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Fort_Worth_Stock_Yards_Entrance_Wiki_%281_of_1%29.jpg/1280px-Fort_Worth_Stock_Yards_Entrance_Wiki_%281_of_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/1/10/Fort_Worth_Stock_Yards_Entrance_Wiki_%281_of_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Renelibrary",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Stock_Yards_Entrance_Wiki_(1_of_1).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Fort_Worth_Stockyards_Historic_District.jpg/1280px-Fort_Worth_Stockyards_Historic_District.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/34/Fort_Worth_Stockyards_Historic_District.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "chrisc39",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Stockyards_Historic_District.jpg"
+      }
+    ]
+  },
+  {
+    "id": "kimbell-art-museum",
+    "nome": "Kimbell Art Museum",
+    "categoria": "arte",
+    "cidade": "Fort Worth",
+    "bairro": "Cultural District",
+    "endereco": "3333 Camp Bowie Blvd, Fort Worth, TX 76107",
+    "lat": 32.7486,
+    "lng": -97.365,
+    "gratuito": true,
+    "preco": "Acervo permanente gratuito · Exposições especiais pagas (cerca de US$ 18 por adulto segundo fontes não oficiais; o site oficial estava inacessível na verificação)",
+    "preco_min_usd": 0,
+    "preco_confirmado": false,
+    "fonte_preco": "https://incredibletexas.com/kimbell-art-museum-hours-tickets-parking/",
+    "horario": "Em geral ter–dom, com abertura ao meio-dia às sextas e aos domingos; fechado seg (confirme no site antes de ir)",
+    "site": "https://kimbellart.org/",
+    "historia": "O empresário Kay Kimbell fez fortuna com moinhos e mercearias e, ao morrer em 1964, deixou seus bens para criar um museu de arte de primeira linha em Fort Worth. O prédio, inaugurado em 1972, é a obra-prima do arquiteto Louis Kahn: uma sequência de abóbadas de concreto com fendas no topo que espalham luz natural prateada pelas salas.\n\nA coleção é pequena, com poucas centenas de peças, mas de altíssimo nível: Caravaggio, El Greco, Rembrandt, Monet, Cézanne, Picasso e a pintura considerada a primeira de Michelangelo. Em 2013 o museu ganhou um segundo pavilhão, desenhado por Renzo Piano, que havia trabalhado com Kahn.",
+    "dica": "O acervo permanente é gratuito todos os dias. No mesmo quarteirão ficam o Modern Art Museum e o Amon Carter Museum, este também gratuito; dá para passar o dia no Cultural District. O estacionamento do museu é gratuito.",
+    "tempo_visita": "1h30–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Kimbell_Art_Museum_Highsmith.jpg/1280px-Kimbell_Art_Museum_Highsmith.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/8/81/Kimbell_Art_Museum_Highsmith.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Kimbell_Art_Museum_Highsmith.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Kimbell_Art_Museum_interior_01.jpg/1280px-Kimbell_Art_Museum_interior_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/2/25/Kimbell_Art_Museum_interior_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Joe Mabel",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Kimbell_Art_Museum_interior_01.jpg"
+      }
+    ]
+  },
+  {
+    "id": "fort-worth-zoo",
+    "nome": "Fort Worth Zoo",
+    "categoria": "familia",
+    "cidade": "Fort Worth",
+    "bairro": "Forest Park",
+    "endereco": "1989 Colonial Pkwy, Fort Worth, TX 76110",
+    "lat": 32.7219,
+    "lng": -97.3566,
+    "gratuito": false,
+    "preco": "Adulto (13+) US$ 22 · Criança (3–12) US$ 18 · Sênior (65+) US$ 18 · até 2 anos grátis · Estacionamento US$ 5 por carro",
+    "preco_min_usd": 22,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.fortworthzoo.org/plan-your-visit",
+    "horario": "Diariamente 10h–16h (horário de inverno; no Thanksgiving e no Natal, 12h–16h)",
+    "site": "https://www.fortworthzoo.org/",
+    "historia": "O zoológico de Fort Worth abriu em 1909 com apenas um leão, dois filhotes de urso, um jacaré, um coiote, um pavão e alguns coelhos. Pertenceu à prefeitura até 1991, quando a gestão passou para uma associação sem fins lucrativos que iniciou uma grande modernização.\n\nHoje abriga cerca de 7 mil animais e aparece com frequência em listas dos melhores zoológicos dos Estados Unidos. Entre os destaques estão a savana africana, onde se pode alimentar girafas, o vale dos elefantes, um grande pavilhão de répteis e anfíbios e a área Texas Wild!, que recria uma cidadezinha do interior com animais nativos do estado.",
+    "dica": "O ingresso vale para uma visita em até 30 dias após a compra. É permitido levar comida e bebida (sem vidro nem álcool), o que ajuda a economizar. No horário de inverno fecha cedo, às 16h; chegue na abertura.",
+    "tempo_visita": "3–4 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Museum_of_Living_Art_Fort_Worth_Zoo%2C_March_2026.jpg/1280px-Museum_of_Living_Art_Fort_Worth_Zoo%2C_March_2026.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Museum_of_Living_Art_Fort_Worth_Zoo%2C_March_2026.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Kitkattt3",
+        "licenca": "CC BY 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Museum_of_Living_Art_Fort_Worth_Zoo,_March_2026.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Phoenicopterus_ruber_-Fort_Worth_Zoo%2C_Texas%2C_USA_-head-8a_%281%29.jpg/1280px-Phoenicopterus_ruber_-Fort_Worth_Zoo%2C_Texas%2C_USA_-head-8a_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/3/38/Phoenicopterus_ruber_-Fort_Worth_Zoo%2C_Texas%2C_USA_-head-8a_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Eric Kilby from USA",
+        "licenca": "CC BY-SA 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Phoenicopterus_ruber_-Fort_Worth_Zoo,_Texas,_USA_-head-8a_(1).jpg"
+      }
+    ]
+  },
+  {
+    "id": "fort-worth-water-gardens",
+    "nome": "Fort Worth Water Gardens",
+    "categoria": "parque",
+    "cidade": "Fort Worth",
+    "bairro": "Downtown",
+    "endereco": "1502 Commerce St, Fort Worth, TX 76102",
+    "lat": 32.74778,
+    "lng": -97.32667,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.fortworth.com/",
+    "horario": "Diariamente, em geral da manhã até a noite (confirme no site antes de ir)",
+    "site": "https://www.fortworthtexas.gov/",
+    "historia": "Inaugurado em 1974 ao lado do centro de convenções, o parque foi um presente da Fundação Amon G. Carter à cidade. O projeto é dos arquitetos Philip Johnson e John Burgee, que substituíram quatro quarteirões degradados por uma paisagem de concreto em degraus, árvores e água.\n\nSão três espaços principais: a piscina de meditação, cercada de ciprestes, com água escorrendo em lâmina pelas paredes; a piscina de aeração, com dezenas de jatos; e a piscina ativa, onde a água despenca por terraços até um poço de 11 metros de profundidade, ao qual o visitante desce por degraus soltos. O cenário aparece no filme de ficção científica Fuga do Século 23, de 1976.",
+    "dica": "Cuidado ao descer a piscina ativa: os degraus ficam molhados e não têm corrimão. É proibido entrar na água. Fica a poucos minutos a pé da estação de trem TRE de Fort Worth.",
+    "tempo_visita": "30–45 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Fort_Worth_Water_Gardens_02.jpg/1280px-Fort_Worth_Water_Gardens_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/4/42/Fort_Worth_Water_Gardens_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Farragutful",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Water_Gardens_02.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Fort_Worth_Water_Gardens_11.jpg/1280px-Fort_Worth_Water_Gardens_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Fort_Worth_Water_Gardens_11.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Farragutful",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Water_Gardens_11.jpg"
+      }
+    ]
+  },
+  {
+    "id": "fort-worth-botanic-garden",
+    "nome": "Fort Worth Botanic Garden",
+    "categoria": "natureza",
+    "cidade": "Fort Worth",
+    "bairro": "Cultural District",
+    "endereco": "3220 Botanic Garden Blvd, Fort Worth, TX 76107",
+    "lat": 32.74,
+    "lng": -97.3625,
+    "gratuito": false,
+    "preco": "Online: Adulto US$ 12 · Sênior US$ 10 · Criança (3–15) US$ 6 · Na bilheteria: Adulto US$ 14–15 · até 2 anos grátis",
+    "preco_min_usd": 12,
+    "preco_confirmado": true,
+    "fonte_preco": "https://fwbg.org/plan-a-visit/admission-and-hours/",
+    "horario": "Out–fev: diariamente 8h–16h (última entrada 15h) · Mar–set: diariamente 8h–18h",
+    "site": "https://fwbg.org/",
+    "historia": "Criado em 1934, é o jardim botânico mais antigo do Texas. O núcleo original, um roseiral em terraços com escadarias de pedra, foi construído durante a Grande Depressão por trabalhadores de programas federais de emprego. O jardim cresceu até os atuais 48 hectares.\n\nA área mais procurada é o Jardim Japonês, de 1973, instalado em uma antiga pedreira, com lagos de carpas, pontes, casa de chá e bordos que ficam vermelhos no outono. Há ainda uma estufa tropical e mais de vinte jardins temáticos. Desde 2020 o local é administrado pelo instituto de pesquisa botânica BRIT, vizinho ao jardim.",
+    "dica": "Compre pelo site: o ingresso online é mais barato que o da bilheteria. O Jardim Japonês fica especialmente bonito em novembro, com as folhas de outono, e na primavera. Estacionamento gratuito.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Fort_Worth_Japanese_Garden_October_2019_21.jpg/1280px-Fort_Worth_Japanese_Garden_October_2019_21.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Fort_Worth_Japanese_Garden_October_2019_21.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Japanese_Garden_October_2019_21.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Fort_Worth_Japanese_Garden_October_2019_08.jpg/1280px-Fort_Worth_Japanese_Garden_October_2019_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Fort_Worth_Japanese_Garden_October_2019_08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Fort_Worth_Japanese_Garden_October_2019_08.jpg"
+      }
+    ]
+  },
+  {
+    "id": "att-stadium",
+    "nome": "AT&T Stadium (tours)",
+    "categoria": "esporte",
+    "cidade": "Arlington",
+    "bairro": "Entertainment District",
+    "endereco": "One AT&T Way, Arlington, TX 76011",
+    "lat": 32.74778,
+    "lng": -97.09278,
+    "gratuito": false,
+    "preco": "VIP Guided Tour: adulto aprox. US$ 46–52 · criança (5–12) aprox. US$ 41–47 · até 4 anos grátis (faixa informada pelo CityPASS). O tour autoguiado costuma ser mais barato, mas o preço não pôde ser confirmado no site oficial",
+    "preco_min_usd": 46,
+    "preco_confirmado": false,
+    "fonte_preco": "https://www.citypass.com/dallas",
+    "horario": "Tours na maioria dos dias, com horários que mudam conforme jogos e eventos (confirme no site antes de ir)",
+    "site": "https://attstadium.com/tours/",
+    "historia": "A casa do Dallas Cowboys, time mais valioso do futebol americano, foi inaugurada em 2009 ao custo de mais de 1 bilhão de dólares. Tem teto retrátil, portões de vidro gigantes nas duas pontas e um telão suspenso sobre o campo que, na época, era o maior do mundo. O estádio ganhou o nome atual em 2013.\n\nComporta cerca de 80 mil pessoas sentadas e pode passar de 100 mil com áreas em pé. Já recebeu o Super Bowl de 2011, finais de basquete universitário, lutas de boxe e grandes shows. Em 2026 foi o estádio com mais partidas da Copa do Mundo da FIFA, nove no total, incluindo uma semifinal.",
+    "dica": "O tour VIP guiado está no Dallas CityPASS e costuma compensar. No autoguiado dá para pisar no gramado e chutar uma bola. Confira no site as datas bloqueadas por eventos antes de ir; o estacionamento do tour é gratuito no lote indicado.",
+    "tempo_visita": "1h30–2 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/AT%26T_Stadium%2C_Arlington%2C_Texas%2C_United_States.jpg/1280px-AT%26T_Stadium%2C_Arlington%2C_Texas%2C_United_States.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/2/2e/AT%26T_Stadium%2C_Arlington%2C_Texas%2C_United_States.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:AT%26T_Stadium,_Arlington,_Texas,_United_States.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/Arlington_June_2020_4_%28AT%26T_Stadium%29.jpg/1280px-Arlington_June_2020_4_%28AT%26T_Stadium%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/1/11/Arlington_June_2020_4_%28AT%26T_Stadium%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Arlington_June_2020_4_(AT%26T_Stadium).jpg"
+      }
+    ]
+  },
+  {
+    "id": "globe-life-field",
+    "nome": "Globe Life Field (tours)",
+    "categoria": "esporte",
+    "cidade": "Arlington",
+    "bairro": "Entertainment District",
+    "endereco": "734 Stadium Dr, Arlington, TX 76011",
+    "lat": 32.7475,
+    "lng": -97.08417,
+    "gratuito": false,
+    "preco": "Ballpark Tour: Adulto US$ 20 · Criança US$ 12 · Premium Tour: US$ 28 / US$ 20 · Pregame Tour: US$ 45 / US$ 31",
+    "preco_min_usd": 20,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.mlb.com/rangers/ballpark/tours",
+    "horario": "Tours em dias e horários variáveis, conforme o calendário de jogos e eventos (confirme no site antes de ir)",
+    "site": "https://www.mlb.com/rangers/ballpark/tours",
+    "historia": "O estádio de beisebol do Texas Rangers abriu em 2020, bem em frente ao antigo, que era descoberto. O principal motivo da troca foi o calor do verão texano: o novo estádio tem teto retrátil e ar-condicionado. Por causa da pandemia, a estreia foi sem público.\n\nAinda em 2020, o estádio recebeu a World Series inteira em campo neutro, algo inédito na era moderna. Em 2023, jogando nesta casa, os Rangers conquistaram enfim o primeiro título de World Series de sua história, e em 2024 o local sediou o All-Star Game. O tour passa por vestiário, banco de reservas, sala de imprensa e camarotes.",
+    "dica": "Se a ideia é ver um jogo, a temporada de beisebol vai do fim de março ao fim de setembro, e há ingressos baratos nos setores altos. O estádio fica a poucos minutos a pé do AT&T Stadium; dá para fazer os dois tours no mesmo dia.",
+    "tempo_visita": "1–1h30",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Arlington_June_2020_5_%28Globe_Life_Field%29.jpg/1280px-Arlington_June_2020_5_%28Globe_Life_Field%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Arlington_June_2020_5_%28Globe_Life_Field%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Michael Barera",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Arlington_June_2020_5_(Globe_Life_Field).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/20210523_globe_life_field_interior.jpg/1280px-20210523_globe_life_field_interior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/b8/20210523_globe_life_field_interior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Ivansevil",
+        "licenca": "CC BY-SA 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:20210523_globe_life_field_interior.jpg"
+      }
+    ]
+  },
+  {
+    "id": "six-flags-over-texas",
+    "nome": "Six Flags Over Texas",
+    "categoria": "familia",
+    "cidade": "Arlington",
+    "bairro": "Entertainment District",
+    "endereco": "2201 E Road to Six Flags St, Arlington, TX 76011",
+    "lat": 32.7557,
+    "lng": -97.07022,
+    "gratuito": false,
+    "preco": "Ingresso de 1 dia a partir de US$ 45 online (data marcada) · Ingresso para qualquer dia US$ 69 · mais taxa de até US$ 9,99 e impostos · Estacionamento pago à parte",
+    "preco_min_usd": 45,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.sixflags.com/overtexas/daily-tickets",
+    "horario": "Funciona em dias selecionados, com horários que variam por temporada (confirme no site antes de ir)",
+    "site": "https://www.sixflags.com/overtexas",
+    "historia": "Aberto em agosto de 1961 pelo empresário Angus Wynne Jr., este foi o primeiro parque da rede Six Flags, hoje espalhada pela América do Norte. O nome se refere às seis bandeiras que já governaram o Texas: Espanha, França, México, República do Texas, Estados Confederados e Estados Unidos. As áreas originais do parque seguiam esses temas.\n\nO parque lançou atrações que depois se espalharam pelo mundo, como o primeiro brinquedo de troncos na água, em 1963, e uma das primeiras montanhas-russas no estilo trem de mina, em 1966. Hoje tem mais de uma dúzia de montanhas-russas, entre elas a Titan, com 75 metros de altura, e a New Texas Giant.",
+    "dica": "Compre pelo site com data marcada: sai bem mais barato que na bilheteria. Visitantes com 65 anos ou mais têm entrada gratuita até 31/12/2026, mediante cadastro. Evite sábados de verão e leve protetor solar.",
+    "tempo_visita": "6–8 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Six_Flags_Over_Texas%2C_Arlington%2C_Texas_%2848849396931%29.jpg/1280px-Six_Flags_Over_Texas%2C_Arlington%2C_Texas_%2848849396931%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/4/41/Six_Flags_Over_Texas%2C_Arlington%2C_Texas_%2848849396931%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Nicolas Henderson from Coppell, Texas",
+        "licenca": "CC BY 2.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Six_Flags_Over_Texas,_Arlington,_Texas_(48849396931).jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Titan_%28Six_Flags_Over_Texas%29.jpg/1280px-Titan_%28Six_Flags_Over_Texas%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Titan_%28Six_Flags_Over_Texas%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Freddo",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Titan_(Six_Flags_Over_Texas).jpg"
+      }
+    ]
+  },
+  {
+    "id": "grapevine-historic-main-street",
+    "nome": "Historic Downtown Grapevine (Main Street)",
+    "categoria": "bairro",
+    "cidade": "Grapevine",
+    "bairro": "Historic Downtown",
+    "endereco": "636 S Main St, Grapevine, TX 76051",
+    "lat": 32.9365,
+    "lng": -97.0785,
+    "gratuito": true,
+    "preco": "Gratuito para passear · Trem turístico e degustações de vinho pagos à parte",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.grapevinetexasusa.com/",
+    "horario": "Lojas em geral 10h–18h; restaurantes e vinícolas até mais tarde",
+    "site": "https://www.grapevinetexasusa.com/",
+    "historia": "Fundada em 1844, antes mesmo de o Texas entrar para os Estados Unidos, Grapevine é o povoado mais antigo do condado de Tarrant. O nome vem das uvas silvestres que cresciam na pradaria. A cidade viveu do algodão e do melão até a construção do aeroporto DFW, na década de 1970, em parte dentro de seus limites.\n\nA Main Street preserva dezenas de prédios comerciais do fim do século 19 e do início do 20, hoje ocupados por lojas, restaurantes, galerias e salas de degustação de vinícolas texanas. Da antiga estação parte um trem turístico com vagões históricos. Em dezembro, a cidade se promove como a capital do Natal do Texas, com milhões de luzes.",
+    "dica": "Fica a dez minutos do aeroporto DFW: ótima parada para quem tem conexão longa ou chega cedo para o voo. O trem TEXRail liga o aeroporto e Fort Worth à estação da Main Street. Estacionamento gratuito nas ruas.",
+    "tempo_visita": "2–3 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Main_Street_Grapevine_Texas_by_Raymond_Lafourchette.jpg/1280px-Main_Street_Grapevine_Texas_by_Raymond_Lafourchette.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Main_Street_Grapevine_Texas_by_Raymond_Lafourchette.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Raymondlafourchette",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Main_Street_Grapevine_Texas_by_Raymond_Lafourchette.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Main_Street%2C_Grapevine%2C_TX%2C_Oct_2012.jpg/1280px-Main_Street%2C_Grapevine%2C_TX%2C_Oct_2012.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/7/75/Main_Street%2C_Grapevine%2C_TX%2C_Oct_2012.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Wildstoo",
+        "licenca": "CC BY-SA 3.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Main_Street,_Grapevine,_TX,_Oct_2012.jpg"
+      }
+    ]
+  },
+  {
+    "id": "grapevine-mills",
+    "nome": "Grapevine Mills",
+    "categoria": "compras",
+    "cidade": "Grapevine",
+    "bairro": "Norte de Grapevine",
+    "endereco": "3000 Grapevine Mills Pkwy, Grapevine, TX 76051",
+    "lat": 32.96611,
+    "lng": -97.04278,
+    "gratuito": true,
+    "preco": "Entrada e estacionamento gratuitos · Atrações internas (LEGOLAND Discovery Center, SEA LIFE) pagas à parte",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.simon.com/mall/grapevine-mills",
+    "horario": "Em geral seg–sáb 10h–21h e dom 11h–19h (confirme no site antes de ir)",
+    "site": "https://www.simon.com/mall/grapevine-mills",
+    "historia": "Inaugurado em outubro de 1997, o Grapevine Mills foi um dos shoppings da rede Mills, que misturava lojas de fábrica, grandes magazines e entretenimento em um só prédio térreo em formato de circuito. Fica a poucos minutos do aeroporto DFW e hoje pertence ao grupo Simon.\n\nÉ o maior shopping de outlets e pontas de estoque da região, com cerca de 180 lojas, entre elas unidades de desconto de grandes marcas americanas de roupas, tênis e malas. O complexo tem ainda cinema, um aquário SEA LIFE e um LEGOLAND Discovery Center, parque coberto para crianças pequenas, ambos abertos em 2011.",
+    "dica": "Passe no balcão de atendimento ou no site e peça o caderno de cupons de desconto. Por ficar perto do aeroporto, é parada tradicional de brasileiros no último dia de viagem. O imposto de 8,25% é somado no caixa.",
+    "tempo_visita": "3–4 horas",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Grapevine_Mills_Entry_2.jpg/1280px-Grapevine_Mills_Entry_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Grapevine_Mills_Entry_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "LazyCat256",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Grapevine_Mills_Entry_2.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Grapevine_Mills_Eiffel_Tower.jpg/1280px-Grapevine_Mills_Eiffel_Tower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Grapevine_Mills_Eiffel_Tower.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "LazyCat256",
+        "licenca": "CC0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:Grapevine_Mills_Eiffel_Tower.jpg"
+      }
+    ]
+  },
+  {
+    "id": "allen-premium-outlets",
+    "nome": "Allen Premium Outlets",
+    "categoria": "compras",
+    "cidade": "Allen",
+    "bairro": "Allen",
+    "endereco": "820 W Stacy Rd, Allen, TX 75013",
+    "lat": 33.1327,
+    "lng": -96.6608,
+    "gratuito": true,
+    "preco": "Entrada e estacionamento gratuitos",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.premiumoutlets.com/outlet/allen",
+    "horario": "Em geral seg–sáb 10h–21h e dom 11h–19h (confirme no site antes de ir)",
+    "site": "https://www.premiumoutlets.com/outlet/allen",
+    "historia": "O outlet abriu em outubro de 2000 na cidade de Allen, subúrbio ao norte de Dallas, na beira da rodovia US 75. Foi construído pelo grupo Chelsea, criador da marca Premium Outlets, depois incorporado pela Simon, a maior administradora de shoppings dos Estados Unidos. Passou por ampliações à medida que a região crescia.\n\nÉ um centro ao ar livre, em estilo de vila, com cerca de 120 lojas de fábrica de marcas como Nike, Adidas, Coach, Michael Kors, Tommy Hilfiger, Polo Ralph Lauren e Levi's. É o outlet mais procurado por quem está hospedado em Dallas, Plano ou Frisco e quer preços abaixo dos de shopping.",
+    "dica": "Cadastre-se gratuitamente no VIP Shopper Club, no site, para baixar cupons extras. As melhores promoções saem em feriados como Memorial Day, Labor Day e Black Friday. Fica a uns 40 minutos de carro do centro de Dallas.",
+    "tempo_visita": "3–4 horas",
+    "imagens": []
+  },
+  {
+    "id": "mustangs-of-las-colinas",
+    "nome": "The Mustangs of Las Colinas",
+    "categoria": "arte",
+    "cidade": "Irving",
+    "bairro": "Las Colinas",
+    "endereco": "5221 N O'Connor Blvd, Irving, TX 75039",
+    "lat": 32.869,
+    "lng": -96.9405,
+    "gratuito": true,
+    "preco": "Gratuito",
+    "preco_min_usd": 0,
+    "preco_confirmado": true,
+    "fonte_preco": "https://www.irvingtexas.com/",
+    "horario": "Praça aberta diariamente; o pequeno museu ao lado tem horário reduzido (confirme no site antes de ir)",
+    "site": "https://www.irvingtexas.com/",
+    "historia": "No meio de uma praça de granito rosa cercada por torres de escritórios, nove cavalos selvagens de bronze galopam por um riacho, e pequenas fontes sob os cascos imitam a água espirrando. A obra é do escultor Robert Glen, nascido no Quênia, e foi inaugurada em 1984, depois de anos de trabalho.\n\nOs cavalos têm tamanho uma vez e meia maior que o natural, e o conjunto costuma ser apontado como uma das maiores esculturas equestres do mundo. Foi encomendado por Ben Carpenter, criador do bairro planejado de Las Colinas, erguido no rancho de sua família, em homenagem aos mustangues que viviam soltos no Texas.",
+    "dica": "É uma parada rápida e gratuita no caminho entre o aeroporto DFW e Dallas. A linha laranja do DART tem a estação Las Colinas Urban Center a poucos minutos a pé.",
+    "tempo_visita": "20–30 minutos",
+    "imagens": [
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/View_of_the_%22Mustangs_of_Las_Colinas%22_sculpture_in_the_upscale_Las_Colinas_neighborhood_of_Irving%2C_Texas_LCCN2015630710.jpg/1280px-View_of_the_%22Mustangs_of_Las_Colinas%22_sculpture_in_the_upscale_Las_Colinas_neighborhood_of_Irving%2C_Texas_LCCN2015630710.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/6/6f/View_of_the_%22Mustangs_of_Las_Colinas%22_sculpture_in_the_upscale_Las_Colinas_neighborhood_of_Irving%2C_Texas_LCCN2015630710.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Carol M. Highsmith",
+        "licenca": "Public domain",
+        "pagina": "https://commons.wikimedia.org/wiki/File:View_of_the_%22Mustangs_of_Las_Colinas%22_sculpture_in_the_upscale_Las_Colinas_neighborhood_of_Irving,_Texas_LCCN2015630710.jpg"
+      },
+      {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/The_Mustangs_of_Las_Colinas.jpg/1280px-The_Mustangs_of_Las_Colinas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "original": "https://upload.wikimedia.org/wikipedia/commons/7/7c/The_Mustangs_of_Las_Colinas.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "autor": "Justplainfolks",
+        "licenca": "CC BY 4.0",
+        "pagina": "https://commons.wikimedia.org/wiki/File:The_Mustangs_of_Las_Colinas.jpg"
+      }
+    ]
+  }
+]

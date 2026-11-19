@@ -1,0 +1,629 @@
+<?php
+/* CoraçãoBR · API do servidor próprio (PHP 8 + SQLite).
+   Contas com e-mail e senha, três papéis (usuario, anunciante, master) e os dados do guia.
+   As regras de quem lê e quem grava cada coleção ficam aqui, no servidor; o navegador nunca decide permissão.
+   Configuração opcional em api/config.php (veja config.exemplo.php). */
+declare(strict_types=1);
+
+$CFG = [
+  'db' => __DIR__ . '/../dados/coracaobr.sqlite',
+  'uploads' => __DIR__ . '/../uploads',
+  'seed' => __DIR__ . '/../data/seed.json',
+  'config_inicial' => __DIR__ . '/../data/config-inicial.json',
+  'email_remetente' => '',          // ex.: nao-responda@seudominio.com.br (vazio = nao-responda@<domínio do site>)
+  'sessao_dias' => 30,
+];
+if (is_file(__DIR__ . '/config.php')) { $extra = require __DIR__ . '/config.php'; if (is_array($extra)) $CFG = array_merge($CFG, $extra); }
+
+const COLS = ['lugares','avaliacoes','anuncios','config','fluxos','avisos','metricas','anunciantes','classificados','alertas','cupons','interesse','perfis','parceiros','respostas','posts','curtidas','seguindo'];
+const PUBLICAS = ['lugares','config','anuncios','alertas','anunciantes','avaliacoes','fluxos','metricas','classificados','cupons','parceiros','posts','curtidas','seguindo'];
+const SO_MASTER = ['lugares','config','anuncios','alertas','parceiros'];
+const POR_PESSOA = ['avaliacoes','fluxos','avisos','metricas','anunciantes','classificados','cupons','interesse','perfis','respostas','posts','curtidas','seguindo'];
+const PAPEIS = ['usuario','anunciante','master'];
+const ID_RE = '/^[A-Za-z0-9_-]{1,120}$/';
+
+header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+header('Cache-Control: no-store');
+header('Referrer-Policy: same-origin');
+
+function sai(array $o, int $cod = 200): never { http_response_code($cod); echo json_encode($o, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); exit; }
+function erro(string $msg, int $cod = 400): never { sai(['ok' => false, 'erro' => $msg], $cod); }
+function agora(): string { return gmdate('c'); }
+
+/* ---------- sessão ---------- */
+$https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+$caminho = rtrim(str_replace('\\', '/', dirname(dirname($_SERVER['SCRIPT_NAME'] ?? '/api/index.php'))), '/') . '/';
+$vida = 86400 * (int)$CFG['sessao_dias'];
+ini_set('session.gc_maxlifetime', (string)$vida);
+ini_set('session.use_strict_mode', '1');
+session_name('CBRSESS');
+session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
+session_start();
+if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
+if (empty($_SESSION['visitante'])) $_SESSION['visitante'] = 'v' . bin2hex(random_bytes(8));
+
+/* ---------- banco ---------- */
+function banco(): PDO {
+  static $pdo = null; global $CFG;
+  if ($pdo) return $pdo;
+  $dir = dirname($CFG['db']);
+  if (!is_dir($dir)) { @mkdir($dir, 0750, true); }
+  if (!is_file($dir . '/.htaccess')) @file_put_contents($dir . '/.htaccess', "Require all denied\nDeny from all\n");
+  if (!is_file($dir . '/index.html')) @file_put_contents($dir . '/index.html', '');
+  $novo = !is_file($CFG['db']);
+  $pdo = new PDO('sqlite:' . $CFG['db'], null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
+  $pdo->exec('PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=4000;');
+  $pdo->exec('CREATE TABLE IF NOT EXISTS usuarios (id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE COLLATE NOCASE, nome TEXT NOT NULL, hash TEXT NOT NULL, papel TEXT NOT NULL, bloqueado INTEGER NOT NULL DEFAULT 0, criado TEXT NOT NULL, ultimo TEXT, reset_hash TEXT, reset_exp INTEGER);
+    CREATE TABLE IF NOT EXISTS docs (col TEXT NOT NULL, id TEXT NOT NULL, data TEXT NOT NULL, em TEXT NOT NULL, PRIMARY KEY (col, id));
+    CREATE TABLE IF NOT EXISTS versoes (col TEXT PRIMARY KEY, v INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS tentativas (chave TEXT NOT NULL, em INTEGER NOT NULL);
+    CREATE INDEX IF NOT EXISTS tent_chave ON tentativas (chave, em);
+    CREATE TABLE IF NOT EXISTS fotos (id TEXT PRIMARY KEY, dono TEXT NOT NULL, em TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);
+    CREATE TABLE IF NOT EXISTS assinantes (email TEXT PRIMARY KEY COLLATE NOCASE, nome TEXT, token TEXT NOT NULL, ativo INTEGER NOT NULL DEFAULT 1, origem TEXT, uid TEXT, criado TEXT NOT NULL, saiu TEXT);
+    CREATE TABLE IF NOT EXISTS envios (id INTEGER PRIMARY KEY AUTOINCREMENT, assunto TEXT, modo TEXT, enviados INTEGER, falhas INTEGER, em TEXT);');
+  importaBase($pdo, $novo);
+  return $pdo;
+}
+/* Na criação do banco, e quando data/seed.json muda de versão, entram os lugares que ainda não existem. Nada já salvo é sobrescrito. */
+function importaBase(PDO $pdo, bool $novo): void {
+  global $CFG;
+  if (!is_file($CFG['seed'])) return;
+  $seed = json_decode((string)file_get_contents($CFG['seed']), true);
+  if (!is_array($seed)) return;
+  $versao = (string)($seed['versao'] ?? '');
+  $atual = $pdo->query("SELECT v FROM meta WHERE k='seed'")->fetchColumn();
+  if ($atual === $versao && !$novo) return;
+  $pdo->beginTransaction();
+  $ins = $pdo->prepare('INSERT OR IGNORE INTO docs (col, id, data, em) VALUES (?, ?, ?, ?)');
+  foreach (($seed['lugares'] ?? []) as $l) {
+    if (!is_array($l) || !preg_match(ID_RE, (string)($l['id'] ?? ''))) continue;
+    $id = $l['id']; unset($l['id']);
+    $ins->execute(['lugares', $id, json_encode($l, JSON_UNESCAPED_UNICODE), agora()]);
+  }
+  if (is_file($CFG['config_inicial'])) {
+    $cfg = json_decode((string)file_get_contents($CFG['config_inicial']), true);
+    if (is_array($cfg)) foreach ($cfg as $id => $d) if (preg_match(ID_RE, (string)$id) && is_array($d)) $ins->execute(['config', $id, json_encode($d, JSON_UNESCAPED_UNICODE), agora()]);
+  }
+  $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('seed', ?)")->execute([$versao]);
+  $pdo->exec("INSERT OR IGNORE INTO versoes (col, v) VALUES ('lugares', 1), ('config', 1)");
+  $pdo->exec("UPDATE versoes SET v = v + 1 WHERE col IN ('lugares','config')");
+  $pdo->commit();
+}
+
+/* ---------- quem está pedindo ---------- */
+function eu(): ?array {
+  static $u = false;
+  if ($u !== false) return $u;
+  $u = null;
+  if (!empty($_SESSION['uid'])) {
+    $st = banco()->prepare('SELECT id, email, nome, papel, bloqueado FROM usuarios WHERE id = ?');
+    $st->execute([$_SESSION['uid']]);
+    $r = $st->fetch();
+    if ($r && !(int)$r['bloqueado']) $u = $r; else { unset($_SESSION['uid']); }
+  }
+  return $u;
+}
+function master(): bool { $u = eu(); return $u && $u['papel'] === 'master'; }
+function exigeLogin(): array { $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401); return $u; }
+function exigeMaster(): void { if (!master()) erro('Só a conta master pode fazer isso.', 403); }
+
+/* ---------- limites contra abuso ---------- */
+function limite(string $chave, int $max, int $janela): bool {
+  $pdo = banco(); $t = time();
+  if (random_int(1, 50) === 1) $pdo->prepare('DELETE FROM tentativas WHERE em < ?')->execute([$t - 86400]);
+  $st = $pdo->prepare('SELECT COUNT(*) FROM tentativas WHERE chave = ? AND em > ?');
+  $st->execute([$chave, $t - $janela]);
+  return (int)$st->fetchColumn() < $max;
+}
+function marca(string $chave): void { banco()->prepare('INSERT INTO tentativas (chave, em) VALUES (?, ?)')->execute([$chave, time()]); }
+function ip(): string { return substr((string)($_SERVER['REMOTE_ADDR'] ?? '0'), 0, 64); }
+
+/* ---------- entrada ---------- */
+$acao = (string)($_GET['acao'] ?? '');
+$metodo = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$corpo = [];
+if ($metodo === 'POST') {
+  $origem = $_SERVER['HTTP_ORIGIN'] ?? '';
+  if ($origem !== '' && parse_url($origem, PHP_URL_HOST) !== parse_url('//' . ($_SERVER['HTTP_HOST'] ?? ''), PHP_URL_HOST)) erro('Origem não permitida.', 403);
+  if (!hash_equals($_SESSION['csrf'], (string)($_SERVER['HTTP_X_CSRF'] ?? ''))) erro('Sessão expirada. Recarregue a página.', 403);
+  if (stripos((string)($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json') === 0) {
+    $bruto = file_get_contents('php://input', false, null, 0, 1_200_000);
+    $corpo = json_decode((string)$bruto, true);
+    if (!is_array($corpo)) erro('Pedido inválido.');
+  }
+}
+function campo(string $k, int $max = 200): string { global $corpo; $v = $corpo[$k] ?? ''; return is_string($v) ? trim(mb_substr($v, 0, $max)) : ''; }
+function senhaOk(string $s): ?string {
+  if (mb_strlen($s) < 8) return 'A senha precisa ter pelo menos 8 caracteres.';
+  if (mb_strlen($s) > 200) return 'Senha longa demais.';
+  if (!preg_match('/[A-Za-z]/', $s) || !preg_match('/\d/', $s)) return 'Use letras e números na senha.';
+  return null;
+}
+function publico(array $u): array { return ['uid' => $u['id'], 'nome' => $u['nome'], 'email' => $u['email'], 'papel' => $u['papel']]; }
+function entra(array $u): void {
+  session_regenerate_id(true);
+  $_SESSION['uid'] = $u['id'];
+  $_SESSION['csrf'] = bin2hex(random_bytes(24));
+  banco()->prepare('UPDATE usuarios SET ultimo = ? WHERE id = ?')->execute([agora(), $u['id']]);
+}
+function novoUid(): string { return 'u' . bin2hex(random_bytes(8)); }
+/* Chave de instalação: um arquivo em dados/ (bloqueado para a web) que só quem tem acesso à hospedagem lê.
+   Sem ela, ninguém cria a conta master, mesmo que abra o site antes do dono. */
+function chaveInstalacao(): string {
+  global $CFG;
+  $f = dirname($CFG['db']) . '/CHAVE-INSTALACAO.txt';
+  if (!is_file($f)) @file_put_contents($f, strtoupper(bin2hex(random_bytes(5))) . "\n");
+  return trim((string)@file_get_contents($f));
+}
+function temMaster(): bool { return (bool)banco()->query("SELECT 1 FROM usuarios WHERE papel = 'master' LIMIT 1")->fetchColumn(); }
+function baseUrl(): string {
+  global $https, $caminho;
+  return ($https ? 'https://' : 'http://') . ($_SERVER['HTTP_HOST'] ?? 'localhost') . $caminho;
+}
+function linkSenha(string $uid): string {
+  $tok = bin2hex(random_bytes(32));
+  banco()->prepare('UPDATE usuarios SET reset_hash = ?, reset_exp = ? WHERE id = ?')->execute([hash('sha256', $tok), time() + 3600 * 24, $uid]);
+  return baseUrl() . '#redefinir-' . $tok;
+}
+function versao(string $col): void {
+  $pdo = banco();
+  $pdo->prepare('INSERT INTO versoes (col, v) VALUES (?, 1) ON CONFLICT(col) DO UPDATE SET v = v + 1')->execute([$col]);
+}
+
+try {
+switch ($acao) {
+
+/* ===== conta ===== */
+case 'sessao': {
+  $u = eu();
+  if (!temMaster()) chaveInstalacao();
+  sai(['ok' => true, 'csrf' => $_SESSION['csrf'], 'visitante' => $_SESSION['visitante'], 'conta' => $u ? publico($u) : null, 'precisaInstalar' => !temMaster()]);
+}
+case 'instalar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  if (temMaster()) erro('A conta master já foi criada.', 409);
+  if (!limite('inst-ip:' . ip(), 8, 3600)) erro('Muitas tentativas. Tente de novo em uma hora.', 429);
+  $chave = chaveInstalacao();
+  if ($chave === '' || !hash_equals($chave, strtoupper(campo('chave', 40)))) { marca('inst-ip:' . ip()); erro('Chave de instalação incorreta. Ela está no arquivo dados/CHAVE-INSTALACAO.txt da hospedagem.', 403); }
+  $nome = campo('nome', 60); $email = mb_strtolower(campo('email', 160)); $senha = (string)($corpo['senha'] ?? '');
+  if ($nome === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) erro('Informe nome e um e-mail válido.');
+  if ($m = senhaOk($senha)) erro($m);
+  $pdo = banco();
+  $st = $pdo->prepare('SELECT id FROM usuarios WHERE email = ?'); $st->execute([$email]);
+  if ($id = $st->fetchColumn()) {
+    $pdo->prepare("UPDATE usuarios SET papel = 'master', hash = ?, nome = ? WHERE id = ?")->execute([password_hash($senha, PASSWORD_DEFAULT), $nome, $id]);
+  } else {
+    $id = novoUid();
+    $pdo->prepare('INSERT INTO usuarios (id, email, nome, hash, papel, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$id, $email, $nome, password_hash($senha, PASSWORD_DEFAULT), 'master', agora()]);
+  }
+  $u = ['id' => $id, 'email' => $email, 'nome' => $nome, 'papel' => 'master'];
+  @unlink(dirname($CFG['db']) . '/CHAVE-INSTALACAO.txt');
+  entra($u);
+  sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
+}
+case 'cadastrar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  if (!limite('cad:' . ip(), 6, 3600)) erro('Muitos cadastros deste endereço. Tente de novo em uma hora.', 429);
+  $nome = campo('nome', 60); $email = mb_strtolower(campo('email', 160)); $senha = (string)($corpo['senha'] ?? '');
+  $papel = ($corpo['tipo'] ?? '') === 'anunciante' ? 'anunciante' : 'usuario';
+  if ($nome === '') erro('Informe seu nome.');
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) erro('Informe um e-mail válido.');
+  if ($m = senhaOk($senha)) erro($m);
+  if (empty($corpo['aceite'])) erro('Para criar a conta, aceite os termos de uso e a política de privacidade.');
+  marca('cad:' . ip());
+  $pdo = banco();
+  $st = $pdo->prepare('SELECT 1 FROM usuarios WHERE email = ?'); $st->execute([$email]);
+  if ($st->fetchColumn()) erro('Já existe uma conta com este e-mail. Entre ou use "Esqueci minha senha".', 409);
+  $id = novoUid();
+  $pdo->prepare('INSERT INTO usuarios (id, email, nome, hash, papel, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$id, $email, $nome, password_hash($senha, PASSWORD_DEFAULT), $papel, agora()]);
+  $u = ['id' => $id, 'email' => $email, 'nome' => $nome, 'papel' => $papel];
+  entra($u);
+  sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
+}
+case 'entrar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $email = mb_strtolower(campo('email', 160)); $senha = (string)($corpo['senha'] ?? '');
+  if (!limite('login-ip:' . ip(), 10, 900) || !limite('login:' . $email, 6, 900)) erro('Muitas tentativas. Aguarde 15 minutos e tente de novo.', 429);
+  $st = banco()->prepare('SELECT id, email, nome, papel, hash, bloqueado FROM usuarios WHERE email = ?'); $st->execute([$email]);
+  $u = $st->fetch();
+  $ok = $u && password_verify($senha, $u['hash']);
+  if (!$ok) { if (!$u) password_verify($senha, '$2y$10$usesomesillystringforsaltdefinitelynotreal.......'); marca('login-ip:' . ip()); marca('login:' . $email); erro('E-mail ou senha incorretos.', 401); }
+  if ((int)$u['bloqueado']) erro('Esta conta está suspensa. Fale com a equipe CoraçãoBR.', 403);
+  if (password_needs_rehash($u['hash'], PASSWORD_DEFAULT)) banco()->prepare('UPDATE usuarios SET hash = ? WHERE id = ?')->execute([password_hash($senha, PASSWORD_DEFAULT), $u['id']]);
+  entra($u);
+  sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
+}
+case 'sair': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $_SESSION = [];
+  session_regenerate_id(true);
+  sai(['ok' => true]);
+}
+case 'esqueci': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $email = mb_strtolower(campo('email', 160));
+  $msg = 'Se este e-mail tiver conta, enviamos um link para criar uma nova senha. Ele vale por 24 horas. Confira também a caixa de spam.';
+  if (!limite('esq-ip:' . ip(), 5, 3600) || !limite('esq:' . $email, 3, 3600)) sai(['ok' => true, 'msg' => $msg]);
+  marca('esq-ip:' . ip()); marca('esq:' . $email);
+  $st = banco()->prepare('SELECT id, nome FROM usuarios WHERE email = ? AND bloqueado = 0'); $st->execute([$email]);
+  if ($u = $st->fetch()) {
+    $link = linkSenha($u['id']);
+    $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
+    $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+    $txt = "Olá, {$u['nome']}.\n\nRecebemos um pedido para criar uma nova senha na CoraçãoBR.\nAbra o link abaixo em até 24 horas:\n\n$link\n\nSe não foi você, ignore este e-mail; sua senha atual continua valendo.\n\nEquipe CoraçãoBR";
+    @mail($email, '=?UTF-8?B?' . base64_encode('CoraçãoBR: crie uma nova senha') . '?=', $txt, "From: CoraçãoBR <$de>\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+  }
+  sai(['ok' => true, 'msg' => $msg]);
+}
+case 'redefinir': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $tok = campo('token', 80); $senha = (string)($corpo['senha'] ?? '');
+  if (!preg_match('/^[a-f0-9]{64}$/', $tok)) erro('Link inválido. Peça um novo em "Esqueci minha senha".');
+  if (!limite('red-ip:' . ip(), 10, 3600)) erro('Muitas tentativas. Tente mais tarde.', 429);
+  marca('red-ip:' . ip());
+  if ($m = senhaOk($senha)) erro($m);
+  $st = banco()->prepare('SELECT id, email, nome, papel, reset_exp FROM usuarios WHERE reset_hash = ? AND bloqueado = 0'); $st->execute([hash('sha256', $tok)]);
+  $u = $st->fetch();
+  if (!$u || (int)$u['reset_exp'] < time()) erro('Este link expirou ou já foi usado. Peça um novo em "Esqueci minha senha".');
+  banco()->prepare('UPDATE usuarios SET hash = ?, reset_hash = NULL, reset_exp = NULL WHERE id = ?')->execute([password_hash($senha, PASSWORD_DEFAULT), $u['id']]);
+  entra($u);
+  sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
+}
+case 'perfil': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin();
+  $nome = campo('nome', 60); $email = mb_strtolower(campo('email', 160)); $atual = (string)($corpo['senhaAtual'] ?? ''); $nova = (string)($corpo['senhaNova'] ?? '');
+  if ($nome === '') erro('Informe seu nome.');
+  $pdo = banco();
+  $mudaEmail = $email !== '' && $email !== mb_strtolower($u['email']);
+  if ($mudaEmail || $nova !== '') {
+    if (!limite('perfil:' . $u['id'], 8, 900)) erro('Muitas tentativas. Aguarde 15 minutos.', 429);
+    $st = $pdo->prepare('SELECT hash FROM usuarios WHERE id = ?'); $st->execute([$u['id']]);
+    if (!password_verify($atual, (string)$st->fetchColumn())) { marca('perfil:' . $u['id']); erro('Senha atual incorreta.', 401); }
+  }
+  if ($mudaEmail) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) erro('Informe um e-mail válido.');
+    $st = $pdo->prepare('SELECT 1 FROM usuarios WHERE email = ? AND id <> ?'); $st->execute([$email, $u['id']]);
+    if ($st->fetchColumn()) erro('Este e-mail já está em uso.', 409);
+    $pdo->prepare('UPDATE usuarios SET email = ? WHERE id = ?')->execute([$email, $u['id']]);
+  }
+  if ($nova !== '') { if ($m = senhaOk($nova)) erro($m); $pdo->prepare('UPDATE usuarios SET hash = ? WHERE id = ?')->execute([password_hash($nova, PASSWORD_DEFAULT), $u['id']]); }
+  $pdo->prepare('UPDATE usuarios SET nome = ? WHERE id = ?')->execute([$nome, $u['id']]);
+  $st = $pdo->prepare('SELECT id, email, nome, papel FROM usuarios WHERE id = ?'); $st->execute([$u['id']]);
+  sai(['ok' => true, 'conta' => publico($st->fetch())]);
+}
+case 'virar_anunciante': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin();
+  if ($u['papel'] === 'usuario') banco()->prepare("UPDATE usuarios SET papel = 'anunciante' WHERE id = ?")->execute([$u['id']]);
+  sai(['ok' => true, 'conta' => publico(array_merge($u, ['papel' => $u['papel'] === 'usuario' ? 'anunciante' : $u['papel']]))]);
+}
+case 'excluir_conta': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin();
+  if ($u['papel'] === 'master') erro('A conta master não pode ser excluída por aqui.', 403);
+  $st = banco()->prepare('SELECT hash FROM usuarios WHERE id = ?'); $st->execute([$u['id']]);
+  if (!password_verify((string)($corpo['senha'] ?? ''), (string)$st->fetchColumn())) erro('Senha incorreta.', 401);
+  apagaUsuario($u['id']);
+  $_SESSION = []; session_regenerate_id(true);
+  sai(['ok' => true]);
+}
+
+/* ===== master: usuários ===== */
+case 'usuarios': {
+  exigeMaster();
+  $rows = banco()->query('SELECT id, email, nome, papel, bloqueado, criado, ultimo FROM usuarios ORDER BY criado DESC LIMIT 2000')->fetchAll();
+  sai(['ok' => true, 'usuarios' => $rows]);
+}
+case 'usuario': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  exigeMaster();
+  $id = campo('id', 40); $op = campo('op', 20);
+  if (!preg_match(ID_RE, $id)) erro('Conta inválida.');
+  $pdo = banco();
+  $st = $pdo->prepare('SELECT id, papel FROM usuarios WHERE id = ?'); $st->execute([$id]);
+  $alvo = $st->fetch(); if (!$alvo) erro('Conta não encontrada.', 404);
+  if ($id === eu()['id'] && $op !== 'link') erro('Para mudar a sua própria conta, use Minha conta.');
+  if ($op === 'papel') { $p = campo('papel', 20); if (!in_array($p, PAPEIS, true)) erro('Papel inválido.'); $pdo->prepare('UPDATE usuarios SET papel = ? WHERE id = ?')->execute([$p, $id]); sai(['ok' => true]); }
+  if ($op === 'bloquear' || $op === 'liberar') { $pdo->prepare('UPDATE usuarios SET bloqueado = ? WHERE id = ?')->execute([$op === 'bloquear' ? 1 : 0, $id]); sai(['ok' => true]); }
+  if ($op === 'link') sai(['ok' => true, 'link' => linkSenha($id)]);
+  if ($op === 'excluir') { if ($alvo['papel'] === 'master') erro('Rebaixe a conta antes de excluir uma conta master.'); apagaUsuario($id); sai(['ok' => true]); }
+  erro('Operação desconhecida.');
+}
+
+/* ===== dados do guia ===== */
+case 'sync': {
+  $pedidas = json_decode((string)($_GET['v'] ?? '{}'), true);
+  if (!is_array($pedidas)) $pedidas = [];
+  $pdo = banco(); $u = eu(); $out = [];
+  $vers = []; foreach ($pdo->query('SELECT col, v FROM versoes') as $r) $vers[$r['col']] = (int)$r['v'];
+  foreach ($pedidas as $col => $v) {
+    if (!in_array($col, COLS, true)) continue;
+    $atual = $vers[$col] ?? 0;
+    if ((int)$v === $atual && $v !== null && (int)$v !== -1) continue;
+    $out[$col] = ['v' => $atual, 'docs' => listaDocs($col, $u)];
+  }
+  sai(['ok' => true, 'cols' => $out]);
+}
+case 'lista': {
+  $col = (string)($_GET['col'] ?? '');
+  if (!in_array($col, COLS, true)) erro('Coleção desconhecida.');
+  sai(['ok' => true, 'docs' => listaDocs($col, eu())]);
+}
+case 'doc': {
+  $col = (string)($_GET['col'] ?? ''); $id = (string)($_GET['id'] ?? '');
+  if (!in_array($col, COLS, true) || !preg_match(ID_RE, $id)) erro('Pedido inválido.');
+  if (!podeLer($col, $id)) erro('Sem permissão.', 403);
+  $st = banco()->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]);
+  $d = $st->fetchColumn();
+  sai(['ok' => true, 'existe' => $d !== false, 'data' => $d !== false ? json_decode($d, true) : null]);
+}
+case 'gravar':
+case 'apagar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $col = campo('col', 30); $id = campo('id', 130);
+  if (!in_array($col, COLS, true) || !preg_match(ID_RE, $id)) erro('Pedido inválido.');
+  if (!podeGravar($col, $id)) erro(eu() ? 'Sua conta não tem permissão para isso.' : 'Entre na sua conta para continuar.', eu() ? 403 : 401);
+  $quem = eu() ? eu()['id'] : $_SESSION['visitante'];
+  if (!master() && !limite('w:' . $quem, 400, 600)) erro('Muitas alterações seguidas. Aguarde alguns minutos.', 429);
+  if (!master()) marca('w:' . $quem);
+  $pdo = banco();
+  if ($acao === 'apagar') {
+    $pdo->prepare('DELETE FROM docs WHERE col = ? AND id = ?')->execute([$col, $id]);
+  } else {
+    $data = $corpo['data'] ?? null;
+    if (!is_array($data)) erro('Conteúdo inválido.');
+    $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if (strlen($json) > (master() ? 1_000_000 : 300_000)) erro('Conteúdo grande demais.');
+    if (!master() && $col === 'anunciantes') {   // plano do anunciante: até 3 anúncios por conta
+      $n = 0; foreach ((array)($data['itens'] ?? []) as $it) if (is_array($it) && !empty($it['nome'])) $n++;
+      if ($n > 3) erro('O plano do anunciante permite até 3 anúncios.');
+    }
+    if (!master() && $col === 'posts' && count((array)($data['itens'] ?? [])) > 60) erro('Limite de 60 publicações por conta. Apague as mais antigas.');
+    $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, $json, agora()]);
+  }
+  versao($col);
+  sai(['ok' => true]);
+}
+case 'foto': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin();
+  if (!in_array($u['papel'], ['anunciante', 'master'], true)) erro('Só anunciantes e a equipe enviam fotos.', 403);
+  if (!master() && !limite('foto:' . $u['id'], 60, 3600)) erro('Limite de fotos por hora atingido.', 429);
+  $f = $_FILES['foto'] ?? null;
+  if (!$f || $f['error'] !== UPLOAD_ERR_OK || $f['size'] > 6_000_000) erro('Foto inválida ou maior que 6 MB.');
+  $info = @getimagesize($f['tmp_name']);
+  if (!$info || !in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP], true)) erro('Envie uma foto JPG, PNG ou WebP.');
+  if (!function_exists('imagecreatefromstring')) erro('O servidor não tem a extensão de imagens (GD).', 500);
+  $img = @imagecreatefromstring((string)file_get_contents($f['tmp_name']));
+  if (!$img) erro('Não foi possível ler a foto.');
+  $w = imagesx($img); $h = imagesy($img); $k = min(1, 1600 / max($w, $h));
+  $nw = max(1, (int)round($w * $k)); $nh = max(1, (int)round($h * $k));
+  $dst = imagecreatetruecolor($nw, $nh);
+  imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+  imagecopyresampled($dst, $img, 0, 0, 0, 0, $nw, $nh, $w, $h);
+  $dir = $CFG['uploads'];
+  if (!is_dir($dir)) @mkdir($dir, 0755, true);
+  if (!is_file($dir . '/.htaccess')) @file_put_contents($dir . '/.htaccess', "Options -Indexes\nRemoveHandler .php .phtml .phar\nRemoveType .php .phtml .phar\n<FilesMatch \"\\.(php|phtml|phar|pl|py|cgi|sh)$\">\nRequire all denied\n</FilesMatch>\n");
+  $id = bin2hex(random_bytes(16));
+  if (!imagejpeg($dst, $dir . '/' . $id . '.jpg', 84)) erro('Não foi possível salvar a foto.', 500);
+  banco()->prepare('INSERT INTO fotos (id, dono, em) VALUES (?, ?, ?)')->execute([$id, $u['id'], agora()]);
+  if (!master()) marca('foto:' . $u['id']);
+  sai(['ok' => true, 'id' => $id]);
+}
+case 'apagar_foto': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin();
+  $id = campo('id', 40);
+  if (!preg_match('/^[a-f0-9]{32}$/', $id)) erro('Foto inválida.');
+  $st = banco()->prepare('SELECT dono FROM fotos WHERE id = ?'); $st->execute([$id]);
+  $dono = $st->fetchColumn();
+  if ($dono === false) sai(['ok' => true]);
+  if ($dono !== $u['id'] && !master()) erro('Sem permissão.', 403);
+  @unlink($CFG['uploads'] . '/' . $id . '.jpg');
+  banco()->prepare('DELETE FROM fotos WHERE id = ?')->execute([$id]);
+  sai(['ok' => true]);
+}
+
+/* ===== newsletter por e-mail ===== */
+case 'newsletter_inscrever': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  if (campo('site', 80) !== '') sai(['ok' => true, 'msg' => 'Inscrição feita.']);   // campo isca contra robôs
+  if (!limite('news-ip:' . ip(), 8, 3600)) erro('Muitas inscrições deste endereço. Tente mais tarde.', 429);
+  $email = mb_strtolower(campo('email', 160)); $nome = campo('nome', 60);
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) erro('Informe um e-mail válido.');
+  marca('news-ip:' . ip());
+  $pdo = banco(); $u = eu();
+  $st = $pdo->prepare('SELECT token, ativo FROM assinantes WHERE email = ?'); $st->execute([$email]); $r = $st->fetch();
+  if ($r) { $pdo->prepare('UPDATE assinantes SET ativo = 1, saiu = NULL, nome = COALESCE(NULLIF(?, ""), nome) WHERE email = ?')->execute([$nome, $email]); $tok = $r['token']; $novo = !(int)$r['ativo']; }
+  else { $tok = bin2hex(random_bytes(16)); $pdo->prepare('INSERT INTO assinantes (email, nome, token, origem, uid, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$email, $nome, $tok, campo('origem', 30), $u ? $u['id'] : null, agora()]); $novo = true; }
+  if ($novo) { $cfg = configDoc('newsletter'); envia($email, 'Inscrição confirmada na CoraçãoBR', '<p>Olá' . ($nome ? ', ' . htmlspecialchars($nome) : '') . '.</p><p>Você vai receber a seleção da CoraçãoBR por e-mail: eventos da semana e lugares que valem a visita.</p>' . (($cfg['boasVindas'] ?? '') ? '<p>' . nl2br(htmlspecialchars($cfg['boasVindas'])) . '</p>' : ''), $tok); }
+  sai(['ok' => true, 'msg' => 'Pronto! Você vai receber a seleção da semana no seu e-mail.']);
+}
+case 'newsletter_sair': {
+  $tok = (string)($_GET['t'] ?? '');
+  header('Content-Type: text/html; charset=utf-8');
+  $ok = false;
+  if (preg_match('/^[a-f0-9]{32}$/', $tok)) { $st = banco()->prepare('UPDATE assinantes SET ativo = 0, saiu = ? WHERE token = ?'); $st->execute([agora(), $tok]); $ok = $st->rowCount() > 0; }
+  echo '<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CoraçãoBR</title><body style="font:16px/1.5 system-ui;max-width:520px;margin:60px auto;padding:0 20px;color:#142019"><h1 style="color:#024E25">CoraçãoBR</h1><p>' . ($ok ? 'Pronto. Você não vai mais receber a newsletter.' : 'Este link não é válido ou você já tinha saído da lista.') . '</p><p><a href="' . htmlspecialchars(baseUrl()) . '" style="color:#024E25">Voltar ao guia</a></p></body></html>';
+  exit;
+}
+case 'newsletter_status': {
+  $u = exigeLogin();
+  $st = banco()->prepare('SELECT ativo FROM assinantes WHERE email = ?'); $st->execute([$u['email']]);
+  sai(['ok' => true, 'inscrito' => (bool)$st->fetchColumn()]);
+}
+case 'newsletter_alterar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin(); $pdo = banco();
+  if (!empty($corpo['inscrito'])) {
+    $st = $pdo->prepare('SELECT 1 FROM assinantes WHERE email = ?'); $st->execute([$u['email']]);
+    if ($st->fetchColumn()) $pdo->prepare('UPDATE assinantes SET ativo = 1, saiu = NULL WHERE email = ?')->execute([$u['email']]);
+    else $pdo->prepare('INSERT INTO assinantes (email, nome, token, origem, uid, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$u['email'], $u['nome'], bin2hex(random_bytes(16)), 'conta', $u['id'], agora()]);
+  } else $pdo->prepare('UPDATE assinantes SET ativo = 0, saiu = ? WHERE email = ?')->execute([agora(), $u['email']]);
+  sai(['ok' => true]);
+}
+case 'newsletter_lista': {
+  exigeMaster();
+  $rows = banco()->query('SELECT email, nome, ativo, origem, criado, saiu FROM assinantes ORDER BY criado DESC LIMIT 20000')->fetchAll();
+  $env = banco()->query('SELECT assunto, modo, enviados, falhas, em FROM envios ORDER BY id DESC LIMIT 30')->fetchAll();
+  sai(['ok' => true, 'assinantes' => $rows, 'envios' => $env]);
+}
+case 'newsletter_remover': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  exigeMaster();
+  banco()->prepare('DELETE FROM assinantes WHERE email = ?')->execute([mb_strtolower(campo('email', 160))]);
+  sai(['ok' => true]);
+}
+case 'newsletter_previa': {
+  exigeMaster();
+  $d = montaNewsletter();
+  sai(['ok' => true, 'assunto' => $d['assunto'], 'html' => moldura($d['html'], 'TOKEN-DE-EXEMPLO'), 'itens' => $d['itens']]);
+}
+case 'newsletter_enviar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  exigeMaster();
+  @set_time_limit(120);
+  $d = montaNewsletter();
+  if (!$d['itens']) erro('Não há eventos nem destaques para enviar. Ajuste os dias ou escolha destaques.');
+  if (($corpo['modo'] ?? '') === 'teste') {
+    $ok = envia(eu()['email'], '[Teste] ' . $d['assunto'], $d['html'], 'TOKEN-DE-TESTE');
+    sai(['ok' => true, 'enviados' => $ok ? 1 : 0, 'para' => eu()['email']]);
+  }
+  $de = max(0, (int)($corpo['de'] ?? 0)); $lote = 40;
+  $st = banco()->prepare('SELECT email, token FROM assinantes WHERE ativo = 1 ORDER BY email LIMIT ? OFFSET ?'); $st->execute([$lote, $de]);
+  $lista = $st->fetchAll(); $env = 0; $fal = 0;
+  foreach ($lista as $a) { if (envia($a['email'], $d['assunto'], $d['html'], $a['token'])) $env++; else $fal++; }
+  $total = (int)banco()->query('SELECT COUNT(*) FROM assinantes WHERE ativo = 1')->fetchColumn();
+  $fim = $de + count($lista) >= $total;
+  if ($de === 0 || $fim) { /* registra um envio por campanha, atualizando o total no último lote */ }
+  banco()->prepare('INSERT INTO envios (assunto, modo, enviados, falhas, em) VALUES (?, ?, ?, ?, ?)')->execute([$d['assunto'], 'lote ' . ($de / $lote + 1), $env, $fal, agora()]);
+  sai(['ok' => true, 'enviados' => $env, 'falhas' => $fal, 'proximo' => $fim ? null : $de + $lote, 'total' => $total]);
+}
+case 'newsletter_cron': {
+  /* Envio automático semanal: a Hostinger chama este endereço pelo agendador (Cron Jobs). */
+  $chave = trim((string)@file_get_contents(dirname($CFG['db']) . '/CHAVE-CRON.txt'));
+  if ($chave === '' || !hash_equals($chave, (string)($_GET['chave'] ?? ''))) erro('Chave inválida.', 403);
+  $cfg = configDoc('newsletter');
+  if (empty($cfg['automatica'])) sai(['ok' => true, 'msg' => 'Envio automático desligado no painel.']);
+  $ult = banco()->query("SELECT v FROM meta WHERE k = 'news-auto'")->fetchColumn();
+  if ($ult && time() - (int)$ult < 6 * 86400) sai(['ok' => true, 'msg' => 'Já enviado nesta semana.']);
+  @set_time_limit(600);
+  $d = montaNewsletter();
+  if (!$d['itens']) sai(['ok' => true, 'msg' => 'Nada para enviar.']);
+  $env = 0; $fal = 0;
+  foreach (banco()->query('SELECT email, token FROM assinantes WHERE ativo = 1 LIMIT 2000')->fetchAll() as $a) { if (envia($a['email'], $d['assunto'], $d['html'], $a['token'])) $env++; else $fal++; }
+  banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('news-auto', ?)")->execute([(string)time()]);
+  banco()->prepare('INSERT INTO envios (assunto, modo, enviados, falhas, em) VALUES (?, ?, ?, ?, ?)')->execute([$d['assunto'], 'automático', $env, $fal, agora()]);
+  sai(['ok' => true, 'enviados' => $env, 'falhas' => $fal]);
+}
+case 'cron_info': {
+  exigeMaster();
+  $f = dirname($CFG['db']) . '/CHAVE-CRON.txt';
+  if (!is_file($f)) @file_put_contents($f, bin2hex(random_bytes(12)) . "\n");
+  sai(['ok' => true, 'url' => baseUrl() . 'api/?acao=newsletter_cron&chave=' . trim((string)@file_get_contents($f))]);
+}
+default: erro('Ação desconhecida.', 404);
+}
+} catch (Throwable $e) {
+  error_log('[coracaobr] ' . $e->getMessage());
+  erro('Erro no servidor. Tente de novo em instantes.', 500);
+}
+
+/* ---------- regras de acesso ---------- */
+function podeLer(string $col, string $id): bool {
+  if (master() || in_array($col, PUBLICAS, true)) return true;
+  $u = eu();
+  return $u && $id === $u['id'];          // avisos, interesse, perfis: só o próprio documento
+}
+function podeGravar(string $col, string $id): bool {
+  if (master()) return true;
+  if (in_array($col, SO_MASTER, true)) return false;
+  $u = eu();
+  if (!$u) return $col === 'metricas' && $id === $_SESSION['visitante'];   // visitante sem conta só conta visualizações
+  if (!in_array($col, POR_PESSOA, true) || $id !== $u['id']) return false;  // cada pessoa grava só o próprio documento
+  if (in_array($col, ['anunciantes', 'posts', 'classificados'], true) && $u['papel'] !== 'anunciante') return false;   // só quem paga publica
+  return true;
+}
+function listaDocs(string $col, ?array $u): array {
+  $pdo = banco();
+  if (master() || in_array($col, PUBLICAS, true)) {
+    $st = $pdo->prepare('SELECT id, data FROM docs WHERE col = ? LIMIT 3000'); $st->execute([$col]);
+  } elseif ($u) {
+    $st = $pdo->prepare('SELECT id, data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $u['id']]);
+  } else return [];
+  $out = [];
+  foreach ($st as $r) $out[] = ['id' => $r['id'], 'data' => json_decode($r['data'], true)];
+  return $out;
+}
+function apagaUsuario(string $id): void {
+  global $CFG;
+  $pdo = banco();
+  $pdo->beginTransaction();
+  foreach (POR_PESSOA as $c) { $pdo->prepare('DELETE FROM docs WHERE col = ? AND id = ?')->execute([$c, $id]); versao($c); }
+  $st = $pdo->prepare('SELECT id FROM fotos WHERE dono = ?'); $st->execute([$id]);
+  foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $f) @unlink($CFG['uploads'] . '/' . $f . '.jpg');
+  $pdo->prepare('DELETE FROM fotos WHERE dono = ?')->execute([$id]);
+  $pdo->prepare('DELETE FROM usuarios WHERE id = ?')->execute([$id]);
+  $pdo->commit();
+}
+
+/* ---------- newsletter: montagem e envio ---------- */
+function configDoc(string $id): array {
+  $st = banco()->prepare("SELECT data FROM docs WHERE col = 'config' AND id = ?"); $st->execute([$id]);
+  $d = json_decode((string)$st->fetchColumn(), true);
+  return is_array($d) ? $d : [];
+}
+function montaNewsletter(): array {
+  $cfg = configDoc('newsletter'); $dias = max(3, min(30, (int)($cfg['dias'] ?? 10)));
+  $hoje = (new DateTime('now', new DateTimeZone('America/Chicago')))->format('Y-m-d');
+  $ate = (new DateTime('now', new DateTimeZone('America/Chicago')))->modify("+$dias days")->format('Y-m-d');
+  $eventos = []; $por = [];
+  foreach (banco()->query("SELECT id, data FROM docs WHERE col = 'lugares'") as $r) {
+    $l = json_decode($r['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo'])) continue;
+    $l['id'] = $r['id']; $por[$r['id']] = $l;
+    if (($l['categoria'] ?? '') !== 'evento' && ($l['categoria'] ?? '') !== 'show') continue;
+    if (!empty($l['cancelado'])) continue;
+    $datas = [];
+    foreach (($l['sessoes'] ?? []) as $s) if (!empty($s['d'])) $datas[] = $s['d'];
+    if (!$datas && !empty($l['dataInicio'])) { $ini = max($l['dataInicio'], $hoje); $fim = $l['dataFim'] ?? $l['dataInicio']; if ($ini <= $fim) $datas[] = $ini; }
+    $prox = null; foreach ($datas as $dt) if ($dt >= $hoje && $dt <= $ate && ($prox === null || $dt < $prox)) $prox = $dt;
+    if ($prox) { $l['_d'] = $prox; $eventos[] = $l; }
+  }
+  usort($eventos, fn($a, $b) => strcmp($a['_d'], $b['_d']));
+  $eventos = array_slice($eventos, 0, max(1, min(15, (int)($cfg['maxEventos'] ?? 8))));
+  $dest = []; foreach (($cfg['destaques'] ?? []) as $id) if (isset($por[$id])) $dest[] = $por[$id];
+  $base = baseUrl(); $e = fn($t) => htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8');
+  $cartao = function ($l, $quando) use ($base, $e) {
+    $foto = ''; $f = $l['fotos'][0]['src'] ?? '';
+    if ($f && preg_match('#^(img|fotos_eventos)/#', $f)) $foto = $base . $f; elseif (preg_match('#^asset:([a-f0-9]{32})$#', $f, $m)) $foto = $base . 'uploads/' . $m[1] . '.jpg';
+    $preco = !empty($l['gratuito']) ? 'Grátis' : (!empty($l['precoMin']) ? 'A partir de US$ ' . $e($l['precoMin']) : '');
+    return '<tr><td style="padding:10px 0;border-bottom:1px solid #E4E9E3">' . ($foto ? '<img src="' . $e($foto) . '" alt="" width="96" height="72" style="float:left;width:96px;height:72px;object-fit:cover;border-radius:10px;margin-right:12px">' : '') .
+      '<a href="' . $e($base . '#lugar-' . $l['id']) . '" style="color:#024E25;font-weight:700;text-decoration:none;font-size:16px">' . $e($l['nome'] ?? '') . '</a><br><span style="color:#5F6B64;font-size:13px">' . $e($quando) . ($preco ? ' · ' . $e($preco) : '') . ' · ' . $e($l['cidade'] ?? '') . '</span></td></tr>';
+  };
+  $html = '';
+  if (!empty($cfg['intro'])) $html .= '<p style="font-size:15px;line-height:1.55">' . nl2br($e($cfg['intro'])) . '</p>';
+  if ($eventos) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">Próximos eventos</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($eventos as $l) { $dt = DateTime::createFromFormat('Y-m-d', $l['_d']); $html .= $cartao($l, $dt ? $dt->format('d/m') : ''); } $html .= '</table>'; }
+  if ($dest) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">' . $e($cfg['tituloDestaques'] ?? 'Vale a visita') . '</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($dest as $l) $html .= $cartao($l, $l['bairro'] ?? ($l['categoria'] ?? '')); $html .= '</table>'; }
+  return ['assunto' => ($cfg['assunto'] ?? '') ?: 'A semana na CoraçãoBR', 'html' => $html, 'itens' => count($eventos) + count($dest)];
+}
+function moldura(string $miolo, string $token): string {
+  $base = baseUrl(); $sair = $base . 'api/?acao=newsletter_sair&t=' . $token;
+  return '<!doctype html><html><body style="margin:0;background:#EEF1EC"><div style="max-width:600px;margin:0 auto;padding:24px 18px;font-family:Arial,Helvetica,sans-serif;color:#142019">' .
+    '<div style="font:700 22px Arial;color:#024E25">Coração<span style="color:#E3A600">BR</span></div>' .
+    '<div style="background:#fff;border-radius:16px;padding:20px 22px;margin-top:14px">' . $miolo . '<p style="margin-top:22px"><a href="' . htmlspecialchars($base) . '" style="background:#024E25;color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:700">Abrir o guia</a></p></div>' .
+    '<p style="font-size:12px;color:#5F6B64;margin-top:16px">Você recebe este e-mail porque se inscreveu na CoraçãoBR. <a href="' . htmlspecialchars($sair) . '" style="color:#5F6B64">Sair da lista</a>.</p></div></body></html>';
+}
+function envia(string $para, string $assunto, string $miolo, string $token): bool {
+  global $CFG;
+  $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
+  $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+  $html = moldura($miolo, $token);
+  $txt = trim(html_entity_decode(strip_tags(str_replace(['<br>', '</tr>', '</p>', '</h2>'], "\n", $miolo)), ENT_QUOTES, 'UTF-8')) . "\n\nSair da lista: " . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token;
+  $b = 'cbr' . bin2hex(random_bytes(8));
+  $h = "From: CoraçãoBR <$de>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\nList-Unsubscribe: <" . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token . ">\r\n";
+  $corpo = "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n$txt\r\n--$b\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n$html\r\n--$b--";
+  return @mail($para, '=?UTF-8?B?' . base64_encode($assunto) . '?=', $corpo, $h);
+}

@@ -1,0 +1,506 @@
+[
+ {
+  "id": "grapefest-grapevine",
+  "nome": "GrapeFest",
+  "categoria": "evento",
+  "cidade": "Grapevine",
+  "endereco": "636 S Main St, Grapevine, TX 76051",
+  "quando": "16 a 19 de setembro de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/grapevine-vintage-railroad-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "grapevine-christmas-capital-of-texas",
+  "nome": "Christmas Capital of Texas (Natal em Grapevine)",
+  "categoria": "evento",
+  "cidade": "Grapevine",
+  "endereco": "636 S Main St, Grapevine, TX 76051",
+  "quando": "De 23 nov de 2026 (Carol of Lights) ao início de janeiro de 2027; Parade of Lights em 3 dez de 2026",
+  "fotos_atuais": [
+   {
+    "src": "img/grapevine-vintage-railroad-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "grapevine-july-4th-fireworks",
+  "nome": "July 4th Fireworks Extravaganza (Lake Grapevine)",
+  "categoria": "evento",
+  "cidade": "Grapevine",
+  "endereco": "Oak Grove Park, 2520 Oak Grove Loop S, Grapevine, TX 76051",
+  "quando": "Todo 4 de julho, às 21h",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-7.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "grapevine-main-street-fest",
+  "nome": "Main Street Fest (Grapevine)",
+  "categoria": "evento",
+  "cidade": "Grapevine",
+  "endereco": "636 S Main St, Grapevine, TX 76051",
+  "quando": "14 a 16 de maio de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/grapevine-vintage-railroad-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "holiday-at-the-arboretum",
+  "nome": "Holiday at the Arboretum",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "8525 Garland Rd, Dallas, TX 75218",
+  "quando": "11 nov de 2026 a 3 jan de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/dallas-arboretum-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "house-of-blues-dallas",
+  "nome": "House of Blues Dallas",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "2200 N Lamar St, Dallas, TX 75202",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-5.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "kessler-theater",
+  "nome": "The Kessler Theater",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "1230 W Davis St, Dallas, TX 75208",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-3.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "levitt-pavilion-arlington",
+  "nome": "Levitt Pavilion Arlington",
+  "categoria": "show",
+  "cidade": "Arlington",
+  "endereco": "100 W Abram St, Arlington, TX 76010",
+  "quando": "Temporadas de shows gratuitos na primavera/verão e no outono",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-6.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "lone-star-christmas-gaylord-texan",
+  "nome": "Lone Star Christmas no Gaylord Texan (ICE!)",
+  "categoria": "evento",
+  "cidade": "Grapevine",
+  "endereco": "1501 Gaylord Trail, Grapevine, TX 76051",
+  "quando": "13 nov de 2026 a 3 jan de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/gaylord-texan-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "lone-star-nye-reunion-tower",
+  "nome": "Lone Star NYE na Reunion Tower (Réveillon)",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "300 Reunion Blvd E, Dallas, TX 75207",
+  "quando": "Toda virada de ano, com show à meia-noite de 31 de dezembro; edição de 31 dez de 2026 ainda não detalhada",
+  "fotos_atuais": [
+   {
+    "src": "img/reunion-tower-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "longhorn-ballroom",
+  "nome": "Longhorn Ballroom",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "216 Corinth St, Dallas, TX 75207",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-5.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "main-st-fort-worth-arts-festival",
+  "nome": "MAIN ST. Fort Worth Arts Festival",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "420 Main St, Fort Worth, TX 76102",
+  "quando": "15 a 18 de abril de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/sundance-square-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "majestic-theatre-dallas",
+  "nome": "Majestic Theatre",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "1925 Elm St, Dallas, TX 75201",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/majestic-theatre-dallas-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "mayfest-fort-worth",
+  "nome": "Mayfest",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "2401 University Dr, Fort Worth, TX 76107",
+  "quando": "29 de abril a 2 de maio de 2027 (55ª edição; datas do formulário de expositores)",
+  "fotos_atuais": [
+   {
+    "src": "img/log-cabin-village-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "mckinney-home-for-the-holidays",
+  "nome": "Home for the Holidays: A McKinney Christmas",
+  "categoria": "evento",
+  "cidade": "McKinney",
+  "endereco": "111 N Tennessee St, McKinney, TX 75069",
+  "quando": "27 a 29 de novembro de 2026",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-6.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "mckinney-oktoberfest",
+  "nome": "McKinney Oktoberfest",
+  "categoria": "evento",
+  "cidade": "McKinney",
+  "endereco": "111 N Tennessee St, McKinney, TX 75069",
+  "quando": "Todo ano em um fim de semana do fim de setembro; datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-8.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "meyerson-symphony-center",
+  "nome": "Morton H. Meyerson Symphony Center",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "2301 Flora St, Dallas, TX 75201",
+  "quando": "Temporada da orquestra de setembro a maio",
+  "fotos_atuais": [
+   {
+    "src": "img/meyerson-symphony-center-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "music-hall-at-fair-park",
+  "nome": "Music Hall at Fair Park",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "909 1st Ave, Dallas, TX 75210",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/music-hall-at-fair-park-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "nascar-texas-motor-speedway",
+  "nome": "NASCAR Cup Series no Texas Motor Speedway (Würth 400)",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "3545 Lone Star Cir, Fort Worth, TX 76177",
+  "quando": "30 de abril a 2 de maio de 2027 (corrida principal no domingo, 2 mai)",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "opals-walk-for-freedom-juneteenth",
+  "nome": "Opal's Walk for Freedom (Juneteenth)",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "1050 Evans Ave, Fort Worth, TX 76104",
+  "quando": "Todo ano em 19 de junho (Juneteenth); percurso e horário de 2027 ainda não divulgados",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-2.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "pavilion-at-toyota-music-factory",
+  "nome": "The Pavilion at Toyota Music Factory",
+  "categoria": "show",
+  "cidade": "Irving",
+  "endereco": "300 W Las Colinas Blvd, Irving, TX 75039",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-4.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "plano-balloon-festival",
+  "nome": "H-E-B | Central Market Plano Balloon Festival",
+  "categoria": "evento",
+  "cidade": "Plano",
+  "endereco": "2801 E Spring Creek Pkwy, Plano, TX 75074",
+  "quando": "Todo ano em quatro dias de meados de setembro (em 2026 foi de 17 a 20 set); datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/oak-point-park-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "red-river-rivalry",
+  "nome": "Red River Rivalry (Texas x Oklahoma)",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "3750 The Midway, Dallas, TX 75210",
+  "quando": "Todo ano em outubro, durante a State Fair of Texas (em 2026 foi em 10 out); data de 2027 ainda não divulgada",
+  "fotos_atuais": [
+   {
+    "src": "img/state-fair-of-texas-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "scarborough-renaissance-festival",
+  "nome": "Scarborough Renaissance Festival",
+  "categoria": "evento",
+  "cidade": "Waxahachie",
+  "endereco": "2511 FM 66, Waxahachie, TX 75167",
+  "quando": "Todo ano aos sábados e domingos de abril e maio, incluindo a segunda do Memorial Day (em 2026 foi de 4 abr a 25 mai); datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/scarborough-renaissance-festival-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "taste-addison",
+  "nome": "Taste Addison",
+  "categoria": "evento",
+  "cidade": "Addison",
+  "endereco": "4970 Addison Circle Dr, Addison, TX 75001",
+  "quando": "Todo ano na primavera (em 2026 foi de 17 a 19 de abril); datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-4.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "texas-motor-speedway",
+  "nome": "Texas Motor Speedway",
+  "categoria": "show",
+  "cidade": "Fort Worth",
+  "endereco": "3545 Lone Star Cir, Fort Worth, TX 76177",
+  "quando": "Eventos o ano todo; fim de semana da NASCAR de 30 abr a 2 mai de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "texas-rangers-temporada",
+  "nome": "Texas Rangers (temporada da MLB)",
+  "categoria": "evento",
+  "cidade": "Arlington",
+  "endereco": "734 Stadium Dr, Arlington, TX 76011",
+  "quando": "Temporada regular do fim de março ao fim de setembro; 81 jogos em casa",
+  "fotos_atuais": [
+   {
+    "src": "img/globe-life-field-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "texas-theatre",
+  "nome": "Texas Theatre",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "231 W Jefferson Blvd, Dallas, TX 75208",
+  "quando": "Sessões e shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/texas-theatre-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "texas-trust-cu-theatre",
+  "nome": "Texas Trust CU Theatre",
+  "categoria": "show",
+  "cidade": "Grand Prairie",
+  "endereco": "1001 Performance Pl, Grand Prairie, TX 75050",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/texas-trust-cu-theatre-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "the-factory-in-deep-ellum",
+  "nome": "The Factory in Deep Ellum",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "2713 Canton St, Dallas, TX 75226",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-2.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "toyota-stadium-frisco",
+  "nome": "Toyota Stadium",
+  "categoria": "show",
+  "cidade": "Frisco",
+  "endereco": "9200 World Cup Way, Frisco, TX 75033",
+  "quando": "Futebol na temporada da MLS; shows e outros jogos ao longo do ano",
+  "fotos_atuais": [
+   {
+    "src": "img/toyota-stadium-frisco-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "trees-dallas",
+  "nome": "Trees",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "2709 Elm St, Dallas, TX 75226",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-5.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "vitruvian-lights",
+  "nome": "Vitruvian Lights",
+  "categoria": "evento",
+  "cidade": "Addison",
+  "endereco": "3966 Vitruvian Way, Addison, TX 75001",
+  "quando": "28 nov de 2026 a 3 jan de 2027 (segundo listagem de eventos; a página oficial ainda não tinha detalhado)",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-5.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "will-rogers-memorial-center",
+  "nome": "Will Rogers Memorial Center",
+  "categoria": "show",
+  "cidade": "Fort Worth",
+  "endereco": "3401 W Lancaster Ave, Fort Worth, TX 76107",
+  "quando": "Eventos equestres e feiras o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/will-rogers-memorial-center-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "winspear-opera-house",
+  "nome": "Margot and Bill Winspear Opera House",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "2403 Flora St, Dallas, TX 75201",
+  "quando": "Temporada de setembro a junho, com espetáculos o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/winspear-opera-house-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "wyly-theatre",
+  "nome": "Dee and Charles Wyly Theatre",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "2400 Flora St, Dallas, TX 75201",
+  "quando": "Temporada de setembro a junho",
+  "fotos_atuais": [
+   {
+    "src": "img/wyly-theatre-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ }
+]

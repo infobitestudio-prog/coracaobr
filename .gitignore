@@ -1,0 +1,10 @@
+dist/
+d/
+d2/
+d3/
+d4/
+dados/
+api/dados/
+__pycache__/
+*.sqlite
+.DS_Store

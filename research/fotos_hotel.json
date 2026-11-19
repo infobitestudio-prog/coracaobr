@@ -1,0 +1,23 @@
+[
+ {
+  "src": "img/ilustra-hotel-1.jpg",
+  "credito": "Tim36272",
+  "licenca": "CC BY-SA 3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Hotel_Room_with_queen_size_bed.jpg",
+  "ilustrativa": true
+ },
+ {
+  "src": "img/ilustra-hotel-2.jpg",
+  "credito": "Derek Jensen (Tysto)",
+  "licenca": "Public domain",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Hotel-room-renaissance-columbus-ohio.jpg",
+  "ilustrativa": true
+ },
+ {
+  "src": "img/ilustra-hotel-3.jpg",
+  "credito": "Thomas Duesing",
+  "licenca": "CC BY 2.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Siena_-_hotel_room_-_2012-5.jpg",
+  "ilustrativa": true
+ }
+]

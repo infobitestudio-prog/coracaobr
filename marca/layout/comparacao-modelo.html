@@ -1,0 +1,215 @@
+<title>CoraçãoBR × Nina</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Outfit:wght@700&display=swap">
+<style>
+/* Layout: cabeçalho, pares de telas lado a lado (Nina à esquerda, CoraçãoBR à direita), placar em tabela e plano em três colunas. */
+:root {
+  --bg: #F2F4F0; --fg: #152019; --mut: #5E6A63; --line: #DCE1DA; --card: #FFFFFF; --card2: #F7F9F6;
+  --cb: #024E25; --cb-soft: #E3F1E7; --am: #E3A600; --am-soft: #FFF3CF;
+  --nina: #5B3A85; --nina-soft: #EEE7F7; --nao: #B4473D; --nao-soft: #FBE9E6;
+  --head: "Sora", "Segoe UI", system-ui, sans-serif; --ui: "Manrope", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0F1512; --fg: #E8EDE9; --mut: #9AA59F; --line: #27302B; --card: #161D19; --card2: #1B231E; --cb: #5BCB86; --cb-soft: #183324; --am: #FFC94A; --am-soft: #3A3014; --nina: #B99AE6; --nina-soft: #2A2238; --nao: #F08D80; --nao-soft: #3A1E1A; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #0F1512; --fg: #E8EDE9; --mut: #9AA59F; --line: #27302B; --card: #161D19; --card2: #1B231E; --cb: #5BCB86; --cb-soft: #183324; --am: #FFC94A; --am-soft: #3A3014; --nina: #B99AE6; --nina-soft: #2A2238; --nao: #F08D80; --nao-soft: #3A1E1A; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.55 var(--ui); margin: 0 }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+header { padding-block: 44px 28px }
+.eye { font: 600 12px var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--mut) }
+h1 { font: 700 clamp(34px, 5vw, 58px)/1 var(--head); letter-spacing: -.03em; margin: 10px 0 14px }
+h1 .x { color: var(--mut); font-weight: 500 } h1 .c { color: var(--cb) } h1 .n { color: var(--nina) }
+.lead { color: var(--mut); font-size: 18px; max-width: 66ch; margin: 0 }
+.resumo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 28px }
+.lado { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px }
+.lado h2 { font: 600 18px var(--head); margin: 0 0 4px; display: flex; align-items: center; gap: 10px }
+.lado h2 i { width: 12px; height: 12px; border-radius: 50%; display: inline-block }
+.lado p { margin: 0; color: var(--mut); font-size: 15px }
+.lado ul { margin: 10px 0 0; padding-left: 18px; font-size: 15px } .lado li { margin: 3px 0 }
+section { padding-block: 36px; border-top: 1px solid var(--line) }
+h2.sec { font: 600 clamp(24px, 3vw, 32px)/1.15 var(--head); letter-spacing: -.02em; margin: 6px 0 8px; text-wrap: balance }
+.sub { color: var(--mut); margin: 0 0 22px; max-width: 70ch }
+.par { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.05fr); gap: 22px; align-items: start; margin-bottom: 34px }
+.tela { margin: 0; display: grid; gap: 10px; min-width: 0 }
+.tela .rot { display: flex; align-items: center; gap: 8px; font: 600 13px var(--ui) }
+.tela .rot b { padding: 3px 10px; border-radius: 99px; font-size: 12px }
+.tela.n .rot b { background: var(--nina-soft); color: var(--nina) } .tela.c .rot b { background: var(--cb-soft); color: var(--cb) }
+.fone { border-radius: 26px; overflow: hidden; border: 6px solid #1C1E1D; background: #1C1E1D; aspect-ratio: 420 / 715; max-width: 100% }
+.fone img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block }
+.vazio { border-radius: 26px; border: 2px dashed var(--line); aspect-ratio: 420 / 715; display: grid; place-items: center; padding: 22px; text-align: center; color: var(--mut); background: var(--card2) }
+.vazio b { display: block; color: var(--nao); font: 600 15px var(--head); margin-bottom: 6px }
+.leitura { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; min-width: 0 }
+.leitura h3 { font: 600 19px var(--head); margin: 0 0 12px }
+.leitura h4 { font: 600 12px var(--ui); letter-spacing: .12em; text-transform: uppercase; margin: 14px 0 6px }
+.leitura h4.n { color: var(--nina) } .leitura h4.c { color: var(--cb) } .leitura h4.a { color: var(--am) }
+.leitura ul { margin: 0; padding-left: 18px; font-size: 14.5px } .leitura li { margin: 4px 0 }
+.busca-ex { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px }
+.bx { border-radius: 20px; padding: 20px; border: 1px solid var(--line); background: var(--card) }
+.bx .q { font: 600 16px var(--head); padding: 12px 16px; border-radius: 14px; margin: 10px 0 12px }
+.bx.n .q { background: var(--nina-soft); color: var(--nina) } .bx.c .q { background: var(--cb-soft); color: var(--cb) }
+.bx ol { margin: 0; padding-left: 20px; font-size: 14.5px } .bx li { margin: 5px 0 } .bx small { color: var(--mut) }
+.bx .seta { font-size: 13px; color: var(--mut); margin: 0 0 8px }
+.pill { display: inline-block; font: 700 11px var(--ui); padding: 3px 9px; border-radius: 99px; white-space: nowrap }
+.p-tem { background: var(--cb-soft); color: var(--cb) } .p-nao { background: var(--nao-soft); color: var(--nao) } .p-parc { background: var(--am-soft); color: var(--am) }
+.p-nina { background: var(--nina-soft); color: var(--nina) }
+.tabela { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; background: var(--card) }
+table { width: 100%; border-collapse: collapse; min-width: 680px; font-size: 14.5px }
+th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font: 600 12px var(--ui); letter-spacing: .1em; text-transform: uppercase; color: var(--mut); background: var(--card2) }
+tr.grupo td { font: 600 13px var(--head); background: var(--card2); color: var(--fg) }
+tr:last-child td { border-bottom: 0 }
+td small { display: block; color: var(--mut); font-size: 12.5px; margin-top: 2px }
+.plano { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.col { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px }
+.col h3 { font: 600 18px var(--head); margin: 0 0 4px } .col > p { color: var(--mut); font-size: 14px; margin: 0 0 12px }
+.item { padding: 12px 0; border-top: 1px solid var(--line) } .item b { display: block; font-weight: 600 } .item span { color: var(--mut); font-size: 14px }
+.dif { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px }
+.dif div { background: var(--cb-soft); border-radius: 14px; padding: 14px 16px; font-size: 14.5px } .dif b { display: block; color: var(--cb); font-weight: 700 }
+footer { padding-block: 26px 56px; color: var(--mut); font-size: 13.5px; border-top: 1px solid var(--line) }
+@media (max-width: 960px) { .par { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) } .leitura { grid-column: 1 / -1 } .plano { grid-template-columns: 1fr } }
+@media (max-width: 560px) { .resumo, .busca-ex { grid-template-columns: 1fr } .par { gap: 12px } .fone, .vazio { border-radius: 18px; border-width: 4px } }
+</style>
+
+<header class="wrap">
+  <div class="eye">Análise de concorrência · 19 de novembro de 2026</div>
+  <h1><span class="c">CoraçãoBR</span> <span class="x">×</span> <span class="n">Nina</span></h1>
+  <p class="lead">O que a Nina faz e o CoraçãoBR ainda não faz, tela por tela, e o que vale trazer para cá. À esquerda, telas reais do site público da Nina. À direita, o CoraçãoBR no layout Mapa vivo.</p>
+  <div class="resumo">
+    <div class="lado"><h2><i style="background:var(--nina)"></i>Nina</h2><p>Busca de eventos e "rolês" no mapa.</p><ul><li>São Paulo, Rio e Fortaleza</li><li>Foco em festas, shows e cultura</li><li>Preço, lotes e estoque de ingressos</li><li>Entrada pelo WhatsApp, sem senha</li></ul></div>
+    <div class="lado"><h2><i style="background:var(--cb)"></i>CoraçãoBR</h2><p>Guia em português para brasileiros fora do Brasil.</p><ul><li>Dallas–Fort Worth, o primeiro mercado</li><li>414 lugares e 77 eventos</li><li>Avaliações, roteiros, custo de vida e mural</li><li>Português, inglês e espanhol</li></ul></div>
+  </div>
+</header>
+
+<main class="wrap">
+<section>
+  <div class="eye">Lado a lado</div>
+  <h2 class="sec">Telas equivalentes</h2>
+  <p class="sub">Mesma função nas duas plataformas. Ao lado de cada par, o que a Nina faz melhor e o que trazer.</p>
+
+  <div class="par">
+    <figure class="tela n"><figcaption class="rot"><b>Nina</b>Mapa inicial</figcaption><div class="fone"><img src="{{n-mapa}}" alt="Tela inicial da Nina: mapa de São Paulo com bolinhas numeradas agrupando eventos, busca e atalhos For You, Agora, Festas e Rolês culturais"></div></figure>
+    <figure class="tela c"><figcaption class="rot"><b>CoraçãoBR</b>Mapa vivo</figcaption><div class="fone"><img src="{{c-mapa}}" alt="Tela inicial do CoraçãoBR no layout Mapa vivo: mapa de Dallas com etiquetas de nota e preço e a lista Perto de você"></div></figure>
+    <div class="leitura"><h3>Mapa</h3>
+      <h4 class="n">A Nina tem</h4><ul><li>Bolinhas com número que juntam eventos próximos</li><li>A lista mostra só o que está na área do mapa</li><li>Atalhos de cara: For You, Agora, Festas</li></ul>
+      <h4 class="c">O CoraçãoBR tem</h4><ul><li>Etiquetas com nota, preço e "Grátis"</li><li>Lista ordenada pela distância, com tempo de carro</li></ul>
+      <h4 class="a">Trazer</h4><ul><li>Agrupar pins com número</li><li>Botão "Agora" nos atalhos</li></ul></div>
+  </div>
+
+  <div class="par">
+    <figure class="tela n"><figcaption class="rot"><b>Nina</b>Lista com filtros</figcaption><div class="fone"><img src="{{n-lista}}" alt="Lista de festas da Nina com filtros Agora, intervalo de datas, Este FDS e até R$ 100, e um card marcado Patrocinado"></div></figure>
+    <figure class="tela c"><figcaption class="rot"><b>CoraçãoBR</b>Filtro de eventos</figcaption><div class="fone"><img src="{{c-lista}}" alt="Lista de eventos do CoraçãoBR com datas nas etiquetas do mapa"></div></figure>
+    <div class="leitura"><h3>Lista e filtros</h3>
+      <h4 class="n">A Nina tem</h4><ul><li>"Agora", "Este FDS", intervalo de datas e faixa de preço</li><li>O filtro vai para o link, dá para mandar a busca</li><li>Selo "Esgotado" e "+3 sessões"</li></ul>
+      <h4 class="c">O CoraçãoBR tem</h4><ul><li>Filtro por tipo e "Grátis"</li><li>Selo "Patrocinado" (igual à Nina)</li></ul>
+      <h4 class="a">Trazer</h4><ul><li>Filtros de data e preço</li><li>Compartilhar a busca</li><li>Várias sessões por evento</li></ul></div>
+  </div>
+
+  <div class="par">
+    <figure class="tela n"><figcaption class="rot"><b>Nina</b>Página do evento</figcaption><div class="fone"><img src="{{n-evento}}" alt="Página de evento da Nina: título, local, data, horário, preço, etiquetas de gênero musical, botões Compartilhar e Salvar e cartaz do evento"></div></figure>
+    <figure class="tela c"><figcaption class="rot"><b>CoraçãoBR</b>Página do lugar</figcaption><div class="fone"><img style="object-position:bottom" src="{{c-detalhe}}" alt="Página de lugar do CoraçãoBR: foto com crédito, tempo de carro e a pé, preço, nota da curadoria, dica e botão Como chegar"></div></figure>
+    <div class="leitura"><h3>Página do evento</h3>
+      <h4 class="n">A Nina tem</h4><ul><li>Etiquetas ricas: gênero musical, PCD, LGBT+, open bar</li><li>"Compartilhar" em destaque</li><li>Escolha de sessão e link do ingresso</li><li>"Quem Recomendou": parceiros que indicaram</li></ul>
+      <h4 class="c">O CoraçãoBR tem</h4><ul><li>Tempo de carro e a pé</li><li>Nota, avaliações reais e dica da curadoria</li><li>Lembrete e "adicionar ao calendário"</li></ul>
+      <h4 class="a">Trazer</h4><ul><li>Etiquetas práticas (crianças, pets, acessível)</li><li>Botão de ingresso com comissão</li><li>Selo "Quem Recomendou"</li></ul></div>
+  </div>
+
+  <div class="par">
+    <figure class="tela n"><figcaption class="rot"><b>Nina</b>For You</figcaption><div class="fone"><img src="{{n-foryou}}" alt="Tela For You da Nina perguntando quais rolês mais interessam, com opções Festas, Exposições, Cultural, Comédia, Feiras, Teatro, Festival de Música, Bar, LGBT+ e Festa Universitária"></div></figure>
+    <figure class="tela c"><figcaption class="rot"><b>CoraçãoBR</b>Criar conta</figcaption><div class="fone"><img src="{{c-conta}}" alt="Tela Criar conta do CoraçãoBR com escolha entre usar o guia e anunciar, nome, e-mail e senha"></div></figure>
+    <div class="leitura"><h3>Primeiro acesso</h3>
+      <h4 class="n">A Nina tem</h4><ul><li>Pergunta os interesses (mínimo 2) e monta uma lista só para a pessoa</li><li>Entrada com código pelo WhatsApp, sem senha</li><li>Newsletter por WhatsApp ou e-mail, a pessoa escolhe</li></ul>
+      <h4 class="c">O CoraçãoBR tem</h4><ul><li>Conta com e-mail e senha</li><li>Separação entre usuário e anunciante</li></ul>
+      <h4 class="a">Trazer</h4><ul><li>"For You" com interesses</li><li>Newsletter semanal</li><li>Entrar pelo WhatsApp (tem custo por mensagem)</li></ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="eye">Busca</div>
+  <h2 class="sec">Buscar escrevendo do jeito que se fala</h2>
+  <p class="sub">A Nina entende a frase e transforma em filtro de data e categoria. É a diferença mais visível entre as duas hoje.</p>
+  <div class="busca-ex">
+    <div class="bx n"><span class="pill p-nina">Nina · resultado real capturado</span><div class="q">show de samba neste sábado</div><p class="seta">virou: datas 21/11 a 22/11 · categoria samba</p>
+      <ol><li>Sábado De Samba 77, Bar da Dalva <small>· Bela Vista · Gratuito</small></li><li>Sábado Na Toca Da Capivara <small>· Bela Vista · R$ 25</small></li><li>Papo de Samba, Oh! Madalena Bar <small>· Pinheiros · R$ 10</small></li><li>Samba Que Elas Querem, Casa de Francisca <small>· Sé · R$ 26 a R$ 52</small></li></ol></div>
+    <div class="bx c"><span class="pill p-nao">CoraçãoBR · ainda não tem</span><div class="q">restaurante brasileiro aberto agora em Plano</div><p class="seta">como ficaria: categoria comida brasileira · aberto agora · cidade Plano</p>
+      <ol><li>A busca usaria os horários e as categorias que o guia já tem</li><li>O resultado aparece no mapa e na lista, ordenado pela distância</li><li>Aproveita a base do Roteiro com IA, que já existe</li></ol></div>
+  </div>
+</section>
+
+<section>
+  <div class="eye">Placar</div>
+  <h2 class="sec">Quem tem o quê</h2>
+  <p class="sub">Funcionalidades observadas no site público da Nina comparadas com o CoraçãoBR de hoje.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Funcionalidade</th><th>Nina</th><th>CoraçãoBR</th><th>Esforço</th></tr></thead>
+    <tbody>
+      <tr class="grupo"><td colspan="4">Descobrir</td></tr>
+      <tr><td>Mapa como tela inicial</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-parc">No protótipo</span></td><td>Médio</td></tr>
+      <tr><td>Agrupar pins com número</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Rápido</td></tr>
+      <tr><td>"Agora": acontecendo neste momento<small>O CoraçãoBR tem "aberto agora" para lugares</small></td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-parc">Parcial</span></td><td>Rápido</td></tr>
+      <tr><td>Filtros "Este FDS", datas e faixa de preço</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Rápido</td></tr>
+      <tr><td>Busca escrita do jeito que se fala</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Médio</td></tr>
+      <tr><td>"For You" por interesses</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Médio</td></tr>
+      <tr><td>Página de cada local com todos os eventos</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Médio</td></tr>
+      <tr class="grupo"><td colspan="4">Eventos</td></tr>
+      <tr><td>Várias sessões e horários por evento</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Rápido</td></tr>
+      <tr><td>Selos "Esgotado" e "Evento encerrado"</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Rápido</td></tr>
+      <tr><td>Etiquetas: PCD, LGBT+, grupos, gênero musical</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-parc">Parcial</span><small>"Fala português" e "Grátis"</small></td><td>Rápido</td></tr>
+      <tr><td>Preço por lote e link do ingresso</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-parc">Parcial</span><small>Preço "a partir de"</small></td><td>Médio</td></tr>
+      <tr><td>Lembrete e "adicionar ao calendário"</td><td><span class="pill p-nao">Não vi</span></td><td><span class="pill p-tem">Tem</span></td><td>—</td></tr>
+      <tr class="grupo"><td colspan="4">Conta e comunidade</td></tr>
+      <tr><td>Entrar com código pelo WhatsApp</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Médio</td></tr>
+      <tr><td>Newsletter por WhatsApp ou e-mail</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Médio</td></tr>
+      <tr><td>Salvar lugares e eventos</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-tem">Tem</span></td><td>—</td></tr>
+      <tr><td>Compartilhar uma busca inteira</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Rápido</td></tr>
+      <tr><td>Avaliações reais de quem foi</td><td><span class="pill p-nao">Não vi</span></td><td><span class="pill p-tem">Tem</span></td><td>—</td></tr>
+      <tr><td>Roteiros com checklist e roteiro com IA</td><td><span class="pill p-nao">Não vi</span></td><td><span class="pill p-tem">Tem</span></td><td>—</td></tr>
+      <tr class="grupo"><td colspan="4">Receita</td></tr>
+      <tr><td>Conteúdo patrocinado marcado</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-tem">Tem</span></td><td>—</td></tr>
+      <tr><td>"Quem Recomendou": parceiros e influenciadores</td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-nao">Não tem</span></td><td>Rápido</td></tr>
+      <tr><td>Painel do anunciante com métricas e cupons</td><td><span class="pill p-nao">Não vi</span></td><td><span class="pill p-tem">Tem</span></td><td>—</td></tr>
+      <tr><td>Várias cidades no mesmo app<small>Nina: São Paulo, Rio e Fortaleza</small></td><td><span class="pill p-tem">Tem</span></td><td><span class="pill p-parc">Preparando</span></td><td>Médio</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="eye">Plano</div>
+  <h2 class="sec">O que trazer, e em que ordem</h2>
+  <div class="plano">
+    <div class="col"><h3>Agora</h3><p>Junto com o layout Mapa vivo. Dias de trabalho.</p>
+      <div class="item"><b>Botão "Agora"</b><span>Eventos acontecendo neste momento</span></div>
+      <div class="item"><b>Filtros de data e preço</b><span>Este FDS, calendário, Grátis, até US$ 20</span></div>
+      <div class="item"><b>Pins agrupados com número</b><span>E a lista mostra só a área do mapa</span></div>
+      <div class="item"><b>Etiquetas práticas</b><span>Crianças, pets, acessível, LGBT+</span></div>
+      <div class="item"><b>Compartilhar busca</b><span>Mandar "grátis neste fim de semana" no grupo</span></div></div>
+    <div class="col"><h3>Próximas semanas</h3><p>Exigem mais trabalho, mas fazem a pessoa voltar.</p>
+      <div class="item"><b>Busca escrita</b><span>Aproveita a base do Roteiro com IA</span></div>
+      <div class="item"><b>"For You"</b><span>Interesses no primeiro acesso</span></div>
+      <div class="item"><b>Newsletter semanal</b><span>WhatsApp ou e-mail, a pessoa escolhe</span></div>
+      <div class="item"><b>Página de cada local</b><span>Todos os eventos do AT&amp;T Stadium, do Billy Bob's…</span></div>
+      <div class="item"><b>Sessões por evento</b><span>Dia e horário para escolher</span></div></div>
+    <div class="col"><h3>Receita</h3><p>Novas fontes de dinheiro, sempre sinalizadas.</p>
+      <div class="item"><b>Ingresso com comissão</b><span>Programas de afiliados dos sites de ingresso, conferindo as condições de cada um</span></div>
+      <div class="item"><b>"Quem Recomendou" pago</b><span>Parceiros brasileiros no Texas, marcados como parceria</span></div>
+      <div class="item"><b>Entrar pelo WhatsApp</b><span>Mais cadastros; custa por mensagem enviada</span></div>
+      <div class="item"><b>Pesquisa com Pix</b><span>A Nina paga R$ 10 por resposta; vale testar</span></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="eye">Diferenciais</div>
+  <h2 class="sec">O que só o CoraçãoBR tem</h2>
+  <p class="sub">Vale manter e destacar. Não vi nada disso no site público da Nina.</p>
+  <div class="dif">
+    <div><b>Avaliações reais</b>Nota de quem foi, sem depoimento inventado</div>
+    <div><b>Roteiros</b>Prontos, com checklist, e roteiro com IA</div>
+    <div><b>Aviso por perto</b>Lembra a pessoa quando passa perto de um lugar</div>
+    <div><b>Lembretes e calendário</b>Aviso na véspera e arquivo para a agenda</div>
+    <div><b>Para quem mora</b>Custo de vida por cidade e guia de chegada</div>
+    <div><b>Comunidade</b>Mural de vagas, quartos e classificados</div>
+    <div><b>Anunciantes</b>Painel com métricas e cupons com QR Code</div>
+    <div><b>Três idiomas</b>Português, inglês e espanhol</div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">Telas da Nina capturadas do site público sitedanina.com em 19/11/2026, num celular, sem login. "Não vi" quer dizer que a função não apareceu nas páginas públicas; pode existir na área logada. Telas do CoraçãoBR: protótipo do layout Mapa vivo, com dados reais do guia.</footer>

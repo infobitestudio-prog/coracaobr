@@ -1,0 +1,117 @@
+<title>CoraçãoBR Marca</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: folha de marca. Símbolo grande no topo, depois as versões de uso em grade. */
+:root {
+  --bg: #F4F4F1; --card: #FFFFFF; --ink: #17201B; --muted: #5F6862; --line: #E3E5E0;
+  --verde: #0B8A44; --ouro: #F2C200; --mata: #0F3D2A; --noite: #111614;
+  --display: "Outfit", "Avenir Next", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0D1110; --card: #171D1A; --ink: #EBEFEC; --muted: #9AA49E; --line: #252C28; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #0D1110; --card: #171D1A; --ink: #EBEFEC; --muted: #9AA49E; --line: #252C28; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); margin: 0 }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+h1 { font: 800 clamp(1.8rem, 4vw, 2.6rem)/1.05 var(--display); margin: 0 0 8px }
+.lead { color: var(--muted); margin: 0 0 26px; max-width: 64ch; line-height: 1.55 }
+.hero { background: #FAFAF8; border: 1px solid var(--line); border-radius: 14px; display: grid; place-items: center; padding: 48px 16px }
+.hero svg { width: min(560px, 100%); height: auto }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; margin-top: 18px }
+.c { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; min-width: 0 }
+.c .art { display: grid; place-items: center; padding: 30px 18px; min-height: 180px }
+.c .art svg { width: 100%; max-width: 300px; height: auto }
+.c .cap { padding: 12px 16px; border-top: 1px solid var(--line); font-size: .88rem; color: var(--muted); display: flex; justify-content: space-between; gap: 10px }
+.c .cap b { color: var(--ink); font-weight: 600 }
+.light { background: #FAFAF8 } .dark { background: var(--noite) } .mata { background: var(--mata) } .ouro { background: var(--ouro) }
+.icons { display: flex; gap: 18px; align-items: flex-end; flex-wrap: wrap; justify-content: center }
+.icons svg { max-width: none !important; border-radius: 22%; box-shadow: 0 6px 18px rgba(0,0,0,.15) }
+.pal { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px }
+.pal div { flex: 1 1 140px; border-radius: 12px; padding: 14px; color: #fff; font: 600 .85rem var(--body); min-height: 70px; display: grid; align-content: end }
+.pal div small { font-weight: 400; opacity: .85 }
+h2 { font: 700 1.25rem var(--display); margin: 34px 0 4px }
+.note { color: var(--muted); font-size: .9rem; line-height: 1.5; max-width: 70ch }
+</style>
+
+<div class="wrap">
+  <h1>CoraçãoBR</h1>
+  <p class="lead">Dois corações entrelaçados: o verde do Brasil e o amarelo-ouro do sol do Texas, ligados como elos de uma corrente. Um passa por cima do outro em cima e por baixo embaixo, então nenhum é maior que o outro.</p>
+  <div class="hero" id="hero"></div>
+
+  <h2>Versões de uso</h2>
+  <div class="grid" id="grid"></div>
+
+  <h2>Ícone de app e favicon</h2>
+  <div class="c" style="margin-top:12px"><div class="art light"><div class="icons" id="icons"></div></div><div class="cap"><b>Do maior ao menor</b><span>180 · 96 · 48 · 32 px</span></div></div>
+
+  <h2>Cores</h2>
+  <div class="pal">
+    <div style="background:#0B8A44">Verde Brasil<small>#0B8A44</small></div>
+    <div style="background:#F2C200;color:#17201B">Ouro Texas<small>#F2C200</small></div>
+    <div style="background:#0F3D2A">Verde mata<small>#0F3D2A</small></div>
+    <div style="background:#17201B">Grafite<small>#17201B</small></div>
+  </div>
+  <p class="note">Fonte do nome: Outfit SemiBold, com "BR" em ExtraBold. A versão final pode ganhar letras desenhadas sob medida.</p>
+</div>
+
+<script>
+/* Coração em traço: caixa 100x100, ponta embaixo. */
+var HEART = "M50 90 C24 72 7 55 7 33 C7 18 18 8 31 8 C40 8 46 13 50 21 C54 13 60 8 69 8 C82 8 93 18 93 33 C93 55 76 72 50 90 Z";
+var OFF = 48; /* distância entre os dois corações */
+var SW = 9;   /* espessura do traço */
+
+/* Acha os pontos onde os dois contornos se cruzam e a posição (comprimento) de cada um em cada caminho. */
+var DY = 28; /* o coração ouro fica um pouco mais baixo: cruzamentos mais abertos e elegantes */
+var cruz = null;
+function cruzamentos() {
+  if (cruz) return cruz;
+  var ns = "http://www.w3.org/2000/svg", s = document.createElementNS(ns, "svg"), a = document.createElementNS(ns, "path");
+  s.setAttribute("style", "position:absolute;width:0;height:0"); a.setAttribute("d", HEART); s.appendChild(a); document.body.appendChild(s);
+  var L = a.getTotalLength(), N = 1200, P = [], i, j, pts = [];
+  for (i = 0; i <= N; i++) P.push(a.getPointAtLength(L * i / N));
+  for (i = 0; i < N; i++) for (j = 0; j < N; j++) {
+    var p1 = P[i], p2 = P[i + 1], q1 = { x: P[j].x + OFF, y: P[j].y + DY }, q2 = { x: P[j + 1].x + OFF, y: P[j + 1].y + DY };
+    var d = (p2.x - p1.x) * (q2.y - q1.y) - (p2.y - p1.y) * (q2.x - q1.x); if (!d) continue;
+    var t = ((q1.x - p1.x) * (q2.y - q1.y) - (q1.y - p1.y) * (q2.x - q1.x)) / d, u = ((q1.x - p1.x) * (p2.y - p1.y) - (q1.y - p1.y) * (p2.x - p1.x)) / d;
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) { var x = p1.x + t * (p2.x - p1.x), y = p1.y + t * (p2.y - p1.y);
+      if (!pts.some(function (k) { return Math.hypot(k.x - x, k.y - y) < 4; })) pts.push({ x: x, y: y, la: L * (i + t) / N, lb: L * (j + u) / N }); }
+  }
+  s.remove(); pts.sort(function (m, n) { return m.y - n.y; }); cruz = { pts: pts, L: L }; return cruz;
+}
+var uid = 0;
+/* trecho do caminho em volta de um ponto (por comprimento), via tracejado */
+function trecho(pos, meia, L) { var ini = pos - meia; if (ini < 0) ini += L; var len = 2 * meia; return ini + len <= L ? 'stroke-dasharray="0 ' + ini + " " + len + " " + L + '"' : 'stroke-dasharray="' + (ini + len - L) + " " + (L - len) + " " + len + " " + L + '"'; }
+/* Símbolo: verde à esquerda, ouro à direita e um pouco abaixo. Em cima o ouro passa por cima; embaixo, o verde. */
+function simbolo(o) {
+  o = o || {}; var g = o.verde || "#0B8A44", y = o.ouro || "#F2C200", k = o.fundo || "#FAFAF8", sw = o.sw || SW, c = cruzamentos(), L = c.L;
+  var top = c.pts[0], bot = c.pts[c.pts.length - 1], meia = sw * 1.7, gap = sw * 2;
+  var P = function (attrs) { return '<path d="' + HEART + '" fill="none" stroke-linejoin="round" ' + attrs + "/>"; };
+  var B = function (inner) { return '<g transform="translate(' + OFF + " " + DY + ')">' + inner + "</g>"; };
+  var base = B(P('stroke="' + y + '" stroke-width="' + sw + '"')) + P('stroke="' + g + '" stroke-width="' + sw + '"');
+  var cimaOuro = B(P('stroke="' + k + '" stroke-width="' + gap + '" ' + trecho(top.lb, meia, L)) + P('stroke="' + y + '" stroke-width="' + sw + '" ' + trecho(top.lb, meia + 4, L)));
+  var baixoVerde = P('stroke="' + k + '" stroke-width="' + gap + '" ' + trecho(bot.la, meia, L)) + P('stroke="' + g + '" stroke-width="' + sw + '" ' + trecho(bot.la, meia + 4, L));
+  return base + cimaOuro + baixoVerde;
+}
+function svg(vb, conteudo, w) { return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '"' + (w ? ' width="' + w + '" height="' + w + '"' : "") + '>' + conteudo + "</svg>"; }
+function nome(x, y, size, cor, corBR) { return '<text x="' + x + '" y="' + y + '" font-family="Outfit, Avenir Next, sans-serif" font-size="' + size + '" font-weight="600" letter-spacing="-1.5" fill="' + cor + '">coração<tspan font-weight="800" fill="' + corBR + '">BR</tspan></text>'; }
+
+function horizontal(o) { o = o || {}; return svg("0 0 560 132", '<g transform="translate(4 4)">' + simbolo(o) + "</g>" + nome(168, 90, 62, o.tinta || "#17201B", o.br || "#0B8A44")); }
+function empilhado(o) { o = o || {}; return svg("0 0 300 220", '<g transform="translate(71 4) scale(1.05)">' + simbolo(o) + "</g>" + nome(150, 196, 48, o.tinta || "#17201B", o.br || "#0B8A44").replace("<text ", '<text text-anchor="middle" ')); }
+function soSimbolo(o) { return svg("0 0 152 128", simbolo(o)); }
+function icone(px, o) { o = o || {}; var bg = o.bgIcon || "#0F3D2A"; return svg("0 0 180 180", '<rect width="180" height="180" rx="40" fill="' + bg + '"/><g transform="translate(25 40) scale(0.9)">' + simbolo(Object.assign({ fundo: bg, verde: "#2FC36F" }, o)) + "</g>", px); }
+
+document.getElementById("hero").innerHTML = horizontal();
+var V = [
+  ["light", "Horizontal", "uso principal", horizontal()],
+  ["dark", "Horizontal, fundo escuro", "site e redes", horizontal({ fundo: "#111614", verde: "#2FC36F", tinta: "#EEF2EF", br: "#F2C200" })],
+  ["light", "Empilhada", "perfil e fachada", empilhado()],
+  ["mata", "Empilhada, verde mata", "material impresso", empilhado({ fundo: "#0F3D2A", verde: "#2FC36F", tinta: "#FFFFFF", br: "#F2C200" })],
+  ["light", "Só o símbolo", "carimbo, adesivo", soSimbolo()],
+  ["light", "Uma cor", "bordado, gravação", horizontal({ verde: "#17201B", ouro: "#17201B", br: "#17201B" })],
+  ["dark", "Uma cor, negativo", "sobre foto escura", horizontal({ fundo: "#111614", verde: "#FFFFFF", ouro: "#FFFFFF", tinta: "#FFFFFF", br: "#FFFFFF" })],
+  ["ouro", "Sobre amarelo", "campanhas", horizontal({ fundo: "#F2C200", ouro: "#FFFFFF", tinta: "#0F3D2A", br: "#0F3D2A" })]
+];
+document.getElementById("grid").innerHTML = V.map(function (v) { return '<div class="c"><div class="art ' + v[0] + '">' + v[3] + '</div><div class="cap"><b>' + v[1] + "</b><span>" + v[2] + "</span></div></div>"; }).join("");
+document.getElementById("icons").innerHTML = [180, 96, 48, 32].map(function (p) { return icone(p).replace("<svg ", '<svg style="width:' + p + 'px;height:' + p + 'px" '); }).join("");
+window.MARCA = { horizontal: horizontal, empilhado: empilhado, soSimbolo: soSimbolo, icone: icone };
+</script>

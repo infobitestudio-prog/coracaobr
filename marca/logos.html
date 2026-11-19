@@ -1,0 +1,96 @@
+<title>CoraçãoBR Logos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: uma coluna de cartões grandes; cada conceito em fundo claro, escuro e ícone de app */
+:root {
+  --bg: #F3F3F1; --card: #FFFFFF; --ink: #1E2421; --muted: #5F6762; --line: #E2E3DF;
+  --verde: #0B7A3E; --dark: #141817; --dark-ink: #F1F2F0;
+  --display: "Outfit", "Avenir Next", system-ui, sans-serif; --body: "Inter", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0E1110; --card: #181C1A; --ink: #E9ECEA; --muted: #9BA39E; --line: #272C29; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #0E1110; --card: #181C1A; --ink: #E9ECEA; --muted: #9BA39E; --line: #272C29; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); margin: 0 }
+.wrap { max-width: 1100px; margin: 0 auto; padding-block: 40px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+header h1 { font: 800 clamp(1.8rem, 4vw, 2.6rem)/1.05 var(--display); margin: 0 0 8px; text-wrap: balance }
+header p { color: var(--muted); margin: 0; max-width: 64ch; line-height: 1.55 }
+.grid { display: grid; gap: 18px; margin-top: 28px }
+.c { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 12px; min-width: 0 }
+.c h2 { font: 700 1.1rem var(--display); margin: 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap }
+.c h2 span { font: 600 .72rem var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--verde) }
+.c p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.5; max-width: 70ch }
+.views { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 10px; align-items: stretch }
+.v { border-radius: 10px; display: grid; place-items: center; padding: 18px 10px; min-width: 0 }
+.v.l { background: #F4F4F2; --t: #2B302D; --k: #F4F4F2 } .v.d { background: var(--dark); --t: var(--dark-ink); --k: var(--dark) }
+.v svg { width: 100%; height: auto; max-height: 120px; overflow: visible }
+.app { width: 110px; border-radius: 24px; background: #F4F4F2; --t: #2B302D; --k: #F4F4F2; box-shadow: 0 6px 16px rgba(0,0,0,.14) }
+.app svg { width: 80px; height: 80px }
+svg text { font-family: var(--display); white-space: pre }
+@media (max-width: 640px) { .views { grid-template-columns: 1fr } .app { justify-self: center; width: 96px; height: 96px } }
+footer { margin-top: 30px; color: var(--muted); font-size: .88rem; max-width: 70ch; line-height: 1.5 }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>CoraçãoBR · rodada 2</h1>
+    <p>Na linha do "trap": letras pesadas que se sobrepõem, com um corte do fundo separando as peças, e o coração como protagonista. Cada conceito em fundo claro, escuro e como ícone de app.</p>
+  </header>
+  <div class="grid" id="grid"></div>
+  <footer>Rascunhos. O que você escolher ganha desenho de letra próprio, ajuste fino dos encaixes e versões em uma cor.</footer>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gBR" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0B7A3E"/><stop offset="1" stop-color="#E8B800"/></linearGradient>
+</defs></svg>
+
+<script>
+var HP = "M0 8 C-9 1-11-5-7-8.5C-4-11 0-9 0-6.5C0-9 4-11 7-8.5C11-5 9 1 0 8Z";
+var COR = "#E5343F";
+function heart(cx, cy, s, fill, gap) { return '<path d="' + HP + '" transform="translate(' + cx + " " + cy + ") scale(" + s + ')" fill="' + fill + '"' + (gap ? ' stroke="var(--k)" stroke-width="' + (gap / s) + '" paint-order="stroke" stroke-linejoin="round"' : "") + "/>"; }
+function T(x, y, size, str, extra) { return '<text x="' + x + '" y="' + y + '" font-size="' + size + '" font-weight="800" letter-spacing="-3" fill="var(--t)" ' + (extra || "") + ">" + str + "</text>"; }
+var GAP = 'stroke="var(--k)" stroke-width="9" paint-order="stroke" stroke-linejoin="round"';
+
+var C = [
+  { t: "O ç é o coração", tag: "encaixe", ideia: "O coração ocupa o lugar do ç e invade o \"a\" e o \"ã\" vizinhos, com o corte do fundo separando tudo, igual ao \"a\" do trap. A ponta do coração vira a cedilha.",
+    draw: function () { return T(14, 104, 96, "cora  ão") + '<g class="deco"></g>' + T(440, 104, 96, "BR", 'fill="url(#gBR)" class="br"'); },
+    icon: '<text x="6" y="70" font-size="62" font-weight="800" fill="var(--t)" letter-spacing="-3">a</text>' + heart(58, 50, 3, COR, 6) + '<path d="M58 74 q10 7 -3 14" fill="none" stroke="' + COR + '" stroke-width="7" stroke-linecap="round"/>' },
+  { t: "BR atravessa o coração", tag: "sobreposição", ideia: "Um coração grande e cheio, com o \"BR\" pesado encaixado por cima e saindo pela borda. O corte do fundo em volta das letras dá o efeito de encaixe.",
+    draw: function () { return heart(110, 76, 7.2, COR) + T(54, 114, 104, "BR", GAP) + T(236, 104, 72, "coração"); },
+    icon: heart(50, 48, 4.4, COR) + '<text x="22" y="74" font-size="50" font-weight="800" fill="var(--t)" letter-spacing="-3" stroke="var(--k)" stroke-width="7" paint-order="stroke" stroke-linejoin="round">BR</text>' },
+  { t: "co + ração", tag: "letras formam o coração", ideia: "O \"c\" e o \"o\" viram os dois lobos do coração e uma ponta fecha embaixo. O começo da palavra é o próprio símbolo.",
+    draw: function () { return '<path d="M86 44 A30 30 0 1 0 46 96" fill="none" stroke="var(--t)" stroke-width="20" stroke-linecap="round"/><circle cx="108" cy="68" r="30" fill="none" stroke="' + COR + '" stroke-width="20"/><path d="M40 92 L82 136 L128 90" fill="none" stroke="var(--t)" stroke-width="20" stroke-linejoin="round" stroke-linecap="round"/>' + T(160, 104, 96, "ração") + T(430, 104, 96, "BR", 'fill="url(#gBR)"'); },
+    icon: '<g transform="translate(-4 -12) scale(.62)"><path d="M86 44 A30 30 0 1 0 46 96" fill="none" stroke="var(--t)" stroke-width="20" stroke-linecap="round"/><circle cx="108" cy="68" r="30" fill="none" stroke="' + COR + '" stroke-width="20"/><path d="M40 92 L82 136 L128 90" fill="none" stroke="var(--t)" stroke-width="20" stroke-linejoin="round" stroke-linecap="round"/></g>' },
+  { t: "Palavra que cruza o coração", tag: "dupla cor", ideia: "O nome passa por dentro de um coração: dentro dele as letras ficam na cor do fundo, fora ficam escuras. Um logo só, com duas leituras.",
+    draw: function (k) { return '<clipPath id="ck' + k + '"><path d="' + HP + '" transform="translate(206 72) scale(7.6)"/></clipPath>' + heart(206, 72, 7.6, COR) + T(20, 104, 96, "coraçãoBR") + '<g clip-path="url(#ck' + k + ')">' + T(20, 104, 96, "coraçãoBR", 'fill="var(--k)"') + "</g>"; },
+    icon: '<clipPath id="cki"><path d="' + HP + '" transform="translate(50 50) scale(4.4)"/></clipPath>' + heart(50, 50, 4.4, COR) + '<text x="4" y="66" font-size="46" font-weight="800" fill="var(--t)" letter-spacing="-3">cBR</text><g clip-path="url(#cki)"><text x="4" y="66" font-size="46" font-weight="800" fill="var(--k)" letter-spacing="-3">cBR</text></g>' },
+  { t: "Coração recortado no BR", tag: "espaço negativo", ideia: "O \"B\" e o \"R\" se sobrepõem e, no encontro dos dois, o corte do fundo desenha um coração vazado. Mais sutil e muito marcante como ícone.",
+    draw: function () { return T(16, 104, 96, "coração") + '<g transform="translate(350 0)">' + T(0, 112, 116, "B") + T(54, 112, 116, "R", GAP) + heart(66, 64, 2.4, "var(--k)") + heart(66, 64, 1.4, COR) + "</g>"; },
+    icon: '<text x="4" y="80" font-size="80" font-weight="800" fill="var(--t)" letter-spacing="-3">B</text><text x="40" y="80" font-size="80" font-weight="800" fill="var(--t)" stroke="var(--k)" stroke-width="7" paint-order="stroke" stroke-linejoin="round">R</text>' + heart(49, 46, 1.9, "var(--k)") + heart(49, 46, 1.1, COR) },
+  { t: "Til que bate", tag: "detalhe", ideia: "O til do \"ã\" vira um coração inclinado que encaixa por cima do \"a\", cortando a letra. Pequeno no nome, forte sozinho como ícone.",
+    draw: function () { return T(14, 104, 96, "coraçaoBR") + '<g class="deco"></g>'; },
+    icon: '<text x="18" y="88" font-size="78" font-weight="800" fill="var(--t)">a</text>' + '<g transform="rotate(-18 50 28)">' + heart(50, 28, 2.6, COR, 7) + "</g>" }
+];
+
+var g = document.getElementById("grid"), k = 0;
+C.forEach(function (c, i) {
+  var el = document.createElement("article"); el.className = "c";
+  var v = function (cls) { k++; return '<div class="v ' + cls + '"><svg viewBox="0 0 560 150" role="img" aria-label="' + c.t + '">' + c.draw(k) + "</svg></div>"; };
+  el.innerHTML = "<h2>" + (i + 1) + ". " + c.t + " <span>" + c.tag + "</span></h2><p>" + c.ideia + '</p><div class="views">' + v("l") + v("d") + '<div class="v app"><svg viewBox="0 0 100 100">' + c.icon + "</svg></div></div>";
+  g.appendChild(el); c.el = el;
+});
+function caixas(t) { var b = []; for (var i = 0; i < t.getNumberOfChars(); i++) b.push(t.getExtentOfChar(i)); return b; }
+function encaixar() {
+  /* 1: o coração entra no espaço do ç, entre "cora" e "ão" */
+  Array.from(C[0].el.querySelectorAll(".v:not(.app) svg")).forEach(function (s) {
+    var b = caixas(s.querySelector("text")), a = b[3], n = b[6], cx = (a.x + a.width + n.x) / 2, cy = a.y + a.height * .6;
+    var fim = b[b.length - 1]; s.querySelector(".br").setAttribute("x", fim.x + fim.width + 8); s.querySelector(".deco").innerHTML = heart(cx, cy, 4.4, COR, 9) + '<path d="M' + cx + " " + (cy + 35) + ' q14 10 -4 20" fill="none" stroke="' + COR + '" stroke-width="9" stroke-linecap="round"/>';
+  });
+  /* 6: coração-til por cima do "a" (posição 5 de "coraçaoBR") */
+  Array.from(C[5].el.querySelectorAll(".v:not(.app) svg")).forEach(function (s) {
+    var b = caixas(s.querySelector("text")), a = b[5], cx = a.x + a.width / 2 + 4, cy = a.y + a.height * .28;
+    s.querySelector(".deco").innerHTML = '<g transform="rotate(-18 ' + cx + " " + cy + ')">' + heart(cx, cy, 2.2, COR, 7) + "</g>";
+  });
+}
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(encaixar);
+</script>

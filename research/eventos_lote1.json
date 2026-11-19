@@ -1,0 +1,506 @@
+[
+ {
+  "id": "addison-improv",
+  "nome": "Addison Improv Comedy Club",
+  "categoria": "show",
+  "cidade": "Addison",
+  "endereco": "4980 Belt Line Rd #250, Dallas, TX 75254",
+  "quando": "Shows de quinta a domingo, o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "addison-kaboom-town",
+  "nome": "Addison Kaboom Town!",
+  "categoria": "evento",
+  "cidade": "Addison",
+  "endereco": "4970 Addison Circle Dr, Addison, TX 75001",
+  "quando": "Todo ano em 3 de julho, das 17h às 23h; edição de 2027 ainda não detalhada",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "addison-oktoberfest",
+  "nome": "Addison Oktoberfest",
+  "categoria": "evento",
+  "cidade": "Addison",
+  "endereco": "4970 Addison Circle Dr, Addison, TX 75001",
+  "quando": "Todo ano em quatro dias de meados de setembro (em 2026 foi de 17 a 20 set); datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-2.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "arlington-music-hall",
+  "nome": "Arlington Music Hall",
+  "categoria": "show",
+  "cidade": "Arlington",
+  "endereco": "224 N Center St, Arlington, TX 76011",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-2.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "autumn-at-the-arboretum",
+  "nome": "Autumn at the Arboretum",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "8525 Garland Rd, Dallas, TX 75218",
+  "quando": "Todo ano de meados de setembro ao início de novembro (em 2026 foi de 19 set a 1º nov); datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/dallas-arboretum-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "bass-performance-hall",
+  "nome": "Nancy Lee and Perry R. Bass Performance Hall",
+  "categoria": "show",
+  "cidade": "Fort Worth",
+  "endereco": "525 Commerce St, Fort Worth, TX 76102",
+  "quando": "Temporada de setembro a junho, com espetáculos o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/bass-performance-hall-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "billy-bobs-texas",
+  "nome": "Billy Bob's Texas",
+  "categoria": "show",
+  "cidade": "Fort Worth",
+  "endereco": "2520 Rodeo Plaza, Fort Worth, TX 76164",
+  "quando": "Aberto diariamente; shows principalmente às sextas e sábados",
+  "fotos_atuais": [
+   {
+    "src": "img/billy-bobs-texas-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "bmw-dallas-marathon",
+  "nome": "BMW Dallas Marathon Festival",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "1500 Marilla St, Dallas, TX 75201",
+  "quando": "11 a 13 de dezembro de 2026 (maratona e meia no domingo, 13 dez, às 8h)",
+  "fotos_atuais": [
+   {
+    "src": "img/dallas-city-hall-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "casa-manana",
+  "nome": "Casa Mañana",
+  "categoria": "show",
+  "cidade": "Fort Worth",
+  "endereco": "3101 W Lancaster Ave, Fort Worth, TX 76107",
+  "quando": "Temporada de setembro a junho",
+  "fotos_atuais": [
+   {
+    "src": "img/casa-manana-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "charles-schwab-challenge",
+  "nome": "Charles Schwab Challenge",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "3735 Country Club Cir, Fort Worth, TX 76109",
+  "quando": "24 a 30 de maio de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-3.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "choctaw-stadium",
+  "nome": "Choctaw Stadium",
+  "categoria": "show",
+  "cidade": "Arlington",
+  "endereco": "1000 Ballpark Way, Arlington, TX 76011",
+  "quando": "Eventos o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/choctaw-stadium-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "cj-cup-byron-nelson",
+  "nome": "THE CJ CUP Byron Nelson",
+  "categoria": "evento",
+  "cidade": "McKinney",
+  "endereco": "8000 Collin McKinney Pkwy, McKinney, TX 75070",
+  "quando": "26 de abril a 2 de maio de 2027 (rodadas oficiais de quinta a domingo)",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-3.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "cotton-bowl-classic",
+  "nome": "Goodyear Cotton Bowl Classic",
+  "categoria": "evento",
+  "cidade": "Arlington",
+  "endereco": "1 AT&T Way, Arlington, TX 76011",
+  "quando": "1º de janeiro de 2027 (91ª edição, quartas de final do College Football Playoff)",
+  "fotos_atuais": [
+   {
+    "src": "img/att-stadium-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "cowtown-marathon",
+  "nome": "The Cowtown Marathon",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "3401 W Lancaster Ave, Fort Worth, TX 76107",
+  "quando": "27 e 28 de fevereiro de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/will-rogers-memorial-center-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "credit-union-of-texas-event-center",
+  "nome": "Credit Union of Texas Event Center",
+  "categoria": "show",
+  "cidade": "Allen",
+  "endereco": "200 E Stacy Rd #1350, Allen, TX 75002",
+  "quando": "Hóquei de outubro a abril; shows e eventos o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/credit-union-of-texas-event-center-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "dallas-blooms",
+  "nome": "Dallas Blooms",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "8525 Garland Rd, Dallas, TX 75218",
+  "quando": "Todo ano do fim de fevereiro a meados de abril (em 2026 foi de 21 fev a 12 abr); datas de 2027 ainda não divulgadas",
+  "fotos_atuais": [
+   {
+    "src": "img/dallas-arboretum-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-comedy-club",
+  "nome": "Dallas Comedy Club",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "3036 Elm St, Dallas, TX 75226",
+  "quando": "Shows quase todas as noites",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-3.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-cowboys-temporada",
+  "nome": "Dallas Cowboys (temporada da NFL)",
+  "categoria": "evento",
+  "cidade": "Arlington",
+  "endereco": "1 AT&T Way, Arlington, TX 76011",
+  "quando": "Temporada regular de setembro ao início de janeiro, com pré-temporada em agosto; oito ou nove jogos em casa, incluindo o do Thanksgiving",
+  "fotos_atuais": [
+   {
+    "src": "img/att-stadium-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-holiday-parade",
+  "nome": "Dallas Holiday Parade",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "Commerce St, Downtown Dallas, TX 75201",
+  "quando": "5 de dezembro de 2026 (sábado, pela manhã)",
+  "fotos_atuais": [
+   {
+    "src": "img/att-discovery-district-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-international-film-festival",
+  "nome": "Dallas International Film Festival (DIFF)",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "3699 McKinney Ave, Dallas, TX 75204",
+  "quando": "22 a 29 de abril de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/west-village-dallas-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-mavericks-temporada",
+  "nome": "Dallas Mavericks (temporada da NBA)",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "2500 Victory Ave, Dallas, TX 75219",
+  "quando": "Temporada regular de outubro a abril, com playoffs até junho; 41 jogos em casa",
+  "fotos_atuais": [
+   {
+    "src": "img/perot-museum-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-pride",
+  "nome": "Dallas Pride",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "3809 Grand Ave, Dallas, TX 75210",
+  "quando": "Todo ano em um fim de semana de junho; datas e local de 2027 ainda não confirmados",
+  "fotos_atuais": [
+   {
+    "src": "img/state-fair-of-texas-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-st-patricks-parade",
+  "nome": "Dallas St. Patrick's Parade & Festival",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "Greenville Ave & Blackwell St, Dallas, TX 75231",
+  "quando": "Todo ano no sábado mais próximo de 17 de março (em 2026 foi em 14 mar); data de 2027 ainda não confirmada pelo organizador",
+  "fotos_atuais": [
+   {
+    "src": "img/northpark-center-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-stars-temporada",
+  "nome": "Dallas Stars (temporada da NHL)",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "2500 Victory Ave, Dallas, TX 75219",
+  "quando": "Temporada regular de outubro a abril, com playoffs até junho; 41 jogos em casa",
+  "fotos_atuais": [
+   {
+    "src": "img/perot-museum-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-wings-temporada",
+  "nome": "Dallas Wings (temporada da WNBA)",
+  "categoria": "evento",
+  "cidade": "Arlington",
+  "endereco": "600 S Center St, Arlington, TX 76010",
+  "quando": "Temporada regular de maio a setembro",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-4.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dallas-zoo-lights",
+  "nome": "Dallas Zoo Lights",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "650 S R.L. Thornton Fwy, Dallas, TX 75203",
+  "quando": "13 nov de 2026 a 3 jan de 2027 (noites selecionadas)",
+  "fotos_atuais": [
+   {
+    "src": "img/dallas-zoo-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "deep-ellum-community-arts-fair",
+  "nome": "Deep Ellum Community Arts Fair",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "2900 Main St, Dallas, TX 75226",
+  "quando": "Todo ano em um fim de semana do início de abril; datas de 2027 ainda não confirmadas pelo organizador",
+  "fotos_atuais": [
+   {
+    "src": "img/deep-ellum-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "denton-arts-and-jazz-festival",
+  "nome": "Denton Arts & Jazz Festival",
+  "categoria": "evento",
+  "cidade": "Denton",
+  "endereco": "321 E McKinney St, Denton, TX 76201",
+  "quando": "Anual, em três dias (o período mudou entre primavera e outono nos últimos anos); confira as datas de 2027 no site",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-evento-5.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dickies-arena",
+  "nome": "Dickies Arena",
+  "categoria": "show",
+  "cidade": "Fort Worth",
+  "endereco": "1911 Montgomery St, Fort Worth, TX 76107",
+  "quando": "Eventos o ano todo; rodeo do Stock Show em janeiro e fevereiro",
+  "fotos_atuais": [
+   {
+    "src": "img/ilustra-show-4.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "dos-equis-pavilion",
+  "nome": "Dos Equis Pavilion",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "3839 S Fitzhugh Ave, Dallas, TX 75210",
+  "quando": "Temporada de shows de abril a outubro",
+  "fotos_atuais": [
+   {
+    "src": "img/dos-equis-pavilion-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "earthx",
+  "nome": "EarthX",
+  "categoria": "evento",
+  "cidade": "Dallas",
+  "endereco": "2201 N Stemmons Fwy, Dallas, TX 75207",
+  "quando": "20 a 22 de abril de 2027",
+  "fotos_atuais": [
+   {
+    "src": "img/medieval-times-dallas-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "fc-dallas-temporada",
+  "nome": "FC Dallas (temporada da MLS)",
+  "categoria": "evento",
+  "cidade": "Frisco",
+  "endereco": "9200 World Cup Way, Frisco, TX 75033",
+  "quando": "A MLS vai mudar de calendário em 2027: temporada curta de fevereiro a maio e, depois, o novo formato de meados do ano até maio do ano seguinte; confira a tabela no site",
+  "fotos_atuais": [
+   {
+    "src": "img/national-soccer-hall-of-fame-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "ford-center-at-the-star",
+  "nome": "Ford Center at The Star",
+  "categoria": "show",
+  "cidade": "Frisco",
+  "endereco": "9 Cowboys Way, Frisco, TX 75034",
+  "quando": "Eventos o ano todo; futebol americano escolar de agosto a dezembro",
+  "fotos_atuais": [
+   {
+    "src": "img/ford-center-at-the-star-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "fort-worth-herd-cattle-drive",
+  "nome": "The Fort Worth Herd (desfile de gado longhorn)",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "131 E Exchange Ave, Fort Worth, TX 76164",
+  "quando": "Todos os dias, às 11h30 e às 16h (exceto Páscoa, Thanksgiving e Natal)",
+  "fotos_atuais": [
+   {
+    "src": "img/cattlemens-steak-house-1.jpg",
+    "ilustrativa": true
+   }
+  ]
+ },
+ {
+  "id": "fort-worth-stock-show-rodeo",
+  "nome": "Fort Worth Stock Show & Rodeo",
+  "categoria": "evento",
+  "cidade": "Fort Worth",
+  "endereco": "3401 W Lancaster Ave, Fort Worth, TX 76107",
+  "quando": "15 jan a 6 fev de 2027 (datas vistas em listagens de ingressos; confirme em fwssr.com)",
+  "fotos_atuais": [
+   {
+    "src": "img/fort-worth-stock-show-rodeo-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ },
+ {
+  "id": "granada-theater",
+  "nome": "Granada Theater",
+  "categoria": "show",
+  "cidade": "Dallas",
+  "endereco": "3524 Greenville Ave, Dallas, TX 75206",
+  "quando": "Shows o ano todo",
+  "fotos_atuais": [
+   {
+    "src": "img/granada-theater-1.jpg",
+    "ilustrativa": false
+   }
+  ]
+ }
+]
