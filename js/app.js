@@ -189,7 +189,7 @@
   function falaPt(l) { return !!l.falaPortugues; }
   function card(l) {
     var f = foto(l), n = notas(l), pr = precoCurto(l), t = tempo(l, "carro");
-    return '<a class="ocard" href="#lugar-' + esc(l.id) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") +
+    return '<a class="ocard" href="#lugar-' + esc(l.id) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy" decoding="async">' : '<span class="ph0">' + esc(String(l.nome || "").charAt(0)) + "</span>") +
       '<span class="m">' + (l.anunciante ? '<span class="sp">' + (destaque(l) ? "Destaque" : "Patrocinado") + '</span>' : "") + (falaPt(l) ? '<span class="pt">Fala português</span>' : "") + (l._mais ? "<span>+" + l._mais + (l._mais === 1 ? " evento aqui" : " eventos aqui") + "</span>" : "") + (n.guia != null ? "<span>★ " + n.guia.toFixed(1) + "</span>" : "") + (pr ? "<span>" + esc(pr) + "</span>" : "") + "</span>" +
       '<span class="n"><b>' + esc(l.nome) + "</b><small>" + (l.quando ? esc(l.quando) + " · " + esc(l.cidade || regiao(l)) : esc(regiao(l)) + (t ? " · " + t + " de carro" : "")) + "</small></span></a>";
   }
@@ -225,6 +225,23 @@
     if (HERO_HD[l.id]) return '<img src="img/hero/' + l.id + '.jpg" srcset="img/hero/' + l.id + '-m.jpg 1000w, img/hero/' + l.id + '.jpg 1920w" sizes="100vw" alt="" decoding="async"' + lazy + ">";
     return '<img src="' + esc(foto(l)) + '" alt="" decoding="async"' + lazy + ">";
   }
+  /* Painel útil: hora em Dallas, dólar, eventos da semana e passeios grátis (dados reais do guia e da cotação do Painel). */
+  function painelUtil(ls, cfg) {
+    var hoje = hojeISO(), d7 = new Date(hoje + "T12:00:00"); d7.setDate(d7.getDate() + 7); var lim = d7.toISOString().slice(0, 10);
+    var ev = ls.filter(function (l) { return GRUPOS.eventos.f(l) && l.dataInicio && (l.dataFim || l.dataInicio) >= hoje && l.dataInicio <= lim; }).length;
+    var gr = ls.filter(GRUPOS.gratis.f).length, br = ls.filter(GRUPOS.brasileiros.f).length;
+    var cot = Number(cfg.cotacao) || 0;
+    var t = function (h, k, v, s, i) { return '<a class="pu-it" href="' + h + '"><span class="pu-k">' + ic(i) + k + '</span><b class="pu-v">' + v + '</b><span class="pu-s">' + s + "</span></a>"; };
+    return '<section class="pu" aria-label="Informações úteis">' +
+      t("#mapa", "Agora em Dallas", '<span id="pu-hora">' + horaDallas() + "</span>", diaDallas(), "clock") +
+      (cot ? t("#custo", "Dólar hoje", "R$ " + cot.toFixed(2).replace(".", ","), cfg.cotacaoEm ? "atualizado " + String(cfg.cotacaoEm).slice(8, 10) + "/" + String(cfg.cotacaoEm).slice(5, 7) : "cotação do guia", "chart") : "") +
+      t("#busca-7d-geventos", "Eventos", ev, ev === 1 ? "nos próximos 7 dias" : "nos próximos 7 dias", "ticket") +
+      t("#busca-gratis", "De graça", gr, "passeios sem pagar nada", "leaf") +
+      t("#busca-gbrasileiros", "Brasileiros", br, "negócios de brasileiros", "flag") + "</section>";
+  }
+  function horaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Chicago", hour: "2-digit", minute: "2-digit" }).format(new Date()); } catch (e) { return "--:--"; } }
+  function diaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Chicago", weekday: "long", day: "numeric", month: "short" }).format(new Date()); } catch (e) { return ""; } }
+  setInterval(function () { var h = document.getElementById("pu-hora"); if (h) h.textContent = horaDallas(); }, 20000);
   function viewInicio() {
     var ls = lugares(), by = function (g) { return primeiro(ls.filter(GRUPOS[g].f).sort(ordenaNota)); };
     var gratis = by("gratis"), com = function (id) { return Store.obter("lugares", id); };
@@ -244,11 +261,11 @@
     app.innerHTML = '<section class="ph" id="hero">' + slides.map(function (s, i) {
       return '<a class="slide' + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.pat ? '<span class="kick" style="margin-bottom:10px">Patrocinado · recomendado pelo guia</span>' : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + "</div></div></a>";
     }).join("") +
-      '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Para onde?" aria-label="Buscar no guia" autocomplete="off"></form>' +
+      '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
       '<button type="button" class="pchip" data-partida>' + ic("pin") + (Geo.gps ? "Perto de você" : "Saindo de " + esc(Geo.nome)) + "</button>" +
       (slides.length > 1 ? '<div class="hctl"><button type="button" class="harr" data-dir="-1" aria-label="Slide anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots">' + slides.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-current="' + (i === slideAtual) + '" aria-label="Ir para o slide ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div><button type="button" class="harr" data-dir="1" aria-label="Próximo slide"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>' : "") +
-      "</div></div></div></section>" +
-      '<div class="sh"><div class="wrap"><div class="gr"></div>' +
+      "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
+      '<div class="sh"><div class="wrap"><div class="gr"></div>' + painelUtil(ls, cfg) +
       '<div class="cats">' + Object.keys(GRUPOS).filter(function (g) { return g === "tudo" || ls.some(GRUPOS[g].f); }).map(function (g, i) { return '<a class="cat" href="#explorar" data-grupo="' + g + '" aria-pressed="' + (i === 0) + '"><span>' + ic(GRUPOS[g].ic) + "</span>" + GRUPOS[g].nome + "</a>"; }).join("") + "</div>" +
       (ls.length ? "" : '<section class="block"><div class="panel"><h3>O guia ainda está vazio</h3><p class="muted">Os lugares aparecem aqui assim que forem cadastrados no <a href="#painel">Painel</a>.</p></div></section>') +
       montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) + "</div></div>";
@@ -268,14 +285,16 @@
   }
 
   /* Seções da página inicial: ordem, visibilidade e títulos vêm do Painel (Aparência). */
-  var SECOES = { vitrine: "Carrossel de anunciantes", alertas: "Avisos da comunidade", agoraSec: "Acontecendo agora", paraVoce: "Para você", convitePerto: "Convite: avisos por perto", patrocinados: "Recomendados pelo guia", destaqueMes: "Brasileiro do mês", avaliados: "Mais bem avaliados", depoimentos: "Depoimentos", perto: "Mais perto", eventos: "Próximos eventos", ia: "Roteiro com IA", gratisBanner: "Banner de passeios grátis", roteiros: "Roteiros prontos", hospedagem: "Onde ficar", chegada: "Guia de chegada", gratis: "De graça", anuncioFaixa: "Banner de anúncio", brasil: "Sabor do Brasil", mural: "Mural de vagas e classificados", texano: "Coma como um texano", morar: "Para quem mora aqui", custo: "Custo de vida", cidades: "Outras cidades", instalar: "Instalar no celular", anunciante: "Chamada para anunciantes", newsletter: "Newsletter por e-mail" };
+  var SECOES = { vitrine: "Carrossel de anunciantes", patrocinados: "Patrocinadores", alertas: "Avisos da comunidade", agoraSec: "Acontecendo agora", paraVoce: "Para você", convitePerto: "Convite: avisos por perto", destaqueMes: "Brasileiro do mês", avaliados: "Mais bem avaliados", depoimentos: "Depoimentos", perto: "Mais perto", eventos: "Próximos eventos", ia: "Roteiro com IA", gratisBanner: "Banner de passeios grátis", roteiros: "Roteiros prontos", hospedagem: "Onde ficar", chegada: "Guia de chegada", gratis: "De graça", anuncioFaixa: "Banner de anúncio", brasil: "Sabor do Brasil", mural: "Mural de vagas e classificados", texano: "Coma como um texano", morar: "Para quem mora aqui", custo: "Custo de vida", cidades: "Outras cidades", instalar: "Instalar no celular", anunciante: "Chamada para anunciantes", newsletter: "Newsletter por e-mail" };
   function montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) {
     var ex = window.Extras ? Extras.secoes(ls) : {}, pats = primeiro(ls.filter(function (l) { return l.anunciante; }).sort(ordenaNota));
     var cm = window.Comunidade ? Comunidade.secoes(ls) : {};
     var html = {
       vitrine: window.Social ? Social.secao() : "", alertas: cm.alertas, depoimentos: cm.depoimentos, paraVoce: window.Recursos ? Recursos.secao("paraVoce", ls) : "", agoraSec: window.Recursos ? Recursos.secao("agora", ls) : "", newsletter: window.Recursos ? Recursos.secao("newsletter", ls) : "", convitePerto: window.Jornada ? Jornada.convite() : "", destaqueMes: cm.destaqueMes, ia: cm.ia, mural: cm.mural, custo: cm.custo, cidades: cm.cidades, instalar: cm.instalar,
       hospedagem: fileira(esc(tx("hospedagem", "Onde ficar")), by("hospedagem"), "hospedagem"),
-      patrocinados: pats.length ? '<section class="block reveal pats"><div class="head"><h2>' + esc(tx("patrocinados", "Recomendados pelo guia")) + '</h2><span class="more">Patrocinado</span></div><div class="hscroll">' + pats.slice(0, 10).map(card).join("") + "</div></section>" : "",
+      patrocinados: '<section class="block reveal pats"><div class="head"><div><p class="eyebrow">Patrocinadores</p><h2>' + esc(tx("patrocinados", "Negócios que apoiam o guia")) + '</h2></div><a class="more" href="#anuncie">anunciar aqui</a></div><div class="spg">' + pats.slice(0, 7).map(function (l) {
+        return '<a class="spc" href="#lugar-' + esc(l.id) + '"><span class="spc-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy" decoding="async">' : "") + '<em>Patrocinado</em></span><span class="spc-t"><b>' + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + (l.cidade ? " · " + esc(l.cidade) : "") + "</small></span>" + ic("arrow") + "</a>";
+      }).join("") + '<a class="spc spc-cta" href="#anuncie"><span class="spc-t"><small>Plano único</small><b>Seu negócio aqui</b><span>US$ ' + esc(String(cfg.precoAnuncio || 20)) + '/mês · até 3 anúncios com banner</span></span>' + ic("arrow") + "</a></div></section>",
       avaliados: fileira(esc(tx("avaliados", "Mais bem avaliados")), by("passeios"), "passeios", true),
       gratisBanner: gratis.length ? '<section class="block reveal"><a class="bn" href="#explorar" data-grupo="gratis"><i></i><small>Sem pagar entrada</small><b>' + gratis.length + " passeios de graça em Dallas</b><span>Ver a lista " + ic("arrow") + "</span></a></section>" : "",
       perto: perto.length ? '<section class="block reveal"><div class="head"><h2>' + esc(Geo.gps ? "Perto de você" : tx("perto", "Mais perto")) + '</h2><button type="button" class="more" data-partida>' + (Geo.gps ? "sua localização" : "saindo de " + esc(Geo.nome)) + '</button></div><div class="list two">' + perto.map(linha).join("") + "</div></section>" : "",
