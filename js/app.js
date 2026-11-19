@@ -266,7 +266,7 @@
       (slides.length > 1 ? '<div class="hctl"><button type="button" class="harr" data-dir="-1" aria-label="Slide anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots">' + slides.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-current="' + (i === slideAtual) + '" aria-label="Ir para o slide ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div><button type="button" class="harr" data-dir="1" aria-label="Próximo slide"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>' : "") +
       "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
       '<div class="sh"><div class="wrap"><div class="gr"></div>' + painelUtil(ls, cfg) +
-      '<div class="cats">' + Object.keys(GRUPOS).filter(function (g) { return g === "tudo" || ls.some(GRUPOS[g].f); }).map(function (g, i) { return '<a class="cat" href="#explorar" data-grupo="' + g + '" aria-pressed="' + (i === 0) + '"><span>' + ic(GRUPOS[g].ic) + "</span>" + GRUPOS[g].nome + "</a>"; }).join("") + "</div>" +
+      '<nav class="menubar mb-home" aria-label="Categorias">' + Object.keys(GRUPOS).filter(function (g) { return g !== "tudo" && ls.some(GRUPOS[g].f); }).map(function (g) { return '<a class="mb-it" href="#explorar" data-grupo="' + g + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></a>"; }).join("") + '<a class="mb-it" href="#mapa">' + ic("pin") + "<span>Mapa</span></a></nav>" +
       (ls.length ? "" : '<section class="block"><div class="panel"><h3>O guia ainda está vazio</h3><p class="muted">Os lugares aparecem aqui assim que forem cadastrados no <a href="#painel">Painel</a>.</p></div></section>') +
       montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) + "</div></div>";
     $("#busca").addEventListener("submit", function (e) { e.preventDefault(); var tq = $("#q").value.trim(); if (window.Recursos && Recursos.buscar(tq)) return; limpaFiltro(); F.q = tq; location.hash = "explorar"; });
@@ -349,14 +349,15 @@
   function viewExplorar() {
     var ls = lugares(), cont = {};
     ls.forEach(function (l) { var k = regiao(l); cont[k] = (cont[k] || 0) + 1; });
-    app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:14px"><div class="head" style="margin:0"><h1 class="page-h">Explorar</h1><span class="muted small" id="conta"></span></div>' +
-      '<div class="search"><span>' + ic("search") + '</span><input id="f-q" type="search" value="' + esc(F.q) + '" placeholder="Nome, bairro ou tipo" aria-label="Buscar" autocomplete="off"></div>' +
-      '<div class="cats" id="f-grupo">' + Object.keys(GRUPOS).filter(function (g) { return g === "tudo" || ls.some(GRUPOS[g].f); }).map(function (g) { return '<button type="button" class="cat" data-g="' + g + '" aria-pressed="' + (F.grupo === g) + '"><span>' + ic(GRUPOS[g].ic) + "</span>" + GRUPOS[g].nome + "</button>"; }).join("") + "</div>" +
-      '<div class="chips" id="f-cat"></div>' +
-      '<div class="selrow"><div class="field"><label for="f-local">Região</label><select id="f-local">' + opt("", "Todas", F.local) + Object.keys(cont).sort(function (a, b) { return a.localeCompare(b); }).map(function (c) { return opt(c, c + " (" + cont[c] + ")", F.local); }).join("") + "</select></div>" +
-      '<div class="field"><label for="f-ordem">Ordenar</label><select id="f-ordem">' + opt("nota", "Melhor nota", F.ordem) + opt("preco", "Menor preço", F.ordem) + opt("perto", "Mais perto de mim", F.ordem) + opt("nome", "Nome (A–Z)", F.ordem) + "</select></div></div>" +
-      
-      adFaixa(false) + '<div class="grid" id="grade"></div></div></section>';
+    app.innerHTML = '<section class="block xp"><div class="wrap">' +
+      '<header class="xp-h"><div><p class="eyebrow">Guia completo</p><h1 class="page-h">Explorar</h1></div><span class="xp-n" id="conta"></span></header>' +
+      '<div class="search xp-q"><span>' + ic("search") + '</span><input id="f-q" type="search" value="' + esc(F.q) + '" placeholder="Nome, bairro ou tipo" aria-label="Buscar" autocomplete="off"></div>' +
+      '<nav class="menubar" id="f-grupo" aria-label="Tipo">' + Object.keys(GRUPOS).filter(function (g) { return g === "tudo" || ls.some(GRUPOS[g].f); }).map(function (g) { return '<button type="button" class="mb-it" data-g="' + g + '" aria-pressed="' + (F.grupo === g) + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></button>"; }).join("") + "</nav>" +
+      '<div class="xp-body"><aside class="xp-side" aria-label="Filtros">' +
+      '<div class="xp-box"><p class="xp-t">Ordenar e região</p><div class="field"><label for="f-ordem">Ordenar por</label><select id="f-ordem">' + opt("nota", "Melhor nota", F.ordem) + opt("preco", "Menor preço", F.ordem) + opt("perto", "Mais perto de mim", F.ordem) + opt("nome", "Nome (A–Z)", F.ordem) + "</select></div>" +
+      '<div class="field"><label for="f-local">Região</label><select id="f-local">' + opt("", "Todas as regiões", F.local) + Object.keys(cont).sort(function (a, b) { return a.localeCompare(b); }).map(function (c) { return opt(c, c + " (" + cont[c] + ")", F.local); }).join("") + "</select></div></div>" +
+      '<div class="xp-box" id="f-cat"></div></aside>' +
+      '<div class="xp-main">' + adFaixa(false) + '<div class="grid" id="grade"></div></div></div></div></section>';
     var tq = null; $("#f-q").addEventListener("input", function (e) { F.q = e.target.value; clearTimeout(tq); tq = setTimeout(function () { grade(true); }, 160); });
     $("#f-local").addEventListener("change", function (e) { F.local = e.target.value; grade(); });
     $("#f-ordem").addEventListener("change", function (e) { F.ordem = e.target.value; grade(); });
@@ -367,19 +368,25 @@
     });
     $("#f-cat").addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
-      if (b.dataset.ab) F.aberto = !F.aberto; else if (b.dataset.fp) F.pt = !F.pt; else if (b.dataset.p) F.preco = F.preco === b.dataset.p ? "todos" : b.dataset.p; else F.cat = F.cat === b.dataset.c ? "" : b.dataset.c;
+      if (b.dataset.limpa) { F.aberto = false; F.pt = false; F.preco = "todos"; F.cat = ""; }
+      else if (b.dataset.ab) F.aberto = !F.aberto; else if (b.dataset.fp) F.pt = !F.pt; else if (b.dataset.p) F.preco = F.preco === b.dataset.p ? "todos" : b.dataset.p; else if (b.dataset.c != null) F.cat = F.cat === b.dataset.c ? "" : b.dataset.c;
       subchips(); grade();
     });
     subchips(); grade();
   }
   function subchips() {
     var el = $("#f-cat"); if (!el) return;
-    var g = GRUPOS[F.grupo] || GRUPOS.tudo, base = lugares().filter(g.f);
-    var cats = Array.from(new Set(base.map(function (l) { return l.categoria; }))).filter(Boolean).sort(function (a, b) { return (CATS[a] || a).localeCompare(CATS[b] || b); });
+    var g = GRUPOS[F.grupo] || GRUPOS.tudo, base = lugares().filter(g.f), n = {};
+    base.forEach(function (l) { if (l.categoria) n[l.categoria] = (n[l.categoria] || 0) + 1; });
+    var cats = Object.keys(n).sort(function (a, b) { return (CATS[a] || a).localeCompare(CATS[b] || b); });
     var temAtr = base.some(function (l) { return l.tipo !== "estabelecimento"; }) && F.grupo !== "gratis";
-    el.innerHTML = '<button type="button" class="chip lite" data-ab="1" aria-pressed="' + F.aberto + '">Aberto agora</button><button type="button" class="chip lite" data-fp="1" aria-pressed="' + F.pt + '">Fala português</button>' + (temAtr ? [["gratis", "Gratuitos"], ["pagos", "Pagos"]].map(function (p) { return '<button type="button" class="chip lite" data-p="' + p[0] + '" aria-pressed="' + (F.preco === p[0]) + '">' + p[1] + "</button>"; }).join("") : "") +
-      (cats.length > 1 ? cats.map(function (c) { return '<button type="button" class="chip" data-c="' + esc(c) + '" aria-pressed="' + (F.cat === c) + '">' + esc(CATS[c] || c) + "</button>"; }).join("") : "");
-    el.hidden = !el.innerHTML;
+    var tg = function (attr, on, txt) { return '<button type="button" class="xp-tg" ' + attr + ' aria-pressed="' + on + '"><i></i>' + txt + "</button>"; };
+    var ativos = F.aberto || F.pt || F.preco !== "todos" || F.cat;
+    el.innerHTML = '<div class="xp-th"><p class="xp-t">Filtros</p>' + (ativos ? '<button type="button" class="more" data-limpa="1">limpar</button>' : "") + "</div>" +
+      tg('data-ab="1"', F.aberto, "Aberto agora") + tg('data-fp="1"', F.pt, "Fala português") +
+      (temAtr ? tg('data-p="gratis"', F.preco === "gratis", "Gratuitos") + tg('data-p="pagos"', F.preco === "pagos", "Pagos") : "") +
+      (cats.length > 1 ? '<details class="xp-cats"' + (F.cat || matchMedia("(min-width: 960px)").matches ? " open" : "") + '><summary class="xp-t">Categorias <span>' + cats.length + '</span></summary><div class="xp-list"><button type="button" class="xp-c" data-c="" aria-pressed="' + !F.cat + '">Todas<em>' + base.length + "</em></button>" +
+        cats.map(function (c) { return '<button type="button" class="xp-c" data-c="' + esc(c) + '" aria-pressed="' + (F.cat === c) + '">' + esc(CATS[c] || c) + "<em>" + n[c] + "</em></button>"; }).join("") + "</div></details>" : "");
   }
   /* Explorar mostra 36 cards por vez e carrega mais ao chegar no fim da lista (celulares mais simples agradecem). */
   var POR_VEZ = 36, gradeLista = [], gradeN = 0, gradeIO = null;
@@ -703,23 +710,39 @@
     var gs = ["passeios", "gratis", "comer", "brasileiros"];
     var ls = lugares().filter(GRUPOS[R.grupo].f).filter(function (l) { return notas(l).guia != null; }).sort(ordenaNota).slice(0, 20);
     var pat = lugares().filter(GRUPOS[R.grupo].f).filter(function (l) { return l.anunciante; }).sort(ordenaNota).slice(0, 3);
-    app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:14px"><div><h1 class="page-h">Ranking</h1><p class="muted small" style="margin-top:6px;max-width:60ch">De 1 a 5 estrelas. A nota junta a curadoria (60%) e as avaliações dos visitantes (40%).</p></div>' +
-      '<div class="chips" id="grupos">' + gs.map(function (g) { return '<button type="button" class="chip" data-g="' + g + '" aria-pressed="' + (R.grupo === g) + '">' + GRUPOS[g].nome + "</button>"; }).join("") + "</div>" +
-      (pat.length ? '<div><p class="eyebrow" style="margin-bottom:8px">Recomendados pelo guia · Patrocinado</p><div class="list">' + pat.map(linha).join("") + "</div></div>" : "") + '<div class="list">' +
-      (ls.map(function (l, i) { var n = notas(l); return '<a class="lrow" href="#lugar-' + esc(l.id) + '"><span class="pos num">' + (i + 1) + '</span><span class="th">' + picHtml(l) + "</span><span><b>" + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + " · " + esc(precoCurto(l)) + '</small></span><span class="val num"><span style="color:var(--sun)">★</span> ' + n.guia.toFixed(1) + (l.notaProvisoria && false ? "*" : "") + "<small>" + (n.qtd ? n.qtd + " aval." : "curadoria") + "</small></span></a>"; }).join("") || '<div class="panel muted">Nenhum lugar com nota nesta lista ainda.</div>') +
-      '</div><p class="small muted">As notas combinam a avaliação da curadoria CoraçãoBR com as avaliações de quem foi.</p></div></section>';
+    var nota = function (l) { var n = notas(l); return '<span class="rk-s"><span><b>' + n.guia.toFixed(1) + "</b> ★</span><small>" + (n.qtd ? n.qtd + (n.qtd === 1 ? " avaliação" : " avaliações") : "curadoria") + "</small></span>"; };
+    var pod = ls.slice(0, 3).map(function (l, i) { return '<a class="rk-p rk-p' + (i + 1) + '" href="#lugar-' + esc(l.id) + '"><span class="rk-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy" decoding="async">' : "") + '<em>' + (i + 1) + "º</em></span><span class=\"rk-pt\"><b>" + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + "</small></span>" + nota(l) + "</a>"; }).join("");
+    var resto = ls.slice(3).map(function (l, i) { return '<a class="rk-r" href="#lugar-' + esc(l.id) + '"><span class="rk-n">' + (i + 4) + '</span><span class="th">' + picHtml(l) + "</span><span class=\"rk-rt\"><b>" + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (precoCurto(l) ? " · " + esc(precoCurto(l)) : "") + "</small></span>" + nota(l) + "</a>"; }).join("");
+    app.innerHTML = '<section class="block rk"><div class="wrap">' +
+      '<header class="xp-h"><div><p class="eyebrow">Os mais bem avaliados</p><h1 class="page-h">Ranking</h1></div></header>' +
+      '<nav class="menubar mb-4" id="grupos" aria-label="Lista">' + gs.map(function (g) { return '<button type="button" class="mb-it" data-g="' + g + '" aria-pressed="' + (R.grupo === g) + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></button>"; }).join("") + "</nav>" +
+      (ls.length ? '<div class="rk-pod">' + pod + "</div>" : "") +
+      '<div class="rk-body"><div class="rk-list">' + (resto || (ls.length ? "" : '<div class="panel muted">Nenhum lugar com nota nesta lista ainda.</div>')) + "</div>" +
+      '<aside class="rk-side">' + (pat.length ? '<div class="xp-box rk-pat"><p class="xp-t">Patrocinados nesta lista</p>' + pat.map(function (l) { return '<a class="spc" href="#lugar-' + esc(l.id) + '"><span class="spc-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy">' : "") + "<em>Patrocinado</em></span><span class=\"spc-t\"><b>" + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + "</small></span></a>"; }).join("") + '<a class="more" href="#anuncie">seu negócio aqui</a></div>' : "") +
+      '<div class="xp-box"><p class="xp-t">Como a nota é calculada</p><div class="rk-bar"><i style="width:60%"></i></div><p class="small muted"><b>60%</b> curadoria CoraçãoBR, que visita e avalia cada lugar, e <b>40%</b> avaliações de quem foi. Notas de 1 a 5 estrelas.</p><a class="btn ghost sm" href="#explorar">Avaliar um lugar</a></div></aside></div></div></section>';
     $("#grupos").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { R.grupo = b.dataset.g; viewRanking(); } });
   }
 
   /* ---------- anuncie ---------- */
   function viewAnuncie() {
-    var c = config();
-    app.innerHTML = '<section class="block"><div class="wrap stack"><div><p class="eyebrow">Para donos de negócio</p><h1 class="page-h" style="margin-top:4px">Anuncie para brasileiros em Dallas</h1><p class="muted" style="margin-top:8px;max-width:56ch">Restaurante, mercado, handyman, babá, piscina, limpeza: você mesmo monta seu anúncio e ele entra no ar na hora.</p></div>' +
-      '<div class="plans">' +
-      '<div class="plan top" style="max-width:520px"><h3>Anunciante</h3><div class="v">' + usd(c.precoAnuncio) + ' <small>por mês</small></div>' + brl(c.precoAnuncio) + '<ul><li>Aparece antes dos lugares comuns, com a marca Patrocinado</li><li>Página própria com até 10 fotos, cardápio, horário e etiquetas</li><li>WhatsApp, Instagram, telefone, site e Facebook</li><li>Cupom com QR Code e painel de métricas: visualizações, contatos e rotas</li><li>Pode entrar nos banners da página inicial e no Brasileiro do mês, por escolha da curadoria</li><li>No ar na hora, sem aprovação. Sem fidelidade: cancele quando quiser</li></ul><a class="btn" href="#anunciar" data-plano="anuncio">Anunciar por ' + usd(c.precoAnuncio) + ' por mês</a></div></div>' +
-      '<div class="panel"><h3>Mural de vagas e classificados</h3><p class="muted">Emprego, aluguel, carona ou venda: ' + (Number(c.precoClassificado) > 0 ? usd(c.precoClassificado) + " por anúncio, por " + (c.diasClassificado || 30) + " dias." : "grátis por " + (c.diasClassificado || 30) + " dias.") + '</p><a class="btn ghost sm" href="#mural">Abrir o mural</a></div>' +
-      '<div class="panel"><h3>O que é gratuito</h3><p class="muted">Lazer, parques, museus, eventos e órgãos públicos são cadastrados pela equipe do guia, sem custo.</p></div>' +
-      (c.contato ? '<div class="panel"><h3>Dúvidas</h3><p>Fale com a equipe do guia: <b>' + esc(c.contato) + "</b></p></div>" : "") + "</div></section>";
+    var c = config(), ls = lugares(), preco = usd(c.precoAnuncio), cks = function (a) { return a.map(function (t) { return '<li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' + t + "</li>"; }).join(""); };
+    var cidades = Array.from(new Set(ls.map(function (l) { return l.cidade; }).filter(Boolean))).length;
+    var onde = [["sparkle", "Carrossel da página inicial", "Seu banner (1600 × 640) entra na rodada de 30 minutos, até 10 anunciantes por vez, sem repetir."], ["pin", "Pin verde no mapa", "No mapa, seu negócio aparece em verde, destacado dos lugares comuns."], ["chart", "Topo das buscas", "Em Explorar e no Ranking, patrocinados aparecem primeiro, com moldura amarela."], ["megaphone", "Feed e Mural", "Publique novidades, ofertas, vagas e classificados para toda a comunidade."]];
+    var faq = [["Posso cancelar quando quiser?", "Sim. Não há fidelidade nem multa. O anúncio fica no ar até o fim do mês já pago."], ["Quantos anúncios posso ter?", "Até 3 anúncios na mesma conta, cada um com seu banner, pelo mesmo valor de " + preco + " por mês."], ["Precisa de aprovação?", "Não. Você monta o anúncio e ele entra no ar na hora. A equipe pode remover conteúdo que viole os termos de uso."], ["Como é feito o pagamento?", (c.pagamentos && (c.pagamentos.anuncio || c.pagamentos.basico)) ? "Por cartão, em página segura de pagamento, com renovação mensal automática." : "A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX)."], ["Quem vê meu anúncio?", "Brasileiros e falantes de português que usam o guia para decidir onde comer, comprar e contratar serviços."]];
+    app.innerHTML = '<section class="block an"><div class="wrap">' +
+      '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p><h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
+      '<div class="row an-cta"><a class="btn" href="#anunciar" data-plano="anuncio">Anunciar agora ' + ic("arrow") + '</a><a class="btn ghost" href="#explorar">Ver como fica</a></div>' +
+      '<dl class="an-st"><div><dt>Lugares no guia</dt><dd>' + ls.length + '</dd></div><div><dt>Cidades</dt><dd>' + cidades + '</dd></div><div><dt>Idiomas</dt><dd>3</dd></div></dl></div>' +
+      '<aside class="an-plan"><p class="an-pl">Plano único</p><div class="an-pv">' + preco + '<small>/mês</small></div>' + brl(c.precoAnuncio) +
+      '<ul class="an-ck">' + cks(["Até 3 anúncios com banner próprio", "Banner no carrossel da página inicial", "Pin verde no mapa e topo das buscas", "Publicações no feed e no Mural", "Página com fotos, cardápio, horário e contatos", "Cupom com QR Code e painel de métricas"]) + '</ul>' +
+      '<a class="btn an-go" href="#anunciar" data-plano="anuncio">Começar por ' + preco + '/mês</a><p class="an-fine">Sem fidelidade · cancele quando quiser</p></aside></div>' +
+      '<section class="an-sec"><p class="eyebrow">Onde você aparece</p><h2>Visibilidade em todo o guia</h2><div class="an-grid">' + onde.map(function (o) { return '<div class="an-tile"><span>' + ic(o[0]) + "</span><b>" + o[1] + "</b><p>" + o[2] + "</p></div>"; }).join("") + "</div></section>" +
+      '<section class="an-sec"><p class="eyebrow">Como funciona</p><h2>No ar em três passos</h2><ol class="an-steps"><li><b>Crie sua conta</b><p>E-mail e senha, em menos de um minuto.</p></li><li><b>Monte o anúncio</b><p>Fotos, descrição, horário, WhatsApp e o banner do carrossel.</p></li><li><b>Pronto, está no ar</b><p>Acompanhe visualizações, cliques e rotas no seu painel.</p></li></ol></section>' +
+      '<section class="an-sec an-two"><div><p class="eyebrow">Dúvidas frequentes</p><h2>Perguntas</h2><div class="an-faq">' + faq.map(function (f) { return "<details><summary>" + f[0] + "</summary><p>" + f[1] + "</p></details>"; }).join("") + '</div></div>' +
+      '<div class="an-side"><div class="xp-box"><p class="xp-t">Lugares públicos e eventos</p><p class="small muted">Parques, museus, eventos e órgãos públicos são cadastrados pela equipe, sem custo.</p></div>' +
+      '<div class="xp-box"><p class="xp-t">Mural de vagas e classificados</p><p class="small muted">Emprego, aluguel, carona ou venda: publicado por anunciantes, incluído no plano.</p><a class="btn ghost sm" href="#mural">Abrir o mural</a></div>' +
+      (c.contato ? '<div class="xp-box"><p class="xp-t">Fale com a equipe</p><p class="small"><b>' + esc(c.contato) + "</b></p></div>" : "") + "</div></section>" +
+      '<div class="an-final"><div><b>Pronto para aparecer?</b><span>' + preco + ' por mês, até 3 anúncios com banner.</span></div><a class="btn an-go" href="#anunciar" data-plano="anuncio">Anunciar agora</a></div></div></section>';
   }
 
   /* ---------- entrar ---------- */
