@@ -1,5 +1,5 @@
 /* Guarda o que já foi aberto para o guia funcionar sem internet. Rede primeiro; sem rede, usa a cópia. */
-const CACHE = "guia-v4";
+const CACHE = "guia-v6";
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
 self.addEventListener("fetch", e => {
@@ -10,7 +10,7 @@ self.addEventListener("fetch", e => {
 });
 /* Notificações no celular: o aviso chega sem conteúdo; o aparelho busca a mensagem mais recente no servidor */
 self.addEventListener("push", e => {
-  e.waitUntil(fetch(new URL("api/?acao=push_ultima", self.registration.scope), { credentials: "omit", cache: "no-store" }).then(r => r.json()).catch(() => null).then(j => {
+  e.waitUntil(self.registration.pushManager.getSubscription().then(sub => fetch(new URL("api/?acao=push_ultima" + (sub ? "&ep=" + encodeURIComponent(sub.endpoint) : ""), self.registration.scope), { credentials: "omit", cache: "no-store" })).then(r => r.json()).catch(() => null).then(j => {
     const m = (j && j.msg) || { titulo: "CoraçãoBR", texto: "Novidades no guia para você.", url: "./" };
     return self.registration.showNotification(m.titulo || "CoraçãoBR", { body: m.texto || "", icon: "icon-192.png", badge: "icon-192.png", data: { url: m.url || "./" }, tag: "coracaobr" });
   }));

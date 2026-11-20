@@ -55,7 +55,7 @@
     var depo = Store.lista("avaliacoes").filter(function (a) { return Number(a.estrelas) >= 4 && String(a.texto || "").trim().length >= 25 && lugar(a.lugarId); })
       .sort(function (a, b) { return (b.criadoEm || "").localeCompare(a.criadoEm || ""); }).slice(0, 10);
     out.depoimentos = depo.length ? '<section class="block reveal"><div class="head"><h2>' + esc(tx("depoimentos", "Quem foi, recomenda")) + '</h2><a class="more" href="#ranking">ver ranking</a></div><div class="hscroll depos">' + depo.map(function (a) { var l = lugar(a.lugarId), n = String(a.nome || "Visitante").trim(); return '<a class="depo" href="#lugar-' + esc(l.id) + '"><span class="dq">“</span><p>' + esc(String(a.texto).slice(0, 220)) + '</p><span class="dp"><span class="avatar sm">' + esc(n.charAt(0).toUpperCase()) + "</span><span><b>" + esc(n.split(" ")[0]) + "</b><small>" + "★".repeat(Math.round(a.estrelas)) + " · " + esc(l.nome) + (a.tipo === "experiencia" ? " · esteve aqui" : "") + "</small></span></span></a>"; }).join("") + "</div></section>" : "";
-    out.instalar = '<section class="block reveal instalar-sec"><a class="panel instalar" href="#instalar"><span class="aic">' + ic("phone") + '</span><span><b>Tenha o guia na tela do celular</b><small class="muted">Abre como um app, sem ocupar espaço.</small></span>' + ic("arrow") + "</a></section>";
+    out.instalar = window.__convite && window.__convite.app ? "" : '<section class="block reveal instalar-sec"><a class="panel instalar" href="#instalar"><span class="aic">' + ic("phone") + '</span><span><b>Tenha o guia na tela do celular</b><small class="muted">Abre como um app, sem ocupar espaço.</small></span>' + ic("arrow") + "</a></section>";
     return out;
   }
 
@@ -217,9 +217,11 @@
     if (e.target.closest("[data-cid-mais]") && window.Novidades) Novidades.seletorCidade();
   });
   /* ---------- instalar no celular ---------- */
-  var promptInstalar = null;
+  var promptInstalar = window.__bip || null;
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); promptInstalar = e; });
-  window.addEventListener("appinstalled", function () { promptInstalar = null; G.toast("Pronto! O CoraçãoBR está na tela do seu celular."); });
+  window.addEventListener("appinstalled", function () { promptInstalar = null; try { localStorage.setItem("app-instalado", "1"); } catch (er) { /* ok */ } if (!document.getElementById("intro")) G.toast("Pronto! O CoraçãoBR está na tela do seu celular. Abra pelo ícone."); });
+  /* app já instalado e a pessoa abriu pelo navegador: lembra que existe o ícone (uma vez por sessão) */
+  if (window.__appInstalado) setTimeout(function () { try { if (sessionStorage.getItem("lembra-app")) return; sessionStorage.setItem("lembra-app", "1"); } catch (er) { /* ok */ } G.toast("Você já tem o app CoraçãoBR: abra pelo ícone na tela inicial."); }, 2600);
   /* Botão "Instalar no celular" usado em qualquer página (login, cadastro...): abre o instalador do navegador quando existe; senão, o passo a passo. */
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-instalar-app]"); if (!b) return; e.preventDefault();

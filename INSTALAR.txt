@@ -13,9 +13,15 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
 
 3. PRONTO
    - Visitantes navegam sem conta.
-   - Para avaliar, salvar na conta e publicar no Mural: criar conta de usuário (menu Conta).
-   - Para anunciar: Anuncie → escolher o plano → criar conta de anunciante → preencher o anúncio.
-   - Você (master): Painel → aba Contas lista todo mundo, muda papel, suspende e gera link de nova senha.
+   - Uma conta só para todo mundo (e-mail, senha e CEP americano/ZIP obrigatório). Com ela a pessoa
+     curte, comenta, avalia, salva roteiros e recebe avisos do que está perto do CEP dela.
+   - Para anunciar: Minha conta → Meu negócio → criar o anúncio → pagar por Pix. Quando o pagamento é
+     confirmado, as ferramentas de anúncio liberam. Se o plano vence, os anúncios ficam guardados e
+     ocultos, com o botão Reativar; tudo volta ao pagar de novo.
+   - Você (master): Painel master → Contas lista todo mundo com CEP e plano, abre a área de qualquer
+     conta ("Abrir área"), suspende, gera link de nova senha e muda o papel (usuário ou master).
+   - No celular, na primeira visita pelo navegador, o site convida a instalar como aplicativo
+     (uma vez só). Aberto pelo ícone, o convite nunca aparece.
 
 ONDE FICAM OS DADOS
    - Banco: pasta dados/ (criada sozinha no primeiro acesso, bloqueada para a web).

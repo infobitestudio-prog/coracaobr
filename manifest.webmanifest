@@ -1,9 +1,14 @@
 {
  "name": "CoraçãoBR",
  "short_name": "CoraçãoBR",
+ "id": "./",
  "description": "Coração brasileiro, em qualquer lugar do mundo: passeios, eventos, comida e serviços em português.",
  "start_url": "./",
+ "scope": "./",
  "display": "standalone",
+ "display_override": [
+  "standalone"
+ ],
  "background_color": "#F5F5F3",
  "theme_color": "#024E25",
  "lang": "pt-BR",
@@ -19,5 +24,23 @@
    "type": "image/png",
    "purpose": "any maskable"
   }
+ ],
+ "launch_handler": {
+  "client_mode": [
+   "navigate-existing",
+   "auto"
+  ]
+ },
+ "related_applications": [
+  {
+   "platform": "webapp",
+   "url": "manifest.webmanifest"
+  }
+ ],
+ "prefer_related_applications": false,
+ "categories": [
+  "travel",
+  "lifestyle",
+  "navigation"
  ]
 }
