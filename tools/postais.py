@@ -14,7 +14,7 @@ cred = json.loads((ORIG.parent / "creditos.json").read_text()) if (ORIG.parent /
 ok = {}
 for f in sorted(ORIG.glob("*.jpg")):
     k = f.stem; im = Image.open(f).convert("RGB")
-    for w, suf, q in ((2560, "", 82), (1280, "-m", 80)):
+    for w, suf, q in ((2560, "", 78), (1280, "-m", 78)):
         x = im if im.width <= w else im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
         if x is not im: x = x.filter(ImageFilter.UnsharpMask(radius=0.6, percent=40, threshold=2))
         x.save(OUT / (k + suf + ".jpg"), "JPEG", quality=q, optimize=True, progressive=True, subsampling="4:2:0")
