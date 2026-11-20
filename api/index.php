@@ -40,9 +40,16 @@ ini_set('session.gc_maxlifetime', (string)$vida);
 ini_set('session.use_strict_mode', '1');
 session_name('CBRSESS');
 session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
-session_start();
-if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
-if (empty($_SESSION['visitante'])) $_SESSION['visitante'] = 'v' . bin2hex(random_bytes(8));
+/* Fotos, sitemap, robots, aviso do Mercado Pago e tarefas automáticas não usam sessão: assim não mexem no cookie de login
+   (antes, uma foto carregando enquanto a pessoa entrava na conta podia trocar o cookie e "deslogar"). */
+$SEM_SESSAO = ['foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
+if (in_array((string)($_GET['acao'] ?? ''), $SEM_SESSAO, true)) {
+  $_SESSION = ['csrf' => '', 'visitante' => ''];
+} else {
+  session_start();
+  if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
+  if (empty($_SESSION['visitante'])) $_SESSION['visitante'] = 'v' . bin2hex(random_bytes(8));
+}
 
 /* ---------- banco ---------- */
 function banco(): PDO {
@@ -137,6 +144,15 @@ function ip(): string { return substr((string)($_SERVER['REMOTE_ADDR'] ?? '0'), 
 /* ---------- entrada ---------- */
 $acao = (string)($_GET['acao'] ?? '');
 $metodo = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+/* ---------- proteção contra cópia por robôs ----------
+   Os dados do guia só saem para navegadores de verdade: robôs de I.A., ferramentas de cópia e scripts (sem um navegador)
+   recebem 403 nas ações que entregam conteúdo. Mercado Pago, tarefa diária, sitemap e robots.txt continuam liberados. */
+$ua = (string)($_SERVER['HTTP_USER_AGENT'] ?? '');
+if (in_array($acao, ['sessao', 'sync', 'lista', 'doc', 'usuarios', 'assistente', 'metro', 'foto_google'], true)
+  && ($ua === '' || preg_match('/GPTBot|ChatGPT-User|OAI-SearchBot|ClaudeBot|Claude-Web|Claude-User|anthropic-ai|CCBot|Google-Extended|GoogleOther|PerplexityBot|Perplexity-User|Bytespider|Amazonbot|Applebot-Extended|meta-external|FacebookBot|cohere|Diffbot|Omgili|ImagesiftBot|Timpibot|YouBot|AI2Bot|MistralAI|PanguBot|img2dataset|Scrapy|HTTrack|WebCopier|WebZIP|Teleport|SiteSucker|Wget|curl\/|python-requests|python-urllib|aiohttp|httpx|Go-http-client|node-fetch|axios|undici|PhantomJS|Puppeteer|Selenium|Firecrawl|Crawl4AI|ScrapingBee|Apify|Zyte|Jina/i', $ua))) {
+  erro('Acesso automatizado não permitido. O conteúdo do CoraçãoBR é protegido por direitos autorais.', 403);
+}
+
 $corpo = [];
 if ($metodo === 'POST' && $acao !== 'pix_webhook') {   // o aviso do Mercado Pago não traz CSRF; ele é conferido consultando o pagamento na API
   $origem = $_SERVER['HTTP_ORIGIN'] ?? '';
@@ -184,7 +200,9 @@ function gravaZip(string $uid, string $zip): void {
 /* Ferramentas de anúncio liberadas: pacote em vigor (ou cortesia) */
 function temPlano(string $uid): bool { return vagasDe(pagamentoDe($uid)) > 0; }
 function entra(array $u): void {
-  session_regenerate_id(true);
+  /* novo id de sessão no login (contra fixação de sessão); o antigo continua existindo sem login, para que pedidos que já estavam
+     a caminho com o cookie velho não gerem outro cookie e desfaçam o login */
+  session_regenerate_id(false);
   $_SESSION['uid'] = $u['id'];
   $_SESSION['csrf'] = bin2hex(random_bytes(24));
   banco()->prepare('UPDATE usuarios SET ultimo = ? WHERE id = ?')->execute([agora(), $u['id']]);
@@ -435,7 +453,7 @@ case 'esqueci': {
     $link = linkSenha($u['id']);
     $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
     $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
-    $txt = "Olá, {$u['nome']}.\n\nRecebemos um pedido para criar uma nova senha na CoraçãoBR.\nAbra o link abaixo em até 24 horas:\n\n$link\n\nSe não foi você, ignore este e-mail; sua senha atual continua valendo.";
+    $txt = "Olá, {$u['nome']}.\n\nRecebemos um pedido para criar uma nova senha no CoraçãoBR.\nAbra o link abaixo em até 24 horas:\n\n$link\n\nSe não foi você, ignore este e-mail; sua senha atual continua valendo.";
     @mail($email, '=?UTF-8?B?' . base64_encode('CoraçãoBR: crie uma nova senha') . '?=', $txt . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   }
   sai(['ok' => true, 'msg' => $msg]);
@@ -528,6 +546,10 @@ case 'sync': {
     if (!in_array($col, COLS, true)) continue;
     $atual = $vers[$col] ?? 0;
     if ((int)$v === $atual && $v !== null && (int)$v !== -1) continue;
+    if (in_array($col, ['lugares', 'anunciantes'], true) && !master()) {
+      if (!limite('base:' . ip(), 180, 600)) erro('Muitos acessos seguidos deste endereço. Aguarde alguns minutos.', 429);
+      marca('base:' . ip());
+    }
     $out[$col] = ['v' => $atual, 'docs' => listaDocs($col, $u)];
   }
   sai(['ok' => true, 'cols' => $out]);
@@ -535,6 +557,7 @@ case 'sync': {
 case 'lista': {
   $col = (string)($_GET['col'] ?? '');
   if (!in_array($col, COLS, true)) erro('Coleção desconhecida.');
+  if (in_array($col, ['lugares', 'anunciantes'], true) && !master()) { if (!limite('base:' . ip(), 180, 600)) erro('Muitos acessos seguidos deste endereço. Aguarde alguns minutos.', 429); marca('base:' . ip()); }
   sai(['ok' => true, 'docs' => listaDocs($col, eu())]);
 }
 case 'doc': {
@@ -653,7 +676,7 @@ case 'newsletter_inscrever': {
   $st = $pdo->prepare('SELECT token, ativo FROM assinantes WHERE email = ?'); $st->execute([$email]); $r = $st->fetch();
   if ($r) { $pdo->prepare('UPDATE assinantes SET ativo = 1, saiu = NULL, nome = COALESCE(NULLIF(?, ""), nome) WHERE email = ?')->execute([$nome, $email]); $tok = $r['token']; $novo = !(int)$r['ativo']; }
   else { $tok = bin2hex(random_bytes(16)); $pdo->prepare('INSERT INTO assinantes (email, nome, token, origem, uid, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$email, $nome, $tok, campo('origem', 30), $u ? $u['id'] : null, agora()]); $novo = true; }
-  if ($novo) { $cfg = configDoc('newsletter'); envia($email, 'Inscrição confirmada na CoraçãoBR', '<p>Olá' . ($nome ? ', ' . htmlspecialchars($nome) : '') . '.</p><p>Você vai receber a seleção da CoraçãoBR por e-mail: eventos da semana e lugares que valem a visita.</p>' . (($cfg['boasVindas'] ?? '') ? '<p>' . nl2br(htmlspecialchars($cfg['boasVindas'])) . '</p>' : ''), $tok); }
+  if ($novo) { $cfg = configDoc('newsletter'); envia($email, 'Inscrição confirmada no CoraçãoBR', '<p>Olá' . ($nome ? ', ' . htmlspecialchars($nome) : '') . '.</p><p>Você vai receber a seleção do CoraçãoBR por e-mail: eventos da semana e lugares que valem a visita.</p>' . (($cfg['boasVindas'] ?? '') ? '<p>' . nl2br(htmlspecialchars($cfg['boasVindas'])) . '</p>' : ''), $tok); }
   sai(['ok' => true, 'msg' => 'Pronto! Você vai receber a seleção da semana no seu e-mail.']);
 }
 case 'newsletter_sair': {
@@ -908,6 +931,18 @@ case 'atualizar_diario': {
       $rel['feito'][] = 'Aviso no celular: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push: ' . $e->getMessage(); } }
     $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('push-fds', ?)")->execute([$hoje]);
   }
+  /* fotos oficiais: prepara as cópias leves (até 40 por dia), para a primeira visita já abrir rápido */
+  try { $fe = 0; $t0 = time();
+    foreach ($pdo->query("SELECT data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) {
+      if ($fe >= 40 || time() - $t0 > 90) break;
+      $d = json_decode($row['data'], true); $u = (string)($d['fotoSite']['src'] ?? '');
+      if ($u === '' || !preg_match('#^https://#', $u)) continue;
+      $dir = dirname($CFG['db']) . '/fotos-site/' . sha1($u) . '-640';
+      if (is_file($dir . '.webp') || is_file($dir . '.jpg') || is_file($dir . '.erro')) continue;
+      if (fotoSiteCache($u, 640, false)) $fe++;
+    }
+    if ($fe) $rel['feito'][] = 'Fotos oficiais otimizadas: ' . $fe;
+  } catch (Throwable $e) { $rel['erros'][] = 'Fotos oficiais: ' . $e->getMessage(); }
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
   versao('lugares'); versao('config');
   sai(['ok' => true] + $rel);
@@ -1009,6 +1044,18 @@ case 'pedido': {
   $ok = @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: novo pedido de ' . $nome) . '?=', $txt . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: $rt\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   $k = 'pedidos:' . $lid . ':' . date('Y-m'); banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute([$k]);
   sai(['ok' => true, 'enviado' => (bool)$ok]);
+}
+case 'foto_site': {
+  /* Foto oficial do site do lugar: o servidor baixa uma vez, reduz para WebP leve (640 ou 1280 px) e guarda em dados/fotos-site/.
+     Fica rápido no celular, economiza a franquia de quem visita e continua aparecendo mesmo se o site de origem bloquear "hotlink".
+     Só atende endereços que estão no guia (não é um proxy aberto). */
+  $u = (string)($_GET['u'] ?? ''); $w = (int)($_GET['w'] ?? 1280) <= 700 ? 640 : 1280;
+  if (!preg_match('#^https://[^\s"\'<>]{8,700}$#', $u)) { http_response_code(404); exit; }
+  if (!fotoDoGuia($u)) { http_response_code(404); exit; }   // fora do guia: nada (nem redireciona, para não virar atalho de golpe)
+  $arq = fotoSiteCache($u, $w, true);
+  if ($arq === null) { header('Cache-Control: public, max-age=3600'); header('Location: ' . $u, true, 302); exit; }   // foto do guia que não deu para otimizar: o navegador busca a original
+  header('Content-Type: ' . (substr($arq, -5) === '.webp' ? 'image/webp' : 'image/jpeg')); header('Cache-Control: public, max-age=2592000, immutable');
+  header('Content-Length: ' . filesize($arq)); readfile($arq); exit;
 }
 case 'foto_google': {
   /* entrega a foto do Google sem expor a chave: pede o endereço da imagem à API oficial e redireciona; o navegador guarda por 1 dia */
@@ -1137,6 +1184,37 @@ case 'push_enviar': {
   @set_time_limit(300);
   sai(['ok' => true] + enviaPush($t, $x, $url ?: './'));
 }
+/* ===== Teste de notificações (painel master): manda só para o aparelho e o e-mail do master, sem criar anúncio nem evento ===== */
+case 'push_teste': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  if (!limite('push-teste', 30, 600)) erro('Muitos testes seguidos. Aguarde alguns minutos.', 429); marca('push-teste');
+  $ep = (string)($corpo['endpoint'] ?? ''); $id = hash('sha256', $ep);
+  $st = banco()->prepare("SELECT data FROM docs WHERE col = 'push' AND id = ?"); $st->execute([$id]); $sub = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($sub) || empty($sub['endpoint'])) erro('Este aparelho ainda não está inscrito para receber notificações. Toque em "Permitir notificações" primeiro.', 409);
+  $tipos = ['teste' => ['Teste do CoraçãoBR', 'Push do servidor funcionando neste celular ✓ ' . date('H:i'), './#painel'],
+    'fds' => ['Fim de semana brasileiro', 'Teste: assim chega o aviso de eventos do fim de semana.', './#explorar'],
+    'perto' => ['Novidade perto de você', 'Teste: assim chega o aviso de lugar novo perto do seu CEP.', './#explorar'],
+    'evento' => ['Evento novo para você', 'Teste: assim chega o aviso de evento novo dos seus temas.', './#temas']];
+  $m = $tipos[(string)($corpo['tipo'] ?? 'teste')] ?? $tipos['teste'];
+  $r = pushUm($sub, $id, $m[0], $m[1], $m[2]);
+  if (!$r['ok']) erro('O serviço de notificações do celular recusou o envio (código ' . $r['status'] . '). Desative e ative as notificações de novo.', 502);
+  sai(['ok' => true, 'status' => $r['status']]);
+}
+case 'email_teste': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  if (!limite('mail-teste', 12, 3600)) erro('Muitos e-mails de teste nesta hora. Tente mais tarde.', 429); marca('mail-teste');
+  $u = eu(); $para = (string)$u['email']; $nome = (string)$u['nome'];
+  $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+  $h = "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n";
+  $mail = fn($assunto, $txt) => (bool)@mail($para, '=?UTF-8?B?' . base64_encode('[TESTE] CoraçãoBR: ' . $assunto) . '?=', $txt . sacAssinatura(), $h);
+  $res = [
+    'teste' => $mail('e-mails funcionando', "Olá, $nome.\n\nEste é um teste do painel master. Se você recebeu, o envio de e-mails do site está funcionando."),
+    'vencimento' => $mail('seu anúncio termina em 3 dias', "Olá, $nome.\n\n(EXEMPLO) Seu plano no CoraçãoBR (3 anúncios) termina em 3 dias. Para seus anúncios continuarem no ar, renove pelo painel: " . baseUrl() . "#conta\n\nPagamento por Pix:\nChave Pix (e-mail · Mercado Pago): " . chavePix((string)(((array)(configDoc('geral')['pagamentos'] ?? []))['pix'] ?? ''))),
+    'pagamento' => $mail('pagamento confirmado, seus anúncios estão no ar', "Olá, $nome.\n\n(EXEMPLO) Recebemos seu Pix de R$ 50,00. Seu pacote de 3 anúncios está liberado até " . date('d/m/Y', strtotime('+30 day')) . ".\nAbra o painel: " . baseUrl() . "#conta"),
+  ];
+  $res['equipe'] = avisaEquipe('[TESTE] aviso para a equipe', "Teste do painel master: assim chegam os avisos de pagamentos, novos anunciantes e denúncias.");
+  sai(['ok' => true, 'para' => $para, 'equipePara' => emailOficial(), 'enviados' => $res]);
+}
 case 'push_info': {
   exigeMaster(); sai(['ok' => true, 'inscritos' => (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'push'")->fetchColumn(), 'ultima' => json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'push-ultima'")->fetchColumn(), true)]);
 }
@@ -1149,7 +1227,7 @@ case 'diagnostico': {
   $o = ['ok' => true, 'php' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION, 'phpOk' => PHP_VERSION_ID >= 80100, 'ext' => $ext,
     'webp' => function_exists('imagewebp') && (gd_info()['WebP Support'] ?? false), 'https' => $https, 'mail' => function_exists('mail'),
     'configPhp' => is_file(__DIR__ . '/config.php'), 'chaveInstalacao' => trim((string)($CFG['chave_instalacao'] ?? '')) !== '',
-    'vendor' => is_file(__DIR__ . '/vendor/autoload.php'), 'fuso' => date_default_timezone_get()];
+    'vendor' => is_file(__DIR__ . '/vendor/autoload.php'), 'fuso' => date_default_timezone_get(), 'agora' => gmdate('c')];
   try {
     $pdo = banco();
     $o['banco'] = true; $o['dadosGravavel'] = is_writable($dir);
@@ -1167,6 +1245,12 @@ case 'diagnostico': {
       'cron' => is_file($dir . '/CHAVE-CRON.txt'), 'push' => (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'push'")->fetchColumn(),
       'ga4' => !empty($mk['ga4']), 'gtm' => !empty($mk['gtm']), 'ads' => !empty($mk['ads']), 'pixel' => !empty($mk['pixel']), 'gsc' => (string)($mk['gsc'] ?? ''),
       'emailOficial' => (string)($CFG['email_oficial'] ?? ''), 'pixChave' => chavePix((string)((array)($g['pagamentos'] ?? []))['pix'] ?? '')];
+    /* o token do Mercado Pago funciona? (consulta a própria conta; não mostra o token) */
+    if (mpToken() !== '' && function_exists('curl_init')) {
+      $ch = curl_init('https://api.mercadopago.com/users/me'); curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8, CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . mpToken()]]);
+      $r = curl_exec($ch); $cod = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch); $j = json_decode((string)$r, true);
+      $o['master']['mpValido'] = $cod === 200; $o['master']['mpConta'] = $cod === 200 ? (string)($j['nickname'] ?? $j['email'] ?? '') : ''; $o['master']['mpCodigo'] = $cod;
+    }
   }
   sai($o);
 }
@@ -1188,7 +1272,11 @@ case 'gverif': {
 }
 case 'robots': {
   header('Content-Type: text/plain; charset=utf-8'); header('Cache-Control: public, max-age=86400');
-  echo "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /dados/\nDisallow: /uploads/\n\nSitemap: " . baseUrl() . "sitemap.xml\n"; exit;
+  /* Robôs de inteligência artificial e de cópia: proibidos. Buscadores (Google, Bing): liberados, para o SEO. */
+  $ia = ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'ClaudeBot', 'Claude-Web', 'Claude-User', 'anthropic-ai', 'CCBot', 'Google-Extended', 'GoogleOther', 'PerplexityBot', 'Perplexity-User', 'Bytespider', 'Amazonbot', 'Applebot-Extended', 'meta-externalagent', 'meta-externalfetcher', 'FacebookBot', 'cohere-ai', 'cohere-training-data-crawler', 'Diffbot', 'Omgilibot', 'Omgili', 'ImagesiftBot', 'Timpibot', 'YouBot', 'AI2Bot', 'Ai2Bot-Dolma', 'MistralAI-User', 'DuckAssistBot', 'PanguBot', 'Kangaroo Bot', 'img2dataset', 'Scrapy', 'HTTrack', 'Firecrawl'];
+  $txt = "# CoraçãoBR · conteúdo, fotos, dados e código protegidos por direitos autorais.\n# Proibido usar para treinar inteligência artificial, copiar ou clonar a plataforma.\n\n";
+  foreach ($ia as $b) $txt .= "User-agent: $b\n"; $txt .= "Disallow: /\n\n";
+  echo $txt . "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /dados/\nDisallow: /uploads/\nDisallow: /data/\nDisallow: /estudio/\nDisallow: /diagnostico.html\n\nSitemap: " . baseUrl() . "sitemap.xml\n"; exit;
 }
 default: erro('Ação desconhecida.', 404);
 }
@@ -1274,14 +1362,14 @@ function montaNewsletter(): array {
   $cup = array_slice(array_values(array_filter($por, fn($l) => !empty($l['cupom']) && !in_array($l['categoria'] ?? '', ['evento', 'show'], true))), 0, 6);
   if ($cup) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">Cupons da semana</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($cup as $l) $html .= $cartao($l, '🎟 ' . mb_substr((string)$l['cupom'], 0, 70)); $html .= '</table>'; }
   if ($dest) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">' . $e($cfg['tituloDestaques'] ?? 'Vale a visita') . '</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($dest as $l) $html .= $cartao($l, $l['bairro'] ?? ($l['categoria'] ?? '')); $html .= '</table>'; }
-  return ['assunto' => ($cfg['assunto'] ?? '') ?: 'A semana na CoraçãoBR', 'html' => $html, 'itens' => count($eventos) + count($dest) + count($cup)];
+  return ['assunto' => ($cfg['assunto'] ?? '') ?: 'A semana no CoraçãoBR', 'html' => $html, 'itens' => count($eventos) + count($dest) + count($cup)];
 }
 function moldura(string $miolo, string $token): string {
   $base = baseUrl(); $sair = $base . 'api/?acao=newsletter_sair&t=' . $token;
   return '<!doctype html><html><body style="margin:0;background:#EEF1EC"><div style="max-width:600px;margin:0 auto;padding:24px 18px;font-family:Arial,Helvetica,sans-serif;color:#142019">' .
     '<div style="font:700 22px Arial;color:#024E25">Coração<span style="color:#E3A600">BR</span></div>' .
     '<div style="background:#fff;border-radius:16px;padding:20px 22px;margin-top:14px">' . $miolo . '<p style="margin-top:22px"><a href="' . htmlspecialchars($base) . '" style="background:#024E25;color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:700">Abrir o guia</a></p></div>' .
-    '<p style="font-size:12px;color:#5F6B64;margin-top:16px">Você recebe este e-mail porque se inscreveu na CoraçãoBR. <a href="' . htmlspecialchars($sair) . '" style="color:#5F6B64">Sair da lista</a>.</p></div></body></html>';
+    '<p style="font-size:12px;color:#5F6B64;margin-top:16px">Você recebe este e-mail porque se inscreveu no CoraçãoBR. <a href="' . htmlspecialchars($sair) . '" style="color:#5F6B64">Sair da lista</a>.</p></div></body></html>';
 }
 /* E-mail oficial da CoraçãoBR (config.php ou o padrão acima). */
 /* Mercado Pago recusa o pagador com o mesmo e-mail da conta que recebe; e o aviso (webhook) precisa de https */
@@ -1305,13 +1393,13 @@ function emailOficial(): string {
   return filter_var($e, FILTER_VALIDATE_EMAIL) ? $e : 'coracaobr.oficial@gmail.com';
 }
 /* Avisa a equipe por e-mail sobre algo importante (no máximo 60 por hora, para não lotar a caixa). */
-function avisaEquipe(string $assunto, string $texto): void {
+function avisaEquipe(string $assunto, string $texto): bool {
   global $CFG;
-  if (!limite('mail-equipe', 60, 3600)) return; marca('mail-equipe');
+  if (!limite('mail-equipe', 60, 3600)) return false; marca('mail-equipe');
   $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
   $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
   $txt = $texto . "\n\n— Aviso automático do site " . baseUrl() . "\nAbra o painel master para ver e responder: " . baseUrl() . "#painel";
-  @mail(emailOficial(), '=?UTF-8?B?' . base64_encode('CoraçãoBR: ' . $assunto) . '?=', $txt, "From: CoraçãoBR <$de>\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+  return (bool)@mail(emailOficial(), '=?UTF-8?B?' . base64_encode('CoraçãoBR: ' . $assunto) . '?=', $txt, "From: CoraçãoBR <$de>\r\nContent-Type: text/plain; charset=UTF-8\r\n");
 }
 function envia(string $para, string $assunto, string $miolo, string $token): bool {
   global $CFG;
@@ -1379,12 +1467,57 @@ function jwtVapid(string $aud, $key): string {
   $r = str_pad(ltrim($r, "\0"), 32, "\0", STR_PAD_LEFT); $s = str_pad(ltrim($s, "\0"), 32, "\0", STR_PAD_LEFT);
   return "$h.$p." . b64u($r . $s);
 }
+/* A foto é de um lugar do guia? (o endereço aparece nos dados dos lugares/anúncios ou nas fotos oficiais do robô) */
+function fotoDoGuia(string $u): bool {
+  $esc = fn($t) => str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $t);
+  $st = banco()->prepare("SELECT 1 FROM docs WHERE col IN ('lugares','anunciantes') AND (data LIKE ? ESCAPE '!' OR data LIKE ? ESCAPE '!') LIMIT 1");
+  $st->execute(['%' . $esc($u) . '%', '%' . $esc(str_replace('/', '\\/', $u)) . '%']);
+  if ($st->fetchColumn()) return true;
+  $fs = __DIR__ . '/../data/fotos-site.json'; if (!is_file($fs)) return false; $t = (string)file_get_contents($fs);
+  return strpos($t, str_replace('/', '\\/', $u)) !== false || strpos($t, $u) !== false;
+}
+/* Cópia leve e local de uma foto oficial (usada por foto_site e pelo robô diário). null = não deu (o navegador tenta a original). */
+function fotoSiteCache(string $u, int $w, bool $conferir): ?string {
+  global $CFG;
+  $dir = dirname($CFG['db']) . '/fotos-site'; if (!is_dir($dir)) @mkdir($dir, 0750, true);
+  $base = $dir . '/' . sha1($u) . '-' . $w; foreach (['.webp', '.jpg'] as $e) if (is_file($base . $e)) return $base . $e;
+  if (is_file($base . '.erro') && filemtime($base . '.erro') > time() - 86400) return null;
+  if ($conferir) { if (!limite('fs:' . ip(), 400, 3600)) return null; marca('fs:' . ip()); }
+  if (!function_exists('curl_init') || !function_exists('imagecreatefromstring')) return null;
+  @ini_set('memory_limit', '512M'); @set_time_limit(40);
+  $ch = curl_init($u); curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_MAXREDIRS => 3, CURLOPT_TIMEOUT => 15, CURLOPT_CONNECTTIMEOUT => 6,
+    CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; CoracaoBR/1.0; foto oficial do lugar)', CURLOPT_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_MAXFILESIZE => 20000000]);
+  $bin = curl_exec($ch); $cod = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+  $im = ($cod === 200 && is_string($bin) && strlen($bin) > 200) ? @imagecreatefromstring($bin) : false;
+  if (!$im) { @touch($base . '.erro'); return null; }
+  $lw = imagesx($im); $lh = imagesy($im);
+  if ($lw > $w) { $novo = imagescale($im, $w, (int)round($lh * $w / $lw), IMG_BICUBIC); if ($novo) { imagedestroy($im); $im = $novo; } }
+  imagealphablending($im, true); imagesavealpha($im, true);
+  $ok = function_exists('imagewebp') ? @imagewebp($im, $base . '.webp', 74) : false;
+  if (!$ok) { $ok = @imagejpeg($im, $base . '.jpg', 80); }
+  imagedestroy($im);
+  foreach (['.webp', '.jpg'] as $e) if (is_file($base . $e) && filesize($base . $e) > 0) return $base . $e;
+  @touch($base . '.erro'); return null;
+}
+/* Push para um aparelho só (teste do painel): guarda a mensagem dele e acorda o celular. */
+function pushUm(array $s, string $id, string $titulo, string $texto, string $url): array {
+  $pdo = banco(); $s['ult'] = ['titulo' => $titulo, 'texto' => $texto, 'url' => $url, 'em' => gmdate('c')];
+  $pdo->prepare("UPDATE docs SET data = ? WHERE col = 'push' AND id = ?")->execute([json_encode($s, JSON_UNESCAPED_UNICODE), $id]);
+  $v = vapid(); $ep = (string)$s['endpoint']; $pu = parse_url($ep); $aud = $pu['scheme'] . '://' . $pu['host'] . (isset($pu['port']) ? ':' . $pu['port'] : '');
+  $ctx = stream_context_create(['http' => ['method' => 'POST', 'header' => "Authorization: vapid t=" . jwtVapid($aud, $v['key']) . ", k={$v['pub']}\r\nTTL: 600\r\nUrgency: high\r\nContent-Length: 0", 'content' => '', 'timeout' => 10, 'ignore_errors' => true]]);
+  @file_get_contents($ep, false, $ctx); $st = 0; if (!empty($http_response_header[0]) && preg_match('/\s(\d{3})\s?/', $http_response_header[0], $m)) $st = (int)$m[1];
+  if ($st === 404 || $st === 410) $pdo->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([$id]);
+  return ['ok' => $st >= 200 && $st < 300, 'status' => $st];
+}
 function enviaPush(string $titulo, string $texto, string $url, string $tema = '', ?callable $porSub = null): array {
   $pdo = banco(); $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('push-ultima', ?)")->execute([json_encode(['titulo' => $titulo, 'texto' => $texto, 'url' => $url, 'em' => gmdate('c')], JSON_UNESCAPED_UNICODE)]);
   $v = vapid(); $env = 0; $fal = 0; $jwts = [];
   foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'push' LIMIT 5000")->fetchAll() as $row) {
     $s = json_decode($row['data'], true); $ep = (string)($s['endpoint'] ?? ''); if ($ep === '') continue;
     if ($tema !== '' && !empty($s['temas']) && !in_array($tema, (array)$s['temas'], true)) continue;
+    if (!$porSub && isset($s['ult'])) {   // envio geral: some a mensagem própria antiga (ex.: um teste), para o aparelho mostrar esta
+      unset($s['ult']); $pdo->prepare("UPDATE docs SET data = ? WHERE col = 'push' AND id = ?")->execute([json_encode($s, JSON_UNESCAPED_UNICODE), $row['id']]);
+    }
     if ($porSub) {   // mensagem própria de cada aparelho (ex.: o que fica perto do CEP da pessoa); null = não envia para este
       $m = $porSub($s); if (!$m) continue;
       $s['ult'] = ['titulo' => $m[0], 'texto' => $m[1], 'url' => $m[2], 'em' => gmdate('c')];

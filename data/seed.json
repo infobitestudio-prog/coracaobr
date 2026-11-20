@@ -3944,12 +3944,7 @@
    "tempoVisita": "2–3 horas",
    "menu": [],
    "notaCuradoria": 4.0,
-   "notaProvisoria": true,
-   "fotoSite": {
-    "src": "https://visit-dallas.imgix.net/images/general/Dallas-Arts-District-Aerial.jpg?auto=compress%252Cformat&crop=focalpoint&fit=min&fp-x=0.5&fp-y=0.5&h=418&q=80&w=800&s=11d427d21f90e3ff8b812dff6ff30a1e",
-    "pagina": "https://www.visitdallas.com/",
-    "em": "2026-11-19"
-   }
+   "notaProvisoria": true
   },
   {
    "id": "swiss-avenue-historic-district",
@@ -4023,12 +4018,7 @@
    "tempoVisita": "15–20 minutos",
    "menu": [],
    "notaCuradoria": 4.0,
-   "notaProvisoria": true,
-   "fotoSite": {
-    "src": "https://visit-dallas.imgix.net/images/general/Dallas-Arts-District-Aerial.jpg?auto=compress%252Cformat&crop=focalpoint&fit=min&fp-x=0.5&fp-y=0.5&h=418&q=80&w=800&s=11d427d21f90e3ff8b812dff6ff30a1e",
-    "pagina": "https://www.visitdallas.com/",
-    "em": "2026-11-19"
-   }
+   "notaProvisoria": true
   },
   {
    "id": "cathedral-guadalupe-dallas",
@@ -16223,12 +16213,7 @@
    "menu": [],
    "fonteMenu": "",
    "menuVerificadoEm": "",
-   "gratuito": false,
-   "fotoSite": {
-    "src": "https://www.amtrak.com",
-    "pagina": "https://www.amtrak.com/stations/dal",
-    "em": "2026-11-19"
-   }
+   "gratuito": false
   },
   {
    "id": "dart-headquarters",
@@ -19048,12 +19033,7 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true,
-   "fotoSite": {
-    "src": "https://img1.wsimg.com/isteam/videos/uA41GmyyG8IMaxXdb",
-    "pagina": "https://www.bubbascatering.com/",
-    "em": "2026-11-19"
-   }
+   "naoConferido": true
   },
   {
    "id": "ellens-west-end",
