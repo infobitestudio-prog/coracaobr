@@ -104,16 +104,27 @@
     return st;
   }
   function registra(st, id) { st.n++; st.ult = Date.now(); st.por[id] = Date.now(); Object.keys(st.por).forEach(function (k) { if (Date.now() - st.por[k] > 30 * 864e5) delete st.por[k]; }); grava("perto-hist", st); }
+  /* dentro de alguma região do guia (Dallas–Fort Worth, Houston, Austin, San Antonio)? */
+  function naRegiao(c) { var cs = G.CIDADES_GUIA || {}; return Object.keys(cs).some(function (k) { return G.dist(c, cs[k]) <= 250; }); }
   function checaPosicao(pos) {
     var c = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-    if (G.dist(c, { lat: 32.7767, lng: -96.797 }) > 250) return;
+    if (!naRegiao(c)) return;
     paradaPerto(c);
     if (!permitido() || document.querySelector("#perto-card.on")) return;
-    var cands = G.lugares().filter(elegivel).map(function (l) { return { l: l, d: G.dist(c, l) }; })
+    /* todas as regiões (a pessoa pode estar numa cidade diferente da escolhida no guia); só lugares públicos e anúncios pagos */
+    var cands = (G.todosLugares ? G.todosLugares() : G.lugares()).filter(elegivel).map(function (l) { return { l: l, d: G.dist(c, l) }; })
       .filter(function (x) { return x.d <= (x.l.anunciante ? PERTO_RAIO_AN : PERTO_RAIO); });
     if (!cands.length) return;
     cands.sort(function (a, b) { var pa = (G.destaque(a.l) ? 2 : a.l.anunciante ? 1 : 0), pb = (G.destaque(b.l) ? 2 : b.l.anunciante ? 1 : 0); return pb - pa || a.d - b.d; });
     for (var i = 0; i < cands.length; i++) { var st = podeAvisar(cands[i].l.id); if (st) { mostra(cands[i].l, cands[i].d); registra(st, cands[i].l.id); return; } }
+  }
+  /* notificação do sistema pelo service worker (Android e app instalado no iPhone); sem ele, a do navegador */
+  function notificaSistema(titulo, msg, url, tag) {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    var op = { body: msg, icon: "icon-192.png", badge: "icon-192.png", tag: tag, data: { url: url } };
+    var direto = function () { try { new Notification(titulo, op); } catch (e) { /* sem suporte */ } };
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) navigator.serviceWorker.getRegistration().then(function (r) { if (r && r.showNotification) r.showNotification(titulo, op); else direto(); }).catch(direto);
+    else direto();
   }
   function textoDist(km) { var m = km * 1000; return m < 150 ? "pertinho" : m < 1000 ? "a " + Math.round(m / 10) * 10 + " m" : "a " + km.toFixed(1).replace(".", ",") + " km"; }
   function mostra(l, km) {
@@ -124,7 +135,7 @@
       '<div class="row"><a class="btn sm" href="#lugar-' + esc(l.id) + '" data-perto-fecha>Ver lugar</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=' + l.lat + "," + l.lng + '" data-perto-fecha>Ir a pé</a><button type="button" class="btn sm ghost" data-perto-fecha>Agora não</button></div></div>';
     el.hidden = false; requestAnimationFrame(function () { el.classList.add("on"); });
     if (G.medir) G.medir(l.id, "p");
-    if (document.hidden && "Notification" in window && Notification.permission === "granted") { try { new Notification("CoraçãoBR", { body: msg, tag: "perto-" + l.id }); } catch (e) { /* alguns navegadores só permitem via service worker */ } }
+    if (document.hidden) notificaSistema("Por perto: " + l.nome, msg, "./#lugar-" + l.id, "perto-" + l.id);
   }
   document.addEventListener("click", function (e) { if (!e.target.closest("[data-perto-fecha]")) return; var el = $("#perto-card"); if (el) { el.classList.remove("on"); setTimeout(function () { el.hidden = true; }, 300); } });
 
@@ -136,15 +147,23 @@
   }
 
   var vigia = null;
+  /* localização negada: desliga os avisos e explica como liberar */
+  function erroLocal(er) {
+    if (!er || er.code !== 1) return;
+    grava("perto-ativo", false); if (vigia != null) { try { navigator.geolocation.clearWatch(vigia); } catch (e) { /* ok */ } vigia = null; }
+    Array.from(document.querySelectorAll("[data-perto-switch]")).forEach(function (s) { s.setAttribute("aria-checked", "false"); });
+    G.toast("Para receber avisos de lugares por perto, libere a localização do CoraçãoBR nas configurações do celular.");
+  }
   function liga() {
     if (vigia != null || !navigator.geolocation) return;
-    try { vigia = navigator.geolocation.watchPosition(checaPosicao, function () {}, { maximumAge: 60000, enableHighAccuracy: false }); } catch (e) { vigia = null; }
+    try { vigia = navigator.geolocation.watchPosition(checaPosicao, erroLocal, { maximumAge: 60000, timeout: 30000, enableHighAccuracy: false }); } catch (e) { vigia = null; }
   }
   function ativar(on) {
     grava("perto-ativo", !!on);
     if (on) {
       liga();
       if ("Notification" in window && Notification.permission === "default") { try { Notification.requestPermission(); } catch (e) { /* ok */ } }
+      if (navigator.geolocation) navigator.geolocation.getCurrentPosition(checaPosicao, erroLocal, { maximumAge: 60000, timeout: 30000 });
       G.toast("Avisos de lugares por perto ativados.");
     } else { if (vigia != null) { navigator.geolocation.clearWatch(vigia); vigia = null; } G.toast("Avisos de lugares por perto desligados."); }
   }
@@ -165,5 +184,5 @@
 
   G.views["meus-roteiros"] = viewMeusRoteiros;
   G.views["meu-roteiro"] = viewMeuRoteiro;
-  window.Jornada = { adotar: adotar, botaoQuero: botaoQuero, blocoConfig: blocoConfig, convite: convite, meus: meus, progresso: progresso };
+  window.Jornada = { checaPosicao: checaPosicao, adotar: adotar, botaoQuero: botaoQuero, blocoConfig: blocoConfig, convite: convite, meus: meus, progresso: progresso };
 })();
