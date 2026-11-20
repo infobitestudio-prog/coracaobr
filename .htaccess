@@ -11,6 +11,7 @@ RedirectMatch 404 /api/vendor(/|$)
   RewriteEngine On
   RewriteRule ^sitemap\.xml$ api/index.php?acao=sitemap [L,QSA]
   RewriteRule ^robots\.txt$ api/index.php?acao=robots [L,QSA]
+  RewriteRule ^(google[0-9a-fA-F]+\.html)$ api/index.php?acao=gverif&f=$1 [L]
 </IfModule>
 <FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|log)$">
   Require all denied
@@ -29,3 +30,18 @@ RedirectMatch 404 /api/vendor(/|$)
     Header set Cache-Control "no-store"
   </FilesMatch>
 </IfModule>
+
+# Site leve: compressão gzip do que é texto e cache longo para imagens e fontes
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml application/manifest+json
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+AddType image/webp .webp
+AddType application/manifest+json .webmanifest
