@@ -563,11 +563,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-1.jpg",
-    "credito": "Larry Miller",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-mi-tierra/sat-mi-tierra-1.jpg",
+    "credito": "H. Michael Karshis",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/w/index.php?curid=115366358"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-mi-tierra/sat-mi-tierra-2.jpg",
+    "credito": "Cortney Martin",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/w/index.php?curid=115366363"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-mi-tierra/sat-mi-tierra-3.jpg",
+    "credito": "Dontyoufanta",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/w/index.php?curid=110125765"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-mi-tierra/sat-mi-tierra-4.jpg",
+    "credito": "Zereshk",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/w/index.php?curid=7000926"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -604,10 +621,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-2.jpg",
-    "credito": "Wackyrussell at English Wikipedia",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Chili_con_queso_(cropped).jpg",
+    "src": "img/ilustra-tex-mex-1.jpg",
+    "credito": "Larry Miller",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
     "ilustrativa": true
    }
   ],
@@ -645,10 +662,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-3.jpg",
-    "credito": "Carstor",
-    "licenca": "CC BY-SA 2.5",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Bowl_of_chili.jpg",
+    "src": "img/ilustra-tex-mex-2.jpg",
+    "credito": "Wackyrussell at English Wikipedia",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chili_con_queso_(cropped).jpg",
     "ilustrativa": true
    }
   ],
@@ -686,10 +703,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-4.jpg",
-    "credito": "Jon Sullivan",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Enchilada_Rice_Beans.jpg",
+    "src": "img/ilustra-tex-mex-3.jpg",
+    "credito": "Carstor",
+    "licenca": "CC BY-SA 2.5",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bowl_of_chili.jpg",
     "ilustrativa": true
    }
   ],
@@ -727,10 +744,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-5.jpg",
-    "credito": "Crisco 1492",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Chicken_fajita_platter,_Lone_Star_Texas_Grill,_Windsor,_Ontario,_2025-06-14_03.jpg",
+    "src": "img/ilustra-tex-mex-4.jpg",
+    "credito": "Jon Sullivan",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Enchilada_Rice_Beans.jpg",
     "ilustrativa": true
    }
   ],
@@ -850,11 +867,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-hamburguer-1.jpg",
-    "credito": "Renee Comet (photographer)",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Cheeseburger.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-chris-madrids/sat-chris-madrids-1.jpg",
+    "credito": "Howdy, I'm H. Michael Karshis",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/48889115061@N01/14730778369"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -891,11 +907,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-1.jpg",
-    "credito": "Bex Walton from London, England",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Avocado_toast_at_Voyager_Espresso_(33134505776).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-guenther-house/sat-guenther-house-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Carl_guenther_house_2012.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-guenther-house/sat-guenther-house-2.jpg",
+    "credito": "Renegomezphotography",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Guenther_House_in_San_Antonio.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -932,10 +953,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-2.jpg",
-    "credito": "No machine-readable author provided. Kaszeta assumed (based ",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Biscuits-and-gravy.jpg",
+    "src": "img/ilustra-brunch-cafe-1.jpg",
+    "credito": "Bex Walton from London, England",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Avocado_toast_at_Voyager_Espresso_(33134505776).jpg",
     "ilustrativa": true
    }
   ],
@@ -973,11 +994,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-3.jpg",
-    "credito": "Vee Satayamas",
+    "src": "fotos_cidades/sanantonio/sat-bakery-lorraine/sat-bakery-lorraine-1.jpg",
+    "credito": "Thank You (23 Millions+) views",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Cappuccino_in_original.jpg",
-    "ilustrativa": true
+    "pagina": "https://www.flickr.com/photos/34128007@N04/52111425438"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-bakery-lorraine/sat-bakery-lorraine-2.jpg",
+    "credito": "Thank You (23 Millions+) views",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/34128007@N04/52553093112"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1014,10 +1040,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-4.jpg",
-    "credito": "Mark Miller",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Traditional_Eggs_Benedict.jpg",
+    "src": "img/ilustra-brunch-cafe-2.jpg",
+    "credito": "No machine-readable author provided. Kaszeta assumed (based",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Biscuits-and-gravy.jpg",
     "ilustrativa": true
    }
   ],
@@ -1055,11 +1081,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comida-sulista-1.jpg",
-    "credito": "Dale Cruse",
+    "src": "fotos_cidades/sanantonio/sat-gristmill/sat-gristmill-1.jpg",
+    "credito": "nan palmero",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Loveless_Cafe_Biscuits.jpg",
-    "ilustrativa": true
+    "pagina": "https://www.flickr.com/photos/97402086@N00/12461724185"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gristmill/sat-gristmill-2.jpg",
+    "credito": "nan palmero",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/97402086@N00/12461937063"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gristmill/sat-gristmill-3.jpg",
+    "credito": "nan palmero",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/97402086@N00/12461942243"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1096,10 +1133,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comida-sulista-2.jpg",
-    "credito": "LeeMNichols",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Chicken_Fried_Steak.jpg",
+    "src": "img/ilustra-comida-sulista-1.jpg",
+    "credito": "Dale Cruse",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Loveless_Cafe_Biscuits.jpg",
     "ilustrativa": true
    }
   ],
@@ -1137,10 +1174,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comida-sulista-3.jpg",
-    "credito": "Evan-Amos",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Collard-Greens-Bundle.jpg",
+    "src": "img/ilustra-comida-sulista-2.jpg",
+    "credito": "LeeMNichols",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chicken_Fried_Steak.jpg",
     "ilustrativa": true
    }
   ],
@@ -1178,11 +1215,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-padaria-2.jpg",
-    "credito": "Petr Kratochvil",
-    "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Croissant-Petr_Kratochvil.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-naegelins-bakery/sat-naegelins-bakery-1.jpg",
+    "credito": "coolanimeboy25",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/198003881@N06/54001146768"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-naegelins-bakery/sat-naegelins-bakery-2.jpg",
+    "credito": "formulanone",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/30552029@N00/53183189732"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-naegelins-bakery/sat-naegelins-bakery-3.jpg",
+    "credito": "formulanone",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/30552029@N00/53184272903"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1301,11 +1349,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-compras-1.jpg",
-    "credito": "Daderot",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Bon_March%C3%A9,_Paris_-_interior_view.JPG",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-pearl-farmers-market/sat-pearl-farmers-market-1.jpg",
+    "credito": "allisonmeier",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/7527891@N04/49569581351"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-pearl-farmers-market/sat-pearl-farmers-market-2.jpg",
+    "credito": "U.S. Department of Agriculture",
+    "licenca": "CC0",
+    "pagina": "https://www.rawpixel.com/image/3261560/free-photo-image-money-bag-blossom"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1388,11 +1441,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-1.jpg",
-    "credito": "KOREA.NET - Official page of the Republic of Korea",
+    "src": "fotos_cidades/sanantonio/sat-menger-bar/sat-menger-bar-1.jpg",
+    "credito": "Nicolas Henderson from Coppell, Texas",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jeju_beer_09_(cropped).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Menger_Hotel,_San_Antonio,_Texas_(50295947263).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-menger-bar/sat-menger-bar-2.jpg",
+    "credito": "Nadia Eimandoust",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Menger_Hotel_stained_glass_ceiling.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-menger-bar/sat-menger-bar-3.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Menger_Hotel_(2012)_San_Antonio_IMG_5370.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1429,10 +1493,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-2.jpg",
-    "credito": "Henning Schlottmann (User:H-stt)",
-    "licenca": "CC BY 1.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Hofbraeukeller_5906.JPG",
+    "src": "img/ilustra-bar-1.jpg",
+    "credito": "KOREA.NET - Official page of the Republic of Korea",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Jeju_beer_09_(cropped).jpg",
     "ilustrativa": true
    }
   ],
@@ -1470,10 +1534,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-3.jpg",
-    "credito": "Luca Galuzzi (Lucag)",
-    "licenca": "CC BY-SA 2.5",
-    "pagina": "https://commons.wikimedia.org/wiki/File:8210_Brewery_in_Abbaye_Notre-Dame_de_Saint-Remy_Rochefort_2007_Luca_Galuzzi.jpg",
+    "src": "img/ilustra-bar-2.jpg",
+    "credito": "Henning Schlottmann (User:H-stt)",
+    "licenca": "CC BY 1.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hofbraeukeller_5906.JPG",
     "ilustrativa": true
    }
   ],
@@ -1511,11 +1575,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-4.jpg",
-    "credito": "Ralf Roletschek",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0084.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-southerleigh/sat-southerleigh-1.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Southerleigh_Tower_at_Pearl_Brewery_(2015-03-26_13.01.35_by_Nan_Palmer).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1552,10 +1615,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-5.jpg",
-    "credito": "Akke Monasso",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:MargaritaReal.jpg",
+    "src": "img/ilustra-bar-3.jpg",
+    "credito": "Luca Galuzzi (Lucag)",
+    "licenca": "CC BY-SA 2.5",
+    "pagina": "https://commons.wikimedia.org/wiki/File:8210_Brewery_in_Abbaye_Notre-Dame_de_Saint-Remy_Rochefort_2007_Luca_Galuzzi.jpg",
     "ilustrativa": true
    }
   ],
@@ -1593,10 +1656,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-6.jpg",
-    "credito": "Martintoy",
+    "src": "img/ilustra-bar-4.jpg",
+    "credito": "Ralf Roletschek",
     "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Michelada_mexicana.jpg",
+    "pagina": "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0084.jpg",
     "ilustrativa": true
    }
   ],
@@ -1634,10 +1697,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-1.jpg",
-    "credito": "KOREA.NET - Official page of the Republic of Korea",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jeju_beer_09_(cropped).jpg",
+    "src": "img/ilustra-bar-5.jpg",
+    "credito": "Akke Monasso",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:MargaritaReal.jpg",
     "ilustrativa": true
    }
   ],
@@ -1675,11 +1738,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-1.jpg",
-    "credito": "SteveHopson at English Wikipedia",
+    "src": "fotos_cidades/sanantonio/sat-majestic-theatre/sat-majestic-theatre-1.jpg",
+    "credito": "Zereshk",
     "licenca": "CC BY 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:ACL2009SBH.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Majestic_(12).JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-majestic-theatre/sat-majestic-theatre-2.jpg",
+    "credito": "Zereshk",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:MajesticSA_(1).JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-majestic-theatre/sat-majestic-theatre-3.jpg",
+    "credito": "Renelibrary",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Majestic_Theater_(1_of_1).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1716,11 +1790,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-2.jpg",
-    "credito": "Malagalabombonera",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Wikipedia_space_ibiza(03).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-tobin-center/sat-tobin-center-1.jpg",
+    "credito": "Eden, Janine and Jim from New York City",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tobin_Center_(48875069586).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-tobin-center/sat-tobin-center-2.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tobin_Center.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-tobin-center/sat-tobin-center-3.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tobin_Center_for_the_Performing_Arts,_San_Antonio,_Texas_(2014-12-10_18.45.21_by_Nan_Palmero).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1757,11 +1842,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-3.jpg",
-    "credito": "Diego Delso",
+    "src": "fotos_cidades/sanantonio/sat-gruene-hall/sat-gruene-hall-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_hall.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gruene-hall/sat-gruene-hall-2.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Built_by_Christian_Herry_in_1878,_Gruene_Hall_in_New_Braunfels_is_one_of_the_oldest_dance_halls_in_Texas._Gruene_was_a_communal_farming_community._The_one-story_structure_features_a_false-front_LCCN2014632381.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gruene-hall/sat-gruene-hall-3.jpg",
+    "credito": "Michael Barera",
     "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Teatro_de_San_Carlos,_N%C3%A1poles,_Italia,_2023-03-25,_DD_184-186_HDR.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_July_2017_1_(Gruene_Hall).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1798,10 +1894,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-4.jpg",
-    "credito": "User:Grateful Dead, aka mark l. knowles, aka rainbow_trout, ",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jerry-Mickey_at_Red_Rocks_taken_08-11-87.jpg",
+    "src": "img/ilustra-show-1.jpg",
+    "credito": "SteveHopson at English Wikipedia",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:ACL2009SBH.jpg",
     "ilustrativa": true
    }
   ],
@@ -1839,11 +1935,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-5.jpg",
-    "credito": "Bonnie from Kendall Park, NJ, USA",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jesus_is_coming.._Look_Busy_(George_Carlin).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-floores-country-store/sat-floores-country-store-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Floore_store_2012.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1921,11 +2016,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comunidade-1.jpg",
-    "credito": "Atleett",
+    "src": "fotos_cidades/sanantonio/sat-san-fernando-cathedral/sat-san-fernando-cathedral-1.jpg",
+    "credito": "Daniel Schwen",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Fernando_Cathedral.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-san-fernando-cathedral/sat-san-fernando-cathedral-2.jpg",
+    "credito": "Jumpy542",
     "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Husby-Sjuhundra_kyrka.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Fernando_Cathedral,_San_Antonio,_TX.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-san-fernando-cathedral/sat-san-fernando-cathedral-3.jpg",
+    "credito": "Michaelluckey",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Fernando_Cathedral_in_San_Antonio.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-san-fernando-cathedral/sat-san-fernando-cathedral-4.jpg",
+    "credito": "Michaelluckey",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Fernando_Cathedral_night_light_show.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1962,11 +2074,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comunidade-1.jpg",
-    "credito": "Atleett",
-    "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Husby-Sjuhundra_kyrka.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-st-joseph-downtown/sat-st-joseph-downtown-1.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_River_Walk_July_2017_52_(St._Joseph_Catholic_Church).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-st-joseph-downtown/sat-st-joseph-downtown-2.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Saint_Joseph_Catholic_Church_in_downtown_San_Antonio,_Texas_LCCN2014633910.tif"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2301,18 +2418,30 @@
   "fotos": [
    {
     "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gustavs_Geysers_Pearl_Brewery_San_Antonio_2021.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-2.jpg",
     "credito": "Clyde Charles Brown",
     "licenca": "CC BY-SA 4.0",
     "pagina": "https://commons.wikimedia.org/wiki/File:Storage_tanks_at_Pearl_Brewery,_San_Antonio,_Texas,_US.jpg"
    },
    {
-    "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-2.jpg",
+    "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-3.jpg",
+    "credito": "Brownings",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Culinary_school_at_Pearl_Brewery,_San_Antonio,_Texas.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-4.jpg",
     "credito": "Nan Palmero from San Antonio, TX, USA",
     "licenca": "CC BY 2.0",
     "pagina": "https://commons.wikimedia.org/wiki/File:Southerleigh_Tower_at_Pearl_Brewery_(2015-03-26_13.01.35_by_Nan_Palmer).jpg"
    },
    {
-    "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-3.jpg",
+    "src": "fotos_cidades/sanantonio/sat-pearl/sat-pearl-5.jpg",
     "credito": "Bilestone",
     "licenca": "CC BY-SA 4.0",
     "pagina": "https://commons.wikimedia.org/wiki/File:Pearl_Brewing_Company,_San_Antonio,_Texas,_September_2017.jpg"
@@ -2606,6 +2735,12 @@
     "credito": "Nan Palmero from San Antonio, TX, USA",
     "licenca": "CC BY 2.0",
     "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Museum_of_Art_(2015-03-12_18.45.54_by_Nan_Palmero).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-sama/sat-sama-4.jpg",
+    "credito": "Berthe Morisot",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Berthe_Morisot_-_The_Skaters,_Pastel_on_paper,_San_Antonio_Museum_of_Art.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2706,11 +2841,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-museu-1.jpg",
-    "credito": "Mizzvizz9",
+    "src": "fotos_cidades/sanantonio/sat-witte-museum/sat-witte-museum-1.jpg",
+    "credito": "Wittemuseum2017",
     "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Asia-Society-Gallery.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Witte_Museum_Entrance.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-witte-museum/sat-witte-museum-2.jpg",
+    "credito": "Kimikel",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Witte_Museum_Lobby.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-witte-museum/sat-witte-museum-3.jpg",
+    "credito": "Mlwmiller",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dinosaur_exhibit_in_the_Witte_Museum.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-witte-museum/sat-witte-museum-4.jpg",
+    "credito": "Indigocurls",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Witte_Museum_Acrocanthosaurus.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-witte-museum/sat-witte-museum-5.jpg",
+    "credito": "Wittemuseum2017",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Witte_Museum_Bison.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2747,11 +2905,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-1.jpg",
-    "credito": "Narubaru7",
-    "licenca": "CC BY 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:%ED%8F%AC%EC%8B%9C%EC%A6%8C%EC%8A%A4_%EC%82%B0%EB%A6%AC%EC%98%A4%EB%8C%84%EC%8A%A4%ED%83%80%EC%9E%84_2025.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-doseum/sat-doseum-1.jpg",
+    "credito": "amboo who?",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/39437954@N00/20503767628"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-doseum/sat-doseum-2.jpg",
+    "credito": "nan palmero",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/97402086@N00/25781410548"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2788,10 +2951,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-museu-2.jpg",
-    "credito": "User:Gloumouth1",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Le_Louvre_-_Aile_Richelieu.jpg",
+    "src": "img/ilustra-museu-1.jpg",
+    "credito": "Mizzvizz9",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Asia-Society-Gallery.jpg",
     "ilustrativa": true
    }
   ],
@@ -2829,11 +2992,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-2.jpg",
-    "credito": "User Aleš Tošovský",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Amaterske_akvarium.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-san-antonio-zoo/sat-san-antonio-zoo-1.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Entrance_to_San_Antonio_Zoo_IMG_3110.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-san-antonio-zoo/sat-san-antonio-zoo-2.jpg",
+    "credito": "Dave Stone",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Zoo_entrance_-Texas_-USA-9Mar2009.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-san-antonio-zoo/sat-san-antonio-zoo-3.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hippopotamus_at_San_Antonio_Zoo_DSCN0679.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-san-antonio-zoo/sat-san-antonio-zoo-4.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lemur_at_San_Antonio_Zoo_(2014)_DSCN0654.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2870,11 +3050,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-parque-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-japanese-tea-garden/sat-japanese-tea-garden-1.jpg",
+    "credito": "Jouaienttoi",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Japanese_Tea_Garden_2022.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-japanese-tea-garden/sat-japanese-tea-garden-2.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Garden_Path_-_Japanese_tea_gardens,_San_Antonio,_Texas.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-japanese-tea-garden/sat-japanese-tea-garden-3.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:View_of_the_Falls_-_Japanese_tea_gardens,_San_Antonio.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-japanese-tea-garden/sat-japanese-tea-garden-4.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Pagoda_at_Night_-_Japanese_tea_gardens,_San_Antonio.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-japanese-tea-garden/sat-japanese-tea-garden-5.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Garden_Pathway_-_Japanese_tea_gardens,_San_Antonio.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2911,11 +3114,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-parque-2.jpg",
-    "credito": "John Knouse",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jefferson_Memorial_Forest-Bee_Lick_Creek.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-brackenridge-park/sat-brackenridge-park-1.jpg",
+    "credito": "Casseb",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Brackenridge_Park_Bridge,_San_Antonio,_TX.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-brackenridge-park/sat-brackenridge-park-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Rodriquez_bridge_brackenridge_2011.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-brackenridge-park/sat-brackenridge-park-3.jpg",
+    "credito": "Biolecent",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Brackenridge_Park.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-brackenridge-park/sat-brackenridge-park-4.jpg",
+    "credito": "Dogfort04",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Brackenridge_Park_San_Antonio_River.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2952,11 +3172,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-botanical-garden/sat-botanical-garden-1.jpg",
+    "credito": "3steph14",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_botanical_garden.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-botanical-garden/sat-botanical-garden-2.jpg",
+    "credito": "Jouaienttoi",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Botanical_Garden_Overlook_View.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-botanical-garden/sat-botanical-garden-3.jpg",
+    "credito": "MissDirectionTv",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Botanical_Garden_Fountain.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-botanical-garden/sat-botanical-garden-4.jpg",
+    "credito": "Don McCulley",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San-antonio-botanical-garden-lily-ponds-IMG_5884.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-botanical-garden/sat-botanical-garden-5.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Entrance_to_San_Antonio_Botanical_Garden,_TX_IMG_5308.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2993,11 +3236,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-mirante-1.jpg",
-    "credito": "Robert Hensley",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_view.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-tower-of-the-americas/sat-tower-of-the-americas-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tower_of_the_americas_2013.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-tower-of-the-americas/sat-tower-of-the-americas-2.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Entrance_to_Tower_of_the_Americas_IMG_4576.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-tower-of-the-americas/sat-tower-of-the-americas-3.jpg",
+    "credito": "Peter A. Angritt",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tower_of_the_Americas_from_Hemisfair_Park.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-tower-of-the-americas/sat-tower-of-the-americas-4.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_May_2018_8_(Tower_of_the_Americas).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3034,11 +3294,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-parque-3.jpg",
-    "credito": "Thomas Cole",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Thomas_Cole%27s_%22The_Picnic%22,_Brooklyn_Museum_IMG_3787.JPG",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-hemisfair/sat-hemisfair-1.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:HemisFair_Park_May_2018_15_(Yanaguana_Garden).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-hemisfair/sat-hemisfair-2.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:HemisFair_Park_May_2018_14_(Yanaguana_Garden).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3075,11 +3340,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-3.jpg",
-    "credito": "Stevage",
-    "licenca": "CC BY-SA 2.5",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Luna_Park_Melbourne_scenic_railway.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-six-flags-fiesta-texas/sat-six-flags-fiesta-texas-1.jpg",
+    "credito": "Bypassers",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Six_Flags_Fiesta_Texas_2019.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-six-flags-fiesta-texas/sat-six-flags-fiesta-texas-2.jpg",
+    "credito": "Julie Girard",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Rattler_(Six_Flags_Fiesta_Texas)_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-six-flags-fiesta-texas/sat-six-flags-fiesta-texas-3.jpg",
+    "credito": "Brent Schmidt",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Goliath_(Six_Flags_Fiesta_Texas)_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-six-flags-fiesta-texas/sat-six-flags-fiesta-texas-4.jpg",
+    "credito": "Wacky Windjammer",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chupacabra_(Six_Flags_Fiesta_Texas)_1.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3116,11 +3398,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-4.jpg",
-    "credito": "JZ85",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:WDW_Typhoon_Lagoon_Surf_Pool.JPG",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-seaworld/sat-seaworld-1.jpg",
+    "credito": "Bypassers",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:SeaWorld_San_Antonio_2019_v2.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-seaworld/sat-seaworld-2.jpg",
+    "credito": "Bypassers",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:SeaWorld_San_Antonio_2019.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-seaworld/sat-seaworld-3.jpg",
+    "credito": "Loadmaster (David R. Tribble)",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Seals-SeaWorld-SanAntonio-5292.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3157,11 +3450,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-2.jpg",
-    "credito": "Loadmaster (David R. Tribble) This image was made by Loadmas",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Bluebonnet-8100.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-natural-bridge-caverns/sat-natural-bridge-caverns-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Natural_bridge_caverns_bridge.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-natural-bridge-caverns/sat-natural-bridge-caverns-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Natural_bridge_caverns_plutos_anteroom.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-natural-bridge-caverns/sat-natural-bridge-caverns-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Natural_bridge_caverns_chandelier.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-natural-bridge-caverns/sat-natural-bridge-caverns-4.jpg",
+    "credito": "James Sumner",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Natural_Bridge_Caverns_-_Enterance.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3198,11 +3508,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-1.jpg",
-    "credito": "Narubaru7",
-    "licenca": "CC BY 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:%ED%8F%AC%EC%8B%9C%EC%A6%8C%EC%8A%A4_%EC%82%B0%EB%A6%AC%EC%98%A4%EB%8C%84%EC%8A%A4%ED%83%80%EC%9E%84_2025.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-schlitterbahn/sat-schlitterbahn-1.jpg",
+    "credito": "ljpelletier",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Schlitterbahn_New_Braunfels_Chute_2004.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-schlitterbahn/sat-schlitterbahn-2.jpg",
+    "credito": "ljpelletier",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Schlitterbahn_New_Braunfels_Main_Pool_2004.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-schlitterbahn/sat-schlitterbahn-3.jpg",
+    "credito": "Jason Helle from usa",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Schlitterbahn_30_years_(3814879484).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3239,11 +3560,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-1.jpg",
-    "credito": "Robert Hensley",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_view.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-gruene/sat-gruene-1.jpg",
+    "credito": "Renelibrary",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_Historic_District_(1_of_1).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gruene/sat-gruene-2.jpg",
+    "credito": "Abbie Myers",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_Historic_District%27s_water_tower_and_Gruene_Hall.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gruene/sat-gruene-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_mansion_2007.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-gruene/sat-gruene-4.jpg",
+    "credito": "Van.ike",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_TX_1.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3280,11 +3618,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-3.jpg",
-    "credito": "John Knouse",
+    "src": "fotos_cidades/sanantonio/sat-cave-without-a-name/sat-cave-without-a-name-1.jpg",
+    "credito": "Carol M. Highsmith",
     "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jefferson_Memorial_Forest-Bee_Lick_Creek.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Cave_Without_a_Name._That%27s_not_a_description;_it%27s_the_actual_name_of_these_caverns_near_Boerne,_Texas_LCCN2015630268.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-cave-without-a-name/sat-cave-without-a-name-2.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Formations_in_the_%22Cave_Without_a_Name,%22_located_near_Boerne_in_Kendall_County,_Texas_LCCN2014632417.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-cave-without-a-name/sat-cave-without-a-name-3.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Formations_in_the_%22Cave_Without_a_Name,%22_located_near_Boerne_in_Kendall_County,_Texas_LCCN2014632411.tif"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3321,11 +3670,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-4.jpg",
-    "credito": "G. Lamar",
+    "src": "fotos_cidades/sanantonio/sat-guadalupe-river-state-park/sat-guadalupe-river-state-park-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Guadalupe_river_state_park_bluff.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-guadalupe-river-state-park/sat-guadalupe-river-state-park-2.jpg",
+    "credito": "Corey Leopold",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_(50753440137).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Guadalupe_River_State_Park_at_sunset2.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-guadalupe-river-state-park/sat-guadalupe-river-state-park-3.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:River_bank_in_Guadalupe_River_State_Park.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3362,11 +3722,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-esporte-1.jpg",
-    "credito": "Mass Communication Specialist 2nd Class Michael A. Lantron, ",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Larry_Fitzgerald_catches_TD_at_2009_Pro_Bowl.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-frost-bank-center/sat-frost-bank-center-1.jpg",
+    "credito": "Atristan 77",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:AT%26T_Center_at_day.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-frost-bank-center/sat-frost-bank-center-2.jpg",
+    "credito": "Zereshk",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:AT%26T_Center_Spurs_Nuggets2.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-frost-bank-center/sat-frost-bank-center-3.jpg",
+    "credito": "Mark Bonica from Durham, NH, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Blue_hour_at_the_AT%26T_center_(6734460031).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3403,11 +3774,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-compras-2.jpg",
+    "src": "fotos_cidades/sanantonio/sat-shops-la-cantera/sat-shops-la-cantera-1.jpg",
+    "credito": "Zereshk",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:La_cantera_SA.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-shops-la-cantera/sat-shops-la-cantera-2.jpg",
+    "credito": "Jouaienttoi",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Shops_at_La_Cantera_2022.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-shops-la-cantera/sat-shops-la-cantera-3.jpg",
     "credito": "Billy Hathorn",
     "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Westside_Market_in_Manhattan,_NYC_IMG_5615.JPG",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Shops_at_La_Cantera_in_San_Antonio,_TX_(outside_shot)_IMG_1159.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3444,11 +3826,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-2.jpg",
-    "credito": "User Aleš Tošovský",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Amaterske_akvarium.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-morgans-wonderland/sat-morgans-wonderland-1.jpg",
+    "credito": "MorgansWonderlandTexas",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Morgan%27s_Wonderland_Entrance.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-morgans-wonderland/sat-morgans-wonderland-2.jpg",
+    "credito": "Mwl0410",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Toyota_Plaza_at_Morgan%27s_Wonderland.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-morgans-wonderland/sat-morgans-wonderland-3.jpg",
+    "credito": "colleenpence",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Morgans_Wonderland_Texas_ultra_accessible.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3485,11 +3878,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-crescent-bend/sat-crescent-bend-1.jpg",
+    "credito": "Mark Bonica",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/23119666@N03/15566860160"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-crescent-bend/sat-crescent-bend-2.jpg",
+    "credito": "Mark Bonica",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/23119666@N03/15751679135"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-crescent-bend/sat-crescent-bend-3.jpg",
+    "credito": "Mark Bonica",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/23119666@N03/15565802059"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3526,11 +3930,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-2.jpg",
-    "credito": "Original author: Tim Morgan",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Tulsa_Oklahoma_Sister_Cities_Sign_crop.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-boerne-hill-country-mile/sat-boerne-hill-country-mile-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Boerne_Main_Street_2026.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-boerne-hill-country-mile/sat-boerne-hill-country-mile-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Main_Plaza_Boerne_Texas_2026.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-boerne-hill-country-mile/sat-boerne-hill-country-mile-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Main_Plaza_Fountain_Boerne_Texas_2026.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3567,11 +3982,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-1.jpg",
-    "credito": "Robert Hensley",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_view.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-fredericksburg/sat-fredericksburg-1.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_July_2017_6_(E_Main_Street).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-fredericksburg/sat-fredericksburg-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_historic_district_2008.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-fredericksburg/sat-fredericksburg-3.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_July_2017_9_(E_Main_Street).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3608,11 +4034,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-1.jpg",
-    "credito": "Fabio Becchelli",
-    "licenca": "CC BY 2.5 it",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Neve_a_Verona_17.01.2006_033.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-fiesta-san-antonio/sat-fiesta-san-antonio-1.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Scene_from_the_%22Battle_of_Flowers%22_parade,_part_of_the_monthlong_Fiesta_San_Antonio_celebration_in_Texas_LCCN2014633072.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-fiesta-san-antonio/sat-fiesta-san-antonio-2.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Scene_from_the_%22Battle_of_Flowers%22_parade,_part_of_the_monthlong_Fiesta_San_Antonio_celebration_in_Texas_LCCN2014632972.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-fiesta-san-antonio/sat-fiesta-san-antonio-3.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Scene_from_the_%22Battle_of_Flowers%22_parade,_part_of_the_monthlong_Fiesta_San_Antonio_celebration_in_Texas_LCCN2014632950.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-fiesta-san-antonio/sat-fiesta-san-antonio-4.jpg",
+    "credito": "U.S. Air Force photo by Tech. Sgt. Robert Biermann",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:AFCYBER_celebrates_Fiesta_San_Antonio_(4334770).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3649,11 +4092,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-2.jpg",
-    "credito": "Steven Gerner",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Holi_Festival_of_Colors_Utah,_United_States_2013.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-stock-show-rodeo/sat-stock-show-rodeo-1.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_San_Antonio_Stock_Show_and_Rodeo_in_San_Antonio,_Texas_LCCN2014631407.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-stock-show-rodeo/sat-stock-show-rodeo-2.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Visitors_to_the_San_Antonio_Stock_Show_and_Rodeo_in_San_Antonio,_Texas_LCCN2014631405.tif"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-stock-show-rodeo/sat-stock-show-rodeo-3.jpg",
+    "credito": "Carol M. Highsmith",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Carnival_scene_outside_the_San_Antonio_Stock_Show_and_Rodeo_in_San_Antonio,_Texas_LCCN2014631391.tif"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3690,11 +4144,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-3.jpg",
-    "credito": "Rob Chandler",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:New_Year%27s_Eve_on_Sydney_Harbour.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-holiday-river-parade/sat-holiday-river-parade-1.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Riverwalk_at_Night_with_Christmas_Lights_(2014-12-12_23.25.35_by_Nan_Palmero).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-holiday-river-parade/sat-holiday-river-parade-2.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_Riverwalk_at_Night_with_Christmas_Lights_(2014-12-12_22.36.46_by_Nan_Palmero).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-holiday-river-parade/sat-holiday-river-parade-3.jpg",
+    "credito": "Zereshk",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Riverwalk_Christmas_05.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3731,10 +4196,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-4.jpg",
-    "credito": "Bratislavská župa from Bratislava, Slovakia",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:BSK_CSOB_MARATON046_(33791445325).jpg",
+    "src": "img/ilustra-evento-1.jpg",
+    "credito": "Fabio Becchelli",
+    "licenca": "CC BY 2.5 it",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Neve_a_Verona_17.01.2006_033.jpg",
     "ilustrativa": true
    }
   ],
@@ -3772,11 +4237,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-5.jpg",
-    "credito": "Heribert Pohl --- Thanks for half a million clicks! from Ger",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:O%27zapft_is!_M%C3%BCnchens_5_Jahreszeit_hat_begonnen_-_O%27zapft_is!_Munich_5_season,_the_Oktoberfest_has_begun_(9855483374).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-holidays-houston-street/sat-holidays-houston-street-1.jpg",
+    "credito": "Nightryder84",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Houston_Street_SA_Nima.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-holidays-houston-street/sat-holidays-houston-street-2.jpg",
+    "credito": "Corey Leopold",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Houston_Street_at_Luminaria.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3813,11 +4283,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-6.jpg",
-    "credito": "Anthony Quintano from Mount Laurel, United States",
+    "src": "fotos_cidades/sanantonio/sat-alamo-bowl/sat-alamo-bowl-1.jpg",
+    "credito": "2C2K Photography",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Macy%27s_Thanksgiving_Day_Parade_2022_New_York_City_(52523112564).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Valero_Alamo_Bowl_Fan_Zone_(54237215550).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-alamo-bowl/sat-alamo-bowl-2.jpg",
+    "credito": "2C2K Photography",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Valero_Alamo_Bowl_Fan_Zone_(54237042579).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-alamo-bowl/sat-alamo-bowl-3.jpg",
+    "credito": "KT King from Stillwater, OK, US",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Alamo_Bowl_Trophy_(5670445563).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3854,10 +4335,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-7.jpg",
-    "credito": "Wikimedia Commons",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:StampedeRodeo2002.JPG",
+    "src": "img/ilustra-evento-2.jpg",
+    "credito": "Steven Gerner",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Holi_Festival_of_Colors_Utah,_United_States_2013.jpg",
     "ilustrativa": true
    }
   ],
@@ -3895,10 +4376,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-8.jpg",
-    "credito": "David Shankbone at English Wikipedia",
-    "licenca": "CC BY 2.5",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Union_Square_street_fair.jpg",
+    "src": "img/ilustra-evento-3.jpg",
+    "credito": "Rob Chandler",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:New_Year%27s_Eve_on_Sydney_Harbour.jpg",
     "ilustrativa": true
    }
   ],
@@ -3936,10 +4417,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-1.jpg",
-    "credito": "Fabio Becchelli",
-    "licenca": "CC BY 2.5 it",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Neve_a_Verona_17.01.2006_033.jpg",
+    "src": "img/ilustra-evento-4.jpg",
+    "credito": "Bratislavská župa from Bratislava, Slovakia",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:BSK_CSOB_MARATON046_(33791445325).jpg",
     "ilustrativa": true
    }
   ],
@@ -3977,11 +4458,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-2.jpg",
-    "credito": "Steven Gerner",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Holi_Festival_of_Colors_Utah,_United_States_2013.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-muertos-fest/sat-muertos-fest-1.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dia_De_Los_Muertos_(49275268648).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-muertos-fest/sat-muertos-fest-2.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dia_De_Los_Muertos_Altar_(49275741306).jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-muertos-fest/sat-muertos-fest-3.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dia_De_Los_Muertos_Altar_(49275940487).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4018,11 +4510,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-3.jpg",
-    "credito": "Rob Chandler",
+    "src": "fotos_cidades/sanantonio/sat-wurstfest/sat-wurstfest-1.jpg",
+    "credito": "TexasExplorer98",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/76792851@N07/8016544151"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-wurstfest/sat-wurstfest-2.jpg",
+    "credito": "faster panda kill kill",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/36521965573@N01/61592614"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-wurstfest/sat-wurstfest-3.jpg",
+    "credito": "amboo who?",
     "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:New_Year%27s_Eve_on_Sydney_Harbour.jpg",
-    "ilustrativa": true
+    "pagina": "https://www.flickr.com/photos/39437954@N00/4390299783"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4059,11 +4562,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-4.jpg",
-    "credito": "Bratislavská župa from Bratislava, Slovakia",
+    "src": "fotos_cidades/sanantonio/sat-gruene-music-wine-fest/sat-gruene-music-wine-fest-1.jpg",
+    "credito": "Nicolas Henderson from Coppell, Texas",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:BSK_CSOB_MARATON046_(33791445325).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gruene_Hall_1,_Gruene,_Texas_(8101102126).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4100,11 +4602,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-transporte-1.jpg",
-    "credito": "Phil Richards",
+    "src": "fotos_cidades/sanantonio/sat-aeroporto-sat/sat-aeroporto-sat-1.jpg",
+    "credito": "TEXUSAF",
     "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:25.09.26_Chicago_Ogilvie_Transit_Center_100_and_107_(cropped).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_International_Airport_Terminal_A_Gate_area_IMG_3841.JPG"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-aeroporto-sat/sat-aeroporto-sat-2.jpg",
+    "credito": "Njdhollywood",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:San_Antonio_International_Airport.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4141,11 +4648,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-transporte-2.jpg",
-    "credito": "*Youngjin",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Kumgang_Express_1080.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-via-transit/sat-via-transit-1.jpg",
+    "credito": "Han Zheng",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:VIA_Metropolitan_Transit_route_68_at_Market_Square.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-via-transit/sat-via-transit-2.jpg",
+    "credito": "Junimeek",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:VIA_Metropolitan_Transit_Bus_477_at_UTSA.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-via-transit/sat-via-transit-3.jpg",
+    "credito": "Alexander Jones (happy5214)",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:VIA_Primo_bus_at_UTSA_stop.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4182,11 +4700,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-transporte-1.jpg",
-    "credito": "Phil Richards",
+    "src": "fotos_cidades/sanantonio/sat-amtrak/sat-amtrak-1.jpg",
+    "credito": "DatraxMada",
     "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:25.09.26_Chicago_Ogilvie_Transit_Center_100_and_107_(cropped).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sunset_station_at_sunrise.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4264,11 +4781,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-saude-1.jpg",
-    "credito": "AleWi",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Stockholm,_ambulans,_2014,_21.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-university-hospital/sat-university-hospital-1.jpg",
+    "credito": "زرشک",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:University_Hospital_SA.jpg"
+   },
+   {
+    "src": "fotos_cidades/sanantonio/sat-university-hospital/sat-university-hospital-2.jpg",
+    "credito": "Zereshk at English Wikipedia",
+    "licenca": "CC BY 2.5",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Graduate_School_of_Biomedical_Sciences_and_University_Hospital_(University_of_Texas_Health_Science_Center_at_San_Antonio,_2007).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4305,11 +4827,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-saude-2.jpg",
-    "credito": "Robert Kaufmann",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:FEMA_-_18213_-_Photograph_by_Robert_Kaufmann_taken_on_10-25-2005_in_Louisiana.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/sanantonio/sat-methodist-hospital/sat-methodist-hospital-1.jpg",
+    "credito": "Zereshk",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:SA_Methodist_Hospital.JPG"
    }
   ],
   "atualizadoEm": "2026-11",

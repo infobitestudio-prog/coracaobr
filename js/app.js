@@ -8,7 +8,7 @@
     dfw: { id: "dfw", nome: "Dallas–Fort Worth", curto: "DFW", principal: "Dallas", capa: "img/hero/klyde-warren-park-m.jpg", lat: 32.7767, lng: -96.797, partidas: [["Centro de Dallas", 32.7767, -96.797], ["Aeroporto DFW", 32.8998, -97.0403], ["Aeroporto Love Field", 32.8471, -96.8518], ["Uptown", 32.8003, -96.8003], ["Plano", 33.0198, -96.6989], ["Frisco", 33.1507, -96.8236], ["Irving / Las Colinas", 32.8686, -96.9395], ["Fort Worth", 32.7555, -97.3308], ["Arlington", 32.7357, -97.1081]] },
     houston: { id: "houston", nome: "Houston", curto: "HOU", principal: "Houston", lat: 29.7604, lng: -95.3698, partidas: [["Centro de Houston", 29.7604, -95.3698], ["Aeroporto IAH (Bush)", 29.9902, -95.3368], ["Aeroporto Hobby", 29.6454, -95.2789], ["Galleria / Uptown", 29.7398, -95.4614], ["Sugar Land", 29.6197, -95.6349], ["Katy", 29.7858, -95.8245], ["The Woodlands", 30.1658, -95.4613], ["Pearland", 29.5636, -95.286]] },
     austin: { id: "austin", nome: "Austin", curto: "AUS", principal: "Austin", lat: 30.2672, lng: -97.7431, partidas: [["Centro de Austin", 30.2672, -97.7431], ["Aeroporto de Austin (AUS)", 30.1975, -97.6664], ["South Congress", 30.2499, -97.7495], ["The Domain", 30.4021, -97.7253], ["Round Rock", 30.5083, -97.6789], ["Cedar Park", 30.5052, -97.8203], ["Pflugerville", 30.4394, -97.62]] },
-    sanantonio: { id: "sanantonio", nome: "San Antonio", curto: "SAT", principal: "San Antonio", lat: 29.4241, lng: -98.4936, partidas: [["Centro / River Walk", 29.4241, -98.4936], ["Aeroporto de San Antonio (SAT)", 29.5337, -98.4698], ["Alamo Heights", 29.4849, -98.4655], ["Stone Oak", 29.6366, -98.4913], ["The Rim / La Cantera", 29.6052, -98.6034], ["New Braunfels", 29.703, -98.1245]] }
+    sanantonio: { id: "sanantonio", nome: "San Antonio", curto: "SAT", principal: "San Antonio", capa: "fotos_cidades/sanantonio/sat-river-walk/sat-river-walk-1.jpg", lat: 29.4241, lng: -98.4936, partidas: [["Centro / River Walk", 29.4241, -98.4936], ["Aeroporto de San Antonio (SAT)", 29.5337, -98.4698], ["Alamo Heights", 29.4849, -98.4655], ["Stone Oak", 29.6366, -98.4913], ["The Rim / La Cantera", 29.6052, -98.6034], ["New Braunfels", 29.703, -98.1245]] }
   };
   function lerLocal(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   var cidadeEscolhida = CIDADES_GUIA[lerLocal("cidade")] ? lerLocal("cidade") : null;
@@ -816,7 +816,7 @@
     if (sess("popup-visto")) return;
     clearTimeout(agendaPopup.t);
     agendaPopup.t = setTimeout(function () {
-      if (rota() !== "inicio" || aberto || sess("popup-visto")) return;
+      if (rota() !== "inicio" || aberto || sess("popup-visto") || !cidadeEscolhida || document.querySelector("dialog[open]")) { if (!sess("popup-visto") && rota() === "inicio") agendaPopup(); return; }
       var a = anuncios("popup")[0], g = lugares().filter(GRUPOS.gratis.f).length;
       var pats = lugares().filter(function (l) { return l.anunciante; }), pl = pats[Math.floor(Math.random() * pats.length)];
       if (!a && pl) a = { titulo: pl.nome, texto: pl.cupom || (CATS[pl.categoria] || "") + " · " + regiao(pl), botao: "Ver no guia", imagem: (pl.fotos || [])[0] ? pl.fotos[0].src : "", lugar: pl.id };
@@ -826,6 +826,7 @@
       popup.hidden = false; void popup.offsetWidth; popup.classList.add("on"); sess("popup-visto", "1");
     }, 2500);
   }
+  document.addEventListener("cidade", function () { if (popup.classList.contains("on")) { popup.classList.remove("on"); setTimeout(function () { popup.hidden = true; }, 350); } });
   popup.addEventListener("click", function (e) { if (e.target.closest(".x") || e.target.closest("a")) { popup.classList.remove("on"); setTimeout(function () { popup.hidden = true; }, 400); } });
   /* Cores escolhidas no Painel (só aceita cores no formato #RRGGBB). */
   function aplicaTema() {

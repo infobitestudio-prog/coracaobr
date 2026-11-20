@@ -1128,7 +1128,7 @@ function montaNewsletter(): array {
   $base = baseUrl(); $e = fn($t) => htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8');
   $cartao = function ($l, $quando) use ($base, $e) {
     $foto = ''; $f = $l['fotos'][0]['src'] ?? '';
-    if ($f && preg_match('#^(img|fotos_eventos)/#', $f)) $foto = $base . $f; elseif (preg_match('#^asset:([a-f0-9]{32})$#', $f, $m)) $foto = $base . 'uploads/' . $m[1] . '.jpg';
+    if ($f && preg_match('#^(img|fotos_eventos|fotos_cidades)/#', $f)) $foto = $base . $f; elseif (preg_match('#^asset:([a-f0-9]{32})$#', $f, $m)) $foto = $base . 'uploads/' . $m[1] . '.jpg';
     $preco = !empty($l['gratuito']) ? 'Grátis' : (!empty($l['precoMin']) ? 'A partir de US$ ' . $e($l['precoMin']) : '');
     return '<tr><td style="padding:10px 0;border-bottom:1px solid #E4E9E3">' . ($foto ? '<img src="' . $e($foto) . '" alt="" width="96" height="72" style="float:left;width:96px;height:72px;object-fit:cover;border-radius:10px;margin-right:12px">' : '') .
       '<a href="' . $e($base . '#lugar-' . $l['id']) . '" style="color:#024E25;font-weight:700;text-decoration:none;font-size:16px">' . $e($l['nome'] ?? '') . '</a><br><span style="color:#5F6B64;font-size:13px">' . $e($quando) . ($preco ? ' · ' . $e($preco) : '') . ' · ' . $e($l['cidade'] ?? '') . '</span></td></tr>';
