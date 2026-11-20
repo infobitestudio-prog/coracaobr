@@ -948,7 +948,9 @@ case 'assistente': {
   if (mb_strlen($perg) < 3) erro('Escreva sua pergunta.');
   $quem = eu() ? eu()['id'] : ip();
   if (!limite('ia:' . $quem, 30, 3600)) erro('Muitas perguntas seguidas. Tente de novo daqui a pouco.', 429); marca('ia:' . $quem);
-  $cands = buscaLugares($perg, 30);
+  $reg = in_array($corpo['cidade'] ?? '', ['dfw', 'houston', 'austin', 'sanantonio'], true) ? $corpo['cidade'] : 'dfw';
+  $nomeReg = ['dfw' => 'Dallas–Fort Worth', 'houston' => 'Houston', 'austin' => 'Austin', 'sanantonio' => 'San Antonio'][$reg];
+  $cands = buscaLugares($perg, 30, $reg);
   $ids = array_map(fn($l) => $l['id'], array_slice($cands, 0, 8));
   $key = chaveIA();
   if ($key === '' || !is_file(__DIR__ . '/vendor/autoload.php')) sai(['ok' => true, 'modo' => 'busca', 'resposta' => '', 'ids' => $ids]);
@@ -967,13 +969,13 @@ case 'assistente': {
       (!empty($l['gratuito']) ? ' | grátis' : '') . (!empty($l['falaPortugues']) || !empty($l['portugues']) ? ' | fala português' : '') . (!empty($l['cupom']) ? ' | cupom: ' . mb_substr((string)$l['cupom'], 0, 60) : '') .
       ' | ' . mb_substr(preg_replace('/\s+/', ' ', strip_tags((string)($l['descricao'] ?? $l['resumo'] ?? ''))), 0, 160);
   }
-  $sistema = "Você é o assistente do CoraçãoBR, guia em português para brasileiros que moram ou estão de passagem em Dallas–Fort Worth, no Texas.\n" .
+  $sistema = "Você é o assistente do CoraçãoBR, guia em português para brasileiros que moram ou estão de passagem no Texas (Dallas–Fort Worth, Houston, Austin e San Antonio).\n" .
     "Responda sempre em português do Brasil, de forma calorosa, direta e curta (no máximo 120 palavras).\n" .
     "Para recomendar lugares, eventos ou serviços, use SOMENTE os itens da lista enviada junto com a pergunta e cite cada um com o código entre colchetes duplos, por exemplo [[abc123]]; o site transforma o código em link.\n" .
     "Nunca invente telefone, preço, horário, endereço ou data que não esteja na lista. Se a lista não tiver o que a pessoa procura, diga isso e sugira procurar no Explorar do guia.\n" .
     "Para dúvidas práticas de imigrante (documentos, carteira de motorista, SSN, escola, saúde), dê uma orientação geral e indique o site oficial do órgão; não é assessoria jurídica, médica ou fiscal.\n" .
     "Não responda a pedidos fora do tema do guia e da vida de brasileiros no Texas.";
-  $msgs = $hist; $msgs[] = ['role' => 'user', 'content' => "Hoje é " . hojeDallas() . ".\nItens do guia que podem ajudar:\n" . ($linhas ? implode("\n", $linhas) : '(nenhum item encontrado)') . "\n\nPergunta: " . $perg];
+  $msgs = $hist; $msgs[] = ['role' => 'user', 'content' => "Hoje é " . hojeDallas() . ". A pessoa está vendo o guia de " . $nomeReg . ".\nItens do guia que podem ajudar:\n" . ($linhas ? implode("\n", $linhas) : '(nenhum item encontrado)') . "\n\nPergunta: " . $perg];
   try {
     require_once __DIR__ . '/vendor/autoload.php';
     $cli = new \Anthropic\Client(apiKey: $key);
@@ -1176,7 +1178,7 @@ function envia(string $para, string $assunto, string $miolo, string $token): boo
 function chaveIA(): string { global $CFG; $k = trim((string)($CFG['anthropic_key'] ?? '')); if ($k === '') $k = trim((string)@file_get_contents(dirname($CFG['db']) . '/ANTHROPIC.key')); return $k; }
 function modeloIA(): string { global $CFG; $m = trim((string)@file_get_contents(dirname($CFG['db']) . '/ANTHROPIC.modelo')); return in_array($m, ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $m : 'claude-opus-5-5'; }
 function semAcento(string $t): string { $t = mb_strtolower($t); $t = strtr($t, ['á'=>'a','à'=>'a','â'=>'a','ã'=>'a','ä'=>'a','é'=>'e','ê'=>'e','è'=>'e','í'=>'i','ì'=>'i','ó'=>'o','ô'=>'o','õ'=>'o','ò'=>'o','ú'=>'u','ù'=>'u','ü'=>'u','ç'=>'c','ñ'=>'n']); return $t; }
-function buscaLugares(string $perg, int $max = 30): array {
+function buscaLugares(string $perg, int $max = 30, string $reg = 'dfw'): array {
   $SIN = ['comer' => ['restaurante','comida','churrasc','lanchonete','padaria','acai','pizza'], 'comida' => ['restaurante','churrasc','lanchonete','padaria'], 'churrasco' => ['churrasc','steakhouse','rodizio'],
     'mercado' => ['mercado','market','loja','emporio'], 'igreja' => ['igreja','culto','missa','church'], 'medico' => ['medic','clinica','saude','dentista','doctor'], 'dentista' => ['dentista','odonto','dental'],
     'advogado' => ['advoga','imigra','lawyer','attorney'], 'contador' => ['contab','contador','tax','imposto'], 'show' => ['show','evento','festa','balada'], 'festa' => ['festa','evento','show'], 'evento' => ['evento','show','festa'],
@@ -1189,6 +1191,7 @@ function buscaLugares(string $perg, int $max = 30): array {
   $out = [];
   foreach (banco()->query("SELECT id, data FROM docs WHERE col = 'lugares'") as $r) {
     $l = json_decode($r['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo']) || !empty($l['cancelado'])) continue;
+    if (($l['regiaoGuia'] ?? 'dfw') !== $reg) continue;
     $evento = in_array($l['categoria'] ?? '', ['evento', 'show'], true);
     if ($evento && ($l['dataFim'] ?? $l['dataInicio'] ?? '9999') < $hoje) continue;
     $l['id'] = $r['id'];

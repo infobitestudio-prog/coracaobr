@@ -1723,6 +1723,41 @@ dialog:has(> .dlg):not([open]){display:none}
   .dlg .form2{grid-template-columns:minmax(0,1fr)!important}
   .dlg input,.dlg select,.dlg textarea{font-size:16px}
 }
+
+/* ===== Cidade do guia: escolha na primeira visita ===== */
+.cq{gap:16px}
+.cq-top{display:grid;gap:6px}.cq-top p{margin:0;font-size:.92rem}
+.cq-logo{font:800 1.05rem var(--display,system-ui);color:var(--accent)}.cq-logo b{color:var(--sun)}
+.cq-gps{justify-content:center;width:100%}
+.cq-l{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cq-c{position:relative;display:grid;align-items:end;min-height:132px;border:0;border-radius:18px;overflow:hidden;padding:0;background:#04341A;color:#fff;text-align:left;cursor:pointer;font:inherit;box-shadow:0 0 0 2px transparent;transition:box-shadow .2s,transform .2s}
+.cq-c img,.cq-c i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cq-c i{background:radial-gradient(120% 120% at 100% 0,#0B7A35,#021D0E)}
+.cq-c::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.72))}
+.cq-c span{position:relative;z-index:1;display:grid;gap:2px;padding:12px 14px}.cq-c b{font-size:clamp(.95rem,3.6vw,1.1rem);line-height:1.2}.cq h3:focus{outline:none}.cq-c small{color:rgba(255,255,255,.85);font-size:.78rem}
+.cq-c.on{box-shadow:0 0 0 3px var(--sun)}.cq-c:hover:not([disabled]){transform:translateY(-2px)}.cq-c:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.cq-c[disabled]{opacity:.55;cursor:default}
+.cq-mais{justify-self:center}
+@media (max-width:380px){.cq-c{min-height:112px}}
+html:not([data-cidade="dfw"]) a[href="#metro"]{display:none!important}
+.vazio-f{display:grid;gap:10px;justify-items:start}
+
+.city[disabled]{opacity:.55;cursor:default}button.city{font:inherit;text-align:left;cursor:pointer}
+.bmes .bmt em{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+@media (max-width:640px){.pchip{max-width:100%}}
+
+/* Explorar no celular: filtros recolhidos num botão, a lista aparece logo */
+.xp-fbt{display:none}
+@media (max-width:959px){
+  .xp-fbt{display:flex;align-items:center;gap:8px;width:100%;margin:4px 0 12px;padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .95rem inherit;cursor:pointer}
+  .xp-fbt .i{width:18px;height:18px;color:var(--accent)}
+  .xp-fbt em{margin-left:auto;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font:700 .75rem/22px inherit;font-style:normal;text-align:center}
+  .xp-fbt[aria-expanded="true"]{border-color:var(--accent)}
+  .xp-body:not(.f-open) .xp-side{display:none}
+  .xp-side .xp-box:first-child .field{min-width:0}
+}
+
+@media (min-width:900px){.menubar.mb-home{grid-template-columns:repeat(auto-fit,minmax(64px,1fr))}.menubar.mb-home .mb-it span{font-size:.72rem}}
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>

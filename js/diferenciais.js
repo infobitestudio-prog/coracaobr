@@ -86,11 +86,11 @@
     var chips = Object.keys(cats).sort(function (a, b) { return cats[b] - cats[a]; }).slice(0, 14);
     G.app.innerHTML = '<section class="block df"><div class="wrap stack in">' + cab("Atendimento em português", "Fala português", "Profissionais e negócios que atendem em português ou são de brasileiros. Selo verde = conferido pela equipe.") +
       '<div class="search xp-q df-q">' + ic("search") + '<input id="fp-q" type="search" value="' + esc(FP.q) + '" placeholder="Dentista, contador, cabeleireira, Plano…" autocomplete="off"></div>' +
-      '<div class="chips"><button type="button" class="chip" data-fp="" aria-pressed="' + !FP.c + '">Todos · ' + todos.length + "</button>" + chips.map(function (c) { return '<button type="button" class="chip" data-fp="' + esc(c) + '" aria-pressed="' + (FP.c === c) + '">' + esc(G.CATS[c] || c) + " · " + cats[c] + "</button>"; }).join("") + "</div>" +
+      '<div class="chips"><button type="button" class="chip" data-fala-cat="" aria-pressed="' + !FP.c + '">Todos · ' + todos.length + "</button>" + chips.map(function (c) { return '<button type="button" class="chip" data-fala-cat="' + esc(c) + '" aria-pressed="' + (FP.c === c) + '">' + esc(G.CATS[c] || c) + " · " + cats[c] + "</button>"; }).join("") + "</div>" +
       (ls.length ? '<div class="grid">' + ls.slice(0, 60).map(G.card).join("") + "</div>" : '<p class="muted">Nada encontrado com essa busca.</p>') +
       '<div class="df-cta"><div><b>Você atende em português?</b><span>Anuncie e ganhe o selo Fala português no seu anúncio.</span></div><a class="btn" href="#anuncie">Anunciar</a></div></div></section>';
   }
-  document.addEventListener("click", function (e) { var b = e.target.closest("[data-fp]"); if (b) { FP.c = b.dataset.fp; viewFala(); } });
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-fala-cat]"); if (b) { FP.c = b.dataset.falaCat; viewFala(); } });
   var tq = null;
   document.addEventListener("input", function (e) { if (e.target.id !== "fp-q") return; FP.q = e.target.value; clearTimeout(tq); tq = setTimeout(function () { var p = e.target.selectionStart; viewFala(); var i = $("#fp-q"); if (i) { i.focus(); try { i.setSelectionRange(p, p); } catch (er) { /* ok */ } } }, 250); });
 

@@ -16,7 +16,7 @@ CATS = {
     "handyman": "Handyman e reparos", "baba": "Babás e cuidadores", "piscina": "Manutenção de piscinas", "limpeza": "Limpeza", "jardinagem": "Jardinagem",
     "construcao": "Construção e reforma", "mudanca": "Mudanças e fretes", "mecanico": "Mecânicos", "beleza": "Beleza e estética", "contador": "Contadores e impostos",
     "imigracao": "Imigração e advogados", "imoveis": "Imóveis", "seguros": "Seguros", "aulas": "Aulas e escolas", "fotografia": "Foto e eventos", "pet": "Pets",
-    "saude-pt": "Saúde em português", "outros-servicos": "Outros serviços", "hotel": "Hotéis e hospedagem",
+    "saude-pt": "Saúde em português", "outros-servicos": "Outros serviços", "hotel": "Hotéis e hospedagem", "igreja": "Igrejas",
 }
 CSS = (":root{color-scheme:light dark;--bg:#F6F8F6;--card:#fff;--ink:#0E1311;--mut:#5A6560;--line:#E3E7E4;--ac:#0B7A35;--deep:#04341A;--sun:#FFC20E}"
        "@media (prefers-color-scheme:dark){:root{--bg:#0B0F0D;--card:#131816;--ink:#EEF2F0;--mut:#9AA5A0;--line:#252C29;--ac:#34C46A}}"
@@ -66,7 +66,7 @@ def pagina(destino, rel, titulo, desc, h1, sub, itens, links, raiz):
              '<script type="application/ld+json">%s</script></head><body><header><div class="w"><a href="%s">Coração<b>BR</b></a></div></header>'
              '<main class="w"><h1>%s</h1><p class="sub">%s</p><ol class="l">%s</ol>'
              '<div class="cta">Mapa, horários, avaliações de brasileiros e cupons: <a href="%s">abra o guia CoraçãoBR</a>.</div>%s</main>'
-             '<footer class="w">CoraçãoBR · o guia dos brasileiros em Dallas–Fort Worth, Texas. Informações conferidas pela equipe; confirme horários antes de ir.</footer></body></html>') % (
+             '<footer class="w">CoraçãoBR · o guia dos brasileiros no Texas: Dallas–Fort Worth, Houston, Austin e San Antonio. Informações conferidas pela equipe; confirme horários antes de ir.</footer></body></html>') % (
         e(titulo), e(desc), e(titulo), e(desc), raiz, CSS, json.dumps(ld, ensure_ascii=False).replace("</", "<\\/"), raiz, e(h1), e(sub), "".join(lista), raiz, links)
     p = destino / rel
     p.mkdir(parents=True, exist_ok=True)
@@ -79,7 +79,8 @@ def gerar(destino, lugares, hoje):
           and not (l.get("categoria") in ("evento", "show") and str(l.get("dataFim") or l.get("dataInicio") or "9999") < hoje and l.get("categoria") == "evento")]
     por_cat, por_cid_cat, por_cid = {}, {}, {}
     for l in ok:
-        por_cat.setdefault(l["categoria"], []).append(l)
+        if (l.get("regiaoGuia") or "dfw") == "dfw":
+            por_cat.setdefault(l["categoria"], []).append(l)
         if l.get("cidade"):
             por_cid_cat.setdefault((l["cidade"], l["categoria"]), []).append(l)
             por_cid.setdefault(l["cidade"], []).append(l)
@@ -98,11 +99,11 @@ def gerar(destino, lugares, hoje):
         paginas.append(rel)
     # por cidade × categoria (só quando há pelo menos 2 lugares, para não criar páginas vazias)
     for (ci, c), xs in por_cid_cat.items():
-        if len(xs) < 2 or c not in cats_ok:
+        if len(xs) < 2 or c not in CATS:
             continue
         xs = ordena(xs)[:40]
-        outras = sorted({k for (cc, k), ys in por_cid_cat.items() if cc == ci and k != c and len(ys) >= 2 and k in cats_ok}, key=lambda k: CATS[k])
-        links = '<p><a href="../../%s/">Ver %s em toda a DFW →</a></p>' % (slug(c), html.escape(CATS[c].lower()))
+        outras = sorted({k for (cc, k), ys in por_cid_cat.items() if cc == ci and k != c and len(ys) >= 2}, key=lambda k: CATS[k])
+        links = ('<p><a href="../../%s/">Ver %s em toda a DFW →</a></p>' % (slug(c), html.escape(CATS[c].lower()))) if c in cats_ok and (xs[0].get("regiaoGuia") or "dfw") == "dfw" else ""
         if outras:
             links += '<h2>Mais em %s</h2><ul class="tags">%s</ul>' % (html.escape(ci), "".join('<li><a href="../%s/">%s</a></li>' % (slug(k), html.escape(CATS[k])) for k in outras))
         rel = "guia/%s/%s/" % (slug(ci), slug(c))
@@ -113,12 +114,12 @@ def gerar(destino, lugares, hoje):
     e = html.escape
     idx = '<h2>Categorias</h2><ul class="tags">%s</ul>' % "".join('<li><a href="%s/">%s</a></li>' % (slug(c), e(CATS[c])) for c in sorted(cats_ok, key=lambda k: CATS[k]))
     for ci in sorted(por_cid, key=lambda k: -len(por_cid[k])):
-        ks = sorted([k for (cc, k), ys in por_cid_cat.items() if cc == ci and len(ys) >= 2 and k in cats_ok], key=lambda k: CATS[k])
+        ks = sorted([k for (cc, k), ys in por_cid_cat.items() if cc == ci and len(ys) >= 2], key=lambda k: CATS[k])
         if ks:
             idx += '<h2>%s</h2><ul class="tags">%s</ul>' % (e(ci), "".join('<li><a href="%s/%s/">%s</a></li>' % (slug(ci), slug(k), e(CATS[k])) for k in ks))
     top = ordena(ok)[:10]
-    pagina(destino, "guia/", "Guia dos brasileiros em Dallas–Fort Worth · CoraçãoBR", "Restaurantes brasileiros, mercados, eventos, serviços em português e passeios em Dallas–Fort Worth, Texas.",
-           "Guia dos brasileiros em Dallas–Fort Worth", "Os lugares mais bem avaliados do CoraçãoBR e todas as categorias por cidade.", top, idx, "../")
+    pagina(destino, "guia/", "Guia dos brasileiros no Texas · CoraçãoBR", "Restaurantes brasileiros, mercados, eventos, igrejas, serviços em português e passeios em Dallas–Fort Worth, Houston, Austin e San Antonio.",
+           "Guia dos brasileiros no Texas", "Dallas–Fort Worth, Houston, Austin e San Antonio: os lugares mais bem avaliados do CoraçãoBR e todas as categorias por cidade.", top, idx, "../")
     paginas.insert(0, "guia/")
     (destino / "guia" / "paginas.json").write_text(json.dumps(paginas, ensure_ascii=False))
     return paginas
