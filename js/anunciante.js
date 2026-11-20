@@ -157,7 +157,8 @@
     for (var i = 13; i >= 0; i--) { var d = new Date(); d.setDate(d.getDate() - i); var iso = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); var q = ls.reduce(function (s, x) { return s + (soma(x.id, 30).porDia[iso] || 0); }, 0); max = Math.max(max, q); dias.push([iso, q]); }
     var kpi = function (nm, t, icn, dark) { return '<div class="dk-card' + (dark ? " dk-dark" : "") + '"><small>' + t + '</small><b class="dk-big">' + nm + "</b>" + Dash.ic(icn) + "</div>"; };
     var grafico = '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Visualizações dos seus anúncios · 14 dias</h3><span class="small muted">' + (tot.v ? "maior dia: " + max : "sem acessos ainda") + '</span></div><div class="bars">' + dias.map(function (dd, k) { return '<div title="' + dd[0] + ": " + dd[1] + '"><i style="height:' + Math.max(3, Math.round(dd[1] / max * 100)) + "%;animation-delay:" + (k * 0.03) + 's"></i><small>' + dd[0].slice(8) + "</small></div>"; }).join("") + "</div></div>";
-    var noArN = ls.filter(noArDe).length;
+    var noArN = ls.filter(noArDe).length, de30 = new Date(); de30.setDate(de30.getDate() - 30); de30 = de30.toISOString().slice(0, 10);
+    var cupons30 = ls.reduce(function (s2, x) { return s2 + (x.validados || []).filter(function (vv) { return String(vv.em || "") >= de30; }).length; }, 0);
     var plano = '<div class="ad-plan dk-card dk-dark"><div><small>Seu plano</small><b class="dk-big">' + e.vagas + '<span> anúncios liberados</span></b><p>' + esc(e.txt) + '</p></div><div class="ad-pl-a"><a class="btn" href="#pagar">' + (e.vagas ? "Contratar mais" : "Contratar agora") + '</a><button type="button" class="btn ghost" data-dk-ir="contratar">Ver pacotes</button></div></div>';
     var cardAn = function (x) {
       var fx = (x.fotos || [])[0], on = noArDe(x), pausado = x.publicado === false;
@@ -169,7 +170,7 @@
       : '<a class="ad-novo ad-mais" href="#pagar">' + Dash.ic("plus") + "<b>Mais " + (window.Pag ? Pag.porPacote() : 3) + " anúncios</b><small>por " + G.reais(window.Pag ? Pag.preco() : 50) + " · contratar pacote</small></a>";
     var anuncios = '<div class="ad-ans">' + ls.map(cardAn).join("") + novoCard + "</div>" +
       '<p class="small muted">' + usados + " criados · " + e.vagas + " liberados pelo plano · " + noArN + " no ar agora. Os anúncios mais antigos usam as vagas primeiro.</p>";
-    var geral = plano + '<div class="dk-grid dk-g4">' + kpi(tot.v, "Visualizações · 30 dias", "eye", false) + kpi(tot.r, "Como chegar e apps", "route") + kpi(tot.c, "Cliques em contato", "link") + kpi(noArN + "/" + usados, "Anúncios no ar", "store") + "</div>" +
+    var geral = plano + '<div class="dk-grid dk-g4">' + kpi(tot.v, "Visualizações · 30 dias", "eye", false) + kpi(tot.r + tot.c, "Rotas e contatos", "route") + kpi(cupons30, "Cupons usados · 30 dias", "tag") + kpi(noArN + "/" + usados, "Anúncios no ar", "store") + "</div>" +
       (ls.length ? grafico + '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Seus anúncios</h3><button type="button" class="more" data-dk-ir="anuncios">ver todos</button></div><div class="ad-ans">' + ls.slice(0, 3).map(cardAn).join("") + "</div></div>"
         : '<div class="dk-card dk-flat ad-vazio"><h3>Crie seu primeiro anúncio</h3><p class="muted">Até 20 fotos, banner, WhatsApp, redes sociais, endereço, horário, cardápio ou catálogo. Ele fica em prévia até o pagamento.</p><a class="btn" href="#anunciar" data-novo-anuncio>Criar anúncio</a></div>');
     var contratar = (window.Pag ? Pag.calculadora(uid, true) : "") + '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Histórico de pacotes</h3></div>' + (window.Pag ? Pag.linhaDoTempo(uid) : "") + '</div><div class="dk-card dk-flat"><div class="dk-ch"><h3>Como funciona</h3></div><ul class="ad-how"><li><b>Pacotes somam.</b> ' + G.reais(window.Pag ? Pag.preco() : 50) + " = " + (window.Pag ? Pag.porPacote() : 3) + " anúncios; 2 pacotes = " + 2 * (window.Pag ? Pag.porPacote() : 3) + " anúncios, e assim por diante.</li><li><b>Pagamento por Pix.</b> O QR Code e o copia e cola já vêm com o valor. A equipe confirma e o pacote entra no ar 1 hora depois.</li><li><b>Datas automáticas.</b> Cada pacote mostra o dia do pagamento, o início e o término (1 mês).</li><li><b>Avisos por e-mail.</b> Você recebe e-mail 3, 2 e 1 dia antes do fim. Renove antes e não perca nenhum dia.</li></ul></div>";
@@ -178,18 +179,20 @@
       { id: "geral", nome: "Visão geral", ic: "home", titulo: master && l ? l.nome : "Painel do anunciante", sub: master ? "Perfil do anunciante (visão do administrador)" : "Seus anúncios, seu plano e os resultados dos últimos 30 dias." },
       { id: "anuncios", nome: "Meus anúncios", ic: "store", n: usados + "/" + lim, titulo: "Meus anúncios", acao: master ? "" : '<a class="btn sm" href="#anunciar" data-novo-anuncio>' + Dash.ic("plus") + "Criar anúncio</a>" },
       { id: "contratar", nome: "Contratar anúncios", ic: "card", titulo: "Contratar anúncios", sub: "Monte seu plano, pague por Pix e acompanhe as datas de cada pacote." },
+      { id: "turbinar", nome: "Destaque e selo", ic: "spark", titulo: "Destaque, selo e indicação", sub: "Apareça no topo, ganhe o selo Verificado e indique outras empresas com 50% de desconto." },
       { id: "depoimentos", nome: "Depoimentos", ic: "star", titulo: "Depoimentos de empresas", sub: "Na promoção de curadoria, você ganha 1 anúncio e escreve depoimentos de lugares que conhece." },
       { id: "publicar", nome: "Publicar no feed", ic: "mega", grupo: "Divulgação" },
       { id: "divulgar", nome: "Kit de divulgação", ic: "share", grupo: "Divulgação" }
     ];
     if (!depo) menu = menu.filter(function (x) { return x.id !== "depoimentos"; });
+    if (master || !window.Diferenciais) menu = menu.filter(function (x) { return x.id !== "turbinar"; });
     if (l && l.cupom && window.Comunidade) menu.splice(menu.length, 0, { id: "cupom", nome: "Cupom", ic: "tag", grupo: "Divulgação" });
     if (!l || !(window.Social && Social.blocoPainel(l))) menu = menu.filter(function (x) { return x.id !== "publicar"; });
     if (!l) menu = menu.filter(function (x) { return x.id !== "divulgar"; });
     var pe = master ? [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] : [{ nome: "Minha conta", ic: "user", href: "#conta" }, { nome: "Tema claro/escuro", ic: "moon", acao: "data-tema" }, { nome: "Sair", ic: "out", acao: "data-sair" }];
     var nomeConta = (Store.conta && Store.conta() && Store.conta().nome) || (l && l.nome) || "Anunciante";
     G.app.innerHTML = Dash.montar({ chave: "anunciante", marca: master ? "Visão do administrador" : "Painel do anunciante", titulo: master && l ? l.nome : nomeConta, avatar: (nomeConta || "?").charAt(0).toUpperCase(), menu: menu, pe: pe,
-      secoes: { geral: geral, anuncios: anuncios, contratar: contratar, depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });
+      secoes: { geral: geral, anuncios: anuncios, contratar: contratar, turbinar: window.Diferenciais && !master ? Diferenciais.blocoTurbinar(uid, ls) : "", depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });
     if (l && l.cupom && window.Comunidade) Comunidade.validadorInit(l);
     if (l && window.Extras) Extras.kitInit(l);
     G.app.querySelector("section").onclick = function (ev) {

@@ -3,7 +3,7 @@
 (function () {
   "use strict";
   var G = window.Guia, esc = G.esc, ic = G.ic, $ = function (s, r) { return (r || document).querySelector(s); };
-  var TIPOS_CL = { emprego: "Vagas de emprego", aluguel: "Aluguel e quartos", carona: "Caronas", venda: "Compra e venda", servico: "Procuro serviço" };
+  var TIPOS_CL = { emprego: "Vagas de emprego", aluguel: "Aluguel e quartos", carona: "Caronas", venda: "Compra e venda", servico: "Procuro serviço", doacao: "Doações", indicacao: "Indicações", baba: "Babá e cuidadores" };
   var TIPOS_AL = { consulado: ["Consulado", "doc"], jogo: ["Jogo do Brasil", "flag"], documento: ["Documentos", "doc"], clima: ["Clima", "bell"], comunidade: ["Comunidade", "users"], evento: ["Evento", "ticket"] };
   function hoje() { return G.hojeISO(); }
   function dataBR(iso) { var p = String(iso || "").slice(0, 10).split("-"); return p.length === 3 ? esc(p[2] + "/" + p[1]) : ""; }
@@ -65,14 +65,16 @@
   function cardClass(c) {
     return '<a class="clcard" href="#mural-' + esc(c.id) + '"><small>' + esc(TIPOS_CL[c.tipo] || "Classificado") + (c.cidade ? " · " + esc(c.cidade) : "") + "</small><b>" + esc(c.titulo) + "</b><span>" + esc(String(c.texto || "").slice(0, 90)) + "</span>" + (c.preco ? '<em class="num">' + G.usd(c.preco) + "</em>" : "") + "</a>";
   }
-  var filtroCl = "";
+  var filtroCl = "", filtroCid = "";
   function meusCl() { try { return JSON.parse(localStorage.getItem("meus-classificados") || "[]"); } catch (e) { return []; } }
   function viewMural(r) {
     var abrir = r && r.indexOf("mural-") === 0 ? r.slice(6) : null, c = G.config(), preco = Number(c.precoClassificado) || 0, dias = Number(c.diasClassificado) || 30;
-    var ls = classificadosAtivos().filter(function (x) { return !filtroCl || x.tipo === filtroCl; }), uid = Store.uid();
+    var todosCl = classificadosAtivos(), cids = Array.from(new Set(todosCl.map(function (x) { return x.cidade; }).filter(Boolean))).sort();
+    var ls = todosCl.filter(function (x) { return (!filtroCl || x.tipo === filtroCl) && (!filtroCid || x.cidade === filtroCid); }), uid = Store.uid();
     G.app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:16px"><div class="head" style="margin:0"><div><p class="eyebrow">Entre brasileiros</p><h1 class="page-h">Mural</h1></div><button type="button" class="btn" data-novo-cl>Publicar anúncio</button></div>' +
       '<p class="muted" style="max-width:60ch">Vagas, aluguel de quarto, carona para o aeroporto, compra e venda, publicados por anunciantes do CoraçãoBR. Cada publicação fica ' + dias + ' dias no ar.</p>' +
       '<div class="chips"><button type="button" class="chip" data-tcl="" aria-pressed="' + !filtroCl + '">Todos</button>' + Object.keys(TIPOS_CL).map(function (k) { return '<button type="button" class="chip" data-tcl="' + k + '" aria-pressed="' + (filtroCl === k) + '">' + TIPOS_CL[k] + "</button>"; }).join("") + "</div>" +
+      (cids.length > 1 ? '<div class="chips cl-cid"><span class="small muted" style="align-self:center">Bairro/cidade:</span><button type="button" class="chip" data-ccl="" aria-pressed="' + !filtroCid + '">Todas</button>' + cids.map(function (c) { return '<button type="button" class="chip" data-ccl="' + esc(c) + '" aria-pressed="' + (filtroCid === c) + '">' + esc(c) + '</button>'; }).join('') + '</div>' : '') +
       (ls.length ? '<div class="clgrid">' + ls.map(function (x) {
         var meu = (uid && String(x.id).indexOf(uid + "~") === 0) || meusCl().indexOf(x.id) >= 0, w = zap(x.whatsapp);
         return '<article class="panel clitem" id="cl-' + esc(x.id) + '"' + (abrir === x.id ? ' data-foco="1"' : "") + '><small class="eyebrow">' + esc(TIPOS_CL[x.tipo] || "Classificado") + (x.cidade ? " · " + esc(x.cidade) : "") + " · " + dataBR(x.criadoEm) + "</small><h3>" + esc(x.titulo) + "</h3><p>" + esc(x.texto) + "</p>" + (x.preco ? '<p class="num"><b>' + G.usd(x.preco) + "</b>" + G.brl(x.preco) + "</p>" : "") +
@@ -82,6 +84,7 @@
     var foco = $("[data-foco]"); if (foco) foco.scrollIntoView({ block: "center" });
     G.app.querySelector("section").onclick = function (e) {
       var t = e.target.closest("[data-tcl]"); if (t) { filtroCl = t.dataset.tcl; viewMural(); return; }
+      var cc = e.target.closest("[data-ccl]"); if (cc) { filtroCid = cc.dataset.ccl; viewMural(); return; }
       if (e.target.closest("[data-novo-cl]")) { if (podePublicar()) formClass(); else soAnunciante(); return; }
       var a = e.target.closest("[data-apaga-cl]"); if (a) { Store.apagar("classificados", a.dataset.apagaCl).then(function () { G.toast("Anúncio removido."); viewMural(); }).catch(function () { G.toast("Não deu para remover agora."); }); return; }
       var d = e.target.closest("[data-denuncia]"); if (d) { Store.gravar("avisos", Store.novoId("av"), { tipo: "denuncia", lugarId: d.dataset.denuncia, nome: "Classificado denunciado", criadoEm: new Date().toISOString(), lido: false }).then(function () { G.toast("Obrigado. A equipe vai olhar."); }).catch(function () { G.toast("Não deu para enviar agora."); }); }

@@ -114,7 +114,7 @@
       '<p class="small muted">Já tem conta? <a href="#entrar">Entrar</a></p></form>', null, "cadastro");
     $("#f-cad").onsubmit = function (e) {
       e.preventDefault(); var f = this, m = $("#c-msg");
-      var d = { nome: $("#c-nome").value.trim(), email: $("#c-email").value.trim(), senha: $("#c-senha").value, tipo: (f.querySelector('input[name="a-tipo"]') || {}).value, aceite: $("#c-aceite").checked };
+      var d = { nome: $("#c-nome").value.trim(), email: $("#c-email").value.trim(), senha: $("#c-senha").value, tipo: (f.querySelector('input[name="a-tipo"]') || {}).value, ref: window.Diferenciais ? Diferenciais.refIndicacao() : "", aceite: $("#c-aceite").checked };
       if (!d.nome) return msg(m, "Informe seu nome.");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return msg(m, "Informe um e-mail válido.");
       if (d.senha.length < 8 || !/[A-Za-z]/.test(d.senha) || !/\d/.test(d.senha)) return msg(m, "A senha precisa ter pelo menos 8 caracteres, com letras e números.");

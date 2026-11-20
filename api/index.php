@@ -188,7 +188,8 @@ function mp(string $metodo, string $caminho, ?array $corpo = null, string $idem 
 function precosServidor(): array {
   $g = configDoc('geral'); $brl = ($g['moedaAnuncio'] ?? '') === 'BRL'; $pr = (array)($g['promo'] ?? []);
   return ['pacote' => $brl ? (float)($g['precoAnuncio'] ?? 50) : 50.0, 'porPacote' => $brl ? max(1, (int)($g['anunciosPorPacote'] ?? 3)) : 3,
-    'promo' => $brl ? (float)($pr['preco'] ?? 20) : 20.0, 'promoDepo' => $brl ? max(1, (int)($pr['curadorias'] ?? 5)) : 5, 'promoAnuncios' => 1];
+    'promo' => $brl ? (float)($pr['preco'] ?? 20) : 20.0, 'promoDepo' => $brl ? max(1, (int)($pr['curadorias'] ?? 5)) : 5, 'promoAnuncios' => 1,
+    'selo' => (float)($g['precoVerificado'] ?? 30) ?: 30.0, 'impulso' => (float)($g['precoImpulso'] ?? 25) ?: 25.0, 'diasImpulso' => max(1, (int)($g['diasImpulso'] ?? 7))];
 }
 function hojeDallas(): string { return (new DateTime('now', new DateTimeZone('America/Chicago')))->format('Y-m-d'); }
 function maisUmMesPhp(string $iso): string { $d = new DateTime($iso . ' 12:00'); $dia = (int)$d->format('j'); $d->modify('first day of next month'); $d->setDate((int)$d->format('Y'), (int)$d->format('n'), min($dia, (int)$d->format('t'))); return $d->format('Y-m-d'); }
@@ -199,16 +200,33 @@ function aplicaPacote(string $uid, array $c, string $pagId): array {
   foreach ($lista as $x) if (($x['aviso'] ?? '') === 'mp:' . $pagId) return $x;   // já aplicado
   $fimAtual = ''; $tol = date('Y-m-d', strtotime($hoje . ' -2 day'));
   foreach ($lista as $x) if ($x['inicio'] <= $hoje && $x['fim'] >= $tol && $x['fim'] > $fimAtual) $fimAtual = $x['fim'];
-  $promo = ($c['plano'] ?? '') === 'promo'; $qtd = $promo ? 1 : max(1, min(30, (int)($c['qtd'] ?? 1)));
+  $plano = (string)($c['plano'] ?? 'pacote');
+  if ($plano === 'verificado') {
+    $pg['verificacao'] = ['status' => 'analise', 'pagoEm' => gmdate('c'), 'valor' => (float)($c['valor'] ?? 0), 'aviso' => 'mp:' . $pagId];
+    $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['pagamentos', $uid, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]); versao('pagamentos');
+    avisaEquipe('Selo Verificado pago · conferir negócio', "Pix do selo Verificado aprovado. Abra Painel master → Pagamentos → Selo Verificado para conferir e aprovar.\nConta: $uid");
+    return ['tipo' => 'verificado'];
+  }
+  if ($plano === 'impulso') {
+    $ja = ''; foreach ($lista as $x) if (($x['tipo'] ?? '') === 'impulso' && ($x['lugarId'] ?? '') === ($c['lugarId'] ?? '') && $x['fim'] >= $hoje && $x['fim'] > $ja) $ja = $x['fim'];
+    $ini = $ja ? date('Y-m-d', strtotime($ja . ' +1 day')) : $hoje;
+    $pk = ['id' => 'im' . base_convert((string)time(), 10, 36), 'tipo' => 'impulso', 'lugarId' => (string)($c['lugarId'] ?? ''), 'qtd' => 1, 'anuncios' => 0, 'valor' => (float)($c['valor'] ?? 0), 'moeda' => 'BRL', 'pagoEm' => gmdate('c'), 'inicio' => $ini, 'fim' => date('Y-m-d', strtotime($ini . ' +' . ($p['diasImpulso'] - 1) . ' day')), 'ativaEm' => '', 'aviso' => 'mp:' . $pagId, 'metodo' => 'pix-auto'];
+    $lista[] = $pk; $pg['pacotes'] = array_slice($lista, -120);
+    $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['pagamentos', $uid, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]); versao('pagamentos');
+    return $pk;
+  }
+  $promo = $plano === 'promo'; $qtd = $promo ? 1 : max(1, min(30, (int)($c['qtd'] ?? 1)));
   $ini = ($c['comeca'] ?? '') === 'renovar' && $fimAtual ? date('Y-m-d', strtotime($fimAtual . ' +1 day')) : $hoje;
   $pk = ['id' => 'pk' . base_convert((string)time(), 10, 36) . substr($pagId, -4), 'tipo' => $promo ? 'promo' : 'pacote', 'qtd' => $qtd, 'anuncios' => $promo ? $p['promoAnuncios'] : $qtd * $p['porPacote'], 'curadorias' => $promo ? $p['promoDepo'] : 0,
     'valor' => (float)($c['valor'] ?? 0), 'moeda' => 'BRL', 'pagoEm' => gmdate('c'), 'inicio' => $ini, 'fim' => maisUmMesPhp($ini), 'ativaEm' => $ini === $hoje ? gmdate('c') : $ini . 'T00:00:00', 'aviso' => 'mp:' . $pagId, 'metodo' => 'pix-auto'];
   $lista[] = $pk; $pg['pacotes'] = array_slice($lista, -120);
   if (($pg['status'] ?? '') !== 'suspenso') $pg['status'] = 'ativo';
   if ($promo) $pg['curadorias'] = (int)($pg['curadorias'] ?? 0) + $pk['curadorias'];
+  if (!$promo && (float)($c['desconto'] ?? 0) > 0) { $pk['desconto'] = (float)$c['desconto']; $pg['pacotes'][count($pg['pacotes']) - 1]['desconto'] = $pk['desconto']; $pg['creditosIndicacao'] = max(0, (int)($pg['creditosIndicacao'] ?? 0) - 1); }
   $pg['atualizadoEm'] = gmdate('c');
   $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['pagamentos', $uid, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]);
   versao('pagamentos');
+  premiaIndicacao($uid);
   $u = $pdo->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $u->execute([$uid]); $u = $u->fetch() ?: ['email' => '', 'nome' => ''];
   $desc = $promo ? '1 anúncio + ' . $pk['curadorias'] . ' depoimentos' : $pk['anuncios'] . ' anúncios';
   avisaEquipe('Pix aprovado · R$ ' . number_format($pk['valor'], 2, ',', '.'), "Pagamento Pix aprovado e liberado automaticamente.\n\nConta: {$u['nome']} <{$u['email']}>\nPlano: $desc\nPeríodo: " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . "\nMercado Pago: $pagId");
@@ -217,6 +235,23 @@ function aplicaPacote(string $uid, array $c, string $pagId): array {
     @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: pagamento confirmado, seus anúncios estão no ar') . '?=', "Olá, {$u['nome']}.\n\nRecebemos seu Pix de R$ " . number_format($pk['valor'], 2, ',', '.') . ".\nPlano: $desc, de " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . ".\n\nAcompanhe no painel: " . baseUrl() . "#anunciante\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   }
   return $pk;
+}
+/* programa de indicação: quando o indicado faz o 1º pagamento, quem indicou ganha 50% de desconto em 1 pacote */
+function premiaIndicacao(string $uid): void {
+  $pdo = banco(); $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'indicacoes' AND id = ?"); $st->execute([$uid]); $ind = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($ind) || !empty($ind['premiado']) || empty($ind['por'])) return;
+  $pago = false; foreach (pacotesDe(pagamentoDe($uid)) as $x) if (in_array($x['tipo'] ?? 'pacote', ['pacote', 'promo'], true) && (float)($x['valor'] ?? 0) > 0) $pago = true;
+  if (!$pago) return;
+  $por = $ind['por']; $pg = pagamentoDe($por); $pg['creditosIndicacao'] = (int)($pg['creditosIndicacao'] ?? 0) + 1; $pg['atualizadoEm'] = gmdate('c');
+  $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('pagamentos', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$por, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]);
+  $ind['premiado'] = gmdate('c');
+  $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('indicacoes', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$uid, json_encode($ind, JSON_UNESCAPED_UNICODE), agora()]);
+  versao('pagamentos');
+  $u = $pdo->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $u->execute([$por]); $u = $u->fetch();
+  if ($u && filter_var($u['email'], FILTER_VALIDATE_EMAIL)) {
+    global $CFG; $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+    @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: você ganhou 50% de desconto') . '?=', "Olá, {$u['nome']}.\n\nUma empresa que você indicou acabou de anunciar no CoraçãoBR. Obrigado!\nVocê ganhou 50% de desconto em 1 pacote. Ele é aplicado sozinho na sua próxima compra:\n" . baseUrl() . "#pagar\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+  }
 }
 /* consulta o pagamento no Mercado Pago e, se aprovado, libera o pacote (usado pelo aviso automático, pela tela do anunciante e pela rotina diária) */
 function processaPagamento(string $pagId): array {
@@ -295,6 +330,8 @@ case 'cadastrar': {
   $pdo->prepare('INSERT INTO usuarios (id, email, nome, hash, papel, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$id, $email, $nome, password_hash($senha, PASSWORD_DEFAULT), $papel, agora()]);
   $u = ['id' => $id, 'email' => $email, 'nome' => $nome, 'papel' => $papel];
   entra($u);
+  $ref = preg_replace('/[^A-Za-z0-9]/', '', (string)($corpo['ref'] ?? ''));
+  if ($ref !== '' && $ref !== $id) { $q = $pdo->prepare('SELECT 1 FROM usuarios WHERE id = ?'); $q->execute([$ref]); if ($q->fetchColumn()) $pdo->prepare("INSERT OR IGNORE INTO docs (col, id, data, em) VALUES ('indicacoes', ?, ?, ?)")->execute([$id, json_encode(['por' => $ref, 'em' => gmdate('c'), 'nome' => $nome]), agora()]); }
   if ($papel === 'anunciante') avisaEquipe('novo anunciante cadastrado', "Nova conta de anunciante:\n\nNome: $nome\nE-mail: $email\nData: " . date('d/m/Y H:i'));
   sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
 }
@@ -466,6 +503,7 @@ case 'apagar': {
     $antes = null;
     if (!master() && $col === 'avisos') { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antes = json_decode((string)$st->fetchColumn(), true) ?: []; }
     $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, $json, agora()]);
+    if (master() && $col === 'pagamentos') premiaIndicacao($id);
     if ($antes !== null) {   // aviso novo de visitante/anunciante: manda para o e-mail oficial
       $novos = isset($data['itens']) && is_array($data['itens']) ? array_diff_key($data['itens'], (array)($antes['itens'] ?? [])) : (empty($antes) ? [$data] : []);
       $NOMES = ['pagamento-informado' => 'pagamento informado', 'denuncia' => 'denúncia', 'classificado' => 'novo classificado no mural', 'novo-anuncio' => 'novo anúncio', 'anuncio' => 'anúncio', 'contato' => 'mensagem de contato'];
@@ -727,6 +765,27 @@ case 'atualizar_diario': {
     if ($mudou) { $pg['lembretes'] = array_slice($feitos, -60); $salva('pagamentos', $row['id'], $pg); }
   }
   $rel['feito'][] = "Lembretes de vencimento enviados por e-mail: $env";
+  // 6) relatório mensal por e-mail (dia 1): visualizações, rotas, contatos, cupons e pedidos do mês anterior
+  if ($agoraD->format('j') === '1' && ($pdo->query("SELECT v FROM meta WHERE k = 'relatorio-mensal'")->fetchColumn() ?: '') !== $agoraD->format('Y-m')) {
+    $mesAnt = (new DateTime('first day of last month', $tz))->format('Y-m'); $tot = [];
+    foreach ($pdo->query("SELECT data FROM docs WHERE col = 'metricas'")->fetchAll() as $row) {
+      $d = json_decode($row['data'], true); if (!is_array($d)) continue;
+      foreach (isset($d['itens']) && is_array($d['itens']) ? $d['itens'] : [$d] as $m) { if (!is_array($m) || strpos((string)($m['dia'] ?? ''), $mesAnt) !== 0) continue; $l = (string)($m['lugarId'] ?? ''); foreach (['v', 'r', 'c'] as $k) $tot[$l][$k] = ($tot[$l][$k] ?? 0) + min(50, max(0, (int)($m[$k] ?? 0))); }
+    }
+    $nR = 0;
+    foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'anunciantes'")->fetchAll() as $row) {
+      $d = json_decode($row['data'], true); $its = (array)($d['itens'] ?? []); if (!$its) continue;
+      $u = $pdo->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $u->execute([$row['id']]); $u = $u->fetch(); if (!$u || !filter_var($u['email'], FILTER_VALIDATE_EMAIL)) continue;
+      $linhas = []; $sv = 0;
+      foreach ($its as $k => $it) { if (!is_array($it) || empty($it['nome'])) continue; $lid = $row['id'] . '~' . $k; $t = $tot[$lid] ?? ['v' => 0, 'r' => 0, 'c' => 0]; $cup = 0; foreach ((array)($it['validados'] ?? []) as $vv) if (strpos((string)($vv['em'] ?? ''), $mesAnt) === 0) $cup++; $ped = (int)($pdo->query("SELECT v FROM meta WHERE k = " . $pdo->quote('pedidos:' . $lid . ':' . $mesAnt))->fetchColumn() ?: 0); $sv += $t['v'];
+        $linhas[] = "• {$it['nome']}: " . ($t['v'] ?? 0) . " visualizações, " . ($t['r'] ?? 0) . " rotas, " . ($t['c'] ?? 0) . " cliques em contato, $cup cupons usados, $ped pedidos"; }
+      if (!$linhas) continue;
+      $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+      if (@mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: seu relatório de ' . date('m/Y', strtotime($mesAnt . '-01'))) . '?=', "Olá, {$u['nome']}.\n\nResumo dos seus anúncios em " . date('m/Y', strtotime($mesAnt . '-01')) . ":\n\n" . implode("\n", $linhas) . "\n\nTotal: $sv visualizações.\n\nDicas: anúncios com mais fotos, cupom e selo Verificado recebem mais contatos. Para aparecer no topo por " . precosServidor()['diasImpulso'] . " dias, use Impulsionar no painel:\n" . baseUrl() . "#anunciante\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n")) $nR++;
+    }
+    $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('relatorio-mensal', ?)")->execute([$agoraD->format('Y-m')]);
+    $rel['feito'][] = "Relatórios mensais enviados: $nR";
+  }
   // relatório
   $robo = configDoc('robo'); $robo['servidor'] = $rel; $robo['ultimaExecucaoServidor'] = $rel['data']; $salva('config', 'robo', $robo);
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
@@ -738,19 +797,23 @@ case 'pix_criar': {
   $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
   if (mpToken() === '') erro('O Pix automático ainda não foi ligado pela equipe.', 409);
   if (!limite('pix:' . $u['id'], 20, 3600)) erro('Muitas cobranças geradas. Aguarde alguns minutos.', 429); marca('pix:' . $u['id']);
-  $p = precosServidor(); $promo = ($corpo['plano'] ?? '') === 'promo'; $qtd = $promo ? 1 : max(1, min(30, (int)($corpo['qtd'] ?? 1)));
+  $p = precosServidor(); $plano = in_array($corpo['plano'] ?? '', ['pacote', 'promo', 'verificado', 'impulso'], true) ? $corpo['plano'] : 'pacote'; $promo = $plano === 'promo';
+  $qtd = $plano === 'pacote' ? max(1, min(30, (int)($corpo['qtd'] ?? 1))) : 1;
   $comeca = ($corpo['comeca'] ?? '') === 'renovar' ? 'renovar' : 'agora';
-  $valor = round($promo ? $p['promo'] : $qtd * $p['pacote'], 2); if ($valor <= 0) erro('Valor inválido.');
-  $desc = $promo ? 'CoraçãoBR · promoção de curadoria (1 anúncio + ' . $p['promoDepo'] . ' depoimentos)' : 'CoraçãoBR · ' . ($qtd * $p['porPacote']) . ' anúncios por 1 mês';
+  $lugarId = (string)($corpo['lugarId'] ?? '');
+  if ($plano === 'impulso' && strpos($lugarId, $u['id'] . '~') !== 0) erro('Escolha um dos seus anúncios para impulsionar.');
+  $desconto = $plano === 'pacote' && (int)(pagamentoDe($u['id'])['creditosIndicacao'] ?? 0) > 0 ? round($p['pacote'] / 2, 2) : 0;
+  $valor = round($plano === 'promo' ? $p['promo'] : ($plano === 'verificado' ? $p['selo'] : ($plano === 'impulso' ? $p['impulso'] : $qtd * $p['pacote'] - $desconto)), 2); if ($valor <= 0) erro('Valor inválido.');
+  $desc = $plano === 'verificado' ? 'CoraçãoBR · selo Verificado' : ($plano === 'impulso' ? 'CoraçãoBR · impulsionar anúncio por ' . $p['diasImpulso'] . ' dias' : ($promo ? 'CoraçãoBR · promoção de curadoria (1 anúncio + ' . $p['promoDepo'] . ' depoimentos)' : 'CoraçãoBR · ' . ($qtd * $p['porPacote']) . ' anúncios por 1 mês'));
   $expira = (new DateTime('+30 minutes'))->format('Y-m-d\TH:i:s.vP');
   $nome = explode(' ', trim($u['nome']), 2);
   $r = mp('POST', '/v1/payments', ['transaction_amount' => $valor, 'description' => $desc, 'payment_method_id' => 'pix', 'date_of_expiration' => $expira,
-    'payer' => ['email' => $u['email'], 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $u['id'] . '|' . ($promo ? 'promo' : 'pacote') . '|' . $qtd,
+    'payer' => ['email' => $u['email'], 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $u['id'] . '|' . $plano . '|' . $qtd,
     'notification_url' => baseUrl() . 'api/?acao=pix_webhook'], bin2hex(random_bytes(16)));
   $tx = $r['point_of_interaction']['transaction_data'] ?? null;
   if (!is_array($r) || empty($r['id']) || !$tx) erro('O Mercado Pago não gerou o Pix agora. Tente de novo em instantes.' . (isset($r['message']) ? ' (' . mb_substr((string)$r['message'], 0, 120) . ')' : ''), 502);
   $id = (string)$r['id'];
-  $c = ['uid' => $u['id'], 'plano' => $promo ? 'promo' : 'pacote', 'qtd' => $qtd, 'comeca' => $comeca, 'valor' => $valor, 'status' => 'pendente', 'criadoEm' => gmdate('c'), 'expira' => $expira];
+  $c = ['uid' => $u['id'], 'plano' => $plano, 'qtd' => $qtd, 'comeca' => $comeca, 'lugarId' => $lugarId, 'desconto' => $desconto, 'valor' => $valor, 'status' => 'pendente', 'criadoEm' => gmdate('c'), 'expira' => $expira];
   banco()->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$id, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
   sai(['ok' => true, 'id' => $id, 'valor' => $valor, 'copiaecola' => $tx['qr_code'] ?? '', 'qr' => $tx['qr_code_base64'] ?? '', 'expira' => $expira]);
 }
@@ -782,6 +845,28 @@ case 'pix_info': {
   exigeMaster();
   $n = (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'cobrancas'")->fetchColumn();
   sai(['ok' => true, 'ligado' => mpToken() !== '', 'webhook' => baseUrl() . 'api/?acao=pix_webhook', 'cobrancas' => $n]);
+}
+case 'indicacoes': {
+  $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
+  $n = 0; $pr = 0; foreach (banco()->query("SELECT data FROM docs WHERE col = 'indicacoes'")->fetchAll() as $row) { $d = json_decode($row['data'], true); if (($d['por'] ?? '') === $u['id']) { $n++; if (!empty($d['premiado'])) $pr++; } }
+  sai(['ok' => true, 'indicados' => $n, 'premiados' => $pr, 'creditos' => (int)(pagamentoDe($u['id'])['creditosIndicacao'] ?? 0)]);
+}
+case 'pedido': {
+  /* agendamento, pedido ou orçamento enviado pela página do anúncio: vai por e-mail para o dono do anúncio */
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  if (!limite('ped:' . ip(), 8, 3600)) erro('Muitos pedidos seguidos. Tente de novo mais tarde.', 429); marca('ped:' . ip());
+  $lid = campo('lugarId', 130); $dono = strpos($lid, '~') !== false ? substr($lid, 0, strpos($lid, '~')) : '';
+  $nome = campo('nome', 60); $cont = campo('contato', 120); $tipo = campo('tipo', 30); $dia = campo('data', 10); $hora = campo('hora', 5); $msg = campo('mensagem', 800);
+  if ($nome === '' || $cont === '') erro('Informe seu nome e como falar com você.');
+  $st = banco()->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $st->execute([$dono]); $u = $st->fetch();
+  if (!$u || !filter_var($u['email'], FILTER_VALIDATE_EMAIL)) erro('Este anúncio não recebe pedidos pelo site. Use o WhatsApp.', 404);
+  $an = ''; $q = banco()->prepare("SELECT data FROM docs WHERE col = 'anunciantes' AND id = ?"); $q->execute([$dono]); $dd = json_decode((string)$q->fetchColumn(), true); if (is_array($dd)) foreach ((array)($dd['itens'] ?? []) as $k => $it) if ($dono . '~' . $k === $lid || ($it['id'] ?? '') === $lid) $an = (string)($it['nome'] ?? '');
+  global $CFG; $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+  $txt = "Olá, {$u['nome']}.\n\nVocê recebeu um pedido pelo CoraçãoBR" . ($an ? " no anúncio \"$an\"" : '') . ":\n\nTipo: " . ($tipo ?: 'Contato') . "\nNome: $nome\nContato: $cont" . ($dia ? "\nData desejada: " . date('d/m/Y', strtotime($dia)) . ($hora ? " às $hora" : '') : '') . ($msg ? "\n\nMensagem:\n$msg" : '') . "\n\nResponda direto para o cliente. Bons negócios!\nEquipe CoraçãoBR";
+  $rt = filter_var($cont, FILTER_VALIDATE_EMAIL) ? $cont : emailOficial();
+  $ok = @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: novo pedido de ' . $nome) . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: $rt\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+  $k = 'pedidos:' . $lid . ':' . date('Y-m'); banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute([$k]);
+  sai(['ok' => true, 'enviado' => (bool)$ok]);
 }
 case 'chave_google': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
