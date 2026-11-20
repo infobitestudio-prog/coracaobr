@@ -1231,6 +1231,32 @@ dialog.lv-full::backdrop { background: rgba(0,0,0,.85) }
 .pgm-a { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px }
 .pgm-cort { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center } .pgm-cort input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
 .fpromo { font-size: .8rem; color: var(--sponsor); line-height: 1.35 }
+
+/* ===== patrocinadores oficiais ===== */
+.ofc-grid { display: grid; gap: 12px; grid-template-columns: 1fr }
+@media (min-width: 860px) { .ofc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
+.ofc { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: auto auto; gap: 12px 14px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); color: var(--ink); text-decoration: none; box-shadow: var(--shadow); overflow: hidden; transition: transform .2s, box-shadow .2s }
+.ofc::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--ofc) }
+.ofc:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg) }
+.ofc-av { width: 64px; height: 64px; border-radius: 16px; overflow: hidden; background: var(--surface-2); box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--sponsor) } .ofc-av img { width: 100%; height: 100%; object-fit: cover; display: block }
+.ofc-av.big { width: 88px; height: 88px; border-radius: 22px; flex: none }
+.ofc-t { display: grid; gap: 3px; min-width: 0 } .ofc-t small { font: 500 .68rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted) } .ofc-t b { font-size: 1.08rem } .ofc-t > span { font-size: .86rem; color: var(--muted) }
+.ofc-n { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line) } .ofc-n b { font: 600 1.1rem var(--mono) } .ofc-n small { color: var(--muted); font-size: .78rem }
+.ofc > svg.i { position: absolute; right: 14px; bottom: 14px; width: 18px; height: 18px; color: var(--muted) }
+.ofp-ban { margin: 12px 0 22px; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow) } .ofp-ban img { width: 100%; display: block; aspect-ratio: 5 / 2; object-fit: cover }
+.ofp-grid { display: grid; gap: 22px } .ofp-main, .ofp-side { display: grid; gap: 16px; align-content: start }
+@media (min-width: 900px) { .ofp-grid { grid-template-columns: minmax(0, 1fr) 340px; gap: 30px } .ofp-side { position: sticky; top: 96px } }
+.ofp-h { display: flex; gap: 18px; align-items: center } .ofp-txt { font-size: 1.06rem; line-height: 1.65; max-width: 62ch }
+.ofp-como { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px } .ofp-como li { display: flex; gap: 10px } .ofp-como svg.i { width: 18px; height: 18px; color: var(--ofc); flex: none; margin-top: 2px }
+.ofp-num { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden }
+.ofp-num div { background: var(--surface); padding: 14px 16px; display: grid } .ofp-num b { font: 600 1.6rem var(--mono); letter-spacing: -.03em } .ofp-num small { color: var(--muted) }
+.ofp-cta { width: 100%; background: var(--ofc) !important }
+.ofp-lk { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; padding: 10px 8px; border-radius: 10px; color: var(--ink); text-decoration: none } .ofp-lk:hover { background: var(--surface-2) } .ofp-lk svg.i { width: 18px; height: 18px } .ofp-lk svg.i:last-child { color: var(--muted); width: 16px }
+.f-ofc { display: flex !important; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-block: 18px !important; border-top: 1px solid rgba(255,255,255,.08) !important }
+.f-ofc:empty { display: none !important }
+.f-ofc-t { font: 600 .72rem var(--mono); text-transform: uppercase; letter-spacing: .1em; color: #fff; margin-right: 6px }
+.f-ofc a { display: inline-flex; align-items: center; gap: 8px; color: #C9D1CC; text-decoration: none; font-size: .88rem } .f-ofc a:hover { color: #fff }
+.f-ofc img { width: 28px; height: 28px; border-radius: 8px; object-fit: cover }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -1270,7 +1296,7 @@ dialog.lv-full::backdrop { background: rgba(0,0,0,.85) }
 <path fill="url(#fgF)" d="M152 200 C160 120 195 66 250 38 L292 34 C238 66 210 112 206 162 C180 166 160 176 152 200 Z"/>
 <path fill="url(#fgY)" d="M322 188 C360 110 440 30 540 22 C610 18 670 50 705 105 L640 148 C600 122 540 112 480 132 C440 146 410 190 386 255 Z"/>
 <path fill="none" stroke="url(#fgC)" stroke-width="108" stroke-linecap="round" stroke-linejoin="round" d="M270 382 L394 518 L748 172"/>
-</g></svg><span>Coração<span class="brbr">BR</span></span></b><p>Coração brasileiro, em qualquer lugar do mundo. Lugares, eventos, serviços e comunidade em português.</p><div class="fbtns"><a class="fpill" href="#sobre"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>Fale com a equipe</a><a class="fpill" href="#inicio" data-ir-news><svg class="i" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Receber novidades</a></div></div><nav class="fl" aria-label="Explore"><b>Explore</b><a href="#explorar">Lugares</a><a href="#mapa">Mapa</a><a href="#feed">Feed</a><a href="#roteiros">Roteiros</a><a href="#mural">Mural</a><a href="#custo">Custo de vida</a></nav><nav class="fl" aria-label="Para empresas"><b>Empresas</b><a href="#anuncie">Anuncie — US$<span class="f-preco2">20</span>/mês</a><a href="#anunciante">Painel do anunciante</a><a href="#entrar">Criar conta</a><a href="#cidades">Novas cidades</a></nav><nav class="fl" aria-label="Institucional"><b>CoraçãoBR</b><a href="#sobre">Sobre e contato</a><a href="#termos">Termos de uso</a><a href="#privacidade">Privacidade</a><a href="#caixinha">Apoie o projeto</a></nav></div><div class="wrap fbar"><span>© <span id="f-ano">2026</span> CoraçãoBR. Todos os direitos reservados.</span><span>Preços em dólar, conferidos na data indicada em cada lugar · Fotos com crédito e licença livre em cada imagem</span></div></footer>
+</g></svg><span>Coração<span class="brbr">BR</span></span></b><p>Coração brasileiro, em qualquer lugar do mundo. Lugares, eventos, serviços e comunidade em português.</p><div class="fbtns"><a class="fpill" href="#sobre"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>Fale com a equipe</a><a class="fpill" href="#inicio" data-ir-news><svg class="i" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Receber novidades</a></div></div><nav class="fl" aria-label="Explore"><b>Explore</b><a href="#explorar">Lugares</a><a href="#mapa">Mapa</a><a href="#feed">Feed</a><a href="#roteiros">Roteiros</a><a href="#mural">Mural</a><a href="#custo">Custo de vida</a></nav><nav class="fl" aria-label="Para empresas"><b>Empresas</b><a href="#anuncie">Anuncie — US$<span class="f-preco2">20</span>/mês</a><a href="#anunciante">Painel do anunciante</a><a href="#entrar">Criar conta</a><a href="#cidades">Novas cidades</a></nav><nav class="fl" aria-label="Institucional"><b>CoraçãoBR</b><a href="#sobre">Sobre e contato</a><a href="#termos">Termos de uso</a><a href="#privacidade">Privacidade</a><a href="#caixinha">Apoie o projeto</a></nav></div><div class="wrap f-ofc" id="f-ofc"></div><div class="wrap fbar"><span>© <span id="f-ano">2026</span> CoraçãoBR. Todos os direitos reservados.</span><span>Preços em dólar, conferidos na data indicada em cada lugar · Fotos com crédito e licença livre em cada imagem</span></div></footer>
 <nav class="tabbar" id="tabbar" aria-label="Abas">
   <a href="#inicio" aria-label="Início"><svg class="i" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></a>
   <a href="#explorar" aria-label="Explorar"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></a>
@@ -1288,6 +1314,7 @@ dialog.lv-full::backdrop { background: rgba(0,0,0,.85) }
 <script src="js/app.js"></script>
 <script src="js/cardapio.js"></script>
 <script src="js/pagamento.js"></script>
+<script src="js/oficiais.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="js/anunciante.js"></script>
 <script src="js/extras.js"></script>

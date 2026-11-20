@@ -24,6 +24,7 @@ L = json.loads((ROOT / "data" / "seed.json").read_text())["lugares"]
 for src in {ft["src"] for l in L for ft in l.get("fotos", [])}:
     (OUT / src).parent.mkdir(parents=True, exist_ok=True); shutil.copy(ROOT / src, OUT / src)
 shutil.copytree(ROOT / "img" / "hero", OUT / "img" / "hero")
+shutil.copytree(ROOT / "img" / "patrocinadores", OUT / "img" / "patrocinadores")
 for f in ("manifest.webmanifest", "sw.js", "icon-192.png", "icon-512.png"):
     shutil.copy(ROOT / f, OUT / f)
 # servidor próprio: API em PHP, configuração inicial e regras da hospedagem

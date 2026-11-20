@@ -187,12 +187,13 @@
         .sort(function (a, b) { return (a.dataInicio || "9999") < (b.dataInicio || "9999") ? -1 : 1; });
       if (evs.length) { var off = k % evs.length; for (var j = 0; j < evs.length && slides.length < lim; j++) slides.push({ tipo: "evento", l: evs[(off + j) % evs.length] }); }
     }
-    return slides;
+    return (window.Oficiais ? Oficiais.slides() : []).concat(slides);
   }
   function secaoVitrine() {
     if (!on("vitrine")) return "";
     var s = montaRodada(); if (!s.length) return "";
     return '<section class="block reveal vit-sec"><div class="vit" data-rodada="' + rodada() + '" aria-roledescription="carrossel" aria-label="Anunciantes e eventos"><div class="vit-trilho">' + s.map(function (x, i) {
+      if (x.tipo === "oficial") return Oficiais.slideHtml(x.o, i);
       var l = x.l;
       if (x.tipo === "anuncio") return '<a class="vit-slide" href="#lugar-' + esc(l.id) + '" aria-label="' + esc(l.nome) + ' (patrocinado)"><img src="' + esc(Store.urlFoto(l.banner.src)) + '" alt="' + esc(l.banner.texto || l.nome) + '"' + (i ? ' loading="lazy"' : "") + '><span class="vit-tag">Patrocinado</span></a>';
       return '<a class="vit-slide ev" href="#lugar-' + esc(l.id) + '"><img src="' + esc(G.foto(l)) + '" alt=""' + (i ? ' loading="lazy"' : "") + '><span class="vit-cap"><small>Evento grátis' + (l.quando ? " · " + esc(String(l.quando).split(" (")[0]) : "") + "</small><b>" + esc(l.nome) + "</b></span></a>";

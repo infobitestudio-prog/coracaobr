@@ -285,13 +285,14 @@
   }
 
   /* Seções da página inicial: ordem, visibilidade e títulos vêm do Painel (Aparência). */
-  var SECOES = { vitrine: "Carrossel de anunciantes", patrocinados: "Patrocinadores", alertas: "Avisos da comunidade", agoraSec: "Acontecendo agora", paraVoce: "Para você", convitePerto: "Convite: avisos por perto", destaqueMes: "Brasileiro do mês", avaliados: "Mais bem avaliados", depoimentos: "Depoimentos", perto: "Mais perto", eventos: "Próximos eventos", ia: "Roteiro com IA", gratisBanner: "Banner de passeios grátis", roteiros: "Roteiros prontos", hospedagem: "Onde ficar", chegada: "Guia de chegada", gratis: "De graça", anuncioFaixa: "Banner de anúncio", brasil: "Sabor do Brasil", mural: "Mural de vagas e classificados", texano: "Coma como um texano", morar: "Para quem mora aqui", custo: "Custo de vida", cidades: "Outras cidades", instalar: "Instalar no celular", anunciante: "Chamada para anunciantes", newsletter: "Newsletter por e-mail" };
+  var SECOES = { vitrine: "Carrossel de anunciantes", oficiais: "Patrocinadores oficiais", patrocinados: "Patrocinadores", alertas: "Avisos da comunidade", agoraSec: "Acontecendo agora", paraVoce: "Para você", convitePerto: "Convite: avisos por perto", destaqueMes: "Brasileiro do mês", avaliados: "Mais bem avaliados", depoimentos: "Depoimentos", perto: "Mais perto", eventos: "Próximos eventos", ia: "Roteiro com IA", gratisBanner: "Banner de passeios grátis", roteiros: "Roteiros prontos", hospedagem: "Onde ficar", chegada: "Guia de chegada", gratis: "De graça", anuncioFaixa: "Banner de anúncio", brasil: "Sabor do Brasil", mural: "Mural de vagas e classificados", texano: "Coma como um texano", morar: "Para quem mora aqui", custo: "Custo de vida", cidades: "Outras cidades", instalar: "Instalar no celular", anunciante: "Chamada para anunciantes", newsletter: "Newsletter por e-mail" };
   function montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) {
     var ex = window.Extras ? Extras.secoes(ls) : {}, pats = primeiro(ls.filter(function (l) { return l.anunciante; }).sort(ordenaNota));
     var cm = window.Comunidade ? Comunidade.secoes(ls) : {};
     var html = {
       vitrine: window.Social ? Social.secao() : "", alertas: cm.alertas, depoimentos: cm.depoimentos, paraVoce: window.Recursos ? Recursos.secao("paraVoce", ls) : "", agoraSec: window.Recursos ? Recursos.secao("agora", ls) : "", newsletter: window.Recursos ? Recursos.secao("newsletter", ls) : "", convitePerto: window.Jornada ? Jornada.convite() : "", destaqueMes: cm.destaqueMes, ia: cm.ia, mural: cm.mural, custo: cm.custo, cidades: cm.cidades, instalar: cm.instalar,
       hospedagem: fileira(esc(tx("hospedagem", "Onde ficar")), by("hospedagem"), "hospedagem"),
+      oficiais: window.Oficiais ? Oficiais.secao() : "",
       patrocinados: '<section class="block reveal pats"><div class="head"><div><p class="eyebrow">Patrocinadores</p><h2>' + esc(tx("patrocinados", "Negócios que apoiam o guia")) + '</h2></div><a class="more" href="#anuncie">anunciar aqui</a></div><div class="spg">' + pats.slice(0, 7).map(function (l) {
         return '<a class="spc" href="#lugar-' + esc(l.id) + '"><span class="spc-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy" decoding="async">' : "") + '<em>Patrocinado</em></span><span class="spc-t"><b>' + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + (l.cidade ? " · " + esc(l.cidade) : "") + "</small></span>" + ic("arrow") + "</a>";
       }).join("") + '<a class="spc spc-cta" href="#anuncie"><span class="spc-t"><small>Plano único</small><b>Seu negócio aqui</b><span>US$ ' + esc(String(window.Pag ? Pag.preco() : (cfg.precoAnuncio || 10))) + '/mês · até 3 anúncios com banner</span></span>' + ic("arrow") + "</a></div></section>",
@@ -708,6 +709,7 @@
   }
   $("#strip-x").addEventListener("click", function () { sess("faixa-fechada", "1"); faixa(); });
   function rodape() {
+    if (window.Oficiais) Oficiais.rodape();
     var c = config(), pr = String(window.Pag ? Pag.preco() : (c.precoAnuncio || 10)).replace(/\.0+$/, "");
     var a = $("#f-preco"); if (a) a.textContent = pr;
     Array.from(document.querySelectorAll(".f-preco2")).forEach(function (x) { x.textContent = pr; });
@@ -778,7 +780,7 @@
   var base = "inicio", pintada = null, sujo = false;
   function rota() { var h = (location.hash || "").replace(/^#/, ""); return h || "inicio"; }
   function pinta(r) {
-    var fn = views[r] || (r.indexOf("mural-") === 0 && views.mural) || (r.indexOf("meu-roteiro-") === 0 && views["meu-roteiro"]) || (r.indexOf("roteiro-") === 0 && views.roteiro) || (r.indexOf("redefinir-") === 0 && views.redefinir) || (r.indexOf("busca-") === 0 && views.mapa) || (r.indexOf("local-") === 0 && views.local) || (r.indexOf("parceiro-") === 0 && views.parceiro) || (r.indexOf("perfil-") === 0 && views.perfil) || viewInicio;
+    var fn = views[r] || (r.indexOf("mural-") === 0 && views.mural) || (r.indexOf("meu-roteiro-") === 0 && views["meu-roteiro"]) || (r.indexOf("roteiro-") === 0 && views.roteiro) || (r.indexOf("redefinir-") === 0 && views.redefinir) || (r.indexOf("busca-") === 0 && views.mapa) || (r.indexOf("local-") === 0 && views.local) || (r.indexOf("parceiro-") === 0 && views.parceiro) || (r.indexOf("perfil-") === 0 && views.perfil) || (r.indexOf("oficial-") === 0 && views.oficial) || viewInicio;
     document.body.classList.toggle("home", r !== "painel" && fn === viewInicio);
     if (r === "painel" && window.Painel) Painel.abrir(app); else fn(r);
     pintada = r; revelar();
