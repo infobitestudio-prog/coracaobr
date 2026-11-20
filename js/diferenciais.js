@@ -51,15 +51,15 @@
   function viewTemas() {
     var sel = ler("temas", []), evs = eventosDosTemas(), perm = "Notification" in window ? Notification.permission : "indisponivel";
     G.app.innerHTML = '<section class="block df"><div class="wrap stack in" style="max-width:860px">' + cab("Alertas", "Eventos do seu jeito", "Escolha os temas que você curte. Avisamos quando aparecer evento novo, aqui no site e no celular.") +
-      '<div class="df-temas">' + TEMAS.map(function (t) { return '<button type="button" class="df-tema" data-tema="' + t[0] + '" aria-pressed="' + (sel.indexOf(t[0]) >= 0) + '">' + esc(t[1]) + "</button>"; }).join("") + "</div>" +
+      '<div class="df-temas">' + TEMAS.map(function (t) { return '<button type="button" class="df-tema" data-tema-ev="' + t[0] + '" aria-pressed="' + (sel.indexOf(t[0]) >= 0) + '">' + esc(t[1]) + "</button>"; }).join("") + "</div>" +
       '<div class="df-not"><div><b>Avisos no celular</b><span>' + (perm === "granted" ? "Ligados. Você recebe um aviso quando surgir evento dos seus temas." : perm === "denied" ? "Bloqueados no navegador. Libere as notificações do site nas configurações." : perm === "indisponivel" ? "Este navegador não tem notificações. Instale o site no celular para receber avisos." : "Toque para permitir os avisos.") + "</span></div>" + (perm === "default" ? '<button type="button" class="btn sm" data-tema-not>Ativar avisos</button>' : "") + "</div>" +
       (sel.length ? '<div class="head" style="margin:6px 0 0"><h2 style="font-size:1.3rem">Próximos 30 dias para você</h2><span class="small muted">' + evs.length + (evs.length === 1 ? " evento" : " eventos") + "</span></div>" + (evs.length ? '<div class="list">' + evs.map(G.linha).join("") + "</div>" : '<p class="muted">Nenhum evento desses temas nos próximos 30 dias. Assim que aparecer, avisamos.</p>') : '<p class="muted">Escolha pelo menos um tema acima.</p>') +
       "</div></section>";
     grava("temas-vistos", evs.map(function (l) { return l.id; }));
   }
   document.addEventListener("click", function (e) {
-    var b = e.target.closest(".df-tema[data-tema]");
-    if (b) { var s = ler("temas", []), k = s.indexOf(b.dataset.tema); if (k >= 0) s.splice(k, 1); else s.push(b.dataset.tema); grava("temas", s); viewTemas(); return; }
+    var b = e.target.closest("[data-tema-ev]");
+    if (b) { var s = ler("temas", []), k = s.indexOf(b.dataset.temaEv); if (k >= 0) s.splice(k, 1); else s.push(b.dataset.temaEv); grava("temas", s); viewTemas(); return; }
     if (e.target.closest("[data-tema-not]") && "Notification" in window) Notification.requestPermission().then(function () { viewTemas(); });
   });
   /* ao abrir o site: avisa de eventos novos dos temas escolhidos */
