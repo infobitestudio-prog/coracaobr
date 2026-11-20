@@ -29,9 +29,10 @@ for f in ("manifest.webmanifest", "sw.js", "icon-192.png", "icon-512.png"):
     shutil.copy(ROOT / f, OUT / f)
 # servidor próprio: API em PHP, configuração inicial e regras da hospedagem
 (OUT / "api").mkdir()
-for f in ("index.php", "config.exemplo.php"):
+for f in ("index.php", "config.exemplo.php", "metro_gtfs.php"):
     shutil.copy(ROOT / "api" / f, OUT / "api" / f)
 shutil.copy(ROOT / "data" / "config-inicial.json", OUT / "data" / "config-inicial.json")
+shutil.copy(ROOT / "data" / "metro.json", OUT / "data" / "metro.json")
 shutil.copy(ROOT / ".htaccess.site", OUT / ".htaccess")
 shutil.copy(ROOT / "INSTALAR.txt", OUT / "INSTALAR.txt")
 (OUT / "vendor").mkdir()
