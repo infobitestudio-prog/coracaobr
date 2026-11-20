@@ -89,6 +89,7 @@
     if (p === "gratis") return gratis;
     var lim = p === "20" ? 20 : 50;
     if (gratis) return true;
+    var pz = G.precos ? G.precos(l) : null; if (pz && !pz.gratis) return (pz.med || pz.min) <= lim;
     if (est) return fx ? fx.length <= (lim === 20 ? 1 : 2) : false;
     return l.precoMin != null && Number(l.precoMin) > 0 && Number(l.precoMin) <= lim;
   }
@@ -309,7 +310,7 @@
       '<div class="local-top">' + (f && !ehEvento(l) ? '<img src="' + esc(f) + '" alt="">' : "") + '<div><p class="eyebrow">' + esc(ehEvento(l) ? "Local" : (G.CATS[l.categoria] || "Local")) + " · " + esc(l.cidade || "") + '</p><h1 class="page-h" style="margin-top:4px">' + esc(nome) + "</h1>" +
       (l.endereco ? '<p class="muted">' + esc(l.endereco) + "</p>" : "") + '<div class="row" style="gap:8px;margin-top:10px">' + (!ehEvento(l) ? '<a class="btn sm" href="#lugar-' + esc(l.id) + '">Ver o lugar</a>' : "") + '<a class="btn ghost sm" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent([nome, l.endereco].filter(Boolean).join(", ")) + '">Como chegar</a></div></div></div>' +
       '<div class="head"><h2>' + (evs.length ? "Próximos eventos aqui" : "Nenhum evento marcado") + '</h2><span class="more">' + evs.length + "</span></div>" +
-      (evs.length ? '<div class="list">' + evs.map(function (o) { var ps = proximasSessoes(o); return '<a class="lrow nopos" href="#lugar-' + esc(o.id) + '"><span class="th">' + (G.foto(o) ? '<img src="' + esc(G.foto(o)) + '" alt="" loading="lazy">' : "") + "</span><span><b>" + esc(o.nome) + "</b><small>" + esc(ps.length ? dataCurta(ps[0].d) + (ps.length > 1 ? " · +" + (ps.length - 1) + (ps.length === 2 ? " sessão" : " sessões") : "") : (o.quando || "")) + (o.esgotado ? " · Esgotado" : "") + '</small></span><span class="val">' + esc(G.usd && o.precoMin > 0 ? G.usd(o.precoMin) : o.gratuito ? "Grátis" : "") + "</span></a>"; }).join("") + "</div>" : '<p class="muted">Quando houver eventos neste local, eles aparecem aqui.</p>') +
+      (evs.length ? '<div class="list">' + evs.map(function (o) { var ps = proximasSessoes(o); return '<a class="lrow nopos" href="#lugar-' + esc(o.id) + '"><span class="th">' + (G.foto(o) ? '<img src="' + esc(G.foto(o)) + '" alt="" loading="lazy">' : "") + "</span><span><b>" + esc(o.nome) + "</b><small>" + esc(ps.length ? dataCurta(ps[0].d) + (ps.length > 1 ? " · +" + (ps.length - 1) + (ps.length === 2 ? " sessão" : " sessões") : "") : (o.quando || "")) + (o.esgotado ? " · Esgotado" : "") + '</small></span><span class="val">' + esc(G.precoCurto ? (G.precoCurto(o) === "Pago" ? "" : G.precoCurto(o)) : "") + "</span></a>"; }).join("") + "</div>" : '<p class="muted">Quando houver eventos neste local, eles aparecem aqui.</p>') +
       "</div></section>";
   }
   /* ---------- página do parceiro ---------- */

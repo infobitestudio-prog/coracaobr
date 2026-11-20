@@ -1,5 +1,5 @@
 {
- "versao": "2026-11-coracaobr-1795166927",
+ "versao": "2026-11-coracaobr-1795196198",
  "lugares": [
   {
    "id": "sixth-floor-museum",
@@ -2320,7 +2320,14 @@
     "src": "https://i.vimeocdn.com/video/2031154250-002cd57f14ef94ca468f484e9e52ee3d1b37a4e6b6ec1079692330ec8c030882-d_1920x1080?&r=pad&region=us",
     "pagina": "https://www.casapollastro.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 25.0,
+   "precoMedio": 35,
+   "precoMax": 45.0,
+   "precoBase": "rodízio completo no almoço (seg-sex)",
+   "fontePreco": "https://www.casapollastro.com/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "delucca-gaucho-pizza-dallas",
@@ -2528,7 +2535,14 @@
     "src": "https://texasdebrazil.com/wp-content/uploads/2024/09/TDB-Stacked-Churrascaria-01.png",
     "pagina": "https://texasdebrazil.com/locations/dallas/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 35.99,
+   "precoMedio": 49,
+   "precoMax": 62.99,
+   "precoBase": "rodízio completo no almoço (sexta)",
+   "fontePreco": "https://texasdebrazil.com/locations/dallas/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "chama-gaucha-grapevine",
@@ -2600,7 +2614,13 @@
     "src": "https://www.chamagaucha.com/wp-content/uploads/2025/07/Chama_Gaucha-Dallas-1.jpg",
     "pagina": "https://chamagaucha.com/grapevine",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 64.95,
+   "precoMax": 64.95,
+   "precoBase": "rodízio completo no jantar",
+   "fontePreco": "https://chamagaucha.com/grapevine",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "12-cuts-brazilian-steakhouse",
@@ -2685,7 +2705,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMin": 54.95,
+   "precoMedio": 62,
+   "precoMax": 69.95,
+   "precoBase": "rodízio completo no almoço (seg-sex)",
+   "fontePreco": "https://brasaousa.com/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "fazenda-gaucha-bedford",
@@ -2810,7 +2837,13 @@
     "src": "https://static.wixstatic.com/media/a5cd5a_502b25853b80447d8547678b7eb5dfd2~mv2.jpg/v1/fill/w_2500,h_1406,al_c/a5cd5a_502b25853b80447d8547678b7eb5dfd2~mv2.jpg",
     "pagina": "https://egsteak.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 42.95,
+   "precoMax": 42.95,
+   "precoBase": "rodízio completo (tasting menu de duas etapas)",
+   "fontePreco": "https://www.egsteak.com/menus",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "acai-brasil-victory-park",
@@ -2984,7 +3017,14 @@
     "src": "https://cafebrazil.com/wp-content/uploads/2026/07/sliderfix1-scaled.jpg",
     "pagina": "https://cafebrazil.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 9.99,
+   "precoMedio": 14,
+   "precoMax": 17.99,
+   "precoBase": "prato de café da manhã (mais barato: oatmeal)",
+   "fontePreco": "https://cafebrazil.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "pecan-lodge",
@@ -3120,7 +3160,14 @@
     "src": "https://framerusercontent.com/images/r1bGTfqX1k4kpE9AounSy4T1zI.jpg",
     "pagina": "https://www.terryblacksbbq.com/dallas",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 17.0,
+   "precoMedio": 18,
+   "precoMax": 20.0,
+   "precoBase": "sanduíche (sem combo)",
+   "fontePreco": "https://www.terryblacksbbq.com/dallas",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hutchins-bbq-frisco",
@@ -3222,7 +3269,14 @@
     "src": "https://hutchinsbbq.com/wp-content/uploads/2025/11/13.avif",
     "pagina": "https://www.hutchinsbbq.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 15.49,
+   "precoMedio": 18,
+   "precoMax": 20.49,
+   "precoBase": "sanduíche",
+   "fontePreco": "https://hutchinsbbq.com/frisco-menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "cattleack-barbeque",
@@ -3595,7 +3649,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMin": 11.0,
+   "precoMedio": 18,
+   "precoMax": 27.0,
+   "precoBase": "biscuits and sausage gravy (prato de café da manhã)",
+   "fontePreco": "https://www.breadwinnerscafe.com/restaurant-menus",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "oddfellows",
@@ -4065,14 +4126,18 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Pago — preço varia por data e idade; consulte o site",
-   "precoMin": 0,
-   "precoConfirmado": false,
-   "fontePreco": "https://moidallas.com/",
+   "preco": "Adulto (13+) US$ 27,99 · Sênior US$ 25,99 · Estudante US$ 24,99 · Criança (5–12) US$ 20,95 · até 4 anos sem ingresso",
+   "precoMin": 27.99,
+   "precoConfirmado": true,
+   "fontePreco": "https://moidallas.com/contact-us/#ticket-prices",
    "tempoVisita": "1–1h30",
    "menu": [],
    "notaCuradoria": 4.0,
-   "notaProvisoria": true
+   "notaProvisoria": true,
+   "precoMax": 27.99,
+   "precoBase": "entrada adulto",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "museum-of-biblical-art-dallas",
@@ -6042,10 +6107,10 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Adulto US$ 15 · Jovem (até 12) e sênior (65+) US$ 12, segundo o Visit Frisco — confirme no site oficial",
-   "precoMin": 12,
-   "precoConfirmado": false,
-   "fontePreco": "https://www.visitfrisco.com/node/1551",
+   "preco": "Adulto US$ 15 · Jovem (4–12), sênior (65+) e militar US$ 12 · até 3 anos grátis",
+   "precoMin": 15.0,
+   "precoConfirmado": true,
+   "fontePreco": "https://www.nationalsoccerhof.com/visit/ticket-information.html",
    "tempoVisita": "1–1h30",
    "menu": [],
    "notaCuradoria": 4.0,
@@ -6054,7 +6119,12 @@
     "src": "https://soccerhof.imgix.net/hall-of-fame/NSHOF_Front_statue.jpg",
     "pagina": "https://www.nationalsoccerhof.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMedio": 15,
+   "precoMax": 15.0,
+   "precoBase": "entrada adulto",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "universal-kids-resort-frisco",
@@ -6683,14 +6753,19 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Pago — valor não confirmado; consulte o site",
-   "precoMin": 0,
-   "precoConfirmado": false,
-   "fontePreco": "https://dinosaurworld.com/texas/",
+   "preco": "Passe diário: adulto US$ 18,95 · criança US$ 14,95 · Passe Excavation: adulto US$ 36,95 · criança US$ 32,95",
+   "precoMin": 18.95,
+   "precoConfirmado": true,
+   "fontePreco": "https://www.dinosaurworld.com/texas-tickets",
    "tempoVisita": "1h30–2 horas",
    "menu": [],
    "notaCuradoria": 4.0,
-   "notaProvisoria": true
+   "notaProvisoria": true,
+   "precoMedio": 28,
+   "precoMax": 36.95,
+   "precoBase": "passe diário adulto",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "cleburne-state-park",
@@ -7293,15 +7368,20 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Entrada no parque: US$ 15 adulto · US$ 8 crianças de 6 a 16 anos (valores de 2026; os de 2027 não estavam confirmados). Rodeo na Dickies Arena com ingresso à parte.",
-   "precoMin": 15,
-   "precoConfirmado": false,
-   "fontePreco": "https://fwssr.com/p/plan-a-visit/grounds-admission",
+   "preco": "Adulto US$ 15 · Jovem (6 a 15 anos) US$ 8 · menores de 6 grátis",
+   "precoMin": 15.0,
+   "precoConfirmado": true,
+   "fontePreco": "https://www.fwssr.com/p/plan-a-visit/grounds-admission",
    "tempoVisita": "Meio dia a um dia inteiro",
    "menu": [],
    "quando": "15 jan a 6 fev de 2027 (datas vistas em listagens de ingressos; confirme em fwssr.com)",
    "dataInicio": "2027-01-15",
-   "dataFim": "2027-02-06"
+   "dataFim": "2027-02-06",
+   "precoMedio": 15,
+   "precoMax": 15.0,
+   "precoBase": "entrada adulto nos recintos",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "holiday-at-the-arboretum",
@@ -7395,9 +7475,9 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Pago; ingresso diurno e noturno vendidos separadamente, com preço que varia por data",
-   "precoMin": 0,
-   "precoConfirmado": false,
+   "preco": "Dia: adulto US$ 21,95–25,95 · Noite: US$ 35–40 · Night Owl US$ 15 · menores de 3 grátis",
+   "precoMin": 22.0,
+   "precoConfirmado": true,
    "fontePreco": "https://www.dallasarboretum.org/events-activities/holiday-at-the-arboretum/",
    "tempoVisita": "2–3 horas",
    "menu": [],
@@ -7408,7 +7488,12 @@
     "src": "https://dallasarboretum.imgix.net/wp-content/uploads/2026/10/31004727/12302025_Holiday_NineLadies-3575.jpg-scaled.jpg",
     "pagina": "https://www.dallasarboretum.org/events-activities/holiday-at-the-arboretum/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMedio": 31,
+   "precoMax": 40.0,
+   "precoBase": "ingresso diurno adulto mais barato (online)",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "dallas-blooms",
@@ -7818,10 +7903,10 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Pago; preço varia por noite",
-   "precoMin": 0,
-   "precoConfirmado": false,
-   "fontePreco": "https://www.dallaszoo.com/",
+   "preco": "Entrada geral a partir de US$ 19 · combo com Zoo diurno +US$ 10",
+   "precoMin": 19.0,
+   "precoConfirmado": true,
+   "fontePreco": "https://www.dallaszoo.com/zoo-lights/",
    "tempoVisita": "2–3 horas",
    "menu": [],
    "quando": "13 nov de 2026 a 3 jan de 2027 (noites selecionadas)",
@@ -7831,7 +7916,10 @@
     "src": "https://dallaszoo.imgix.net/wp-content/uploads/2019/09/11182052/Screenshot-2023-08-11-at-5.27.24-PM.png",
     "pagina": "https://www.dallaszoo.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoBase": "entrada geral a partir de",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "grapevine-christmas-capital-of-texas",
@@ -8032,10 +8120,10 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Entrada paga na portaria; valores de 2027 ainda não divulgados",
-   "precoMin": 0,
-   "precoConfirmado": false,
-   "fontePreco": "https://www.grapevinetexasusa.com/main-street-fest/",
+   "preco": "Adulto US$ 10 · Criança 6-12 e sênior 62+ US$ 5 · passe de fim de semana US$ 20",
+   "precoMin": 10.0,
+   "precoConfirmado": true,
+   "fontePreco": "https://www.grapevinetexasusa.com/main-street-fest/purchase-tickets/",
    "tempoVisita": "Meio dia",
    "menu": [],
    "quando": "14 a 16 de maio de 2027",
@@ -8045,7 +8133,12 @@
     "src": "https://assets.simpleviewinc.com/sv-grapevine/image/upload/c_limit,h_1200,q_75,w_1200/v1/cms_resources/clients/grapevine/20230519_MainStreetFest_2023_474_88a7cdb2-82b1-40bc-b0bd-343a0f5f006d.jpg",
     "pagina": "https://www.grapevinetexasusa.com/main-street-fest/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMedio": 10,
+   "precoMax": 10.0,
+   "precoBase": "entrada adulto",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "grapefest-grapevine",
@@ -8838,15 +8931,18 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Ingresso diário pago; valores de 2027 no site oficial",
-   "precoMin": 0,
-   "precoConfirmado": false,
+   "preco": "Ingresso de grounds a partir de US$ 50 · Clubs a partir de US$ 400",
+   "precoMin": 50.0,
+   "precoConfirmado": true,
    "fontePreco": "https://thecjcupbyronnelson.org/",
    "tempoVisita": "Um dia",
    "menu": [],
    "quando": "26 de abril a 2 de maio de 2027 (rodadas oficiais de quinta a domingo)",
    "dataInicio": "2027-04-26",
-   "dataFim": "2027-05-02"
+   "dataFim": "2027-05-02",
+   "precoBase": "entrada geral (grounds) a partir de",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "charles-schwab-challenge",
@@ -9237,9 +9333,9 @@
    "atualizadoEm": "2026-11",
    "publicado": true,
    "gratuito": false,
-   "preco": "Credenciais pagas; valores no site oficial",
-   "precoMin": 0,
-   "precoConfirmado": false,
+   "preco": "Credencial General Access (early bird) US$ 550 · VIP early bird US$ 1.050",
+   "precoMin": 550.0,
+   "precoConfirmado": true,
    "fontePreco": "https://earthx.org/",
    "tempoVisita": "Meio dia",
    "menu": [],
@@ -9250,7 +9346,12 @@
     "src": "https://earthx.org/wp-content/uploads/2025/10/home-hero-video-poster.jpg",
     "pagina": "https://earthx.org/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMedio": 550,
+   "precoMax": 550.0,
+   "precoBase": "credencial geral early bird",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "main-st-fort-worth-arts-festival",
@@ -16681,7 +16782,14 @@
    "menuVerificadoEm": "",
    "gratuito": false,
    "notaCuradoria": 4.0,
-   "notaProvisoria": true
+   "notaProvisoria": true,
+   "precoMin": 52.0,
+   "precoMedio": 61,
+   "precoMax": 70.0,
+   "precoBase": "churrasco completo no almoço",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=114&type=menu-lunch&id=4559",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "fogo-de-chao-plano",
@@ -16722,7 +16830,14 @@
     "src": "https://fogodechao.com/wp-content/uploads/2017/06/Fogo_Website_Location__0015_DallasPlano_1368x921.jpg",
     "pagina": "https://fogodechao.com/location/plano/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 52.0,
+   "precoMedio": 61,
+   "precoMax": 70.0,
+   "precoBase": "rodízio completo (Full Churrasco) no almoço",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=422&type=menu-lunch&id=4660",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "fogo-de-chao-north-irving",
@@ -16763,7 +16878,14 @@
     "src": "https://fogodechao.com/wp-content/uploads/2023/12/102623-Fogo-Irving-8-min-e1702043165221-700x303.jpeg",
     "pagina": "https://fogodechao.com/location/north-irving/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 52.0,
+   "precoMedio": 61,
+   "precoMax": 70.0,
+   "precoBase": "rodízio completo (Full Churrasco) no almoço",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=7520&type=menu-lunch&id=7942",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "texas-de-brazil-addison",
@@ -16835,7 +16957,14 @@
     "src": "https://texasdebrazil.com/wp-content/uploads/2024/09/TDB-Stacked-Churrascaria-01.png",
     "pagina": "https://texasdebrazil.com/locations/addison/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 35.99,
+   "precoMedio": 54,
+   "precoMax": 62.99,
+   "precoBase": "churrasco completo no almoço (seg-sex)",
+   "fontePreco": "https://texasdebrazil.com/locations/addison/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "texas-de-brazil-fort-worth",
@@ -16907,7 +17036,14 @@
     "src": "https://texasdebrazil.com/wp-content/uploads/2024/09/TDB-Stacked-Churrascaria-01.png",
     "pagina": "https://texasdebrazil.com/locations/fort-worth/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 35.99,
+   "precoMedio": 54,
+   "precoMax": 62.99,
+   "precoBase": "rodízio completo no almoço (qui-sex)",
+   "fontePreco": "https://texasdebrazil.com/locations/fort-worth/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "delucca-gaucho-pizza-southlake",
@@ -16955,7 +17091,14 @@
     "src": "https://images.getbento.com/accounts/bb631126936320a35f98d10bea79cc34/media/images/44399IMG_2783.jpg?w=1200&fit=crop&auto=compress,format&cs=origin&h=600",
     "pagina": "https://www.delucca.com/location/delucca-southlake/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 18.95,
+   "precoMedio": 23,
+   "precoMax": 25.95,
+   "precoBase": "rodízio de pizza 3 etapas",
+   "fontePreco": "https://www.delucca.com/menus/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "delucca-gaucho-pizza-plano",
@@ -16996,7 +17139,14 @@
     "src": "https://images.getbento.com/accounts/bb631126936320a35f98d10bea79cc34/media/images/11853download.png?w=1200&fit=crop&auto=compress,format&cs=origin&h=600",
     "pagina": "https://www.delucca.com/location/delucca-plano/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 16.0,
+   "precoMedio": 21,
+   "precoMax": 25.95,
+   "precoBase": "rodízio de pizza no almoço (adulto)",
+   "fontePreco": "https://www.delucca.com/menus/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "delucca-gaucho-pizza-fort-worth",
@@ -17037,7 +17187,13 @@
     "src": "https://images.getbento.com/accounts/bb631126936320a35f98d10bea79cc34/media/images/855822VLrvGvg.jpeg?w=1200&fit=crop&auto=compress,format&cs=origin&h=600",
     "pagina": "https://www.delucca.com/location/delucca-fort-worth/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 25.95,
+   "precoMax": 25.95,
+   "precoBase": "rodízio de pizza no jantar (adulto)",
+   "fontePreco": "https://www.delucca.com/menus/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "vila-brazil-garland",
@@ -17078,7 +17234,14 @@
     "src": "https://vilabrazil.com/vila_photos/optimized/picanha.webp",
     "pagina": "https://vilabrazil.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 27.0,
+   "precoMedio": 38,
+   "precoMax": 44.0,
+   "precoBase": "rodízio completo no almoço (dias úteis)",
+   "fontePreco": "https://vilabrazil.com/restaurant-data.json",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "vb-steakhouse-arlington",
@@ -17161,7 +17324,14 @@
     "src": "https://cafebrazil.com/wp-content/uploads/2026/07/sliderfix1-scaled.jpg",
     "pagina": "https://cafebrazil.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 9.99,
+   "precoMedio": 14,
+   "precoMax": 17.99,
+   "precoBase": "prato de café da manhã (mais barato: oatmeal)",
+   "fontePreco": "https://cafebrazil.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "panther-city-bbq",
@@ -17388,7 +17558,14 @@
     "src": "https://hurtadobbq.com/opengraph-image.jpg?e7dde030ace7e0b3",
     "pagina": "https://www.hurtadobbq.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 17.25,
+   "precoMedio": 23,
+   "precoMax": 30.99,
+   "precoBase": "sanduíche",
+   "fontePreco": "https://hurtadobbq.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "slow-bone-bbq",
@@ -17425,7 +17602,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 14.0,
+   "precoMedio": 18,
+   "precoMax": 23.5,
+   "precoBase": "sanduíche",
+   "fontePreco": "https://www.slowbone.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hard-eight-bbq-coppell",
@@ -17541,7 +17725,14 @@
     "src": "https://sonnybryans.com/wp-content/uploads/2025/05/Background.webp",
     "pagina": "https://www.sonnybryans.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 14.49,
+   "precoMedio": 18,
+   "precoMax": 20.99,
+   "precoBase": "sandwich plate (pulled pork)",
+   "fontePreco": "https://sonnybryans.com/our-menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "railhead-smokehouse",
@@ -17578,7 +17769,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 9.0,
+   "precoMedio": 13,
+   "precoMax": 19.0,
+   "precoBase": "sanduíche (carne, frango, salsicha etc.)",
+   "fontePreco": "https://www.railheadsmokehouse.com/fort-worth-railhead-smokehouse-bbq-food-menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "meat-u-anywhere-grapevine",
@@ -17615,7 +17813,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 19.0,
+   "precoMedio": 22,
+   "precoMax": 24.0,
+   "precoBase": "sanduíche Meat 'N' Bun",
+   "fontePreco": "https://www.meatuanywhere.com/menu-text/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "meso-maya-downtown",
@@ -17689,7 +17894,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 27.95,
+   "precoMedio": 36,
+   "precoMax": 48.95,
+   "precoBase": "prato principal (Pollo Al Ajillo)",
+   "fontePreco": "https://www.javiers.net/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "mias-tex-mex",
@@ -17726,7 +17938,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 11.95,
+   "precoMedio": 18,
+   "precoMax": 32.95,
+   "precoBase": "prato combinado (Ama's Plate)",
+   "fontePreco": "https://www.miastexmex.com/dallas-mia-s-tex-mex-food-menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "e-bar-tex-mex",
@@ -18416,7 +18635,14 @@
     "src": "https://www.yoranchsteakhouse.com/wp-content/uploads/2023/08/experience-y-o-ranch-e1434984854142.jpg",
     "pagina": "https://www.yoranchsteakhouse.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 32.0,
+   "precoMedio": 52,
+   "precoMax": 95.0,
+   "precoBase": "prato principal mais barato (codorna/frango/truta)",
+   "fontePreco": "https://www.yoranchsteakhouse.com/dinner-menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "whataburger-lemmon-avenue",
@@ -18532,7 +18758,14 @@
     "src": "https://static.wixstatic.com/media/98de65_40b8525b03e34cb5a1abfd5460f1d036~mv2.png/v1/fill/w_256,h_167,al_c/98de65_40b8525b03e34cb5a1abfd5460f1d036~mv2.png",
     "pagina": "https://www.mapleandmotor.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 8.45,
+   "precoMedio": 10,
+   "precoMax": 12.0,
+   "precoBase": "sanduíche (fried baloney)",
+   "fontePreco": "https://www.mapleandmotor.com/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hopdoddy-burger-bar-preston-center",
@@ -18640,7 +18873,7 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true,
+   "publicado": false,
    "faixaPreco": "$",
    "menu": [],
    "fonteMenu": "",
@@ -18653,7 +18886,9 @@
     "src": "https://cdn.prod.website-files.com/68f809f70d7e3e330a762c95/691e7422b5df8a405e01279d_Screenshot%202025-11-19%20205021.png",
     "pagina": "https://www.twistedrootburgerco.com/",
     "em": "2026-11-19"
-   }
+   },
+   "fechado": true,
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "burger-house-hillcrest",
@@ -18890,7 +19125,14 @@
     "src": "https://media-library-activestorage-production.s3.us-east-2.amazonaws.com/5vtv82yanlizuvmvzjh591xjch50",
     "pagina": "https://normascafe.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 12.24,
+   "precoMedio": 15,
+   "precoMax": 21.99,
+   "precoBase": "Blue Plate (veggie plate)",
+   "fontePreco": "https://normascafe.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "roots-southern-table",
@@ -18927,7 +19169,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 28.0,
+   "precoMedio": 41,
+   "precoMax": 78.0,
+   "precoBase": "prato principal (Supper)",
+   "fontePreco": "https://www.rootssoutherntable.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "snooze-am-eatery-oak-lawn",
@@ -19232,7 +19481,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 17.0,
+   "precoMedio": 19,
+   "precoMax": 21.0,
+   "precoBase": "pizza 14\" (Margherita)",
+   "fontePreco": "https://www.canerosso.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "zalat-pizza-fitzhugh",
@@ -19311,7 +19567,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 16.0,
+   "precoMedio": 22,
+   "precoMax": 28.0,
+   "precoBase": "pizza Marinara",
+   "fontePreco": "https://partenopedallas.com/dinner_menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "h-mart-carrollton",
@@ -19738,7 +20001,14 @@
    "gratuito": false,
    "notaCuradoria": 4.0,
    "notaProvisoria": true,
-   "naoConferido": true
+   "naoConferido": true,
+   "precoMin": 9.99,
+   "precoMedio": 14,
+   "precoMax": 14.99,
+   "precoBase": "cachorro-quente (Yard Dog)",
+   "fontePreco": "https://truckyard.com/wp-content/uploads/2026/09/D-2.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "katy-trail-ice-house",
@@ -19817,7 +20087,14 @@
     "src": "https://images.getbento.com/accounts/702878dd16a86c77872745ef307329d7/media/images/5460HH_white_NO_TAGLINE_1.png?w=1200&fit=fill&auto=compress,format&cs=origin&h=600&bg=EDEDF1&pad=100",
     "pagina": "https://www.happiesthourdallas.com/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 16.0,
+   "precoMedio": 18,
+   "precoMax": 24.0,
+   "precoBase": "prato principal (flatbread/sanduíche)",
+   "fontePreco": "https://www.happiesthourdallas.com/menus/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "waterproof-statler-dallas",
@@ -21463,7 +21740,7 @@
    "dica": "Reserve pelo site nos fins de semana e vá com fome: o rodízio é cobrado por pessoa, e as bebidas e sobremesas são à parte.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 52.95,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -21479,7 +21756,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 61,
+   "precoMax": 69.95,
+   "precoBase": "rodízio completo no almoço (seg-sex)",
+   "fontePreco": "https://chamagaucha.com/houston",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-fogo-de-chao",
@@ -21501,7 +21784,7 @@
    "dica": "No almoço de dias úteis costuma haver opções mais em conta, como só o Market Table ou um corte avulso.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 50.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -21517,7 +21800,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 58,
+   "precoMax": 67.0,
+   "precoBase": "rodízio completo (Full Churrasco) no almoço",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=116&type=menu-lunch&id=4600",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-casa-do-brasil",
@@ -21577,7 +21866,7 @@
    "dica": "Combine o jantar com um passeio pelo CityCentre, que tem praça, lojas e estacionamento coberto.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 48.99,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 3.5,
@@ -21593,7 +21882,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 56,
+   "precoMax": 62.99,
+   "precoBase": "rodízio completo no almoço (sex)",
+   "fontePreco": "https://texasdebrazil.com/?p=401",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-tourao",
@@ -21691,7 +21986,7 @@
    "dica": "Fica a cerca de 5 km ao sul do Beltway 8; ótima parada para quem mora em Sugar Land, Missouri City ou Stafford.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 42.95,
    "faixaPreco": "$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -21707,7 +22002,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 53,
+   "precoMax": 62.95,
+   "precoBase": "rodízio completo no almoço (sex-sáb)",
+   "fontePreco": "https://www.avebrazil.com/locations/houston-area",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-brasas-steakhouse",
@@ -22032,7 +22333,7 @@
    "dica": "A nova unidade fica em 3801 Farnham St (Upper Kirby), mais perto da Galleria; a do Heights fecha às segundas.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 13.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22048,7 +22349,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 14,
+   "precoMax": 15.0,
+   "precoBase": "sanduíche",
+   "fontePreco": "https://www.pinkertonsbbq.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-goode-company-bbq",
@@ -22198,7 +22505,9 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": false,
+   "fechado": true,
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-pappas-bros-steakhouse",
@@ -22258,7 +22567,7 @@
    "dica": "Reserve um tempo para olhar as peças históricas espalhadas pelo salão.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 35.0,
    "faixaPreco": "$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22285,7 +22594,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 58,
+   "precoMax": 95.0,
+   "precoBase": "prato principal (menor: prato de legumes grelhados)",
+   "fontePreco": "https://www.tasteoftexas.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-bb-butchers",
@@ -22382,7 +22697,7 @@
    "dica": "Abre até tarde da noite: boa pedida depois de um show ou de um bar.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 9.99,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -22398,7 +22713,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 13,
+   "precoMax": 14.99,
+   "precoBase": "hambúrguer",
+   "fontePreco": "https://burgerjointhtx.com/restaurant-menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-breakfast-klub",
@@ -22420,7 +22741,7 @@
    "dica": "Chegue antes das 9h no fim de semana; a fila anda rápido, mas é longa.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 13.5,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22436,7 +22757,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 17,
+   "precoMax": 19.75,
+   "precoBase": "prato de café da manhã (biskits & gravy)",
+   "fontePreco": "https://thebreakfastklub.com/wp-content/uploads/2026/06/tbk-menu-061226.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-tiny-boxwoods",
@@ -22572,7 +22899,7 @@
    "dica": "A unidade da Katy Freeway (11177 Katy Fwy) é mais prática para quem mora no oeste da cidade.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 18.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22588,7 +22915,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 24,
+   "precoMax": 26.0,
+   "precoBase": "pizza napoletana 12\" (1-2 pessoas)",
+   "fontePreco": "https://pizarospizza.com/wp-content/uploads/2026/09/pizaro_menu_dev_911.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-coltivare",
@@ -22610,7 +22943,7 @@
    "dica": "Não aceita reservas para grupos pequenos; chegue cedo ou espere tomando um drinque na região da White Oak.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 17.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22626,7 +22959,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 22,
+   "precoMax": 26.0,
+   "precoBase": "pizza",
+   "fontePreco": "https://static1.squarespace.com/static/585aa18c725e25091af5efc3/t/6afe124e4193ac218e54c639/1795035726482/DINNER+MENU+11.18.2026.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-lucilles",
@@ -22724,7 +23063,7 @@
    "dica": "O brunch de sábado e domingo é o melhor momento para conhecer; reserve com antecedência.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 24.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22751,7 +23090,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 44,
+   "precoMax": 59.0,
+   "precoBase": "prato principal (jantar)",
+   "fontePreco": "https://www.brennanshouston.com/menus/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-gaidos",
@@ -22925,7 +23270,7 @@
    "dica": "Se não souber o que pedir, diga ao bartender do que você gosta (até de caipirinha) e peça uma sugestão.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 9.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22946,7 +23291,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 12,
+   "precoMax": 15.0,
+   "precoBase": "comida de bar mais barata (nozes)",
+   "fontePreco": "https://www.anvilhouston.com/_files/ugd/7c113c_0cfbd3db392949babeae1a85c157f1f7.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-julep",
@@ -22968,7 +23319,7 @@
    "dica": "Peça um dos juleps da casa; o bar enche a partir das 21h nos fins de semana.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 8.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -22984,7 +23335,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 18,
+   "precoMax": 24.0,
+   "precoBase": "petisco (comida mais barata)",
+   "fontePreco": "https://www.julephouston.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-saint-arnold-brewing",
@@ -23093,7 +23450,7 @@
    "dica": "Há uma segunda unidade maior no East End (3501 Harrisburg Blvd), com terraço.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 5.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -23109,7 +23466,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 11,
+   "precoMax": 14.0,
+   "precoBase": "taco (item de comida mais barato)",
+   "fontePreco": "https://www.eightrowflint.com/s/111526-ERF-H-menu.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-la-carafe",
@@ -23623,8 +23986,8 @@
    "historia": "O centro oficial de visitantes do Johnson Space Center da NASA, de onde são controladas as missões tripuladas. Dá para ver de perto um foguete Saturno V inteiro, a réplica do ônibus espacial sobre o avião Boeing 747 e fazer o passeio de tram pelas instalações da NASA, incluindo o Controle da Missão histórico das missões Apollo.",
    "dica": "Compre o ingresso online e faça o NASA Tram Tour logo cedo, pois as vagas acabam; reserve o dia inteiro.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Adulto online US$ 29,95–39,95 · no local US$ 34,95–44,95 · Criança US$ 24,95–34,95 · até 3 anos grátis",
+   "precoMin": 29.95,
    "faixaPreco": "",
    "tempoVisita": "5–7 horas",
    "notaCuradoria": 5.0,
@@ -23669,7 +24032,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 37,
+   "precoMax": 44.95,
+   "precoBase": "adulto online (faixa baixa)",
+   "fontePreco": "https://spacecenter.org/visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-mfah",
@@ -23733,8 +24103,8 @@
    "historia": "Um dos museus de ciência mais visitados do país, famoso pela enorme sala de dinossauros, pela coleção de pedras preciosas e minerais e pelo borboletário com floresta tropical. Tem ainda planetário e cinema gigante, o que garante um dia inteiro com crianças.",
    "dica": "O borboletário (Cockrell Butterfly Center) e o planetário são cobrados à parte; compre o combo se for ver tudo.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Adulto (12+) US$ 25 · Criança (3–11) US$ 16 · Sênior (62+) US$ 16 · terças 17h–20h grátis",
+   "precoMin": 25.0,
    "faixaPreco": "",
    "tempoVisita": "3–4 horas",
    "notaCuradoria": 5.0,
@@ -23749,7 +24119,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 25,
+   "precoMax": 25.0,
+   "precoBase": "entrada geral adulto",
+   "fontePreco": "https://www.hmns.org/visit/hours-admission/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-menil-collection",
@@ -24155,8 +24532,8 @@
    "historia": "Museu interativo pensado para crianças de até uns 12 anos, com uma 'cidade' em miniatura onde os pequenos trabalham e ganham dinheiro de mentirinha, laboratórios de ciência e área de água. É sempre citado entre os melhores museus infantis dos Estados Unidos.",
    "dica": "Leve roupa extra para as crianças: a área de brincadeiras com água molha mesmo.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Online: adulto/criança (1+) US$ 21,95 · sênior US$ 19,95 · No local: US$ 23,95 · menores de 1 ano grátis",
+   "precoMin": 21.95,
    "faixaPreco": "",
    "tempoVisita": "2–4 horas",
    "notaCuradoria": 4.5,
@@ -24183,7 +24560,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 23,
+   "precoMax": 23.95,
+   "precoBase": "ingresso online (1+ anos)",
+   "fontePreco": "https://www.cmhouston.org/visiting/admission",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-waterwall-park",
@@ -24596,8 +24980,8 @@
    "historia": "Obelisco de 173 metros, mais alto que o Monumento a Washington, erguido no campo onde, em 1836, o exército de Sam Houston derrotou o general mexicano Santa Anna e garantiu a independência do Texas. Na base há um museu de história texana.",
    "dica": "A entrada no parque e no museu da base costuma ser gratuita; o elevador ao mirante e o filme são pagos.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Adulto US$ 14 · Sênior/veterano US$ 10 · Criança (4–11) US$ 6 · 0–3 anos grátis",
+   "precoMin": 14.0,
    "faixaPreco": "",
    "tempoVisita": "1–2 horas",
    "notaCuradoria": 4.5,
@@ -24624,7 +25008,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 14,
+   "precoMax": 14.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://www.sanjacinto-museum.org/Visit/Admission/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-daikin-park",
@@ -24935,8 +25326,8 @@
    "historia": "O maior rodeio e exposição agropecuária do mundo, com quase três semanas de provas de rodeio, shows de grandes artistas todas as noites no NRG Stadium, parque de diversões e exposição de animais. É o evento mais esperado do ano em Houston e uma imersão completa na cultura texana.",
    "dica": "Compre o ingresso do show com antecedência e vá de bota e chapéu: todo mundo se veste de cowboy nesses dias.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Assentos rodeio + show: nível superior US$ 35–45 · Loge US$ 54 · Field US$ 71 · Club US$ 76–81 · Action Seats US$ 185",
+   "precoMin": 35.0,
    "faixaPreco": "",
    "tempoVisita": "",
    "quando": "Anual, em março. Edição 2027: 2 a 21 de março (a competição de churrasco abre as festividades em 25 de fevereiro).",
@@ -24972,7 +25363,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 84,
+   "precoMax": 185.0,
+   "precoBase": "assento mais barato (nível superior)",
+   "fontePreco": "https://www.rodeohouston.com/tickets/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-worlds-championship-bbq",
@@ -25098,8 +25496,8 @@
    "historia": "Festival natalino que transforma o centro histórico de Galveston numa Londres vitoriana da época de Charles Dickens, com personagens fantasiados, desfiles, música e comidas típicas. Quem vai fantasiado com roupas de época costuma pagar ingresso reduzido.",
    "dica": "Vá fantasiado para ganhar desconto na entrada e aproveite para ver a decoração de Natal da Strand.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Adulto US$ 25 · Jovem (7-12) US$ 18 · até 6 anos grátis · sexta 4/12 entrada grátis (17h-21h)",
+   "precoMin": 25.0,
    "faixaPreco": "",
    "tempoVisita": "",
    "quando": "Anual, no primeiro fim de semana de dezembro. Edição 2026: 4 a 6 de dezembro.",
@@ -25123,7 +25521,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 25,
+   "precoMax": 25.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://www.galvestonhistory.org/events/dickens-on-the-strand/tickets",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-thanksgiving-parade",
@@ -25306,8 +25711,8 @@
    "historia": "Um dos maiores festivais renascentistas dos Estados Unidos: uma vila medieval com cavaleiros em justas, artistas de rua, artesãos e comidas como a famosa coxa de peru gigante. Cada fim de semana tem um tema, e muita gente vai fantasiada.",
    "dica": "Vá cedo para evitar o trânsito na entrada e use sapatos confortáveis: o terreno é grande e de terra.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Ingresso diário adulto de ~US$ 26 (domingo, antecipado) a ~US$ 40 (sábado, com seguro) · crianças 4 anos ou menos grátis",
+   "precoMin": 26.0,
    "faixaPreco": "",
    "tempoVisita": "",
    "quando": "Anual, nos fins de semana de outubro e novembro. Temporada 2026 vai até 29 de novembro; as datas de 2027 ainda não foram divulgadas.",
@@ -25337,7 +25742,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 33,
+   "precoMax": 40.0,
+   "precoBase": "adulto antecipado (domingo)",
+   "fontePreco": "https://www.texrenfest.com/p/ticket-info/general-ticket-info",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "hou-bayou-city-art-festival",
@@ -25698,8 +26110,8 @@
    "historia": "O sistema de transporte público de Houston tem três linhas de VLT (METRORail) e uma rede de ônibus. A Red Line é a mais útil para visitantes: liga o centro ao Museum District, ao Texas Medical Center e ao NRG Park.",
    "dica": "Use o cartão recarregável METRO Q ou o aplicativo para pagar; a tarifa é integrada entre trem e ônibus por algumas horas.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Passagem US$ 1,25 (ônibus e METRORail) · Passe diário US$ 3",
+   "precoMin": 1.25,
    "faixaPreco": "",
    "tempoVisita": "",
    "notaCuradoria": 3.5,
@@ -25726,7 +26138,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 2,
+   "precoMax": 3.0,
+   "precoBase": "tarifa integral de uma viagem",
+   "fontePreco": "https://www.ridemetro.org/fares",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-fogo-de-chao-austin",
@@ -25748,7 +26167,7 @@
    "dica": "De segunda a quinta o happy hour vale o dia todo no bar, um jeito bem mais barato de matar a saudade da picanha.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 50.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -25764,7 +26183,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 58,
+   "precoMax": 67.0,
+   "precoBase": "churrasco completo no almoço",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=120&type=menu-lunch&id=4567",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-casa-do-brasil",
@@ -25824,7 +26249,7 @@
    "dica": "No almoço de dias úteis o rodízio costuma sair mais barato que no jantar; confira os valores no site antes de ir.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 43.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -25840,7 +26265,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 54,
+   "precoMax": 65.0,
+   "precoBase": "churrasco completo no almoço (seg-qui)",
+   "fontePreco": "https://estancia.com/wp-content/uploads/2026/09/LUNCH-March.24.26.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-bitelo-brazilian-steakhouse",
@@ -26014,7 +26445,7 @@
    "dica": "Chegue antes das 8h num dia de semana, leve cadeira de praia e água; quem quer evitar fila pode encomendar com antecedência pelo site.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 9.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 5.0,
@@ -26035,7 +26466,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 16,
+   "precoMax": 21.0,
+   "precoBase": "sanduíche (chopped beef)",
+   "fontePreco": "https://franklinbbq.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-la-barbecue",
@@ -26057,7 +26494,7 @@
    "dica": "Peça a costela bovina (beef rib) para dividir: uma só alimenta duas pessoas com folga.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 11.95,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -26078,7 +26515,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 14,
+   "precoMax": 18.5,
+   "precoBase": "sanduíche",
+   "fontePreco": "https://labarbecue.com/austin-la-barbecue-food-menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-terry-blacks-barbecue",
@@ -26100,7 +26543,7 @@
    "dica": "É a melhor opção para comer brisket no jantar ou com grupo grande, e fica a cinco minutos de Barton Springs.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 17.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -26121,7 +26564,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 18,
+   "precoMax": 20.0,
+   "precoBase": "sanduíche",
+   "fontePreco": "https://terryblacksbbq.com/austin",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-interstellar-bbq",
@@ -26181,7 +26630,7 @@
    "dica": "Leve dinheiro e sua própria cerveja ou vinho: a casa é BYOB e há uma vinícola ao lado.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 13.95,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26202,7 +26651,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 21,
+   "precoMax": 29.95,
+   "precoBase": "sanduíche de linguiça",
+   "fontePreco": "https://www.saltlickbbq.com/driftwood-menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-blacks-barbecue-lockhart",
@@ -26310,7 +26765,7 @@
    "dica": "Peça o Bob Armstrong Dip para dividir e uma margarita da casa.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 14.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26326,7 +26781,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 20,
+   "precoMax": 56.0,
+   "precoBase": "enchiladas de carne ou queijo",
+   "fontePreco": "https://mattselrancho.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-mi-madres",
@@ -26348,7 +26809,7 @@
    "dica": "Vá no café da manhã e peça os tacos de migas.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 13.0,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26364,7 +26825,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 15,
+   "precoMax": 17.0,
+   "precoBase": "burrito de frango/vegetariano",
+   "fontePreco": "https://www.mimadresrestaurant.com/breakfast-menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-veracruz-all-natural",
@@ -26424,7 +26891,7 @@
    "dica": "Leve uma caixinha de pan dulce e empanadas para o café da tarde.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 12.0,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -26439,7 +26906,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 15,
+   "precoMax": 16.5,
+   "precoBase": "prato miga (ovos mexidos com tortilla chips)",
+   "fontePreco": "https://joesbakery.com/wp-content/uploads/2025/06/Joes_Menu_2025.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-jeffreys",
@@ -26461,7 +26934,7 @@
    "dica": "Reservas só por telefone ou OpenTable; às segundas o happy hour vale a noite toda no bar.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 38.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -26477,7 +26950,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 65,
+   "precoMax": 90.0,
+   "precoBase": "prato principal mais barato (especialidades)",
+   "fontePreco": "https://jeffreysofaustin.com/wp-content/uploads/2022/06/Jeffreys_Dinner.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-iii-forks-austin",
@@ -26499,7 +26978,7 @@
    "dica": "Peça o filé com osso (bone-in) e reserve mesa perto da janela.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 22.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26515,7 +26994,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 54,
+   "precoMax": 89.0,
+   "precoBase": "hambúrguer vegetariano",
+   "fontePreco": "https://www.3forks.com/menu/austin/?menutype=dinnermenu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-dirty-martins-place",
@@ -26618,7 +27103,7 @@
    "dica": "Peça as panquecas da estação e o Kerbey Queso para a mesa.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 13.49,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26639,7 +27124,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 15,
+   "precoMax": 21.99,
+   "precoBase": "prato de café da manhã",
+   "fontePreco": "https://www.kerbeylanecafe.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-magnolia-cafe",
@@ -26704,7 +27195,7 @@
    "dica": "Chegue cedo para tirar foto no mural sem fila e peça o Iced Turbo.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 4.0,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26725,7 +27216,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 5,
+   "precoMax": 8.0,
+   "precoBase": "taco de café da manhã (feijão e queijo)",
+   "fontePreco": "https://www.joscoffee.com/s/JoSC_Menu_Wall_020624.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-monument-cafe",
@@ -26790,7 +27287,7 @@
    "dica": "O brunch de domingo em bufê é famoso; reserve com antecedência.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 21.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26806,7 +27303,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 30,
+   "precoMax": 58.0,
+   "precoBase": "frango com waffles",
+   "fontePreco": "https://www.moonshinegrill.com/s/MoonshineDT_Dinner_10-21-2026.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-lucys-fried-chicken",
@@ -26828,7 +27331,7 @@
    "dica": "Peça o balde para dividir e uma das tortas de sobremesa.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 12.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -26844,7 +27347,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 15,
+   "precoMax": 17.5,
+   "precoBase": "sanduíche de salada de frango",
+   "fontePreco": "https://www.lucysfriedchicken.com/wp-content/uploads/2025/04/88199_LFC_Menu-R.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-uchi-austin",
@@ -26866,7 +27375,7 @@
    "dica": "Chegue no início da noite para o happy hour 'sake social', com preços bem menores.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 15.5,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 5.0,
@@ -26882,7 +27391,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 25,
+   "precoMax": 35.0,
+   "precoBase": "hot tasting (prato quente) mais barato",
+   "fontePreco": "https://uchi.uchirestaurants.com/location/sushi-austin/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-ramen-tatsu-ya-south-lamar",
@@ -26942,7 +27457,7 @@
    "dica": "Se a espera estiver longa, compre fatias para viagem no More Home Slice, ao lado.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 4.5,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -26957,7 +27472,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 15,
+   "precoMax": 23.25,
+   "precoBase": "fatia de queijo",
+   "fontePreco": "https://homeslicepizza.com/wp-content/uploads/2026/09/HSlice_DineInMenu_091626.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-round-rock-donuts",
@@ -27108,7 +27629,7 @@
    "dica": "Vá em dia de futebol americano universitário para ver a torcida, ou numa tarde tranquila para uma cerveja alemã com salsicha.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 12.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -27135,7 +27656,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 16,
+   "precoMax": 19.0,
+   "precoBase": "tenders de frango / sanduíche",
+   "fontePreco": "https://www.scholzgarten.com/ScholzMenu.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-the-white-horse",
@@ -27157,7 +27684,7 @@
    "dica": "Chegue no início da noite para a aula gratuita de two-step e depois caia na pista.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 3.0,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -27173,7 +27700,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 8,
+   "precoMax": 9.0,
+   "precoBase": "taco",
+   "fontePreco": "https://www.thewhitehorseaustin.com/menus",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "aus-the-roosevelt-room",
@@ -28011,8 +28544,8 @@
    "historia": "O museu oficial da história do Texas conta, em três andares, a trajetória do estado desde os povos indígenas, passando pelo domínio espanhol e mexicano, a República do Texas e a era do petróleo. A peça mais impressionante é o casco do navio La Belle, do explorador francês La Salle, naufragado em 1686 e resgatado do fundo da baía de Matagorda. Também tem cinema IMAX.",
    "dica": "Estacione na garagem do museu (US$ 15 o dia) e vá a pé até o Capitólio, que fica a quatro quadras.",
    "gratuito": false,
-   "preco": "Adulto US$ 22 · Sênior US$ 18 · Jovem (6–17) US$ 16 · IMAX à parte",
-   "precoMin": 16,
+   "preco": "Adulto US$ 22 · Sênior/estudante/militar US$ 18 · Jovem (6–17) US$ 16 · até 5 anos grátis · IMAX e Texas Spirit Theater à parte",
+   "precoMin": 22.0,
    "faixaPreco": "",
    "tempoVisita": "2–3 horas",
    "notaCuradoria": 4.5,
@@ -28051,7 +28584,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 22,
+   "precoMax": 22.0,
+   "precoBase": "entrada adulto (museu)",
+   "fontePreco": "https://www.thestoryoftexas.com/visit/plan-your-visit",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-barton-springs-pool",
@@ -28072,7 +28612,7 @@
    "historia": "Piscina natural de 3 acres alimentada por uma nascente que mantém a água entre 20 e 21 °C o ano inteiro, dentro do Zilker Park. É o coração da vida ao ar livre de Austin: no verão, os gramados em volta viram praia. A nascente abriga a salamandra-de-barton-springs, espécie ameaçada que só existe ali.",
    "dica": "No inverno a entrada fica gratuita (a cobrança volta em 13 de março de 2027); a água parece gelada no começo, mas no frio dá a sensação de piscina aquecida.",
    "gratuito": false,
-   "preco": "Grátis até 12/03/2027 · Depois: adulto não residente US$ 9 · Residente US$ 5",
+   "preco": "Grátis até 12/03/2027 · Depois: adulto (18–62) residente US$ 5 · não residente US$ 9",
    "precoMin": 0,
    "faixaPreco": "",
    "tempoVisita": "2–4 horas",
@@ -28106,7 +28646,10 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "fontePreco": "https://www.austintexas.gov/bartonsprings",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-zilker-park",
@@ -28182,8 +28725,8 @@
    "historia": "Jardim botânico de 10 hectares dentro do Zilker Park, com jardim japonês com laguinhos de carpas e ponte, roseiral, jardim de borboletas e um trecho com pegadas de dinossauro de verdade. É um dos lugares preferidos para ensaios de fotos de casamento e de 15 anos.",
    "dica": "O Jardim Japonês Isamu Taniguchi é a parte mais bonita; vá de manhã cedo.",
    "gratuito": false,
-   "preco": "Adulto não residente US$ 8 (residente US$ 6) · Jovem (3–17) US$ 4 · Até 2 anos grátis",
-   "precoMin": 4,
+   "preco": "Adulto (18–61) residente US$ 6 · não residente US$ 8 · Sênior US$ 5/7 · Jovem (3–17) US$ 3/4 · até 2 anos grátis",
+   "precoMin": 8.0,
    "faixaPreco": "",
    "tempoVisita": "1–2 horas",
    "notaCuradoria": 4.5,
@@ -28222,7 +28765,12 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoBase": "entrada adulto (não residente)",
+   "fontePreco": "https://www.austintexas.gov/parks/locations/zilker-botanical-garden",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-congress-avenue-bridge-bats",
@@ -28597,8 +29145,8 @@
    "historia": "Biblioteca e museu do presidente Lyndon B. Johnson, texano que assumiu após o assassinato de Kennedy e assinou as leis dos direitos civis nos anos 1960. O prédio monumental guarda milhões de documentos, uma réplica do Salão Oval e exposições sobre a Guerra do Vietnã e a corrida espacial. Há estacionamento gratuito no local.",
    "dica": "Não perca a réplica do Salão Oval, num dos andares superiores, e a vista do terraço para o campus.",
    "gratuito": false,
-   "preco": "Adulto US$ 16 · Sênior US$ 12 · Jovem (13–18) US$ 6 · Menores de 12 grátis",
-   "precoMin": 0,
+   "preco": "Adulto US$ 16 · Sênior US$ 12 · Jovem (13–18) US$ 6 · Universitário US$ 6 · menores de 12 grátis · terças metade do preço",
+   "precoMin": 16.0,
    "faixaPreco": "",
    "tempoVisita": "2 horas",
    "notaCuradoria": 4.5,
@@ -28614,7 +29162,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 16,
+   "precoMax": 16.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://www.lbjlibrary.org/visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-ut-tower",
@@ -28696,8 +29251,8 @@
    "historia": "Jardim botânico da Universidade do Texas criado pela ex-primeira-dama Lady Bird Johnson, apaixonada pelas flores nativas do estado. São mais de 100 hectares com jardins, trilhas, um arboreto de carvalhos e uma torre de observação de pedra. Na primavera, os campos de bluebonnets, a flor símbolo do Texas, ficam espetaculares.",
    "dica": "Vá em março ou abril para ver os bluebonnets e compre o ingresso com horário pelo site.",
    "gratuito": false,
-   "preco": "Adulto US$ 15 · Sênior/militar US$ 12 · Crianças US$ 9 (seg–qui; fins de semana podem custar mais)",
-   "precoMin": 9,
+   "preco": "Adulto US$ 15 (seg–qui) / US$ 18 (sex–dom) · Sênior/militar US$ 12/15 · Jovem (3–17) US$ 9/12 · até 2 anos grátis",
+   "precoMin": 15.0,
    "faixaPreco": "",
    "tempoVisita": "2–3 horas",
    "notaCuradoria": 4.5,
@@ -28724,7 +29279,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 17,
+   "precoMax": 18.0,
+   "precoBase": "entrada adulto em dia de semana",
+   "fontePreco": "https://www.wildflower.org/visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-mckinney-falls-state-park",
@@ -28745,8 +29307,8 @@
    "historia": "Parque estadual dentro dos limites de Austin, a 20 minutos do centro, onde o riacho Onion Creek forma cachoeiras sobre lajes de calcário. Tem trilhas, áreas de piquenique, camping e as ruínas da casa de Thomas McKinney, um dos primeiros colonos do Texas. Nos dias quentes, o povo nada nos poços abaixo das quedas.",
    "dica": "Reserve o passe de entrada pelo site do Texas Parks and Wildlife nos fins de semana, porque o parque lota.",
    "gratuito": false,
-   "preco": "Adulto US$ 6 · Menores de 12 grátis",
-   "precoMin": 6,
+   "preco": "Adulto US$ 6 por dia · até 12 anos grátis",
+   "precoMin": 6.0,
    "faixaPreco": "",
    "tempoVisita": "2–4 horas",
    "notaCuradoria": 4.5,
@@ -28779,7 +29341,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 6,
+   "precoMax": 6.0,
+   "precoBase": "entrada adulto por dia",
+   "fontePreco": "https://tpwd.texas.gov/state-parks/mckinney-falls",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-hamilton-pool-preserve",
@@ -28800,8 +29369,8 @@
    "historia": "Piscina natural formada quando o teto de uma caverna desabou há milhares de anos, deixando uma cúpula de pedra e uma cachoeira de 15 metros caindo na água verde. É uma das imagens mais famosas do Texas. A trilha até a piscina é curta mas íngreme, e a natação depende da qualidade da água e da segurança das rochas.",
    "dica": "Reserve online com antecedência (US$ 12 por carro) e confira no site se a natação está liberada no dia.",
    "gratuito": false,
-   "preco": "Reserva US$ 12 por veículo + US$ 8 por adulto (13–61) · Sênior US$ 3 · Crianças grátis",
-   "precoMin": 8,
+   "preco": "Reserva US$ 12 por veículo (online) + US$ 8 por adulto (13–61) na chegada · Sênior (62+) US$ 3 · até 12 anos grátis",
+   "precoMin": 8.0,
    "faixaPreco": "",
    "tempoVisita": "2–3 horas",
    "notaCuradoria": 5.0,
@@ -28846,7 +29415,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 8,
+   "precoMax": 8.0,
+   "precoBase": "entrada por adulto (13–61)",
+   "fontePreco": "https://parks.traviscountytx.gov/parks/hamilton-pool-preserve",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-thinkery",
@@ -28867,7 +29443,7 @@
    "historia": "Museu de ciências para crianças no bairro planejado de Mueller, com experimentos de água, luz, construção e um espaço ao ar livre para brincar. É pensado para crianças de até uns 11 anos e tem área específica para bebês. Ótimo programa para dias de chuva ou de calor extremo.",
    "dica": "Na noite em família, a entrada é 'pague quanto puder'; veja as datas no site.",
    "gratuito": false,
-   "preco": "US$ 19,95 por pessoa (a partir de 1 ano)",
+   "preco": "Entrada geral US$ 19,95 por pessoa (a partir de 1 ano) · Baby Bloomers US$ 9 · Family Night valor sugerido US$ 9",
    "precoMin": 19.95,
    "faixaPreco": "",
    "tempoVisita": "2–3 horas",
@@ -28884,7 +29460,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMax": 19.95,
+   "precoBase": "entrada geral",
+   "fontePreco": "https://thinkeryaustin.org/visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-the-domain",
@@ -29359,8 +29941,8 @@
    "historia": "Um enorme domo de granito rosado que se ergue 130 metros acima da paisagem, a 1h40 de Austin. A trilha até o topo leva uns 45 minutos e recompensa com vista de todo o Hill Country. Os povos indígenas acreditavam que a pedra era encantada por causa dos estalos que ela faz quando esfria à noite.",
    "dica": "Reserve o passe diário pelo site com antecedência: nos fins de semana o parque esgota cedo.",
    "gratuito": false,
-   "preco": "Adulto US$ 8 · Menores de 12 grátis",
-   "precoMin": 8,
+   "preco": "Adulto US$ 8 por dia · até 12 anos grátis",
+   "precoMin": 8.0,
    "faixaPreco": "",
    "tempoVisita": "3–4 horas",
    "notaCuradoria": 5.0,
@@ -29405,7 +29987,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 8,
+   "precoMax": 8.0,
+   "precoBase": "entrada adulto por dia",
+   "fontePreco": "https://tpwd.texas.gov/state-parks/enchanted-rock",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-pedernales-falls-state-park",
@@ -29426,8 +30015,8 @@
    "historia": "O rio Pedernales desce em degraus sobre placas de calcário inclinadas, formando cascatas e poços, a cerca de uma hora de Austin. O parque tem trilhas, observação de pássaros e áreas de banho em trechos permitidos. Fica perto de Johnson City, cidade natal do presidente Lyndon Johnson.",
    "dica": "Não entre na água perto das quedas: o rio sobe de repente com chuva. Nade só na área indicada.",
    "gratuito": false,
-   "preco": "13 anos ou mais US$ 6 · Menores de 12 grátis",
-   "precoMin": 6,
+   "preco": "13 anos ou mais US$ 6 por dia · até 12 anos grátis",
+   "precoMin": 6.0,
    "faixaPreco": "",
    "tempoVisita": "3–4 horas",
    "notaCuradoria": 4.5,
@@ -29466,7 +30055,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 6,
+   "precoMax": 6.0,
+   "precoBase": "entrada por pessoa (13+)",
+   "fontePreco": "https://tpwd.texas.gov/state-parks/pedernales-falls",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-greetings-from-austin-mural",
@@ -29582,8 +30178,8 @@
    "historia": "Festival que transforma o centro de Austin todo mês de março, misturando conferências de tecnologia e inovação, festival de cinema e centenas de shows de música. Sempre tem delegação e empresas brasileiras entre os palestrantes. Em 2027 a programação ganha um festival de podcasts, e as estreias de cinema vão para o ACL Live enquanto o Paramount Theatre passa por restauro.",
    "dica": "Muitos shows e festas paralelas são gratuitos com RSVP; não é preciso credencial para aproveitar a cidade.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Credenciais 2027: Music US$ 695 · Film & TV US$ 925 · Innovation US$ 1.095 · Platinum US$ 1.595",
+   "precoMin": 695.0,
    "faixaPreco": "",
    "tempoVisita": "Vários dias",
    "quando": "SXSW EDU 13 a 16 de março; conferências e festivais 15 a 21 de março de 2027",
@@ -29613,7 +30209,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 1078,
+   "precoMax": 1595.0,
+   "precoBase": "credencial mais barata (Music)",
+   "fontePreco": "https://www.sxsw.com/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-acl-music-festival",
@@ -29680,7 +30283,7 @@
    "historia": "Tradição natalina de Austin desde 1965: um percurso de cerca de 1,6 km pelo Zilker Park com mais de 2 milhões de luzes, túneis iluminados, cenários temáticos, comidas e roda-gigante. Ao lado fica a Zilker Holiday Tree, uma 'árvore' de 47 metros feita de luzes presas a uma torre de iluminação antiga, acesa de 29 de novembro de 2026 a 1º de janeiro de 2027.",
    "dica": "Há noites gratuitas (10, 11 e 13 a 17 de dezembro de 2026, com reserva); nas outras, compre ingresso antecipado.",
    "gratuito": false,
-   "preco": "",
+   "preco": "Entrada geral US$ 0–8 conforme a noite (grátis em 10-11 e 13-17/dez) · ZIP Pass US$ 20–25 · crianças até 11 anos grátis",
    "precoMin": 0,
    "faixaPreco": "",
    "tempoVisita": "2 horas",
@@ -29699,7 +30302,10 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "fontePreco": "https://austintrailoflights.org/ticket-types",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-formula-1-us-grand-prix",
@@ -30070,8 +30676,8 @@
    "historia": "O sistema de transporte público de Austin tem ônibus, linhas rápidas MetroRapid e o trem MetroRail Red Line, que liga o centro (estação Downtown) ao norte, passando pela estação McKalla, do estádio do Austin FC, até Leander. O aplicativo CapMetro permite comprar passagens no celular.",
    "dica": "Baixe o app CapMetro e use o MetroRail para ir a jogos do Austin FC; a passagem diária é barata.",
    "gratuito": false,
-   "preco": "",
-   "precoMin": 0,
+   "preco": "Ônibus local US$ 1,25 · Passe diário local US$ 2,50 · MetroRail US$ 3,50 · Passe diário comuter US$ 7 · menores de 18 grátis",
+   "precoMin": 1.25,
    "faixaPreco": "",
    "tempoVisita": "",
    "notaCuradoria": 3.5,
@@ -30098,7 +30704,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 4,
+   "precoMax": 7.0,
+   "precoBase": "tarifa de ônibus local",
+   "fontePreco": "https://www.capmetro.org/fares",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "aus-dps-pflugerville-mega-center",
@@ -30326,7 +30939,7 @@
    "dica": "Há uma segunda unidade no norte da cidade (5546 N Loop 1604 W, perto da La Cantera), mais prática para quem mora no lado norte.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 50.0,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -30342,7 +30955,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 61,
+   "precoMax": 72.0,
+   "precoBase": "rodízio completo (Full Churrasco)",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=96&type=menu-lunch&id=4670",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-texas-de-brazil",
@@ -30364,7 +30983,7 @@
    "dica": "Peça a picanha com alho e a costela de cordeiro; no aniversário costuma haver sobremesa de cortesia, avise ao reservar.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 60.99,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -30380,7 +30999,12 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMax": 60.99,
+   "precoBase": "rodízio completo (jantar, vale o dia todo)",
+   "fontePreco": "https://texasdebrazil.com/locations/san-antonio",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-chama-gaucha",
@@ -30402,7 +31026,7 @@
    "dica": "Faça reserva para sexta e sábado à noite; o almoço em dia de semana sai bem mais em conta.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 51.95,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -30418,7 +31042,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 60,
+   "precoMax": 67.95,
+   "precoBase": "rodízio completo no almoço (seg-sex)",
+   "fontePreco": "https://www.chamagaucha.com/sanantonio",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-brasao",
@@ -30440,7 +31070,7 @@
    "dica": "Combine com um passeio pela La Cantera ou depois de um dia no Six Flags Fiesta Texas, que fica a poucos minutos.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 54.95,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -30456,7 +31086,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 62,
+   "precoMax": 69.95,
+   "precoBase": "rodízio completo no almoço (seg-sex)",
+   "fontePreco": "https://brasaousa.com/pricing",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-galpao-gaucho",
@@ -30516,7 +31152,7 @@
    "dica": "Bom lugar para aniversários e confraternizações: pergunte pelos salões reservados.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 39.95,
    "faixaPreco": "$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -30532,7 +31168,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 50,
+   "precoMax": 59.95,
+   "precoBase": "rodízio completo no almoço (qua-sex)",
+   "fontePreco": "https://www.avebrazil.com/locations/san-antonio-area",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-picanha-na-brasa",
@@ -30554,7 +31196,7 @@
    "dica": "Às quintas costuma ter promoção de segundo prato de picanha pela metade do preço; confira no Instagram antes de ir.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 16.95,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -30570,7 +31212,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 22,
+   "precoMax": 29.95,
+   "precoBase": "frango com bacon (prato com 2 acompanhamentos)",
+   "fontePreco": "https://www.picanhanabrasa.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-pingo-de-mel",
@@ -30782,7 +31430,7 @@
    "dica": "Peça as rib tips, a especialidade da casa.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 8.99,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -30798,7 +31446,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 17,
+   "precoMax": 22.99,
+   "precoBase": "sanduíche (pulled pork)",
+   "fontePreco": "https://thepurplepigbbq.com/schertz-purple-pig-bbq-food-menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-mi-tierra",
@@ -30875,7 +31529,7 @@
    "dica": "Suba ao terraço para um drinque antes do jantar; o bar de cima tem horário próprio.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 14.95,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -30891,7 +31545,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 18,
+   "precoMax": 26.95,
+   "precoBase": "prato principal (jantar)",
+   "fontePreco": "https://www.rosariossa.com/menu/dinner/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-garcias",
@@ -31065,7 +31725,7 @@
    "dica": "Bom fecho para um dia em Gruene ou na Schlitterbahn; reserve no fim de semana.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 34.95,
    "faixaPreco": "$$$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31081,7 +31741,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 61,
+   "precoMax": 85.95,
+   "precoBase": "prato principal (The Bird, frango)",
+   "fontePreco": "https://myronsprime.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-chris-madrids",
@@ -31103,7 +31769,7 @@
    "dica": "Peça o hambúrguer no tamanho 'macho' só se estiver com muita fome; o normal já é grande.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 8.25,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31118,7 +31784,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 11,
+   "precoMax": 16.95,
+   "precoBase": "hambúrguer regular (1/4 lb)",
+   "fontePreco": "https://www.chrismadrids.com/main-menu-0326/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-guenther-house",
@@ -31183,7 +31855,7 @@
    "dica": "Nos fins de semana a espera passa de 30 minutos; vá em dia de semana ou cedo.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 8.5,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31199,7 +31871,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 11,
+   "precoMax": 14.5,
+   "precoBase": "panquecas (Silver Dollar Cakes)",
+   "fontePreco": "https://www.magnoliapancakehaus.com/menus/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-bakery-lorraine",
@@ -31302,7 +31980,7 @@
    "dica": "Vá antes ou depois de um show no Gruene Hall, que fica ao lado; espere fila nos fins de semana.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 15.99,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31329,7 +32007,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 26,
+   "precoMax": 45.99,
+   "precoBase": "prato principal (frango grelhado)",
+   "fontePreco": "https://gristmillrestaurant.com/menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-tip-top-cafe",
@@ -31351,7 +32035,7 @@
    "dica": "Guarde espaço para uma fatia de torta; confirme o horário por telefone.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 13.99,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -31367,7 +32051,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 16,
+   "precoMax": 22.99,
+   "precoBase": "prato (Chef's Favorites, com 2 acompanhamentos)",
+   "fontePreco": "https://tiptopcafesa.com/menu",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-peggys-on-the-green",
@@ -31405,7 +32095,9 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": false,
+   "fechado": true,
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-naegelins-bakery",
@@ -31514,7 +32206,7 @@
    "dica": "Peça a burrata de entrada; os horários variam, então ligue antes.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 17.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31530,7 +32222,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 24,
+   "precoMax": 32.0,
+   "precoBase": "pizza napoletana 12 pol (Cosacca)",
+   "fontePreco": "https://www.doughpizzeria.com/castle-hills-menu/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-pearl-farmers-market",
@@ -31595,7 +32293,7 @@
    "dica": "Desça ao Downstairs para um coquetel com vista para o River Walk.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 17.0,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31616,7 +32314,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 20,
+   "precoMax": 42.0,
+   "precoBase": "hambúrguer/sanduíche",
+   "fontePreco": "https://esquiretavern-sa.com/wp-content/uploads/Esquire-Food-Menu.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-menger-bar",
@@ -31638,7 +32342,7 @@
    "dica": "Peça um drinque e dê uma volta pelo saguão vitoriano do hotel, que tem fama de mal-assombrado.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 5.5,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.5,
@@ -31665,7 +32369,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 17,
+   "precoMax": 20.0,
+   "precoBase": "taco Mencerita (unidade)",
+   "fontePreco": "https://mengerhotel-cdn.zambezimarketing.io/assets/files/1/bar-menu.pdf",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-friendly-spot",
@@ -31687,7 +32397,7 @@
    "dica": "Bom para encontrar amigos no fim de semana à tarde; há food trucks e petiscos.",
    "gratuito": false,
    "preco": "",
-   "precoMin": null,
+   "precoMin": 10.0,
    "faixaPreco": "$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -31703,7 +32413,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 12,
+   "precoMax": 15.0,
+   "precoBase": "hambúrguer simples / sanduíche de frango",
+   "fontePreco": "https://thefriendlyspot.com/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "sat-paramour",
@@ -32785,8 +33501,8 @@
    "historia": "Construção de adobe de 1749 que servia de residência e escritório do comandante do presídio espanhol de San Antonio, único exemplo do tipo no Texas. As salas mobiliadas e o pátio com fonte mostram como era a vida na época colonial. É Marco Histórico Nacional.",
    "dica": "Visita rápida e barata; fica atrás da prefeitura, a duas quadras da Catedral de San Fernando.",
    "gratuito": false,
-   "preco": "Adulto US$ 5 · Sênior, militar e crianças de 7 a 13 anos US$ 3 · Até 6 anos grátis",
-   "precoMin": 5,
+   "preco": "Adulto US$ 6 · Sênior/militar US$ 4 · Crianças (7–13) US$ 3 · até 6 anos grátis",
+   "precoMin": 6.0,
    "faixaPreco": "",
    "tempoVisita": "45 min",
    "notaCuradoria": 4.0,
@@ -32819,7 +33535,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 6,
+   "precoMax": 6.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://www.spanishgovernorspalace.org/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-sama",
@@ -32840,8 +33563,8 @@
    "historia": "Museu instalado no antigo prédio da cervejaria Lone Star, de 1884, à beira do River Walk. Tem uma das maiores coleções de arte latino-americana dos EUA, além de antiguidades gregas, romanas e egípcias e arte asiática. Dá para chegar a pé pelo Museum Reach, a caminho da Pearl.",
    "dica": "Crianças de até 12 anos não pagam; moradores do condado de Bexar têm entrada grátis em parte da tarde de terça.",
    "gratuito": false,
-   "preco": "Pago (crianças até 12 anos grátis); confira valores no site",
-   "precoMin": null,
+   "preco": "Adulto US$ 24 · Sênior/militar US$ 19 · Estudante US$ 14 · até 12 anos grátis",
+   "precoMin": 24.0,
    "faixaPreco": "",
    "tempoVisita": "2 horas",
    "notaCuradoria": 4.5,
@@ -32874,7 +33597,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 24,
+   "precoMax": 24.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://www.samuseum.org/visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-mcnay",
@@ -32956,8 +33686,8 @@
    "historia": "Museu de história natural e cultura do Texas, fundado em 1926 e que completa 100 anos em 2026. Tem esqueletos de dinossauros, pinturas rupestres do oeste do Texas, exposições sobre vaqueiros e a vida no campo. É um dos programas favoritos das famílias com crianças.",
    "dica": "Moradores do condado de Bexar têm entrada grátis às terças à tarde, com reserva e comprovante de residência.",
    "gratuito": false,
-   "preco": "Pago; confira valores no site",
-   "precoMin": null,
+   "preco": "Adulto US$ 17 · Sênior US$ 16 · Criança (4–12) US$ 11 · até 3 anos grátis",
+   "precoMin": 17.0,
    "faixaPreco": "",
    "tempoVisita": "2–3 horas",
    "notaCuradoria": 4.5,
@@ -32996,7 +33726,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 17,
+   "precoMax": 17.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://www.wittemuseum.org/plan-your-visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-doseum",
@@ -33017,8 +33754,8 @@
    "historia": "Museu infantil premiado, todo interativo, pensado para crianças de até cerca de 10 anos. Há áreas de ciência, música, inventos, leitura e uma grande área externa com água e brincadeiras. Perfeito para um dia de calor ou de chuva com os pequenos.",
    "dica": "Leve roupa extra para as crianças: a área de água externa molha mesmo.",
    "gratuito": false,
-   "preco": "Por volta de US$ 18 por pessoa a partir de 1 ano (confira no site)",
-   "precoMin": null,
+   "preco": "Entrada geral US$ 18 por pessoa (a partir de 1 ano) · menores de 1 ano grátis",
+   "precoMin": 18.0,
    "faixaPreco": "",
    "tempoVisita": "2–3 horas",
    "notaCuradoria": 4.5,
@@ -33039,7 +33776,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 18,
+   "precoMax": 18.0,
+   "precoBase": "entrada geral",
+   "fontePreco": "https://www.thedoseum.org/visit/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-briscoe",
@@ -33060,8 +33804,8 @@
    "historia": "Museu dedicado à arte e à história do Velho Oeste americano, instalado na antiga biblioteca pública de 1930, à beira do River Walk. Exibe pinturas, esculturas, selas, armas e objetos de vaqueiros, indígenas e mexicanos. O jardim de esculturas é aberto para o rio.",
    "dica": "Combine com o passeio no River Walk; o jardim de esculturas é ótimo para fotos.",
    "gratuito": false,
-   "preco": "Pago; confira valores no site",
-   "precoMin": null,
+   "preco": "Adulto US$ 16 · Sênior/estudante/veterano US$ 14 · até 12 anos grátis",
+   "precoMin": 16.0,
    "faixaPreco": "",
    "tempoVisita": "1–2 horas",
    "notaCuradoria": 4.5,
@@ -33077,7 +33821,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 16,
+   "precoMax": 16.0,
+   "precoBase": "entrada adulto",
+   "fontePreco": "https://briscoemuseum.org/hours-admission/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-san-antonio-zoo",
@@ -33269,8 +34020,8 @@
    "historia": "Jardim botânico com mais de 15 hectares, estufas modernas de vidro com plantas do deserto e da floresta tropical e uma área que recria as paisagens do Texas, do Hill Country ao leste do estado. Tem também um jardim de cultivo para crianças. No fim do ano, o evento de luzes Illuminate ocupa o jardim à noite.",
    "dica": "Durante a temporada de luzes o jardim fecha mais cedo para o público geral; o evento noturno tem ingresso à parte.",
    "gratuito": false,
-   "preco": "Adulto US$ 18 (seg–qui) ou US$ 22 (sex–dom) · Crianças de 3 a 13 anos US$ 13/US$ 15 · Até 2 anos grátis",
-   "precoMin": 18,
+   "preco": "Adulto US$ 18 (seg–qui) / US$ 22 (sex–dom) · Criança (3–13) US$ 13/15 · Militar/estudante US$ 16/20 · até 2 anos grátis",
+   "precoMin": 18.0,
    "faixaPreco": "",
    "tempoVisita": "2 horas",
    "notaCuradoria": 4.5,
@@ -33309,7 +34060,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 20,
+   "precoMax": 22.0,
+   "precoBase": "entrada adulto em dia de semana",
+   "fontePreco": "https://sabgtx.org/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-tower-of-the-americas",
@@ -34694,7 +35452,7 @@
    "historia": "Sistema de ônibus público de San Antonio e região, com linhas regulares, expressas e o Primo, de ônibus rápido. É a forma mais barata de circular pelo centro e chegar a pontos como o aeroporto e os museus. O app goMobile+ vende passagens pelo celular.",
    "dica": "O passe de um dia sai por US$ 2,75 e vale em todas as linhas regulares; compre pelo app.",
    "gratuito": false,
-   "preco": "Passagem US$ 1,30 · Passe diário US$ 2,75 · Passe de 31 dias US$ 38",
+   "preco": "Ônibus local US$ 1,30 · Passe diário US$ 2,75 · Passe de 31 dias US$ 38",
    "precoMin": 1.3,
    "faixaPreco": "",
    "tempoVisita": "",
@@ -34722,7 +35480,14 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 2,
+   "precoMax": 2.75,
+   "precoBase": "tarifa de ônibus local",
+   "fontePreco": "https://www.viainfo.net/fares/",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11",
+   "precoConfirmado": true
   },
   {
    "id": "sat-amtrak",

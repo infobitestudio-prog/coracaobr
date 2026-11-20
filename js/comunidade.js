@@ -135,7 +135,7 @@
     var km = function (l) { var k = G.kmDe(l); return k == null ? 999 : k; };
     return ls.filter(function (l) { return km(l) < 60; }).sort(function (a, b) { return km(a) - km(b); }).slice(0, 90);
   }
-  function precoDe(l) { return l.gratuito ? 0 : Number(l.precoMin) || (l.faixaPreco ? 15 * String(l.faixaPreco).length : 0); }
+  function precoDe(l) { var p = G.precos ? G.precos(l) : null; if (p) return p.gratis ? 0 : (p.med || p.min); return l.gratuito ? 0 : Number(l.precoMin) || (l.faixaPreco ? 15 * String(l.faixaPreco).length : 0); }
   function local(cands) {
     /* Sem IA disponível: escolhe por gosto, proximidade e orçamento. */
     var mapa = { museu: ["museu", "arte"], natureza: ["parque", "natureza", "mirante"], brasil: ["restaurante-brasileiro", "churrascaria", "padaria", "acai-cafe", "mercado-brasileiro"], bbq: ["bbq", "tex-mex", "steakhouse", "comida-sulista"], compras: ["compras", "mercado"], historia: ["historico", "bairro"], noite: ["bar", "show"] };

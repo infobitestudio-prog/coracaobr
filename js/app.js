@@ -245,12 +245,51 @@
   function ordenaNota(a, b) { return (notas(b).guia || 0) - (notas(a).guia || 0) || (Number(b.notaCuradoria) || 0) - (Number(a.notaCuradoria) || 0) || temFotoReal(b) - temFotoReal(a) || String(a.nome || "").localeCompare(String(b.nome || "")); }
   function stars(n) { n = Math.max(0, Math.min(5, Number(n) || 0)); return '<span class="stars" style="--n:' + n + '" aria-hidden="true">★★★★★</span>'; }
   function rateMini(l) { var n = notas(l); return n.guia == null ? '<span class="rate"><i>sem nota</i></span>' : '<span class="rate"><span class="s1">★</span><span class="num">' + n.guia.toFixed(1) + "</span>" + (n.qtd ? "<i>(" + n.qtd + ")</i>" : "") + "</span>"; }
+  /* Preços de cada lugar: "a partir de" (o menor valor conferido no site oficial ou no cardápio), a média e o teto.
+     Restaurantes: pesquisa no site da empresa (precoMin/precoMedio/precoMax) ou, quando a empresa cadastra o cardápio,
+     calculado dos pratos (sem bebidas, sobremesas, acompanhamentos e menu infantil). Atrações e eventos: ingresso adulto. */
+  var SEC_FORA = /bebida|drink|sobremesa|dessert|doce|acompanha|happy|libra|\blb\b|salad|salada|\bsides?\b|extra|adiciona|add-?on|kids|infantil|crian|molho|sauce|cerveja|beer|vinho|wine|coquetel|cocktail|caf[eé]s? e ch[aá]s?/i, ITEM_FORA = /crian|kids|infantil|\bchild|s[oó] (a )?[aá]rea de salada|salad (area|bar) only|s[oó] buf[eê]/i;
+  function precoDoMenu(l) {
+    var v = (l.menu || []).filter(function (it) { return Number(it.preco) > 0 && !SEC_FORA.test(String(it.secao || "")) && !ITEM_FORA.test(String(it.item || "")) && ["/kg", "/mês", "/hora"].indexOf(it.un || "") < 0; }).map(function (it) { return Number(it.preco); });
+    if (v.length < 2) return null;
+    return { min: Math.min.apply(null, v), med: Math.round(v.reduce(function (a, b) { return a + b; }, 0) / v.length), max: Math.max.apply(null, v) };
+  }
+  function precos(l) {
+    if (!l) return null;
+    var est = l.tipo === "estabelecimento";
+    if (!est && l.gratuito) return { gratis: true };
+    var min = Number(l.precoMin) || 0, med = Number(l.precoMedio) || 0, max = Number(l.precoMax) || 0, menu = false;
+    if (est && l.anunciante) { var m = precoDoMenu(l); if (m) { min = m.min; med = m.med; max = m.max; menu = true; } }   // cardápio cadastrado pela própria empresa
+    if (!(min > 0)) return null;
+    if (med && med < min) med = min; if (max && max < min) max = 0; if (max && med > max) med = max;
+    return { min: min, med: med, max: max, base: l.precoBase || (est ? "prato principal" : "entrada adulto"), menu: menu,
+      fonte: url(l.fontePreco) ? l.fontePreco : url(l.fonteMenu) ? l.fonteMenu : "", quando: menu ? (l.menuVerificadoEm || "") : (l.precoConferidoEm || l.atualizadoEm || ""), terceiros: !menu && l.fontePrecoTipo === "terceiros" };
+  }
+  /* Média de preço da categoria na cidade escolhida (só com 3 ou mais lugares com preço conferido). */
+  function mediaCategoria(cat) {
+    var v = lugares().filter(function (x) { return x.categoria === cat; }).map(function (x) { var p = precos(x); return p && !p.gratis ? (p.med || p.min) : 0; }).filter(Boolean);
+    return v.length >= 3 ? { med: Math.round(v.reduce(function (a, b) { return a + b; }, 0) / v.length), n: v.length } : null;
+  }
   function precoCurto(l) {
+    var p = precos(l);
+    if (p && p.gratis) return "Grátis";
+    if (p) return "a partir de " + usd(p.min);
     if (l.tipo === "estabelecimento") return l.faixaPreco || "";
-    if (l.gratuito) return "Grátis";
-    if (l.precoMin > 0) return usd(l.precoMin);
     return "Pago";
   }
+  /* Bloco de preços da folha do lugar: a partir de, média por pessoa, até, comparação com a categoria e a fonte. */
+  function blocoPrecos(l) {
+    var p = precos(l), est = l.tipo === "estabelecimento"; if (!p || p.gratis) return "";
+    var mc = mediaCategoria(l.categoria), ref = p.med || p.min, comp = "";
+    if (mc && mc.n >= 3 && ref) { var dif = (ref - mc.med) / mc.med; comp = dif <= -0.12 ? "Abaixo da média" : dif >= 0.12 ? "Acima da média" : "Na média"; }
+    return '<div class="pz"><div class="pz-top"><span class="pz-k">' + ic("ticket") + (est ? " Quanto custa" : " Ingressos") + "</span>" + (comp ? '<span class="pz-cmp' + (comp === "Abaixo da média" ? " ok" : "") + '">' + comp + "</span>" : "") + "</div>" +
+      '<div class="pz-g"><div><small>A partir de</small><b>' + usd(p.min) + "</b>" + brl(p.min) + "<i>" + esc(p.base) + "</i></div>" +
+      (p.med ? "<div><small>" + (est ? "Média por pessoa" : "Preço médio") + "</small><b>" + usd(p.med) + "</b>" + brl(p.med) + "<i>" + (est ? "sem bebida" : "entre os ingressos") + "</i></div>" : "") +
+      (p.max ? "<div><small>Até</small><b>" + usd(p.max) + "</b>" + brl(p.max) + "<i>" + (est ? "maior valor" : "maior valor") + "</i></div>" : "") + "</div>" +
+      (mc ? '<p class="pz-cat">Média em ' + esc(CATS[l.categoria] || "lugares parecidos") + " · " + esc(cid().nome) + ": <b>" + usd(mc.med) + "</b> por pessoa (" + mc.n + " lugares com preço conferido)</p>" : "") +
+      '<p class="pz-f">' + (p.menu ? "Calculado do cardápio da empresa" : l.anunciante ? "Informado pela empresa" : "Pesquisado no " + (p.terceiros ? "cardápio publicado na internet" : "site oficial")) + (p.quando ? " · conferido em " + esc(mesAno(p.quando)) : "") + (p.fonte ? ' · <a href="' + esc(p.fonte) + '" target="_blank" rel="noopener">ver fonte</a>' : "") + ". Valores sem taxas e gorjeta; podem mudar.</p></div>";
+  }
+  function mesAno(s) { var m = /^(\d{4})-(\d{2})/.exec(String(s || "")); if (!m) return String(s || ""); return ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m[2]) - 1] + "/" + m[1]; }
   function precoHtml(l) {
     var t = precoCurto(l); if (!t) return "";
     return '<span class="price' + (l.gratuito && l.tipo !== "estabelecimento" ? " free" : "") + (l.tipo !== "estabelecimento" && !l.gratuito && l.precoConfirmado === false ? " unk" : "") + '">' + esc(t) + "</span>";
@@ -457,7 +496,7 @@
     });
     if (F.ordem === "nota") out.sort(ordenaNota);
     if (F.ordem === "nome") out.sort(function (a, b) { return String(a.nome).localeCompare(String(b.nome)); });
-    if (F.ordem === "preco") out.sort(function (a, b) { return (a.gratuito ? 0 : a.precoMin || 999) - (b.gratuito ? 0 : b.precoMin || 999); });
+    if (F.ordem === "preco") { var pv = function (x) { var p = precos(x); return p ? (p.gratis ? 0 : p.min) : x.faixaPreco ? 15 * String(x.faixaPreco).length + 0.5 : 999; }; out.sort(function (a, b) { return pv(a) - pv(b); }); }
     if (F.ordem === "perto") out.sort(function (a, b) { return (kmDe(a) == null ? 9999 : kmDe(a)) - (kmDe(b) == null ? 9999 : kmDe(b)); });
     if (F.grupo === "eventos") { var hj = hojeISO(); out = unificaEventos(out.filter(function (l) { return !l.dataFim || l.dataFim >= hj; }).sort(porData)); }
     if (F.aberto && window.Extras) out = out.filter(function (l) { return Extras.aberto(l) === true; });
@@ -549,7 +588,8 @@
     g.innerHTML = html || '<div class="panel vazio-f" style="grid-column:1/-1"><h3>Nada com esses filtros</h3><p class="muted">Tente outra região, outra categoria ou limpe os filtros.</p><button type="button" class="btn sm" data-limpa-tudo>Limpar filtros</button></div>';
     var lt = g.querySelector("[data-limpa-tudo]"); if (lt) lt.onclick = function () { F.aberto = false; F.pt = false; F.preco = "todos"; F.cat = ""; F.q = ""; F.local = ""; var q = $("#f-q"); if (q) q.value = ""; var fl = $("#f-local"); if (fl) fl.value = ""; marcaFiltros(); grade(); };
     sentinela(g);
-    $("#conta").textContent = ls.length + (ls.length === 1 ? " lugar" : " lugares");
+    var mc = F.cat ? mediaCategoria(F.cat) : null;
+    $("#conta").textContent = ls.length + (ls.length === 1 ? " lugar" : " lugares") + (mc ? " · média " + usd(mc.med) + " por pessoa" : "");
   }
 
   /* ---------- folha do lugar ---------- */
@@ -679,7 +719,7 @@
     if (l.estacionamento) t.push(tile("car", "Estacionamento", esc(l.estacionamento), "", "wide"));
     return '<div class="stack" style="gap:14px"><div class="prose' + (longo ? " clamp" : "") + '">' + hist.split(/\n+/).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") + "</div>" + (longo ? '<button type="button" class="link" data-lermais style="justify-self:start">Ler mais</button>' : "") +
       (l.dica ? '<div class="tipc"><span class="tic">' + ic("bulb") + '</span><div><small>Dica para brasileiros</small><p>' + esc(l.dica) + "</p></div></div>" : "") +
-      '<div class="tiles">' + t.join("") + "</div>" +
+      blocoPrecos(l) + '<div class="tiles">' + t.join("") + "</div>" +
       (l.naoConferido ? '<p class="note">Endereço, horário e contato ainda não conferidos pela equipe do guia. Confira no site oficial antes de ir.</p>' : "") +
       (["governo", "transporte", "saude", "comunidade"].indexOf(l.categoria) >= 0 ? '<p class="note">Endereço, telefone e horário de órgãos públicos mudam sem aviso. Confirme no site oficial antes de ir.</p>' : "") + "</div>";
   }
@@ -728,7 +768,7 @@
     var destino = encodeURIComponent([l.nome, l.endereco].filter(Boolean).join(", "));
     var perto = lugares().filter(function (o) { return o.id !== id && dist(l, o) != null; }).sort(function (a, b) { return dist(l, a) - dist(l, b); }).slice(0, 12); perto = primeiro(perto).slice(0, 6);
     var ad = anuncios("lugar")[0];
-    var precoBar = est ? (l.faixaPreco || "–") : l.gratuito ? "Gratuito" : l.precoMin > 0 ? usd(l.precoMin) : "Pago";
+    var pz = precos(l), precoBar = pz && pz.gratis ? "Gratuito" : pz ? usd(pz.min) : est ? (l.faixaPreco || "–") : "Pago";
     sheetCard.innerHTML = '<div class="sheet-scroll"><div class="sheet-photo" id="sp"><span class="grab"></span>' +
       (f ? '<img src="' + esc(f.src) + '" alt="Foto de ' + esc(l.nome) + '"' + (f.google ? ' referrerpolicy="no-referrer"' : "") + ">" + (f.credito ? '<span class="cred">' + (f.ilustrativa ? "Foto ilustrativa: " : "Foto: ") + (url(f.pagina) ? '<a href="' + esc(f.pagina) + '" target="_blank" rel="noopener">' + esc(f.credito) + "</a>" : esc(f.credito)) + (f.licenca ? " · " + esc(f.licenca) : "") + "</span>" : "") : '<div class="phx">' + esc(l.nome) + "</div>") +
       '<button type="button" class="round close" data-fechar aria-label="Fechar">' + ic("down") + "</button>" +
@@ -749,7 +789,7 @@
       (ad ? '<a class="adband" ' + alvo(ad) + '><div><span class="sponsor">Patrocinado</span><b>' + esc(ad.titulo) + '</b><span class="small muted">' + esc(ad.texto || "") + "</span></div>" + ic("arrow") + "</a>" : "") +
       '</div><aside class="sb-side">' +
       ((l.horario || l.semana || l.horas) ? '<div class="sb-card sb-hor"><p class="xp-t">' + ic("clock") + " Horário</p>" + (window.Horario ? Horario.html(l, esc) : "<b>" + esc(l.horario) + "</b>") + "</div>" : "") +
-      '<div class="attrs"><div>' + ic("ticket") + "<b>" + esc(est ? (l.faixaPreco || "–") : l.gratuito ? "Gratuito" : l.precoMin > 0 ? usd(l.precoMin) : "Pago") + "</b><small>" + (est ? "Faixa de preço" : "Entrada") + "</small></div>" +
+      '<div class="attrs"><div>' + ic("ticket") + "<b>" + esc(precoBar) + "</b><small>" + (pz && !pz.gratis ? (pz.med ? "a partir de · média " + usd(pz.med) : "a partir de") : est ? "Faixa de preço" : "Entrada") + "</small></div>" +
       "<div>" + ic("clock") + "<b>" + esc(l.quando ? l.quando : est ? (window.Extras && Extras.aberto(l) != null ? (Extras.aberto(l) ? "Aberto" : "Fechado") : "Ver horário") : (l.tempoVisita || "Livre")) + "</b><small>" + (l.quando ? "Quando" : est ? "Agora" : "Tempo de visita") + "</small></div>" +
       "<div>" + ic("pin") + "<b>" + (mi == null ? "–" : tempo(l)) + "</b><small>" + (mi == null ? "Distância" : esc(MODOS[Geo.modo].nome.toLowerCase()) + " · " + (mi < 10 ? mi.toFixed(1).replace(".", ",") : mi.toFixed(0)) + " mi") + "</small></div>" +
       "<div>" + ic("star") + "<b>" + (n.guia != null ? n.guia.toFixed(1) : "–") + "</b><small>" + esc(n.fonte || "sem avaliações") + "</small></div></div>" +
@@ -757,7 +797,7 @@
       (l.descontoClube ? '<a class="ticket tk-clube" href="#clube"><span class="tic">' + ic("star") + '</span><div><span class="sponsor">Clube CoraçãoBR</span><b>' + esc(l.descontoClube) + '</b><span class="small muted">Para membros do Clube. Mostre a carteirinha digital.</span></div></a>' : "") +
       '<a class="btn sb-go" href="https://www.google.com/maps/dir/?api=1&destination=' + destino + "&travelmode=" + MODOS[Geo.modo].maps + (Geo.gps ? "&origin=" + Geo.lat.toFixed(5) + "," + Geo.lng.toFixed(5) : "") + '" target="_blank" rel="noopener">' + ic("pin") + " Como chegar</a></aside></div>" +
       (perto.length ? '<div class="sb-perto"><div class="head"><h2 style="font-size:1.3rem">Perto daqui</h2></div><div class="hscroll">' + perto.map(card).join("") + "</div></div>" : "") +
-      '</div></div><div class="sheet-bar"><div class="v"><b>' + esc(precoBar) + "</b>" + (!est && !l.gratuito && l.precoMin > 0 ? brl(l.precoMin) : "") + "<small>" + (est ? "faixa de preço" : l.gratuito ? "entrada livre" : "adulto, a partir de") + '</small></div><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=' + destino + "&travelmode=" + MODOS[Geo.modo].maps + (Geo.gps ? "&origin=" + Geo.lat.toFixed(5) + "," + Geo.lng.toFixed(5) : "") + '" target="_blank" rel="noopener">' + ic("pin") + " Como chegar</a></div>";
+      '</div></div><div class="sheet-bar"><div class="v">' + (pz && !pz.gratis ? "<small>a partir de</small>" : "") + "<b>" + esc(precoBar) + "</b>" + (pz && !pz.gratis ? brl(pz.min) : "") + "<small>" + (pz && pz.gratis ? "entrada livre" : pz ? (pz.med ? "média " + usd(pz.med) + (est ? " por pessoa" : "") : esc(pz.base)) : est ? "faixa de preço" : "valor a confirmar") + '</small></div><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=' + destino + "&travelmode=" + MODOS[Geo.modo].maps + (Geo.gps ? "&origin=" + Geo.lat.toFixed(5) + "," + Geo.lng.toFixed(5) : "") + '" target="_blank" rel="noopener">' + ic("pin") + " Como chegar</a></div>";
     $(".sheet-scroll", sheetCard).scrollTop = topo;
     pilula(); ligaForm();
   }
@@ -1000,7 +1040,7 @@
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") fechaNav(); });
   window.addEventListener("hashchange", function () { fechaNav(); });
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;

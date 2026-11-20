@@ -48,18 +48,69 @@ def nota(l):
     return 0.0
 
 
+def usd(v):
+    v = float(v)
+    return "US$ " + (("%d" % v) if v == int(v) else ("%.2f" % v).replace(".", ","))
+
+
+def precos(l):
+    """(a partir de, média, até) conferidos no site/cardápio; None quando não há preço."""
+    try:
+        mn = float(l.get("precoMin") or 0)
+    except (TypeError, ValueError):
+        mn = 0
+    if mn <= 0 or (l.get("gratuito") and l.get("tipo") != "estabelecimento"):
+        return None
+    f = lambda k: float(l.get(k) or 0) if str(l.get(k) or "").replace(".", "", 1).isdigit() else 0
+    return mn, f("precoMedio"), f("precoMax")
+
+
+def linha_preco(l):
+    if l.get("gratuito") and l.get("tipo") != "estabelecimento":
+        return "Entrada gratuita"
+    p = precos(l)
+    if not p:
+        return ""
+    return "A partir de %s%s" % (usd(p[0]), (" · média %s por pessoa" % usd(p[1])) if p[1] else "")
+
+
+COMIDA = {"restaurante-brasileiro", "churrascaria", "padaria", "acai-cafe", "bbq", "tex-mex", "steakhouse", "hamburguer", "brunch-cafe", "comida-sulista", "asiatico", "pizza", "bar"}
+
+
+def item_ld(l):
+    t = "Restaurant" if l.get("categoria") in COMIDA else "Event" if l.get("categoria") == "evento" else "LocalBusiness" if l.get("tipo") == "estabelecimento" else "TouristAttraction"
+    o = {"@type": t, "name": l["nome"]}
+    if l.get("endereco"):
+        o["address"] = l["endereco"]
+    p = precos(l)
+    if p and t != "Event":
+        o["priceRange"] = usd(p[0]) + ((" – " + usd(p[2])) if p[2] else "+")
+    if t == "Event":
+        if l.get("dataInicio"):
+            o["startDate"] = l["dataInicio"]
+        o["location"] = {"@type": "Place", "name": l.get("bairro") or l.get("cidade") or "", "address": l.get("endereco") or l.get("cidade") or ""}
+        if p:
+            o["offers"] = {"@type": "Offer", "price": p[0], "priceCurrency": "USD"}
+    return o
+
+
 def pagina(destino, rel, titulo, desc, h1, sub, itens, links, raiz):
     e = html.escape
     lista = []
+    meds = [(precos(l)[1] or precos(l)[0]) for l in itens if precos(l)]
+    if len(meds) >= 3:
+        sub += " Preço médio: %s por pessoa (%d lugares com preço conferido)." % (usd(round(sum(meds) / len(meds))), len(meds))
     for i, l in enumerate(itens, 1):
         n = nota(l)
-        lista.append('<li class="c"><h2>%d. %s</h2><p class="n">%s%s</p>%s%s<a class="bt" href="%s#lugar-%s">Ver no CoraçãoBR</a></li>' % (
+        lp = linha_preco(l)
+        lista.append('<li class="c"><h2>%d. %s</h2><p class="n">%s%s</p>%s%s%s<a class="bt" href="%s#lugar-%s">Ver no CoraçãoBR</a></li>' % (
             i, e(l["nome"]), e(", ".join(x for x in (l.get("bairro"), l.get("cidade")) if x)), (" · ★ %.1f" % n) if n else "",
+            ('<p class="n">%s</p>' % e(lp)) if lp else "",
             ('<p>%s</p>' % e(l["endereco"])) if l.get("endereco") else "",
             ('<p>%s</p>' % e(re.sub(r"\s+", " ", str(l.get("historia") or l.get("descricao") or ""))[:220])) if (l.get("historia") or l.get("descricao")) else "",
             raiz, e(str(l["id"]))))
     ld = {"@context": "https://schema.org", "@type": "ItemList", "name": h1,
-          "itemListElement": [{"@type": "ListItem", "position": i, "name": l["nome"]} for i, l in enumerate(itens, 1)]}
+          "itemListElement": [{"@type": "ListItem", "position": i, "name": l["nome"], "item": item_ld(l)} for i, l in enumerate(itens, 1)]}
     corpo = ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
              '<title>%s</title><meta name="description" content="%s"><meta property="og:title" content="%s"><meta property="og:description" content="%s">'
              '<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><link rel="icon" href="%sicon-192.png"><style>%s</style>'

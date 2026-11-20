@@ -21,7 +21,7 @@
       ["nome", "categoria", "tipo", "endereco", "cidade", "bairro", "regiao", "descricao", "historia", "dica", "horario", "quando", "dataInicio", "dataFim", "preco", "telefone", "whatsapp", "instagram", "facebook", "site", "telegram", "x", "linkedin", "catalogo", "catalogoNome", "descontoClube", "regiaoGuia"].forEach(function (k) { if (o[k] != null && typeof o[k] !== "string") o[k] = txt(o[k]); });
       if (!o.nome) return null;
       o.lat = num(o.lat); o.lng = num(o.lng);
-      ["precoMin", "precoMax", "notaCuradoria"].forEach(function (k) { if (o[k] != null) o[k] = num(o[k]); });
+      ["precoMin", "precoMedio", "precoMax", "notaCuradoria"].forEach(function (k) { if (o[k] != null) o[k] = num(o[k]); });
       o.fotos = Array.isArray(o.fotos) ? o.fotos.filter(function (f) { return f && typeof f === "object" && typeof f.src === "string"; }) : [];
       o.fotos.forEach(function (f) { if (typeof f.credito === "string") f.credito = f.credito.replace(/(Unknown author\s*)+/gi, "autor desconhecido").trim(); });
       if (o.menu != null && !Array.isArray(o.menu)) delete o.menu;

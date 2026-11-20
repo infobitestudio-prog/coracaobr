@@ -75,7 +75,8 @@
         '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).map(function (rg) { var padrao = D.cidade || (G.CIDADES_GUIA && G.cid ? G.cid().principal : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
         '<div class="field"><span>Horário de atendimento</span>' + Horario.editor(D) + "</div>") +
       sec(prox(), "cardapio", "Cardápio, catálogo e preços", "Cardápio em livreto, tabela de preços ou o link do seu catálogo.",
-        '<div class="ae-g2">' + fld("n-cat-link", "Link do catálogo, portfólio ou loja", D.catalogo, 'placeholder="https://"') + fld("n-cat-nome", "Nome do botão", D.catalogoNome, 'maxlength="24" placeholder="Catálogo"') + "</div>" + (window.Cardapio ? Cardapio.editor(D) : ""));
+        '<div class="ae-g2">' + fld("n-cat-link", "Link do catálogo, portfólio ou loja", D.catalogo, 'placeholder="https://"') + fld("n-cat-nome", "Nome do botão", D.catalogoNome, 'maxlength="24" placeholder="Catálogo"') + "</div>" +
+        '<div class="ae-g2">' + fld("n-pmin", "Preço a partir de (US$)", D.precoMin, 'inputmode="decimal" placeholder="Ex.: 12"', "O menor valor de um prato, serviço ou ingresso. Aparece como \"a partir de\" no anúncio.") + fld("n-pmed", "Gasto médio por pessoa (US$)", D.precoMedio, 'inputmode="decimal" placeholder="Ex.: 25"', "Se você preencher o cardápio com preços, o guia calcula sozinho.") + "</div>" + (window.Cardapio ? Cardapio.editor(D) : ""));
     var nav = ["empresa", "fotos", "banner", "contato", "endereco", "cardapio"], nomes = ["Empresa", "Fotos", "Banner", "Contato", "Endereço", "Cardápio"];
     var situ = existente ? (noArDe(existente) ? '<span class="pill ok">No ar</span>' : '<span class="pill warn">Prévia</span>') : '<span class="pill xp">Novo</span>';
     G.app.innerHTML = '<section class="block ae"><div class="wrap"><form id="f-an" novalidate>' +
@@ -118,6 +119,8 @@
       var reg = CIDADES.filter(function (p) { return p[0] === v("n-reg"); })[0] || CIDADES[0];
       D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom");  D.descontoClube = v("n-clube"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
       if (window.Cardapio) Cardapio.ler(document, D); D.menuVerificadoEm = (D.menu || []).length ? G.hojeISO().slice(0, 7) : "";
+      var pn = function (id) { var x = String(v(id) || "").replace(/[^\d,.]/g, "").replace(",", "."); return x === "" || isNaN(Number(x)) || Number(x) <= 0 ? null : Math.round(Number(x) * 100) / 100; };
+      D.precoMin = pn("n-pmin"); D.precoMedio = pn("n-pmed"); if (D.precoMedio && D.precoMin && D.precoMedio < D.precoMin) D.precoMedio = D.precoMin; D.precoConferidoEm = D.precoMin ? G.hojeISO().slice(0, 7) : ""; D.precoBase = D.precoMin ? "informado pela empresa" : "";
       D.whatsapp = v("n-wa"); D.telefone = v("n-tel"); D.instagram = v("n-ig"); D.facebook = v("n-fb"); D.telegram = v("n-tg"); D.x = v("n-x"); D.linkedin = v("n-li"); D.site = v("n-site");
       var cl = v("n-cat-link"); D.catalogo = /^https?:\/\//i.test(cl) ? cl.slice(0, 400) : ""; D.catalogoNome = v("n-cat-nome").slice(0, 24);
       D.endereco = v("n-end"); D.cidade = reg[0]; D.regiaoGuia = reg[3] || "dfw";

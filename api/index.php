@@ -84,6 +84,13 @@ function importaBase(PDO $pdo, bool $novo): void {
     if (!is_array($l) || !preg_match(ID_RE, (string)($l['id'] ?? ''))) continue;
     $id = $l['id']; unset($l['id']);
     $ins->execute(['lugares', $id, json_encode($l, JSON_UNESCAPED_UNICODE), agora()]);
+    if (!empty($l['precoConferidoEm']) || !empty($l['fechado'])) {   // preços conferidos nos sites (e lugares que fecharam): atualiza lugares do guia já existentes; anúncios de empresas ficam como a empresa deixou
+      $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $st->execute([$id]); $d = json_decode((string)$st->fetchColumn(), true);
+      if (is_array($d) && empty($d['anunciante']) && (string)($d['precoConferidoEm'] ?? '') < (string)($l['precoConferidoEm'] ?? '') . (empty($l['fechado']) ? '' : '~')) {
+        foreach (['precoMin', 'precoMedio', 'precoMax', 'precoBase', 'fontePreco', 'fontePrecoTipo', 'precoConferidoEm', 'preco', 'precoConfirmado', 'gratuito', 'fechado', 'publicado'] as $k) if (array_key_exists($k, $l)) $d[$k] = $l[$k];
+        $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($d, JSON_UNESCAPED_UNICODE), agora(), $id]);
+      }
+    }
     if (!empty($l['fotoSite']['src'])) {   // imagem oficial do site: completa lugares já existentes, sem mexer no resto
       $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $st->execute([$id]); $d = json_decode((string)$st->fetchColumn(), true);
       if (is_array($d) && empty($d['fotoSite']['src'])) { $d['fotoSite'] = $l['fotoSite']; $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($d, JSON_UNESCAPED_UNICODE), agora(), $id]); }
