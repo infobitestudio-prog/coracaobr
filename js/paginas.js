@@ -8,8 +8,8 @@
   function email() { var e = String(G.config().emailOficial || "").trim(); return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e) ? e : "coracaobr.oficial@gmail.com"; }
   function mailto(assunto) { return "mailto:" + email() + (assunto ? "?subject=" + encodeURIComponent("CoraçãoBR: " + assunto) : ""); }
   function contato() {
-    var c = G.config(), zap = String(c.whatsappAviso || "").replace(/\D/g, "");
-    return '<p><b>E-mail oficial:</b> <a href="' + mailto("") + '">' + esc(email()) + "</a></p>" + (c.contato && c.contato !== email() ? "<p><b>Contato comercial:</b> " + esc(c.contato) + "</p>" : "") + (zap ? '<p><b>WhatsApp:</b> <a href="https://wa.me/' + esc(zap) + '" target="_blank" rel="noopener">+' + esc(zap) + "</a></p>" : "");
+    var c = G.config(), zap = G.sac ? G.sac().zap : String(c.whatsappAviso || "").replace(/\D/g, "");
+    return '<p><b>E-mail oficial:</b> <a href="' + mailto("") + '">' + esc(email()) + "</a></p>" + (c.contato && c.contato !== email() ? "<p><b>Contato comercial:</b> " + esc(c.contato) + "</p>" : "") + (zap ? '<p><b>SAC no WhatsApp:</b> <a href="https://wa.me/' + esc(zap) + '" target="_blank" rel="noopener">' + esc(G.sac ? G.sac().zapTxt : "+" + zap) + "</a></p>" : "");
   }
   /* cartões de contato por assunto: o e-mail já abre com o assunto certo */
   function contatoCards() {
@@ -19,7 +19,7 @@
       t("🤝", "Parcerias e patrocínio", "Empresas, criadores e eventos que querem aparecer.", "parceria") +
       t("📍", "Corrigir informação", "Preço, horário ou endereço errado em algum lugar.", "correção de informação") +
       t("🔒", "Privacidade e dados", "Remover sua conta, avaliações ou dados pessoais.", "privacidade e dados") + "</div>" +
-      (function () { var zap = String(G.config().whatsappAviso || "").replace(/\D/g, ""); return zap ? '<p class="small muted">Também atendemos no WhatsApp: <a href="https://wa.me/' + esc(zap) + '" target="_blank" rel="noopener">+' + esc(zap) + "</a>.</p>" : ""; })();
+      (G.sacHtml ? G.sacHtml("") : "");
   }
   function viewSobre() {
     var n = G.lugares().length, ev = G.lugares().filter(function (l) { return l.categoria === "evento"; }).length;

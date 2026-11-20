@@ -93,7 +93,7 @@
   /* ---------- formas de pagamento ---------- */
   /* todo pagamento é por Pix, para a chave oficial (QR Code e copia e cola gerados com o valor) */
   function formas() {
-    var d = window.Pix ? Pix.dados() : { chave: (cfg().pagamentos || {}).pix || "32.021.268/0001-04", nome: (cfg().pagamentos || {}).pixNome || "Danilo Araujo Santos Desenvolvedor" };
+    var d = window.Pix ? Pix.dados() : { chave: G.chavePix((cfg().pagamentos || {}).pix), nome: (cfg().pagamentos || {}).pixNome || "Danilo Araujo Santos Desenvolvedor" };
     return [{ k: "pix", nome: "Pix", ic: "bulb", desc: "Na hora, em reais. QR Code e copia e cola com o valor certo.", chave: d.chave, titular: d.nome }];
   }
 
@@ -147,7 +147,7 @@
       (promo ? "" : calculadora(uid, false)) +
       pagamentoHtml(uid) +
       '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Seus pacotes</h3></div>' + linhaDoTempo(uid) + "</div>" +
-      "</div>" + '<aside class="pg-side">' + resumo + "</aside></div></div></section>";
+      "</div>" + '<aside class="pg-side">' + resumo + (G.sacHtml ? G.sacHtml("pagamento", true) : "") + "</aside></div></div></section>";
   }
   /* bloco de pagamento (Pix automático ou Pix pela chave + "Já paguei") para o pedido atual (PED) */
   var PED = null;
@@ -190,7 +190,7 @@
       '<div class="pg-grid"><div class="pg-main">' + status +
       '<div class="dk-card dk-flat"><p>' + (impulso ? "Seu anúncio aparece em primeiro em Explorar, no Ranking, nas categorias e no mapa durante " + diasImpulso() + " dias, com a etiqueta <b>Destaque</b>." : "O selo mostra para os brasileiros que o negócio existe de verdade e foi conferido pela equipe do CoraçãoBR. Anúncios verificados recebem mais cliques e contatos.") + "</p></div>" +
       (impulso || !(v && v.status === "aprovado") ? pagamentoHtml(uid) : "") +
-      "</div>" + '<aside class="pg-side">' + lado + "</aside></div></div></section>";
+      "</div>" + '<aside class="pg-side">' + lado + (G.sacHtml ? G.sacHtml("pagamento", true) : "") + "</aside></div></div></section>";
   }
 
   /* ---------- Pix automático: cobrança do Mercado Pago, confirmação e liberação sozinhas ---------- */
@@ -219,7 +219,7 @@
       Store.api("pix_status", null, "&id=" + encodeURIComponent(PX.id)).then(function (j) {
         if (!PX || j.status === PX.status) return;
         PX.status = j.status; redesenhaPix();
-        if (j.status === "aprovado") { clearInterval(pxT); G.toast(PED && PED.plano === "clube" ? "Pagamento confirmado! Bem-vindo ao Clube CoraçãoBR." : PED && PED.plano === "mural" ? "Pagamento confirmado! Publicação em destaque." : "Pagamento confirmado! Seus anúncios estão no ar."); Store.sincronizarAgora().then(function () { setTimeout(function () { PX = null; location.hash = (PED && PED.volta) || "anunciante"; }, 2200); }); }
+        if (j.status === "aprovado") { clearInterval(pxT); var ped = PED, vl = PX && PX.valor; Store.sincronizarAgora().catch(function () {}).then(function () { PX = null; obrigadoPlano(ped, vl); }); }
       }).catch(function () { /* tenta de novo no próximo ciclo */ });
     }, 1000);
   }
@@ -231,6 +231,61 @@
     Store.api("pix_criar", { plano: PED.plano, qtd: PED.qtd, comeca: PED.comeca, lugarId: PED.lugarId || "", itemId: PED.itemId || "" }).then(function (j) {
       PX = { chave: b.dataset.chave, id: j.id, valor: j.valor, qr: j.qr, copiaecola: j.copiaecola, expira: j.expira, status: "pendente" }; redesenhaPix(); acompanha();
     }).catch(function (er) { b.disabled = false; b.textContent = "Tentar de novo"; G.toast(er.message || "Não foi possível gerar o Pix agora."); });
+  });
+
+  /* ---------- pagamento lido: agradece e leva para a página certa ----------
+     o = { k, titulo, texto, botao, segundos, ir } · contagem regressiva com botão "ir agora" */
+  function obrigado(o) {
+    var velho = document.querySelector(".obg"); if (velho) velho.remove();
+    var seg = o.segundos || 5, d = document.createElement("div"); d.className = "obg"; d.setAttribute("role", "alertdialog"); d.setAttribute("aria-modal", "true"); d.setAttribute("aria-labelledby", "obg-t");
+    d.innerHTML = '<div class="obg-c"><span class="obg-ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>' +
+      '<p class="obg-k">' + esc(o.k || "Pagamento confirmado") + '</p><h2 id="obg-t">' + esc(o.titulo) + "</h2><p>" + esc(o.texto || "") + '</p><button type="button" class="btn obg-go">' + esc(o.botao) + ' <span class="obg-s" data-obg-s>' + seg + "</span></button></div>";
+    document.body.appendChild(d); document.documentElement.classList.add("obg-on");
+    var t = null, ir = function () { clearInterval(t); d.remove(); document.documentElement.classList.remove("obg-on"); try { o.ir(); } catch (e) { location.hash = "#inicio"; } };
+    t = setInterval(function () { seg--; var s2 = d.querySelector("[data-obg-s]"); if (s2) s2.textContent = Math.max(0, seg); if (seg <= 0) ir(); }, 1000);
+    var b = d.querySelector(".obg-go"); b.onclick = ir; try { b.focus({ preventScroll: true }); } catch (e) { /* ok */ }
+  }
+  function vaiConta(secao) { try { sessionStorage.setItem("dash-usuario", secao); } catch (e) { /* ok */ } if (location.hash === "#conta") { if (G.render) G.render(); } else location.hash = "#conta"; }
+  function obrigadoPlano(ped, valor) {
+    var pl = (ped && ped.plano) || "pacote";
+    if (pl === "clube") return obrigado({ titulo: "Bem-vindo ao Clube CoraçãoBR!", texto: "Pagamento recebido. Sua carteirinha já está ativa: mostre no caixa dos parceiros.", botao: "Ver minha carteirinha", ir: function () { location.hash = "#clube"; } });
+    if (pl === "mural") return obrigado({ titulo: "Obrigado! Publicação em destaque", texto: "Pagamento recebido. Sua publicação já aparece no topo do Mural.", botao: "Ver o Mural", ir: function () { location.hash = "#mural"; } });
+    if (pl === "verificado") return obrigado({ titulo: "Obrigado! Pedido do selo recebido", texto: "Pagamento recebido. A equipe confere o seu negócio e libera o selo Verificado.", botao: "Ir para Meu negócio", ir: function () { vaiConta("negocio"); } });
+    if (pl === "impulso") return obrigado({ titulo: "Obrigado! Seu anúncio está no topo", texto: "Pagamento recebido. O impulso já começou a contar.", botao: "Ver meus anúncios", ir: function () { vaiConta("anuncios"); } });
+    obrigado({ titulo: "Obrigado! Seus anúncios estão no ar", texto: "Pagamento recebido" + (valor ? " (" + reais(valor) + ")" : "") + ". As ferramentas do anunciante foram liberadas na sua conta.", botao: "Ver meus anúncios", ir: function () { vaiConta("anuncios"); } });
+  }
+  /* Pix avulso com confirmação automática (caixinha do desenvolvedor): gera, mostra o QR, consulta a cada 4 s e chama o.aprovado */
+  var AV = null, avT = null;
+  function pixAvulso(el, o) {
+    clearInterval(avT); el.innerHTML = '<div class="pxa-wait"><span class="pxa-sp"></span><span><b>Gerando o Pix…</b></span></div>';
+    Store.api("pix_criar", { plano: o.plano, valor: o.valor }).then(function (j) {
+      AV = { id: j.id, valor: j.valor, expira: j.expira, el: el, o: o, n: 0, status: "pendente" };
+      el.innerHTML = '<div class="pix" data-pxa-avulso><div class="pix-qr"><img src="data:image/png;base64,' + esc(j.qr) + '" alt="QR Code Pix" style="width:100%;display:block"></div><div class="pix-info"><p class="pix-v"><small>Valor</small><b>' + reais(j.valor) + "</b></p>" +
+        '<label class="pix-l" for="pxv-cc">Pix copia e cola</label><textarea id="pxv-cc" class="pix-cc" readonly rows="3">' + esc(j.copiaecola) + '</textarea><div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + esc(j.copiaecola) + '">Copiar código Pix</button></div>' +
+        '<div class="pxa-wait"><span class="pxa-sp"></span><span><b>Aguardando o pagamento…</b><small>Assim que o Pix entrar, a gente agradece e volta para o início. Expira em <b data-pxv-t>30:00</b>.</small></span></div></div></div>';
+      avT = setInterval(function () {
+        if (!AV || !document.body.contains(AV.el) || !AV.el.querySelector("[data-pxa-avulso]")) { clearInterval(avT); return; }
+        var t = AV.el.querySelector("[data-pxv-t]"), rest = Math.max(0, Math.round((new Date(AV.expira).getTime() - Date.now()) / 1000));
+        if (t) t.textContent = String(Math.floor(rest / 60)).padStart(2, "0") + ":" + String(rest % 60).padStart(2, "0");
+        if ((AV.n = AV.n + 1) % 4) return;
+        Store.api("pix_status", null, "&id=" + encodeURIComponent(AV.id)).then(function (r) {
+          if (!AV || r.status === AV.status) return; AV.status = r.status;
+          if (r.status === "aprovado") { clearInterval(avT); var a = AV; AV = null; a.el.innerHTML = '<div class="pxa pxa-ok"><span class="pxa-ck">✓</span><div><b>Pix recebido!</b><small>Obrigado de coração.</small></div></div>'; a.o.aprovado({ valor: a.valor, id: a.id }); }
+          else if (r.status === "expirado" || r.status === "cancelado") { clearInterval(avT); AV.el.innerHTML = '<div class="pxa"><p><b>Este Pix ' + (r.status === "expirado" ? "expirou" : "foi cancelado") + '.</b> Gere um novo para continuar.</p><button type="button" class="btn" data-pxv-novo>Gerar novo Pix</button></div>'; var b2 = AV.el.querySelector("[data-pxv-novo]"), oo = AV.o, ee = AV.el; b2.onclick = function () { pixAvulso(ee, oo); }; }
+        }).catch(function () { /* tenta de novo no próximo ciclo */ });
+      }, 1000);
+    }).catch(function (er) {
+      el.innerHTML = '<p class="auth-msg">' + esc(er.message || "Não foi possível gerar o Pix agora.") + '</p><button type="button" class="btn" data-pxv-de-novo>Tentar de novo</button>';
+      el.querySelector("[data-pxv-de-novo]").onclick = function () { pixAvulso(el, o); };
+    });
+  }
+  /* Pix informado ("Já paguei") confirmado pela equipe enquanto a pessoa está no site: agradece uma vez */
+  var antes = null;
+  Store.assinar(function () {
+    var uid = Store.uid(); if (!uid || !Store.estado.pronto) return;
+    var agora = { pend: informados(uid).length, vagas: vagas(uid) };
+    if (antes && antes.uid === uid && antes.pend > 0 && agora.pend < antes.pend && agora.vagas > antes.vagas && !document.querySelector(".obg")) obrigadoPlano({ plano: "pacote" });
+    antes = { uid: uid, pend: agora.pend, vagas: agora.vagas };
   });
 
   /* ---------- bloco resumido (painel do anunciante) ---------- */
@@ -271,12 +326,12 @@
       (Object.keys(contas).length ? Object.keys(contas).map(linhaConta).join("") : '<p class="muted small">Nenhuma conta de anunciante ainda.</p>') + "</div>" +
       (Store.servidor && Store.servidor() ? '<div class="panel stack" style="gap:12px" id="pgm-mp"><h3>Pix automático (Mercado Pago)</h3><p class="small muted">Com o Pix automático, cada compra gera uma cobrança Pix com QR Code. Quando o pagamento cai, o pacote é liberado na hora, sem confirmação manual, e o anunciante recebe e-mail. Sem ele, vale o Pix pela chave e a confirmação manual acima.</p><p data-mp-st class="small">Verificando…</p>' +
         '<form class="row" style="gap:8px" data-mp-form><input type="password" name="token" autocomplete="off" placeholder="Access Token de produção (APP_USR-…)" style="flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)"><button class="btn sm" type="submit">Salvar e testar</button><button class="btn ghost sm" type="button" data-mp-off>Desligar</button></form>' +
-        '<details class="small"><summary>Como pegar o Access Token</summary><ol class="passos"><li>Entre em mercadopago.com.br/developers com a conta do CNPJ 32.021.268/0001-04.</li><li>Suas integrações → Criar aplicação (pagamentos online, Pix).</li><li>Credenciais de produção → copie o <b>Access Token</b> (começa com APP_USR-) e cole aqui.</li><li>Em Webhooks, cadastre o endereço mostrado acima, evento <b>Pagamentos</b>.</li></ol><p>O token fica guardado só no servidor, nunca aparece no site.</p></details></div>' : "") +
+        '<details class="small"><summary>Como pegar o Access Token</summary><ol class="passos"><li>Entre em mercadopago.com.br/developers com a conta Mercado Pago do e-mail coracaobr.oficial@gmail.com (é nela que todo Pix cai).</li><li>Suas integrações → Criar aplicação (pagamentos online, Pix).</li><li>Credenciais de produção → copie o <b>Access Token</b> (começa com APP_USR-) e cole aqui.</li><li>Em Webhooks, cadastre o endereço mostrado acima, evento <b>Pagamentos</b>.</li></ol><p>O token fica guardado só no servidor, nunca aparece no site.</p></details></div>' : "") +
       '<form class="panel stack" style="gap:12px" id="pgm-cfg"><h3>Preços (em reais) e formas de pagamento</h3><div class="form2">' +
       campo("pc-p", "Valor do pacote (R$)", preco(), 'type="number" min="0" step="0.01"') + campo("pc-n", "Anúncios por pacote", porPacote(), 'type="number" min="1" max="20"') +
       campo("pc-pv", "Promoção de curadoria · valor (R$)", promoCfg().preco, 'type="number" min="0" step="0.01"') + campo("pc-pc", "Promoção · depoimentos incluídos", promoCfg().curadorias, 'type="number" min="1" max="20"') +
       campo("pc-vf", "Selo Verificado · valor (R$)", precoSelo(), 'type="number" min="0" step="0.01"') + campo("pc-im", "Impulsionar · valor (R$)", precoImpulso(), 'type="number" min="0" step="0.01"') + campo("pc-imd", "Impulsionar · dias", diasImpulso(), 'type="number" min="1" max="60"') + campo("pc-pi", "Promoção · início", (c.promo || {}).inicio || promoCfg().inicio, 'type="date"') + campo("pc-pf", "Promoção · fim", (c.promo || {}).fim || promoCfg().fim, 'type="date"') + "</div>" +
-      '<p class="small muted">Todos os pagamentos são por Pix. O site gera o QR Code e o Pix copia e cola com o valor de cada compra.</p><div class="form2">' + campo("pc-pix", "Chave Pix (CNPJ)", p.pix || "32.021.268/0001-04") + campo("pc-pixn", "Favorecido (como aparece no banco)", p.pixNome || "Danilo Araujo Santos Desenvolvedor") + campo("pc-pixc", "Cidade do favorecido (no QR Code)", p.pixCidade || "BRASIL") + "</div>" +
+      '<p class="small muted">Todos os pagamentos são por Pix, na chave do e-mail oficial (conta Mercado Pago). O site gera o QR Code e o Pix copia e cola com o valor de cada compra.</p><div class="form2">' + campo("pc-pix", "Chave Pix (e-mail da conta Mercado Pago)", G.chavePix(p.pix)) + campo("pc-pixn", "Favorecido (como aparece no banco)", p.pixNome || "Danilo Araujo Santos Desenvolvedor") + campo("pc-pixc", "Cidade do favorecido (no QR Code)", p.pixCidade || "BRASIL") + "</div>" +
       '<button class="btn" type="submit" style="justify-self:start">Salvar</button></form></div>';
     el.onclick = function (ev) {
       var b, box = ev.target.closest(".pgm-c"), uid = box && box.dataset.uid;
@@ -301,7 +356,7 @@
     }
     $("#pgm-cfg", el).onsubmit = function (ev) {
       ev.preventDefault(); var v = function (id) { return $("#" + id, el).value.trim(); }, pg = Object.assign({}, cfg().pagamentos || {});
-      pg.pix = v("pc-pix") || "32.021.268/0001-04"; pg.pixNome = v("pc-pixn") || "Danilo Araujo Santos Desenvolvedor"; pg.pixCidade = v("pc-pixc") || "BRASIL";
+      pg.pix = G.chavePix(v("pc-pix")); pg.pixNome = v("pc-pixn") || "Danilo Araujo Santos Desenvolvedor"; pg.pixCidade = v("pc-pixc") || "BRASIL";
       var novo = Object.assign({}, cfg(), { moedaAnuncio: "BRL", precoAnuncio: Number(v("pc-p")) || 50, anunciosPorPacote: Math.max(1, Number(v("pc-n")) || 3), precoVerificado: Number(v("pc-vf")) || 30, precoImpulso: Number(v("pc-im")) || 25, diasImpulso: Math.max(1, Number(v("pc-imd")) || 7), precoFuturo: 0, precoFuturoEm: "", promo: Object.assign({}, cfg().promo || {}, { inicio: v("pc-pi"), fim: v("pc-pf"), preco: Number(v("pc-pv")) || 20, anuncios: 1, curadorias: Math.max(1, Number(v("pc-pc")) || 5) }), pagamentos: pg });
       delete novo.id; Store.gravar("config", "geral", novo).then(function () { G.toast("Preços e formas de pagamento salvos."); }).catch(function (er) { G.toast(er.message || "Não foi possível salvar."); });
     };
@@ -348,5 +403,5 @@
   function checkout(ped) { PED = ped; return pagamentoHtml(Store.uid()); }
   G.views.extra = viewExtra;
   G.views.pagar = function () { viewPagar(false); }; G.views["pagar-promo"] = function () { viewPagar(true); };
-  window.Pag = { checkout: checkout, creditosIndicacao: creditosIndicacao, precoSelo: precoSelo, precoImpulso: precoImpulso, diasImpulso: diasImpulso, verificacao: verificacao, verificado: verificado, selo: selo, impulsos: impulsos, impulsionado: impulsionado, preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
+  window.Pag = { obrigado: obrigado, obrigadoPlano: obrigadoPlano, pixAvulso: pixAvulso, pixAuto: pixAuto, checkout: checkout, creditosIndicacao: creditosIndicacao, precoSelo: precoSelo, precoImpulso: precoImpulso, diasImpulso: diasImpulso, verificacao: verificacao, verificado: verificado, selo: selo, impulsos: impulsos, impulsionado: impulsionado, preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
 })();
