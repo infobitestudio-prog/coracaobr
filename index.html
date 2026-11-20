@@ -1758,6 +1758,10 @@ html:not([data-cidade="dfw"]) a[href="#metro"]{display:none!important}
 }
 
 @media (min-width:900px){.menubar.mb-home{grid-template-columns:repeat(auto-fit,minmax(64px,1fr))}.menubar.mb-home .mb-it span{font-size:.72rem}}
+
+.lrow .n{min-width:0}.lrow .n b{overflow-wrap:anywhere}.lrow .n small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+body:has(.popup.on) .toast{bottom:calc(var(--tab) + 150px + env(safe-area-inset-bottom,0px))}
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
