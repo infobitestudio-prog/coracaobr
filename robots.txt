@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://infobitestudio-prog.github.io/coracaobr/sitemap.xml

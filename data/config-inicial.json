@@ -1,0 +1,24 @@
+{
+ "geral": {
+  "acessoPago": true,
+  "caixinha": {
+   "valores": [
+    5,
+    10,
+    20
+   ]
+  },
+  "contato": "",
+  "emailOficial": "coracaobr.oficial@gmail.com",
+  "cotacao": 5.78,
+  "cotacaoAuto": true,
+  "cotacaoEm": "2026-11-17",
+  "diasClassificado": 30,
+  "faixaTexto": "",
+  "precoAcesso": 2,
+  "precoAnuncio": 10, "precoFuturo": 20, "precoFuturoEm": "2027-01-01",
+  "precoClassificado": 3,
+  "precoDestaque": 25,
+  "whatsappAviso": "5511983573266"
+ }
+}
