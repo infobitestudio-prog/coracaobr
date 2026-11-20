@@ -909,8 +909,7 @@ case 'pix_criar': {
     $host = preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? '')); if (!preg_match('/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i', $host) || filter_var($host, FILTER_VALIDATE_IP)) $host = 'coracaobr.app';
     $nome = $u ? explode(' ', trim($u['nome']), 2) : ['Apoiador', 'CoraçãoBR'];
     $r = mp('POST', '/v1/payments', ['transaction_amount' => $valor, 'description' => 'CoraçãoBR · apoio pela caixinha', 'payment_method_id' => 'pix', 'date_of_expiration' => $expira,
-      'payer' => ['email' => $u ? $u['email'] : 'apoio+' . substr($quem, 0, 12) . '@' . $host, 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $quem . '|caixinha|1',
-      'notification_url' => baseUrl() . 'api/?acao=pix_webhook'], bin2hex(random_bytes(16)));
+      'payer' => ['email' => emailPagador($u ? $u['email'] : '', $quem), 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $quem . '|caixinha|1'] + avisoMp(), bin2hex(random_bytes(16)));
     $tx = $r['point_of_interaction']['transaction_data'] ?? null;
     if (!is_array($r) || empty($r['id']) || !$tx) erro('O Mercado Pago não gerou o Pix agora. Tente de novo em instantes.' . (isset($r['message']) ? ' (' . mb_substr((string)$r['message'], 0, 120) . ')' : ''), 502);
     $id = (string)$r['id'];
@@ -933,8 +932,7 @@ case 'pix_criar': {
   $expira = (new DateTime('+30 minutes'))->format('Y-m-d\TH:i:s.vP');
   $nome = explode(' ', trim($u['nome']), 2);
   $r = mp('POST', '/v1/payments', ['transaction_amount' => $valor, 'description' => $desc, 'payment_method_id' => 'pix', 'date_of_expiration' => $expira,
-    'payer' => ['email' => $u['email'], 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $u['id'] . '|' . $plano . '|' . $qtd,
-    'notification_url' => baseUrl() . 'api/?acao=pix_webhook'], bin2hex(random_bytes(16)));
+    'payer' => ['email' => emailPagador($u['email'], $u['id']), 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $u['id'] . '|' . $plano . '|' . $qtd] + avisoMp(), bin2hex(random_bytes(16)));
   $tx = $r['point_of_interaction']['transaction_data'] ?? null;
   if (!is_array($r) || empty($r['id']) || !$tx) erro('O Mercado Pago não gerou o Pix agora. Tente de novo em instantes.' . (isset($r['message']) ? ' (' . mb_substr((string)$r['message'], 0, 120) . ')' : ''), 502);
   $id = (string)$r['id'];
@@ -1232,6 +1230,14 @@ function moldura(string $miolo, string $token): string {
     '<p style="font-size:12px;color:#5F6B64;margin-top:16px">Você recebe este e-mail porque se inscreveu na CoraçãoBR. <a href="' . htmlspecialchars($sair) . '" style="color:#5F6B64">Sair da lista</a>.</p></div></body></html>';
 }
 /* E-mail oficial da CoraçãoBR (config.php ou o padrão acima). */
+/* Mercado Pago recusa o pagador com o mesmo e-mail da conta que recebe; e o aviso (webhook) precisa de https */
+function emailPagador(?string $email, string $quem): string {
+  $e = mb_strtolower(trim((string)$email)); $host = preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? ''));
+  if (!preg_match('/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i', $host) || filter_var($host, FILTER_VALIDATE_IP)) $host = 'coracaobr.app';
+  if (!filter_var($e, FILTER_VALIDATE_EMAIL) || $e === 'coracaobr.oficial@gmail.com' || $e === mb_strtolower(emailOficial())) return 'cliente+' . preg_replace('/[^a-z0-9]/i', '', substr($quem, 0, 16)) . '@' . $host;
+  return $e;
+}
+function avisoMp(): array { $u = baseUrl() . 'api/?acao=pix_webhook'; return strpos($u, 'https://') === 0 ? ['notification_url' => $u] : []; }
 /* Todo recebimento cai no Pix do e-mail oficial (conta Mercado Pago); a chave CNPJ antiga é trocada sozinha */
 function chavePix(?string $k): string { $k = trim((string)$k); return ($k === '' || preg_replace('/\D/', '', $k) === '32021268000104') ? 'coracaobr.oficial@gmail.com' : $k; }
 /* SAC: atendimento por e-mail e WhatsApp, assinado em todo e-mail para clientes */
