@@ -69,7 +69,7 @@
     globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.500 0 18M12 3c-3 3.500-3 14.500 0 18"/>'
   };
   function ic(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + (IC[n] || "") + "</svg>"; }
-  var CONFIG_PADRAO = { acessoPago: false, precoAcesso: 2, contato: "", precoAnuncio: 20, precoDestaque: 25, precoClassificado: 3, diasClassificado: 30, pagamentos: {}, whatsappAviso: "", cotacao: 5.40, faixaTexto: "" };
+  var CONFIG_PADRAO = { acessoPago: false, precoAcesso: 2, contato: "", precoAnuncio: 10, precoFuturo: 20, precoFuturoEm: "2027-01-01", precoDestaque: 25, precoClassificado: 3, diasClassificado: 30, pagamentos: {}, whatsappAviso: "", cotacao: 5.40, faixaTexto: "" };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function url(u) { return /^https?:\/\//i.test(u || "") ? u : ""; }
@@ -137,7 +137,7 @@
 
   /* ---------- dados derivados ---------- */
   /* Anúncio pago some quando a assinatura foi cancelada e o mês já pago terminou. */
-  function assinaturaAtiva(l) { var a = l.assinatura; if (l._dono && !a) return false; return !a || a.status === "ativa" || (a.proximaCobranca || "") >= hojeISO(); }
+  function assinaturaAtiva(l) { if (l._dono && window.Pag) return Pag.visivel(l); var a = l.assinatura; if (l._dono && !a) return false; return !a || a.status === "ativa" || (a.proximaCobranca || "") >= hojeISO(); }
   function lugares() { return Store.lista("lugares").filter(function (l) { return l.publicado !== false && !l.demo && assinaturaAtiva(l); }); }
   /* Índice de avaliações por lugar, refeito só quando a coleção muda (evita varrer tudo a cada comparação de ordenação). */
   var idxAv = null;
@@ -294,7 +294,7 @@
       hospedagem: fileira(esc(tx("hospedagem", "Onde ficar")), by("hospedagem"), "hospedagem"),
       patrocinados: '<section class="block reveal pats"><div class="head"><div><p class="eyebrow">Patrocinadores</p><h2>' + esc(tx("patrocinados", "Negócios que apoiam o guia")) + '</h2></div><a class="more" href="#anuncie">anunciar aqui</a></div><div class="spg">' + pats.slice(0, 7).map(function (l) {
         return '<a class="spc" href="#lugar-' + esc(l.id) + '"><span class="spc-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy" decoding="async">' : "") + '<em>Patrocinado</em></span><span class="spc-t"><b>' + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + (l.cidade ? " · " + esc(l.cidade) : "") + "</small></span>" + ic("arrow") + "</a>";
-      }).join("") + '<a class="spc spc-cta" href="#anuncie"><span class="spc-t"><small>Plano único</small><b>Seu negócio aqui</b><span>US$ ' + esc(String(cfg.precoAnuncio || 20)) + '/mês · até 3 anúncios com banner</span></span>' + ic("arrow") + "</a></div></section>",
+      }).join("") + '<a class="spc spc-cta" href="#anuncie"><span class="spc-t"><small>Plano único</small><b>Seu negócio aqui</b><span>US$ ' + esc(String(window.Pag ? Pag.preco() : (cfg.precoAnuncio || 10))) + '/mês · até 3 anúncios com banner</span></span>' + ic("arrow") + "</a></div></section>",
       avaliados: fileira(esc(tx("avaliados", "Mais bem avaliados")), by("passeios"), "passeios", true),
       gratisBanner: gratis.length ? '<section class="block reveal"><a class="bn" href="#explorar" data-grupo="gratis"><i></i><small>Sem pagar entrada</small><b>' + gratis.length + " passeios de graça em Dallas</b><span>Ver a lista " + ic("arrow") + "</span></a></section>" : "",
       perto: perto.length ? '<section class="block reveal"><div class="head"><h2>' + esc(Geo.gps ? "Perto de você" : tx("perto", "Mais perto")) + '</h2><button type="button" class="more" data-partida>' + (Geo.gps ? "sua localização" : "saindo de " + esc(Geo.nome)) + '</button></div><div class="list two">' + perto.map(linha).join("") + "</div></section>" : "",
@@ -581,7 +581,7 @@
       (fs.length > 1 ? '<button type="button" class="round prev" data-foto="-1" aria-label="Foto anterior">' + ic("left") + '</button><button type="button" class="round next" data-foto="1" aria-label="Próxima foto">' + ic("right") + '</button><div class="dots">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Foto ' + (i + 1) + '"></button>'; }).join("") + "</div>" : "") +
       (fs.length > 1 ? '<div class="sp-th">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Ver foto ' + (i + 1) + '"><img src="' + esc(Store.urlFoto(x.src)) + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "") + "</div>" +
       '<div class="sheet-body' + (manterScroll ? " quiet" : "") + '"><div class="sb-grid"><div class="sb-main">' +
-      '<div class="sb-tit"><p class="eyebrow">' + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (l.brasileiro ? " · Brasileiro" : "") + '</p><h2 style="margin-top:4px">' + esc(l.nome) + "</h2>" +
+      (window.Pag ? Pag.avisoPrevia(l) : "") + '<div class="sb-tit"><p class="eyebrow">' + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (l.brasileiro ? " · Brasileiro" : "") + '</p><h2 style="margin-top:4px">' + esc(l.nome) + "</h2>" +
       '<div class="row badges">' + (n.guia != null ? '<span class="badge"><span style="color:var(--sun)">★</span> <b class="num">' + n.guia.toFixed(1) + "</b>" + (n.qtd ? " (" + n.qtd + ")" : "") + "</span>" : "") +
       (window.Extras && Extras.aberto(l) != null ? '<span class="badge"><i class="dot" style="background:' + (Extras.aberto(l) ? "#2E8B57" : "#C2452D") + '"></i>' + (Extras.aberto(l) ? "Aberto agora" : "Fechado agora") + "</span>" : "") +
       (fluxoDe(l) ? '<span class="badge"><i class="dot" style="background:' + FLUXO[fluxoDe(l).nivel][1] + '"></i>' + FLUXO[fluxoDe(l).nivel][0] + "</span>" : "") +
@@ -708,10 +708,12 @@
   }
   $("#strip-x").addEventListener("click", function () { sess("faixa-fechada", "1"); faixa(); });
   function rodape() {
-    var c = config(), pr = String(c.precoAnuncio || 20).replace(/\.0+$/, "");
+    var c = config(), pr = String(window.Pag ? Pag.preco() : (c.precoAnuncio || 10)).replace(/\.0+$/, "");
     var a = $("#f-preco"); if (a) a.textContent = pr;
     Array.from(document.querySelectorAll(".f-preco2")).forEach(function (x) { x.textContent = pr; });
     var y = $("#f-ano"); if (y) y.textContent = new Date().getFullYear();
+    var pr2 = $("#f-promo"), pl = $("#f-pl"), promo = window.Pag && Pag.promocional() ? Pag.chamada() : "";
+    if (pr2) { pr2.hidden = !promo; pr2.textContent = promo; } if (pl) pl.textContent = promo ? "Preço promocional" : "Plano único";
   }
   document.addEventListener("click", function (e) {
     if (!e.target.closest("[data-ir-news]")) return; e.preventDefault();
@@ -740,17 +742,17 @@
 
   /* ---------- anuncie ---------- */
   function viewAnuncie() {
-    var c = config(), ls = lugares(), preco = usd(c.precoAnuncio), cks = function (a) { return a.map(function (t) { return '<li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' + t + "</li>"; }).join(""); };
+    var c = config(), ls = lugares(), preco = usd(window.Pag ? Pag.preco() : c.precoAnuncio), promo = window.Pag && Pag.promocional() ? Pag.chamada() : "", cks = function (a) { return a.map(function (t) { return '<li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' + t + "</li>"; }).join(""); };
     var cidades = Array.from(new Set(ls.map(function (l) { return l.cidade; }).filter(Boolean))).length;
     var onde = [["sparkle", "Carrossel da página inicial", "Seu banner (1600 × 640) entra na rodada de 30 minutos, até 10 anunciantes por vez, sem repetir."], ["pin", "Pin verde no mapa", "No mapa, seu negócio aparece em verde, destacado dos lugares comuns."], ["chart", "Topo das buscas", "Em Explorar e no Ranking, patrocinados aparecem primeiro, com moldura amarela."], ["megaphone", "Feed e Mural", "Publique novidades, ofertas, vagas e classificados para toda a comunidade."]];
     var faq = [["Posso cancelar quando quiser?", "Sim. Não há fidelidade nem multa. O anúncio fica no ar até o fim do mês já pago."], ["Quantos anúncios posso ter?", "Até 3 anúncios na mesma conta, cada um com seu banner, pelo mesmo valor de " + preco + " por mês."], ["Precisa de aprovação?", "Não. Você monta o anúncio e ele entra no ar na hora. A equipe pode remover conteúdo que viole os termos de uso."], ["Como é feito o pagamento?", (c.pagamentos && (c.pagamentos.anuncio || c.pagamentos.basico)) ? "Por cartão, em página segura de pagamento, com renovação mensal automática." : "A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX)."], ["Quem vê meu anúncio?", "Brasileiros e falantes de português que usam o guia para decidir onde comer, comprar e contratar serviços."]];
     app.innerHTML = '<section class="block an"><div class="wrap">' +
-      '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p><h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
+      '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p>' + (promo ? '<p class="an-promo">' + ic("sparkle") + esc(promo) + "</p>" : "") + '<h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
       '<div class="row an-cta"><a class="btn" href="#anunciar" data-plano="anuncio">Anunciar agora ' + ic("arrow") + '</a></div>' +
       '<dl class="an-st"><div><dt>Lugares no guia</dt><dd>' + ls.length + '</dd></div><div><dt>Cidades</dt><dd>' + cidades + '</dd></div><div><dt>Idiomas</dt><dd>3</dd></div></dl></div>' +
-      '<aside class="an-plan"><p class="an-pl">Plano único</p><div class="an-pv">' + preco + '<small>/mês</small></div>' + brl(c.precoAnuncio) +
+      '<aside class="an-plan"><p class="an-pl">' + (promo ? "Preço promocional" : "Plano único") + '</p><div class="an-pv">' + preco + '<small>/mês</small></div>' + brl(c.precoAnuncio) +
       '<ul class="an-ck">' + cks(["Até 3 anúncios com banner próprio", "Banner no carrossel da página inicial", "Pin verde no mapa e topo das buscas", "Publicações no feed e no Mural", "Página com fotos, cardápio, horário e contatos", "Cupom com QR Code e painel de métricas"]) + '</ul>' +
-      '<a class="btn an-go" href="#anunciar" data-plano="anuncio">Começar por ' + preco + '/mês</a><p class="an-fine">Sem fidelidade · cancele quando quiser</p></aside></div>' +
+      '<a class="btn an-go" href="#anunciar" data-plano="anuncio">Começar por ' + preco + '/mês</a><p class="an-fine">' + (promo ? esc(promo) + " · " : "") + 'Pagamento mensal: cartão de crédito ou débito, PayPal, Pix ou Zelle · sem fidelidade</p></aside></div>' +
       '<section class="an-sec"><p class="eyebrow">Onde você aparece</p><h2>Visibilidade em todo o guia</h2><div class="an-grid">' + onde.map(function (o) { return '<div class="an-tile"><span>' + ic(o[0]) + "</span><b>" + o[1] + "</b><p>" + o[2] + "</p></div>"; }).join("") + "</div></section>" +
       '<section class="an-sec"><p class="eyebrow">Como funciona</p><h2>No ar em três passos</h2><ol class="an-steps"><li><b>Crie sua conta</b><p>E-mail e senha, em menos de um minuto.</p></li><li><b>Monte o anúncio</b><p>Fotos, descrição, horário, WhatsApp e o banner do carrossel.</p></li><li><b>Pronto, está no ar</b><p>Acompanhe visualizações, cliques e rotas no seu painel.</p></li></ol></section>' +
       '<section class="an-sec an-two"><div><p class="eyebrow">Dúvidas frequentes</p><h2>Perguntas</h2><div class="an-faq">' + faq.map(function (f) { return "<details><summary>" + f[0] + "</summary><p>" + f[1] + "</p></details>"; }).join("") + '</div></div>' +

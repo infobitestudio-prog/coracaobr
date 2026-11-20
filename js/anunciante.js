@@ -21,7 +21,7 @@
   /* Planos: preço e link de pagamento vêm de Painel → Finanças. */
   var planoEscolhido = "anuncio"; /* plano único; "basico" e "destaque" ficam só para assinaturas antigas */
   document.addEventListener("click", function (e) { var b = e.target.closest("[data-plano]"); if (b) planoEscolhido = "anuncio"; });
-  function precoPlano() { return Number(G.config().precoAnuncio) || 0; }
+  function precoPlano() { return window.Pag ? Pag.preco() : Number(G.config().precoAnuncio) || 0; }
   function linkPlano() { var pg = G.config().pagamentos || {}; return G.url(pg.anuncio || pg.basico); }
   function nomePlano(a) { return a && a.plano === "destaque" ? "Destaque (plano antigo)" : a && a.plano === "basico" ? "Básico (plano antigo)" : "Anunciante"; }
   var LIMITE = 3;
@@ -117,7 +117,7 @@
       ocupado = true;
       Store.gravar("lugares", nid, D).then(function () {
         ocupado = false; removidas.forEach(Store.apagarFoto); D.id = nid;
-        if (novo) { guardaMeu(nid); aviso("cadastro", D, 0); if (!D.assinatura.incluido) aviso("pagamento", D, D.assinatura.valor); sucesso(D); var lk = !D.assinatura.incluido && linkPlano(); if (lk) window.open(lk, "_blank", "noopener"); } else { G.toast("Anúncio atualizado."); perfil = nid; location.replace("#anunciante"); }
+        if (novo) { guardaMeu(nid); aviso("cadastro", D, 0); if (!D.assinatura.incluido) aviso("pagamento", D, D.assinatura.valor); G.toast("Anúncio criado em modo prévia. Ele entra no ar depois do pagamento."); var ativo = window.Pag && Pag.noAr(Pag.estado(Store.uid()).fase); location.hash = ativo ? "anunciante" : "pagar"; } else { G.toast("Anúncio atualizado."); perfil = nid; location.replace("#anunciante"); }
       }).catch(falha);
     });
   }
@@ -169,7 +169,7 @@
     if (!(window.Social && Social.blocoPainel(l))) menu = menu.filter(function (x) { return x.id !== "publicar"; });
     var pe = master ? [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] : [{ nome: "Minha conta", ic: "user", href: "#entrar" }, { nome: "Ver no guia", ic: "eye", href: "#lugar-" + l.id }, { nome: "Tema claro/escuro", ic: "moon", acao: "data-tema" }];
     G.app.innerHTML = Dash.montar({ chave: "anunciante", marca: master ? "Visão do administrador" : "Painel do anunciante", titulo: l.nome, avatar: (l.nome || "?").charAt(0).toUpperCase(), menu: menu, pe: pe,
-      secoes: { geral: geral, anuncios: anuncios, publicar: window.Social ? Social.blocoPainel(l) : "", divulgar: divulgar(l) + (window.Extras ? Extras.kit(l) : ""), cupom: l.cupom && window.Comunidade ? Comunidade.validador(l) : "", assinatura: assin } });
+      secoes: { geral: (window.Pag && !Pag.noAr(Pag.estado(l._dono || Store.uid()).fase) ? Pag.blocoPainel(l._dono || Store.uid()) : "") + geral, anuncios: anuncios, publicar: window.Social ? Social.blocoPainel(l) : "", divulgar: divulgar(l) + (window.Extras ? Extras.kit(l) : ""), cupom: l.cupom && window.Comunidade ? Comunidade.validador(l) : "", assinatura: (window.Pag ? Pag.blocoPainel(l._dono || Store.uid()) : "") + assin } });
     if (l.cupom && window.Comunidade) Comunidade.validadorInit(l);
     if (window.Extras) Extras.kitInit(l);
     G.app.querySelector("section").onclick = function (e) {

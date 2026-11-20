@@ -1200,6 +1200,37 @@ dialog.lv-full::backdrop { background: rgba(0,0,0,.85) }
 .sb-hor .hor-esc { margin-right: 104px }
 @media (min-width: 960px) { .sb-hor .semana2 li { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 8px } .sb-hor .hor-esc { grid-template-columns: 40px repeat(4, 1fr) 0 } .sb-hor .semana2 .ht { font-size: .7rem } }
 .cp-p .brl, .sb-side .brl { background: none !important; border: 0 !important; color: var(--muted) !important; font: 500 .7rem var(--mono) !important; padding: 0 !important; box-shadow: none !important }
+
+/* ===== pagamento ===== */
+.an-promo { display: inline-flex; align-items: center; gap: 8px; margin: 10px 0 0; padding: 7px 12px; border-radius: 99px; background: var(--sponsor); color: var(--sponsor-ink); font: 600 .82rem var(--body) } .an-promo svg.i { width: 16px; height: 16px }
+.pg-grid { display: grid; gap: 22px } .pg-main { display: grid; gap: 16px; align-content: start } .pg-side { display: grid; gap: 14px; align-content: start }
+@media (min-width: 900px) { .pg-grid { grid-template-columns: minmax(0, 1fr) 360px; gap: 30px } .pg-side { position: sticky; top: 96px } }
+.pg-st { display: grid; gap: 4px; padding: 16px 18px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); border-left: 4px solid var(--sun) }
+.pg-st b { font-size: 1.02rem } .pg-st span { font-size: .9rem; color: var(--muted) }
+.pg-ativo, .pg-cortesia { border-left-color: var(--accent) } .pg-vencido, .pg-suspenso { border-left-color: var(--danger) } .pg-ativando { border-left-color: #2F7DD3 }
+.pg-h { font-size: 1.3rem; margin-top: 6px }
+.pg-fs { display: grid; gap: 10px }
+.pg-f { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden }
+.pg-f summary { list-style: none; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 14px 16px; cursor: pointer }
+.pg-f summary::-webkit-details-marker { display: none }
+.pg-f[open] summary { border-bottom: 1px solid var(--line) }
+.pg-f summary span:last-child { display: grid } .pg-f summary small { color: var(--muted); font-size: .84rem }
+.pg-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--ink); color: #3DDC84 }
+.pg-fc { display: grid; gap: 14px; padding: 16px }
+.pg-chave { display: grid; gap: 4px; padding: 14px; border-radius: 12px; background: var(--surface-2) } .pg-chave b { font: 600 1.05rem var(--mono); overflow-wrap: anywhere } .pg-chave small { color: var(--muted) } .pg-chave .btn { justify-self: start; margin-top: 6px }
+.pg-val b { font-family: var(--mono) }
+.pg-inf { display: grid; gap: 10px; padding-top: 12px; border-top: 1px dashed var(--line) }
+.pg-promo { font-size: .86rem; color: var(--sponsor) }
+.pg-prev { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 6px; border-radius: 10px; color: var(--ink); text-decoration: none }
+.pg-prev:hover { background: var(--surface-2) } .pg-prev img, .pg-prev span { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: var(--surface-2) } .pg-prev svg.i { width: 16px; height: 16px; color: var(--muted) }
+.pg-pv { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 14px 16px; border-radius: var(--r); background: color-mix(in srgb, var(--sponsor) 18%, var(--surface)); border: 1px solid color-mix(in srgb, var(--sponsor) 60%, var(--line)) }
+.pg-pv div { display: grid; gap: 2px } .pg-pv span { font-size: .86rem; color: var(--muted) } .pg-pv > svg.i { color: var(--sun) }
+.pg-mini { gap: 10px }
+.pgm-c { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line) }
+.pgm-t { display: grid; gap: 2px; min-width: 0 } .pgm-t small { color: var(--muted) }
+.pgm-a { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px }
+.pgm-cort { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center } .pgm-cort input { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
+.fpromo { font-size: .8rem; color: var(--sponsor); line-height: 1.35 }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -1227,7 +1258,7 @@ dialog.lv-full::backdrop { background: rgba(0,0,0,.85) }
 </header>
 <div id="aviso" class="banner" hidden><div class="wrap" id="aviso-txt"></div></div>
 <main id="app"><div class="wrap" style="padding-block:60px"><p class="muted">Carregando o guia…</p></div></main>
-<footer class="fcom"><div class="wrap"><section class="fcta" aria-label="Anuncie no CoraçãoBR"><div><span class="fk">Para empresas e profissionais</span><h2>Seu negócio na frente de quem fala português.</h2><ul class="fcl"><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Até 3 anúncios com banner</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Publicações no feed e no Mural</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Pin verde no mapa</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Cancele quando quiser</li></ul></div><div class="fpr"><small>Plano único</small><b>US$<span id="f-preco">20</span><i>/mês</i></b><a class="btn" href="#anuncie">Anunciar agora <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="fsec" href="#entrar">Já tenho conta</a></div></section></div><div class="wrap foot"><div class="fb"><b class="brand-f"><svg class="bsym" viewBox="0 0 270 200" aria-hidden="true"><defs>
+<footer class="fcom"><div class="wrap"><section class="fcta" aria-label="Anuncie no CoraçãoBR"><div><span class="fk">Para empresas e profissionais</span><h2>Seu negócio na frente de quem fala português.</h2><ul class="fcl"><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Até 3 anúncios com banner</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Publicações no feed e no Mural</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Pin verde no mapa</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Cancele quando quiser</li></ul></div><div class="fpr"><small id="f-pl">Plano único</small><b>US$<span id="f-preco">10</span><i>/mês</i></b><span class="fpromo" id="f-promo" hidden></span><a class="btn" href="#anuncie">Anunciar agora <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="fsec" href="#entrar">Já tenho conta</a></div></section></div><div class="wrap foot"><div class="fb"><b class="brand-f"><svg class="bsym" viewBox="0 0 270 200" aria-hidden="true"><defs>
 <linearGradient id="fgL" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#0AA23C"/><stop offset=".6" stop-color="#088F36"/><stop offset="1" stop-color="#05692A"/></linearGradient>
 <linearGradient id="fgF" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#05501F"/><stop offset="1" stop-color="#0B7A32" stop-opacity="0"/></linearGradient>
 <linearGradient id="fgY" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7B500"/><stop offset="1" stop-color="#FFC20E"/></linearGradient>
@@ -1256,6 +1287,7 @@ dialog.lv-full::backdrop { background: rgba(0,0,0,.85) }
 <script src="js/horario.js"></script>
 <script src="js/app.js"></script>
 <script src="js/cardapio.js"></script>
+<script src="js/pagamento.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="js/anunciante.js"></script>
 <script src="js/extras.js"></script>

@@ -6,7 +6,7 @@
    Trocar por um backend próprio (Supabase, Firebase, API) significa reescrever só este arquivo. */
 (function () {
   "use strict";
-  var COLS = ["lugares", "avaliacoes", "anuncios", "config", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "alertas", "cupons", "interesse", "perfis", "parceiros", "respostas", "posts", "curtidas", "seguindo"];
+  var COLS = ["lugares", "avaliacoes", "anuncios", "config", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "alertas", "cupons", "interesse", "perfis", "parceiros", "respostas", "posts", "curtidas", "seguindo", "pagamentos"];
   /* Coleções "por pessoa": na nuvem cada pessoa grava só o próprio documento (id = seu id de usuário), com os itens dentro de "itens".
      As regras do banco impedem escrever no documento de outra pessoa. Aqui cada item vira um registro com id "<dono>~<chave>". */
   var POR_PESSOA = ["avaliacoes", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "cupons", "interesse", "perfis", "respostas", "posts", "curtidas", "seguindo"];

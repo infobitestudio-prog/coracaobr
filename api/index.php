@@ -15,9 +15,9 @@ $CFG = [
 ];
 if (is_file(__DIR__ . '/config.php')) { $extra = require __DIR__ . '/config.php'; if (is_array($extra)) $CFG = array_merge($CFG, $extra); }
 
-const COLS = ['lugares','avaliacoes','anuncios','config','fluxos','avisos','metricas','anunciantes','classificados','alertas','cupons','interesse','perfis','parceiros','respostas','posts','curtidas','seguindo'];
-const PUBLICAS = ['lugares','config','anuncios','alertas','anunciantes','avaliacoes','fluxos','metricas','classificados','cupons','parceiros','posts','curtidas','seguindo'];
-const SO_MASTER = ['lugares','config','anuncios','alertas','parceiros'];
+const COLS = ['lugares','avaliacoes','anuncios','config','fluxos','avisos','metricas','anunciantes','classificados','alertas','cupons','interesse','perfis','parceiros','respostas','posts','curtidas','seguindo','pagamentos'];
+const PUBLICAS = ['lugares','config','anuncios','alertas','anunciantes','avaliacoes','fluxos','metricas','classificados','cupons','parceiros','posts','curtidas','seguindo','pagamentos'];
+const SO_MASTER = ['lugares','config','anuncios','alertas','parceiros','pagamentos'];
 const POR_PESSOA = ['avaliacoes','fluxos','avisos','metricas','anunciantes','classificados','cupons','interesse','perfis','respostas','posts','curtidas','seguindo'];
 const PAPEIS = ['usuario','anunciante','master'];
 const ID_RE = '/^[A-Za-z0-9_-]{1,120}$/';

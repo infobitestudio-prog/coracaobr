@@ -15,7 +15,7 @@
   "diasClassificado": 30,
   "faixaTexto": "",
   "precoAcesso": 2,
-  "precoAnuncio": 20,
+  "precoAnuncio": 10, "precoFuturo": 20, "precoFuturoEm": "2027-01-01",
   "precoClassificado": 3,
   "precoDestaque": 25,
   "whatsappAviso": "5511983573266"
