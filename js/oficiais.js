@@ -81,17 +81,10 @@
 
   /* slides do carrossel: os oficiais entram sempre, antes dos anunciantes da rodada */
   function slides() { return ativos().map(function (o) { return { tipo: "oficial", o: o }; }); }
-  /* banner do QR-DOG: a medalha 3D do próprio site qrdogdados.com.br (gravada da animação do site, em loop) com o texto do site */
+  /* banner do QR-DOG: a capa da apresentação oficial (qrdogdados.com.br/apresentacao), animada em HTML num quadro 5:2 */
   function qrdogAnim(tag, extra) {
-    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: um QR Code, tudo dentro. Cada medalha tem um código só dela. Qualquer celular lê pela câmera.">' +
-      '<span class="qdv-bg"></span><span class="qdv-st"></span>' +
-      '<span class="qdv-l"><span class="qdv-eb"><i></i>QR-DOG · O QR CODE</span>' +
-      '<span class="qdv-h"><b>UM QR CODE.</b><b><em>TUDO DENTRO.</em></b></span>' +
-      '<span class="qdv-p">Cada medalha tem um código só dela. Qualquer celular lê pela câmera.</span>' +
-      '<span class="qdv-cam"><i>📷</i><span><b>Abre na câmera</b><small>Sem aplicativo e sem cadastro.</small></span></span>' +
-      '<span class="qdv-cta">Quero minha medalha <i>→</i></span></span>' +
-      '<span class="qdv-r"><video class="qdv-v" autoplay muted loop playsinline preload="metadata" poster="img/patrocinadores/qrdog-medalha-poster.webp" aria-hidden="true">' +
-      '<source src="img/patrocinadores/qrdog-medalha.webm" type="video/webm"><source src="img/patrocinadores/qrdog-medalha.mp4" type="video/mp4"></video></span>' +
+    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: a medalha que leva seu pet de volta para casa">' +
+      '<iframe class="qda-f" src="img/patrocinadores/qrdog-apresentacao/index.html" title="QR-DOG: a medalha que leva seu pet de volta para casa" tabindex="-1" aria-hidden="true" scrolling="no"></iframe>' +
       '<span class="qdv-selo">Patrocinador oficial</span>' +
       "</" + tag + ">";
   }
