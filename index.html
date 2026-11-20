@@ -2051,6 +2051,11 @@ html.obg-on, html.obg-on body { overflow: hidden }
 .ia-seta { pointer-events: none } .intro.espera:has(> .ia-seta.baixo-meio) .intro-app, .intro.espera:has(> .ia-seta.baixo-dir) .intro-app { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) }
 
 .ia-pgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100% } .btn.ia-pg { min-height: 60px; font-size: 1.1rem }
+
+.ia-aviso { display: flex; align-items: center; gap: 10px; margin: 2px 0 0; padding: 12px 16px; border-radius: 16px; background: rgba(255,194,14,.14); border: 1px solid rgba(255,194,14,.45); color: #FFE08A; font: 700 .98rem/1.35 var(--body); text-align: left }
+.ia-aviso svg { width: 22px; height: 22px; flex: none; color: #FFC20E }
+.ia-aviso-pg { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; border-radius: 16px; background: #FFF4CC; color: #6B4A00; font-weight: 700; width: 100%; box-sizing: border-box }
+:root[data-theme="dark"] .ia-aviso-pg { background: rgba(255,194,14,.14); color: #FFE08A }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -2117,7 +2122,7 @@ html.obg-on, html.obg-on body { overflow: hidden }
     else if (f === "menu") { seta = SETA("cima-dir"); h = '<p class="ia-k">Android · quase lá</p><h2>Instale pelo menu</h2><div class="ia-dica"><span class="ia-n">1</span><span>Toque nos <b>três pontinhos ⋮</b> no canto de cima.</span></div><div class="ia-dica"><span class="ia-n">2</span><span>Toque em <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>).</span></div>' + x(); }
     else {
       var pri = ios ? "ios" : android ? "android" : "";
-      h = '<p class="ia-k">Aplicativo CoraçãoBR · grátis</p><h2>Instale o app no seu celular</h2><p class="ia-s">Abre direto da tela inicial, em tela cheia, com avisos do que está perto de você. Escolha o seu celular:</p>' +
+      h = '<p class="ia-k">Aplicativo CoraçãoBR · grátis</p><h2>Instale o app no seu celular</h2><p class="ia-aviso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2.2 2.2 0 0 0 4 0"/></svg><span>É necessário instalar como App para receber notificações 🇧🇷</span></p><p class="ia-s">Abre direto da tela inicial, em tela cheia. Escolha o seu celular:</p>' +
         '<div class="ia-os"><button type="button" class="ia-bt' + (pri === "ios" ? "" : " ia-alt") + '" data-ia-os="ios">' + APPLE + "iPhone</button>" + '<button type="button" class="ia-bt' + (pri === "android" ? "" : " ia-alt") + '" data-ia-os="android">' + ANDROID + "Android</button></div>" + x();
     }
     box.innerHTML = h;
@@ -2216,35 +2221,35 @@ html.obg-on, html.obg-on body { overflow: hidden }
 <dialog id="dlg"></dialog>
 <div id="toast" class="toast" hidden role="status"></div>
 
-<script src="js/store.js?v=202611201629"></script>
-<script src="js/horario.js?v=202611201629"></script>
-<script src="js/app.js?v=202611201629"></script>
-<script src="js/cardapio.js?v=202611201629"></script>
-<script src="js/pix.js?v=202611201629"></script>
-<script src="js/pagamento.js?v=202611201629"></script>
-<script src="js/promo.js?v=202611201629"></script>
-<script src="js/oficiais.js?v=202611201629"></script>
-<script src="js/metro.js?v=202611201629"></script>
+<script src="js/store.js?v=202611201631"></script>
+<script src="js/horario.js?v=202611201631"></script>
+<script src="js/app.js?v=202611201631"></script>
+<script src="js/cardapio.js?v=202611201631"></script>
+<script src="js/pix.js?v=202611201631"></script>
+<script src="js/pagamento.js?v=202611201631"></script>
+<script src="js/promo.js?v=202611201631"></script>
+<script src="js/oficiais.js?v=202611201631"></script>
+<script src="js/metro.js?v=202611201631"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="js/anunciante.js?v=202611201629"></script>
-<script src="js/extras.js?v=202611201629"></script>
-<script src="js/checklist.js?v=202611201629"></script>
-<script src="js/diferenciais.js?v=202611201629"></script>
-<script src="js/galeria.js?v=202611201629"></script>
-<script src="js/dash.js?v=202611201629"></script>
-<script src="js/usuario.js?v=202611201629"></script>
-<script src="js/custo.js?v=202611201629"></script>
-<script src="js/comunidade.js?v=202611201629"></script>
-<script src="js/novidades.js?v=202611201629"></script>
-<script src="js/jornada.js?v=202611201629"></script>
-<script src="js/paginas.js?v=202611201629"></script>
-<script src="js/efeitos.js?v=202611201629"></script>
+<script src="js/anunciante.js?v=202611201631"></script>
+<script src="js/extras.js?v=202611201631"></script>
+<script src="js/checklist.js?v=202611201631"></script>
+<script src="js/diferenciais.js?v=202611201631"></script>
+<script src="js/galeria.js?v=202611201631"></script>
+<script src="js/dash.js?v=202611201631"></script>
+<script src="js/usuario.js?v=202611201631"></script>
+<script src="js/custo.js?v=202611201631"></script>
+<script src="js/comunidade.js?v=202611201631"></script>
+<script src="js/novidades.js?v=202611201631"></script>
+<script src="js/jornada.js?v=202611201631"></script>
+<script src="js/paginas.js?v=202611201631"></script>
+<script src="js/efeitos.js?v=202611201631"></script>
 <script src="vendor/leaflet.js"></script>
-<script src="js/recursos.js?v=202611201629"></script>
-<script src="js/mapa.js?v=202611201629"></script>
-<script src="js/social.js?v=202611201629"></script>
-<script src="js/idiomas.js?v=202611201629"></script>
-<script src="js/painel.js?v=202611201629"></script>
-<script src="js/painel-recursos.js?v=202611201629"></script>
-<script src="js/auth.js?v=202611201629"></script>
+<script src="js/recursos.js?v=202611201631"></script>
+<script src="js/mapa.js?v=202611201631"></script>
+<script src="js/social.js?v=202611201631"></script>
+<script src="js/idiomas.js?v=202611201631"></script>
+<script src="js/painel.js?v=202611201631"></script>
+<script src="js/painel-recursos.js?v=202611201631"></script>
+<script src="js/auth.js?v=202611201631"></script>
 </body></html>
