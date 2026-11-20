@@ -5,6 +5,18 @@
    Configuração opcional em api/config.php (veja config.exemplo.php). */
 declare(strict_types=1);
 
+/* Agendador da Hostinger (Cron Jobs) pela linha de comando, sem chave na URL:
+     /usr/bin/php /home/USUARIO/domains/SEU-SITE/public_html/api/index.php acao=atualizar_diario
+   Só quem tem acesso ao servidor consegue rodar assim. Aceita apenas as tarefas automáticas. */
+$CLI = PHP_SAPI === 'cli';
+if ($CLI) {
+  parse_str(implode('&', array_slice($argv ?? [], 1)), $_GET);
+  if (!in_array($_GET['acao'] ?? '', ['atualizar_diario', 'newsletter_cron'], true)) { fwrite(STDERR, "Uso: php api/index.php acao=atualizar_diario (ou acao=newsletter_cron)\n"); exit(1); }
+  $raiz = preg_match('#/domains/([^/]+)/public_html(/.*)?/api$#', str_replace('\\', '/', __DIR__), $m) ? $m : null;
+  $_SERVER = array_merge($_SERVER, ['REQUEST_METHOD' => 'GET', 'REMOTE_ADDR' => '127.0.0.1', 'HTTP_USER_AGENT' => 'CoracaoBR-cron', 'HTTPS' => 'on',
+    'HTTP_HOST' => (string)($_GET['host'] ?? ($raiz[1] ?? 'localhost')), 'SCRIPT_NAME' => ($raiz[2] ?? '') . '/api/index.php']);
+}
+
 $CFG = [
   'db' => __DIR__ . '/../dados/coracaobr.sqlite',
   'uploads' => __DIR__ . '/../uploads',
@@ -42,7 +54,7 @@ session_name('CBRSESS');
 session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
 /* Fotos, sitemap, robots, aviso do Mercado Pago e tarefas automáticas não usam sessão: assim não mexem no cookie de login
    (antes, uma foto carregando enquanto a pessoa entrava na conta podia trocar o cookie e "deslogar"). */
-$SEM_SESSAO = ['foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
+$SEM_SESSAO = ['recibo', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
 if (in_array((string)($_GET['acao'] ?? ''), $SEM_SESSAO, true)) {
   $_SESSION = ['csrf' => '', 'visitante' => ''];
 } else {
@@ -345,7 +357,7 @@ function processaPagamento(string $pagId): array {
       $av = ['tipo' => 'caixinha', 'nome' => 'Apoio pela caixinha', 'valor' => (float)$c['valor'], 'moeda' => 'BRL', 'criadoEm' => gmdate('c'), 'lido' => false, 'pagamento' => 'mp:' . $pagId];
       $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('avisos', ?, ?, ?) ON CONFLICT(col, id) DO NOTHING")->execute(['cx-' . $pagId, json_encode($av, JSON_UNESCAPED_UNICODE), agora()]); versao('avisos');
       try { avisaEquipe('Apoio recebido pela caixinha · R$ ' . number_format((float)$c['valor'], 2, ',', '.'), "Pix da caixinha aprovado pelo Mercado Pago.\nValor: R$ " . number_format((float)$c['valor'], 2, ',', '.') . "\nPagamento: $pagId"); } catch (Throwable $e) { /* o aviso no painel já ficou registrado */ }
-    } else $c['pacote'] = aplicaPacote($c['uid'], $c, $pagId);
+    } else { $c['pacote'] = aplicaPacote($c['uid'], $c, $pagId); try { enviaRecibo((string)$c['uid'], (array)$c['pacote'] + ['valor' => (float)$c['valor'], 'qtd' => (int)($c['qtd'] ?? 1), 'pagoEm' => gmdate('c')], (string)($c['plano'] ?? 'pacote'), 'pix-auto', 'mp:' . $pagId); } catch (Throwable $er) { error_log('CoraçãoBR recibo: ' . $er->getMessage()); /* o pagamento vale mesmo se o e-mail falhar */ } }
   }
   elseif (in_array($s, ['cancelled', 'rejected', 'refunded', 'charged_back'], true)) $c['status'] = 'cancelado';
   elseif (!empty($c['expira']) && time() > strtotime($c['expira'])) $c['status'] = 'expirado';
@@ -595,10 +607,17 @@ case 'apagar': {
       if ($n > 0 && $n > (int)(pagamentoDe($id)['curadorias'] ?? 0)) erro('Você não tem curadorias disponíveis. Compre um crédito na promoção.');
     }
     if (!master() && $col === 'posts' && count((array)($data['itens'] ?? [])) > 60) erro('Limite de 60 publicações por conta. Apague as mais antigas.');
-    $antes = null;
+    $antes = null; $antesPg = null;
+    if (master() && $col === 'pagamentos') { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antesPg = json_decode((string)$st->fetchColumn(), true) ?: []; }
     if (!master() && $col === 'avisos') { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antes = json_decode((string)$st->fetchColumn(), true) ?: []; }
     $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, $json, agora()]);
     if (master() && $col === 'pagamentos') premiaIndicacao($id);
+    if ($antesPg !== null) {   // pacote, Clube ou mural liberado à mão (Pix pela chave): recibo para o cliente e o e-mail oficial
+      foreach (['pacotes' => null, 'clubePag' => 'clube', 'mural' => 'mural'] as $campo => $pl) {
+        $ids = []; foreach ((array)($antesPg[$campo] ?? []) as $x) if (is_array($x) && !empty($x['id'])) $ids[$x['id']] = 1;
+        foreach ((array)($data[$campo] ?? []) as $x) if (is_array($x) && !empty($x['id']) && empty($ids[$x['id']]) && (float)($x['valor'] ?? 0) > 0 && strpos((string)($x['aviso'] ?? ''), 'mp:') !== 0) { try { enviaRecibo($id, $x, $pl ?: (string)($x['tipo'] ?? 'pacote'), 'pix-manual', 'pk:' . $x['id']); } catch (Throwable $er) { error_log('CoraçãoBR recibo: ' . $er->getMessage()); } }
+      }
+    }
     if ($antes !== null) {   // aviso novo de visitante/anunciante: manda para o e-mail oficial
       $novos = isset($data['itens']) && is_array($data['itens']) ? array_diff_key($data['itens'], (array)($antes['itens'] ?? [])) : (empty($antes) ? [$data] : []);
       $NOMES = ['pagamento-informado' => 'pagamento informado', 'denuncia' => 'denúncia', 'classificado' => 'novo classificado no mural', 'novo-anuncio' => 'novo anúncio', 'anuncio' => 'anúncio', 'contato' => 'mensagem de contato'];
@@ -742,7 +761,7 @@ case 'newsletter_enviar': {
 case 'newsletter_cron': {
   /* Envio automático semanal: a Hostinger chama este endereço pelo agendador (Cron Jobs). */
   $chave = trim((string)@file_get_contents(dirname($CFG['db']) . '/CHAVE-CRON.txt'));
-  if ($chave === '' || !hash_equals($chave, (string)($_GET['chave'] ?? ''))) erro('Chave inválida.', 403);
+  if (!$CLI && ($chave === '' || !hash_equals($chave, (string)($_GET['chave'] ?? '')))) erro('Chave inválida.', 403);
   sai(['ok' => true] + newsletterAuto());
 }
 case 'metro': {
@@ -755,7 +774,7 @@ case 'atualizar_diario': {
      (ou na hora, com &forcar=1 pela equipe). Atualiza: cotação do dólar (PTAX do Banco Central), metrô (GTFS oficial, toda semana),
      eventos vencidos e, com a chave da Google Places API, nota, avaliações, horário, telefone e site dos lugares. */
   $chave = trim((string)@file_get_contents(dirname($CFG['db']) . '/CHAVE-CRON.txt'));
-  $porChave = $chave !== '' && hash_equals($chave, (string)($_GET['chave'] ?? ''));
+  $porChave = $CLI || ($chave !== '' && hash_equals($chave, (string)($_GET['chave'] ?? '')));
   if (!$porChave && !master()) erro('Chave inválida.', 403);
   $tz = new DateTimeZone('America/Chicago'); $agoraD = new DateTime('now', $tz); $hoje = $agoraD->format('Y-m-d');
   $forcar = !empty($_GET['forcar']);
@@ -1000,6 +1019,11 @@ case 'pix_status': {
   if (!$u && !(is_array($c) && ($c['plano'] ?? '') === 'caixinha')) erro('Entre na sua conta para continuar.', 401);
   if (!is_array($c) || ($c['uid'] !== $quem && !($u && $c['uid'] === $_SESSION['visitante']) && !master())) erro('Cobrança não encontrada.', 404);
   $r = processaPagamento($id); sai(['ok' => true, 'status' => $r['status'], 'pacote' => $r['cobranca']['pacote'] ?? null]);
+}
+case 'recibo': {
+  $st = banco()->prepare("SELECT data FROM docs WHERE col = 'recibos' AND id = ?"); $st->execute([preg_replace('/[^A-Z0-9]/', '', strtoupper((string)($_GET['n'] ?? '')))]); $r = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($r) || !hash_equals((string)$r['k'], (string)($_GET['k'] ?? ''))) { http_response_code(404); header('Content-Type: text/plain; charset=utf-8'); echo 'Recibo não encontrado.'; exit; }
+  header('Content-Type: text/html; charset=utf-8'); header('X-Robots-Tag: noindex'); echo reciboHtml($r, '', false); exit;
 }
 case 'pix_webhook': {
   /* aviso do Mercado Pago: nunca confia no corpo; consulta o pagamento pelo id e só então libera */
@@ -1387,6 +1411,83 @@ function sacZap(): string { $g = configDoc('geral'); $z = preg_replace('/\D/', '
 function sacAssinatura(): string {
   $z = sacZap(); $br = strlen($z) >= 12 && substr($z, 0, 2) === '55' ? '(' . substr($z, 2, 2) . ') ' . substr($z, 4, strlen($z) - 8) . '-' . substr($z, -4) : '+' . $z;
   return "\n\nEquipe CoraçãoBR\n\nSAC CoraçãoBR (atendimento)\nE-mail: " . emailOficial() . "\nWhatsApp: $br · https://wa.me/$z";
+}
+/* ---------- recibo de pagamento: vai para quem pagou e para o e-mail oficial (Pix automático e Pix confirmado pela equipe) ---------- */
+function reciboCliente(string $uid): array {
+  $pdo = banco(); $u = $pdo->prepare('SELECT email, nome, zip, zip_cidade FROM usuarios WHERE id = ?'); $u->execute([$uid]); $u = $u->fetch() ?: [];
+  $an = $pdo->prepare("SELECT data FROM docs WHERE col = 'anunciantes' AND id = ?"); $an->execute([$uid]); $a = json_decode((string)$an->fetchColumn(), true) ?: [];
+  $emp = ''; $tel = ''; $reg = '';
+  foreach ((array)($a['itens'] ?? []) as $it) if (is_array($it) && !empty($it['nome'])) { $emp = $emp ?: (string)$it['nome']; $tel = $tel ?: (string)($it['whatsapp'] ?? ($it['telefone'] ?? '')); $reg = $reg ?: (string)($it['regiao'] ?? ''); }
+  return ['nome' => (string)($u['nome'] ?? ''), 'email' => (string)($u['email'] ?? ''), 'tel' => $tel, 'cidade' => (string)(($u['zip_cidade'] ?? '') ?: $reg), 'zip' => (string)($u['zip'] ?? ''), 'empresa' => $emp];
+}
+function reciboItem(array $pk, string $plano): array {
+  $p = precosServidor(); $q = max(1, (int)($pk['qtd'] ?? 1)); $per = !empty($pk['inicio']) && !empty($pk['fim']) ? ' · ' . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) : '';
+  switch ($plano) {
+    case 'promo': return ['Promoção: 1 anúncio + ' . (int)($pk['curadorias'] ?? $p['promoCuradorias'] ?? 5) . ' depoimentos de parceiro' . $per, 1];
+    case 'impulso': return ['Impulsionar anúncio (destaque por 7 dias)' . $per, 1];
+    case 'clube': return ['Clube CoraçãoBR · assinatura de 1 mês' . $per, 1];
+    case 'mural': return ['Destaque no mural de vagas e classificados' . $per, 1];
+    case 'verificado': return ['Selo Verificado CoraçãoBR (análise do negócio)', 1];
+    default: return ['Pacote mensal de anúncios · ' . (int)($pk['anuncios'] ?? $q * (int)$p['porPacote']) . ' anúncios (' . (int)$p['porPacote'] . ' por pacote)' . $per, $q];
+  }
+}
+function brl(float $v): string { return 'R$ ' . number_format($v, 2, ',', '.'); }
+function enviaRecibo(string $uid, array $pk, string $plano, string $metodo, string $ref): ?array {
+  $valor = (float)($pk['valor'] ?? 0); if ($valor <= 0 || $uid === '' || $ref === '') return null;
+  $pdo = banco(); $esc = str_replace(['%', '_'], ['\%', '\_'], $ref);
+  $ja = $pdo->prepare("SELECT data FROM docs WHERE col = 'recibos' AND data LIKE ? ESCAPE '\\'"); $ja->execute(['%"ref":"' . $esc . '"%']); if ($ja->fetchColumn()) return null;
+  $cli = reciboCliente($uid); [$desc, $qtd] = reciboItem($pk, $plano);
+  $n = 'CB' . gmdate('ymd') . strtoupper(substr(bin2hex(random_bytes(4)), 0, 6));
+  $r = ['n' => $n, 'k' => bin2hex(random_bytes(10)), 'ref' => $ref, 'uid' => $uid, 'cliente' => $cli, 'plano' => $plano,
+    'itens' => [['desc' => $desc, 'qtd' => $qtd, 'valor' => $valor + (float)($pk['desconto'] ?? 0)]], 'desconto' => (float)($pk['desconto'] ?? 0), 'total' => $valor,
+    'metodo' => $metodo === 'pix-auto' ? 'Pix · Mercado Pago (confirmado na hora)' : 'Pix · confirmado pela equipe', 'situacao' => 'Aprovado', 'pagoEm' => (string)($pk['pagoEm'] ?? gmdate('c')), 'criadoEm' => gmdate('c')];
+  $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('recibos', ?, ?, ?) ON CONFLICT(col, id) DO NOTHING")->execute([$n, json_encode($r, JSON_UNESCAPED_UNICODE), agora()]);
+  $link = baseUrl() . 'api/index.php?acao=recibo&n=' . $n . '&k=' . $r['k'];
+  $html = reciboHtml($r, $link, true); $txt = reciboTexto($r, $link);
+  $assunto = 'Recibo CoraçãoBR ' . $n . ' · ' . brl($valor);
+  if (filter_var($cli['email'], FILTER_VALIDATE_EMAIL)) mailHtml($cli['email'], $assunto, $html, $txt);
+  mailHtml(emailOficial(), 'Cópia · ' . $assunto . ' · ' . ($cli['nome'] ?: $cli['email']), $html, $txt);
+  return $r;
+}
+function mailHtml(string $para, string $assunto, string $html, string $txt): bool {
+  global $CFG; if (!filter_var($para, FILTER_VALIDATE_EMAIL)) return false;
+  $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+  $b = 'cbr' . bin2hex(random_bytes(8));
+  $h = "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\n";
+  $corpo = "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($txt)) . "--$b\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($html)) . "--$b--";
+  return (bool)@mail($para, '=?UTF-8?B?' . base64_encode($assunto) . '?=', $corpo, $h);
+}
+function reciboTexto(array $r, string $link): string {
+  $c = $r['cliente']; $l = "CoraçãoBR · Recibo {$r['n']}\n\nObrigado, " . ($c['nome'] ?: 'cliente') . "! Seu pagamento foi aprovado.\n\nCliente: {$c['nome']}\nE-mail: {$c['email']}" . ($c['tel'] ? "\nWhatsApp / telefone: {$c['tel']}" : '') . ($c['cidade'] ? "\nCidade: {$c['cidade']}" . ($c['zip'] ? " · ZIP {$c['zip']}" : '') : '') . ($c['empresa'] ? "\nEmpresa: {$c['empresa']}" : '') . "\n\n";
+  foreach ($r['itens'] as $it) $l .= "{$it['desc']} · qtd. {$it['qtd']} · " . brl((float)$it['valor']) . "\n";
+  if ($r['desconto'] > 0) $l .= "Desconto: -" . brl((float)$r['desconto']) . "\n";
+  return $l . "Total: " . brl((float)$r['total']) . "\nPago em " . date('d/m/Y H:i', strtotime($r['pagoEm'])) . " · {$r['metodo']} · {$r['situacao']}\n\nRecibo completo (imprimir ou salvar em PDF): $link\n\nSAC: " . emailOficial() . " · WhatsApp (11) 98357-3266";
+}
+function reciboHtml(array $r, string $link, bool $email): string {
+  $e = function ($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }; $c = $r['cliente'];
+  $logo = baseUrl() . 'icon-192.png'; $quando = date('d/m/Y', strtotime($r['pagoEm'])) . ' às ' . date('H:i', strtotime($r['pagoEm']));
+  $linhas = ''; foreach ($r['itens'] as $it) $linhas .= '<tr><td style="padding:14px 0;border-bottom:1px solid #E6E8E7;font-size:15px;color:#0E1512">' . $e($it['desc']) . '</td><td style="padding:14px 0;border-bottom:1px solid #E6E8E7;font-size:15px;text-align:center;color:#0E1512">' . (int)$it['qtd'] . '</td><td style="padding:14px 0;border-bottom:1px solid #E6E8E7;font-size:15px;text-align:right;color:#0E1512;white-space:nowrap">' . brl((float)$it['valor']) . '</td></tr>';
+  if ($r['desconto'] > 0) $linhas .= '<tr><td colspan="2" style="padding:10px 0;font-size:14px;color:#5B6660">Desconto do programa de indicação</td><td style="padding:10px 0;font-size:14px;text-align:right;color:#0B7A3B">− ' . brl((float)$r['desconto']) . '</td></tr>';
+  $caixa = function ($tit, $html) { return '<td valign="top" style="width:50%;padding:6px"><div style="border:1px solid #E1E5E3;border-radius:14px;padding:16px 18px;min-height:96px"><div style="font:700 11px/1.2 Arial,sans-serif;letter-spacing:.14em;color:#0B7A3B;text-transform:uppercase;margin-bottom:8px">' . $tit . '</div>' . $html . '</div></td>'; };
+  $cli = '<div style="font-size:15px;font-weight:700;color:#0E1512">' . $e($c['nome']) . '</div><div style="font-size:14px;color:#3B4540;line-height:1.6">' . $e($c['email']) . ($c['tel'] ? '<br>WhatsApp / telefone: ' . $e($c['tel']) : '') . ($c['cidade'] ? '<br>' . $e($c['cidade']) . ($c['zip'] ? ' · ZIP ' . $e($c['zip']) : '') : '') . '</div>';
+  $neg = '<div style="font-size:15px;font-weight:700;color:#0E1512">' . $e($c['empresa'] ?: 'Conta CoraçãoBR') . '</div><div style="font-size:14px;color:#3B4540;line-height:1.6">Plano contratado no CoraçãoBR<br>Guia brasileiro nos EUA</div>';
+  $passos = $r['plano'] === 'clube' ? ['Abra Minha conta → Clube para ver a carteirinha digital.', 'Mostre a carteirinha nos parceiros com desconto do Clube.', 'Guarde a carteirinha na Wallet do celular.'] :
+    ['Seus anúncios já estão liberados: abra Minha conta → Meu negócio.', 'Complete fotos, horário, WhatsApp e a oferta para quem vem pelo guia.', 'Acompanhe visitas e cliques no relatório do painel.'];
+  $ol = ''; foreach ($passos as $i => $s) $ol .= '<div style="font-size:14px;line-height:1.7;color:#E9F3EE">' . ($i + 1) . '. ' . $e($s) . '</div>';
+  $doc = '<div style="max-width:720px;margin:0 auto;background:#FFFFFF;font-family:Arial,Helvetica,sans-serif;color:#0E1512">'
+    . '<div style="background:#0B1F15;padding:24px 28px;border-bottom:5px solid #FFC20E"><table width="100%" cellpadding="0" cellspacing="0"><tr><td valign="middle"><table cellpadding="0" cellspacing="0"><tr><td><img src="' . $e($logo) . '" width="52" height="52" alt="CoraçãoBR" style="display:block;border-radius:12px"></td><td style="padding-left:14px"><div style="font:800 22px/1.1 Arial,sans-serif;color:#FFFFFF">Coração<span style="color:#FFC20E">BR</span></div><div style="font-size:13px;color:#B9CBC1;margin-top:4px">Guia brasileiro nos EUA · coracaobr.com.br</div></td></tr></table></td>'
+    . '<td valign="middle" align="right"><div style="font:600 11px/1.2 Arial,sans-serif;letter-spacing:.2em;color:#B9CBC1">RECIBO DE PAGAMENTO</div><div style="font:800 24px/1.2 Arial,sans-serif;color:#5FD38D;margin-top:6px">' . $e($r['n']) . '</div></td></tr></table></div>'
+    . '<div style="padding:26px 28px 8px"><div style="font:800 24px/1.25 Arial,sans-serif">Obrigado, <span style="color:#0B7A3B">' . $e(explode(' ', trim($c['nome'] ?: 'cliente'))[0]) . '</span>! Seu pagamento foi aprovado 💚</div></div>'
+    . '<div style="padding:8px 22px"><table width="100%" cellpadding="0" cellspacing="0"><tr>' . $caixa('Cliente', $cli) . $caixa('Negócio', $neg) . '</tr></table></div>'
+    . '<div style="padding:10px 28px"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="font:700 11px/1.2 Arial,sans-serif;letter-spacing:.14em;color:#5B6660;padding-bottom:10px;border-bottom:2px solid #0E1512">PLANO</td><td style="font:700 11px/1.2 Arial,sans-serif;letter-spacing:.14em;color:#5B6660;padding-bottom:10px;border-bottom:2px solid #0E1512;text-align:center">QTD.</td><td style="font:700 11px/1.2 Arial,sans-serif;letter-spacing:.14em;color:#5B6660;padding-bottom:10px;border-bottom:2px solid #0E1512;text-align:right">VALOR</td></tr>' . $linhas
+    . '<tr><td colspan="2" style="padding:16px 0 4px;border-top:2px solid #0E1512;font:800 20px/1.2 Arial,sans-serif">Total</td><td style="padding:16px 0 4px;border-top:2px solid #0E1512;font:800 22px/1.2 Arial,sans-serif;text-align:right;white-space:nowrap">' . brl((float)$r['total']) . '</td></tr></table>'
+    . '<div style="font-size:13px;color:#5B6660;margin-top:14px;line-height:1.7">Pago em <b style="color:#0E1512">' . $e($quando) . '</b> &nbsp;·&nbsp; Pagamento <b style="color:#0E1512">' . $e($r['metodo']) . '</b> &nbsp;·&nbsp; Situação <b style="color:#0B7A3B">' . $e($r['situacao']) . '</b></div></div>'
+    . '<div style="padding:16px 28px"><div style="background:#0B1F15;border-radius:16px;padding:18px 22px"><div style="font:800 17px/1.3 Arial,sans-serif;color:#FFC20E;margin-bottom:8px">Próximos passos</div>' . $ol . '</div></div>'
+    . ($email ? '<div style="padding:4px 28px 10px"><a href="' . $e($link) . '" style="display:inline-block;background:#0B7A3B;color:#FFFFFF;text-decoration:none;font:700 15px Arial,sans-serif;padding:13px 22px;border-radius:999px">Abrir recibo para imprimir ou salvar em PDF</a></div>' : '')
+    . '<div style="padding:16px 28px 26px;border-top:1px dashed #D5DBD8;margin-top:10px;font-size:13px;color:#5B6660;line-height:1.7">CoraçãoBR · coracaobr.com.br · ' . $e(emailOficial()) . ' · WhatsApp (11) 98357-3266<br>Guarde este recibo. Dúvidas? Informe o recibo ' . $e($r['n']) . '.</div></div>';
+  if ($email) return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:18px 0;background:#EEF2F0">' . $doc . '</body></html>';
+  return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Recibo ' . $e($r['n']) . ' · CoraçãoBR</title><link rel="icon" href="../favicon.ico">'
+    . '<style>body{margin:0;padding:24px 12px;background:#EEF2F0}.bt{display:block;max-width:720px;margin:0 auto 14px;text-align:right}.bt button{font:700 15px Arial,sans-serif;background:#0B7A3B;color:#fff;border:0;border-radius:999px;padding:12px 20px;cursor:pointer}@media print{body{background:#fff;padding:0}.bt{display:none}}</style></head><body><div class="bt"><button onclick="print()">Imprimir ou salvar em PDF</button></div>' . $doc . '</body></html>';
 }
 function emailOficial(): string {
   global $CFG; $e = trim((string)($CFG['email_oficial'] ?? ''));

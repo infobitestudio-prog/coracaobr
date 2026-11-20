@@ -18,7 +18,7 @@
   function rotuloPin(l) {
     if (R.ehEvento(l)) { if (R.acontecendoAgora(l)) return "Agora"; var ps = R.proximasSessoes(l), d = ps.length ? ps[0].d : (l.dataInicio && l.dataInicio >= R.hoje() ? l.dataInicio : ""); if (d) return d.slice(8, 10) + "/" + d.slice(5, 7); return "Evento"; }
     if (gratis(l)) return "Grátis";
-    var n = G.notas(l).guia; if (n != null) return "★ " + n.toFixed(1).replace(".", ",");
+    var n = G.notas(l).guia; if (n != null) return (window.Reacoes ? Reacoes.emoji(n) : "★") + " " + n.toFixed(1).replace(".", ",");
     var p = G.precos(l); return p && !p.gratis ? "US$ " + Math.round(p.min) + "+" : l.faixaPreco || (G.CATS[l.categoria] || "Ver").split(" ")[0];
   }
   /* Cores: verde = anunciante, amarelo = programação gratuita, vermelho = acontecendo agora, branco = demais lugares. */
@@ -72,7 +72,7 @@
   function linha(l) {
     var f = G.foto(l), n = G.notas(l).guia, t = G.tempo(l, "carro"), ps = R.ehEvento(l) ? R.proximasSessoes(l) : [];
     var sub = [G.CATS[l.categoria] || "", G.regiao(l)].filter(Boolean).join(" · ");
-    var info = R.ehEvento(l) ? (ps.length ? R.dataCurta(ps[0].d) + (ps[0].i ? " · " + ps[0].i : "") + (ps.length > 1 ? " · +" + (ps.length - 1) : "") : (l.quando || "")) : [n != null ? "★ " + n.toFixed(1).replace(".", ",") : "", G.precoCurto(l) === "Pago" ? "" : G.precoCurto(l)].filter(Boolean).join(" · ");
+    var info = R.ehEvento(l) ? (ps.length ? R.dataCurta(ps[0].d) + (ps[0].i ? " · " + ps[0].i : "") + (ps.length > 1 ? " · +" + (ps.length - 1) : "") : (l.quando || "")) : [n != null ? (window.Reacoes ? Reacoes.emoji(n) : "★") + " " + n.toFixed(1).replace(".", ",") : "", G.precoCurto(l) === "Pago" ? "" : G.precoCurto(l)].filter(Boolean).join(" · ");
     var tags = (R.acontecendoAgora(l) ? '<span class="mv-t vivo">Agora</span>' : "") + (l.esgotado ? '<span class="mv-t x">Esgotado</span>' : "") + (l.anunciante ? '<span class="mv-t">Patrocinado</span>' : "") + (l.falaPortugues ? '<span class="mv-t br">Fala português</span>' : "");
     return '<a class="mv-row" href="#lugar-' + esc(l.id) + '"><span class="ft">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") + "</span><span class=\"tx\"><b>" + esc(l.nome) + "</b><small>" + tags + esc(sub) + "</small><small>" + esc(info) + '</small></span><span class="km">' + (t ? esc(t) + "<small>de carro</small>" : "") + "</span></a>";
   }

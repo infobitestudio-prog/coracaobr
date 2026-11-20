@@ -503,7 +503,65 @@ footer.fcom .brand-f > span { color: #fff }
 .rsum { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center; padding: 18px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow) }
 .rsum > div:first-child { display: grid; justify-items: center; gap: 4px } .rsum > div:first-child b { font: 400 2.6rem/1 var(--display) } .rsum small { font-size: .74rem; color: var(--muted) }
 .rbars { display: grid; gap: 5px } .rbars div { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 8px; align-items: center }
-.rbars span { height: 7px; border-radius: 9px; background: var(--surface-2); overflow: hidden } .rbars i { display: block; height: 100%; background: var(--sun); border-radius: 9px; transform-origin: left; animation: barx .7s cubic-bezier(.2,.7,.2,1) both }
+.rbars span { height: 7px; border-radius: 9px; background: var(--surface-2); overflow: hidden } /* editor do anúncio: pesquisa rápida de categoria */
+.cat-busca { position: relative; margin-bottom: 8px }
+.cat-busca input { width: 100%; padding-left: 40px !important; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 14px 50% }
+.cat-res { display: grid; gap: 4px; margin-top: 6px; padding: 6px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: 0 16px 34px -20px rgba(0,0,0,.4); max-height: 320px; overflow: auto }
+.cat-res button { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; width: 100%; padding: 10px 12px; border: 0; border-radius: 10px; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer }
+.cat-res button:hover, .cat-res button.on, .cat-res button:focus-visible { background: color-mix(in srgb, var(--accent-mid) 12%, var(--surface)) }
+.cat-res button small { color: var(--muted); font-size: .72rem; white-space: nowrap }
+.cat-res p { margin: 6px 8px }
+#n-cat.cat-ok { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-mid) 30%, transparent); transition: box-shadow .3s }
+.rbars i { display: block; height: 100%; background: var(--sun); border-radius: 9px; transform-origin: left; animation: barx .7s cubic-bezier(.2,.7,.2,1) both }
+/* ---------- reações (❤️ 👍 😐 😢 😡 no lugar das estrelas) ---------- */
+.rx-i { width: 1em; height: 1em; display: inline-block; vertical-align: -.16em; flex: none; overflow: visible }
+.rx-pick { display: flex !important; flex-wrap: nowrap; align-items: flex-end; gap: 2px; grid-template-columns: none !important; width: max-content; max-width: 100%; padding: 10px 12px 8px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 14px 34px -18px rgba(0,0,0,.4) }
+.rx-pick .rx-b { position: relative; display: grid !important; justify-items: center; gap: 5px; width: auto !important; height: auto !important; min-width: 0; padding: 0 5px !important; margin: 0; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; color: var(--muted) !important; font: 600 .66rem/1.1 var(--body); letter-spacing: 0; cursor: pointer; transform: none !important; -webkit-tap-highlight-color: transparent }
+.rx-pick .rx-b .rx-i { font-size: 2.6rem; transition: transform .22s cubic-bezier(.3,1.7,.5,1), filter .2s; filter: drop-shadow(0 3px 6px rgba(0,0,0,.18)) }
+.rx-pick .rx-b span { white-space: nowrap; opacity: .8; transition: opacity .2s, color .2s }
+.rx-pick .rx-b:hover .rx-i, .rx-pick .rx-b:focus-visible .rx-i { transform: translateY(-7px) scale(1.2) }
+.rx-pick .rx-b:focus-visible { outline: none } .rx-pick .rx-b:focus-visible span { text-decoration: underline }
+.rx-pick:has(.rx-b.on) .rx-b:not(.on) .rx-i { filter: grayscale(.9) opacity(.5) }
+.rx-pick .rx-b.on .rx-i { transform: translateY(-5px) scale(1.24); animation: rx-pula .5s cubic-bezier(.3,1.7,.5,1) }
+.rx-pick .rx-b.on span { opacity: 1; color: var(--ink) !important; font-weight: 800 }
+@keyframes rx-pula { 0% { transform: scale(.7) } 60% { transform: translateY(-9px) scale(1.34) } 100% { transform: translateY(-5px) scale(1.24) } }
+@media (max-width: 420px) { .rx-pick { padding: 8px 6px 6px; gap: 0 } .rx-pick .rx-b { padding: 0 3px !important; font-size: .58rem } .rx-pick .rx-b .rx-i { font-size: 2.15rem } }
+.rx-selo { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; line-height: 1; white-space: nowrap }
+.rx-ics { display: inline-flex; align-items: center }
+.rx-ics .rx-i { font-size: 1.2em; border-radius: 50%; box-shadow: 0 0 0 2px var(--surface) }
+.rx-ics .rx-i + .rx-i { margin-left: -.38em }
+.rx-nome { font-size: .82em; font-weight: 700; color: var(--ink) }
+.rx-mini .rx-ics .rx-i { font-size: 1.05em }
+.rate .rx-selo { margin-right: 3px }
+.ck-st.rx-selo, .nota-ck.rx-selo { color: var(--ink); letter-spacing: 0; font-size: .82rem }
+/* palco: o clima das avaliações com os emojis subindo e se espalhando */
+.rx-palco { position: relative; overflow: hidden; isolation: isolate; min-height: 112px; margin: 6px 0 4px; padding: 16px 18px; border-radius: 18px; display: flex; align-items: center; background: linear-gradient(120deg, color-mix(in srgb, var(--rc) 14%, var(--surface)), var(--surface) 70%); border: 1px solid color-mix(in srgb, var(--rc) 24%, var(--line)) }
+.rx-palco-tx { position: relative; z-index: 1; display: flex; align-items: center; gap: 14px; padding: 6px 14px 6px 6px; border-radius: 999px; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px) }
+.rx-palco-tx .rx-big { font-size: 3.4rem; animation: rx-bate 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 12px rgba(0,0,0,.2)) }
+.rx-palco-tx div { display: grid; gap: 2px }
+.rx-palco-tx small { font: 600 .66rem/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.rx-palco-tx b { font: 800 1.45rem/1.05 var(--display); color: var(--ink) }
+.rx-palco-tx span { font-size: .8rem; color: var(--muted) }
+@keyframes rx-bate { 0%, 100% { transform: scale(1) } 12% { transform: scale(1.12) } 24% { transform: scale(.98) } 36% { transform: scale(1.06) } 48% { transform: scale(1) } }
+.rx-nuvem { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; container-type: size }
+.rx-palco .rx-nuvem { left: 34%; -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%); mask-image: linear-gradient(90deg, transparent, #000 22%) }
+.rx-nuvem i { position: absolute; left: var(--x); bottom: -2.6rem; font-size: calc(var(--s) * 2.3rem); opacity: 0; will-change: transform, opacity; animation: rx-sobe var(--t) linear var(--d) infinite }
+.rx-nuvem i .rx-i { filter: drop-shadow(0 4px 8px rgba(0,0,0,.16)) }
+@keyframes rx-sobe { 0% { transform: translate(0, 0) scale(.5); opacity: 0 } 10% { opacity: .95 } 50% { transform: translate(calc(var(--dx) * .6), calc(-55cqh - 1.3rem)) scale(1) } 85% { opacity: .85 } 100% { transform: translate(var(--dx), calc(-100cqh - 2.8rem)) scale(1.08); opacity: 0 } }
+@media (prefers-reduced-motion: reduce) { .rx-nuvem i { animation: none; opacity: .85; bottom: auto; top: calc(var(--s) * 30%) } .rx-palco-tx .rx-big, .rx-pick .rx-b.on .rx-i { animation: none } }
+@media (max-width: 560px) { .rx-palco { min-height: 96px; padding: 12px } .rx-palco .rx-nuvem { left: 0; -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 70%); mask-image: linear-gradient(90deg, transparent 30%, #000 70%) } .rx-palco-tx .rx-big { font-size: 2.7rem } .rx-palco-tx b { font-size: 1.2rem } }
+/* explosão ao escolher */
+.rx-estouro { position: fixed; z-index: 400; width: 0; height: 0; pointer-events: none }
+.rx-estouro i { position: absolute; left: -1rem; top: -1rem; font-size: calc(var(--s) * 2rem); animation: rx-voa 1.1s cubic-bezier(.2,.7,.3,1) var(--d) both }
+@keyframes rx-voa { 0% { transform: translate(0, 0) scale(.3); opacity: 0 } 15% { opacity: 1 } 100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0 } }
+/* barras da aba Avaliações com as reações */
+.rbars .rx-bar { grid-template-columns: 118px minmax(0, 1fr) }
+.rbars .rx-bar small { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--ink) }
+.rbars .rx-bar small .rx-i { font-size: 1.25rem }
+.rbars .rx-bar small em { font-style: normal }
+.rbars .rx-bar i { background: var(--rc) }
+.attrs .rx-tile { font-size: 1.5rem }
+@media (max-width: 420px) { .rbars .rx-bar { grid-template-columns: 30px minmax(0, 1fr) } .rbars .rx-bar small em { display: none } }
 @keyframes barx { from { transform: scaleX(0) } to { transform: scaleX(1) } }
 .rv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 14px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow) } .rv p { margin-top: 6px; font-size: .93rem }
 .av { width: 38px; height: 38px; border-radius: 50%; background: #0B7A35; color: #fff; display: grid; place-items: center; font-weight: 600 }
@@ -2383,6 +2441,7 @@ body.home .top .nav .nav-dd a:hover, body.home .top .nav .nav-dd a[aria-current=
 <script src="js/store.js"></script>
 <script src="js/horario.js"></script>
 <script src="js/postais.js"></script>
+<script src="js/reacoes.js"></script>
 <script src="js/app.js"></script>
 <script src="js/cardapio.js"></script>
 <script src="js/pix.js"></script>

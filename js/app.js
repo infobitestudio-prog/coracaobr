@@ -31,7 +31,91 @@
     "saude-pt": "Saúde em português", "outros-servicos": "Outros serviços", hotel: "Hotéis e hospedagem", igreja: "Igreja"
   };
   var SERVICOS = ["handyman", "baba", "piscina", "limpeza", "jardinagem", "construcao", "mudanca", "mecanico", "beleza", "contador", "imigracao", "imoveis", "seguros", "aulas", "fotografia", "pet", "saude-pt", "outros-servicos"];
-  var COMIDA = ["restaurante-brasileiro", "churrascaria", "padaria", "acai-cafe", "bbq", "tex-mex", "steakhouse", "hamburguer", "brunch-cafe", "comida-sulista", "asiatico", "pizza", "bar"];
+  /* Profissões e negócios para o anúncio (Brasil e EUA), em grupos e com sinônimos em português e inglês para a busca rápida do editor */
+  var NOVAS = {
+    "marido-aluguel": "Marido de aluguel", eletricista: "Eletricista", encanador: "Encanador (plumber)", pintor: "Pintor", hvac: "Ar-condicionado e aquecimento (HVAC)",
+    telhado: "Telhados (roofing)", pisos: "Pisos e carpetes", marceneiro: "Marceneiro e móveis planejados", drywall: "Drywall e gesso", vidraceiro: "Vidraceiro",
+    chaveiro: "Chaveiro", dedetizacao: "Dedetização (pest control)", "montagem-moveis": "Montagem de móveis", cercas: "Cercas e portões", concreto: "Concreto e calçadas",
+    "instalacao-tv": "Instalação de TV e som", "lavagem-pressao": "Lavagem com pressão (pressure washing)", calhas: "Limpeza de calhas", eletrodomesticos: "Conserto de eletrodomésticos",
+    "portao-garagem": "Portão de garagem", "energia-solar": "Energia solar", cameras: "Câmeras e segurança", "piscina-construcao": "Construção de piscinas",
+    diarista: "Diarista e faxina residencial", "limpeza-comercial": "Limpeza comercial", "limpeza-pos-obra": "Limpeza pós-obra", "limpeza-carpete": "Limpeza de carpete e estofados",
+    "limpeza-janelas": "Limpeza de janelas", lavanderia: "Lavanderia e passadoria", "personal-organizer": "Personal organizer",
+    paisagismo: "Paisagismo", "poda-arvores": "Poda e corte de árvores", irrigacao: "Irrigação (sprinklers)",
+    "cuidador-idosos": "Cuidador de idosos", "au-pair": "Au pair", creche: "Creche e daycare", "reforco-escolar": "Reforço escolar e tutoria", doula: "Doula e amamentação",
+    "pet-sitter": "Pet sitter e passeador de cães", adestrador: "Adestrador", "banho-tosa": "Banho e tosa", veterinario: "Veterinário",
+    cabeleireiro: "Cabeleireiro", barbearia: "Barbearia", manicure: "Manicure e pedicure", "sobrancelha-cilios": "Sobrancelhas e cílios", depilacao: "Depilação",
+    maquiagem: "Maquiagem", estetica: "Estética e harmonização", massagem: "Massagem e massoterapia", tatuagem: "Tatuagem e piercing", trancas: "Tranças e mega hair",
+    dentista: "Dentista", psicologo: "Psicólogo e terapia", nutricionista: "Nutricionista", fisioterapia: "Fisioterapia", "personal-trainer": "Personal trainer",
+    medico: "Médico e clínica", farmacia: "Farmácia", fonoaudiologo: "Fonoaudiólogo", "pilates-yoga": "Pilates e yoga",
+    funilaria: "Funilaria e pintura (body shop)", "lava-jato": "Lava-jato e estética automotiva", pneus: "Pneus e alinhamento", "auto-eletrica": "Auto elétrica",
+    guincho: "Guincho (towing)", "venda-carros": "Venda de carros", autoescola: "Autoescola e habilitação", "som-automotivo": "Insulfilm e som automotivo",
+    motorista: "Motorista particular e transfer", fretes: "Fretes e entregas", caminhoneiro: "Caminhoneiro (trucking)", "envio-brasil": "Envio de encomendas ao Brasil", viagens: "Agência de viagens e passagens",
+    advogado: "Advogado", tradutor: "Tradução juramentada", notario: "Notary public", despachante: "Despachante e documentos", credito: "Crédito e score",
+    remessas: "Remessas e câmbio", hipoteca: "Financiamento e hipoteca", "abertura-empresa": "Abertura de empresa (LLC)", consultoria: "Consultoria empresarial",
+    marketing: "Marketing e redes sociais", tecnologia: "Sites e tecnologia", design: "Design gráfico", informatica: "Informática e celulares", empregos: "Agência de empregos",
+    filmagem: "Filmagem e drone", dj: "DJ e som", musico: "Músico e banda", buffet: "Buffet e catering", "decoracao-festas": "Decoração de festas",
+    "aluguel-festas": "Aluguel de brinquedos e tendas", cerimonialista: "Cerimonialista e casamentos", animador: "Animação infantil", "chef-particular": "Chef particular",
+    "aulas-ingles": "Aulas de inglês", "aulas-musica": "Aulas de música", "escolinha-esportes": "Escolinha de futebol e esportes", "artes-marciais": "Jiu-jitsu e artes marciais", danca: "Aulas de dança",
+    costureira: "Costureira e ajustes", moda: "Roupas e acessórios", sapateiro: "Sapateiro",
+    confeitaria: "Bolos e doces", salgados: "Salgados e festas", marmitas: "Marmitas e comida caseira", "food-truck": "Food truck"
+  };
+  for (var nk in NOVAS) CATS[nk] = NOVAS[nk];
+  CATS.handyman = "Handyman e reparos"; CATS.baba = "Babá (nanny)"; CATS.piscina = "Cuidador de piscinas (pool service)"; CATS.limpeza = "Limpeza em geral";
+  CATS.imigracao = "Imigração"; CATS.fotografia = "Fotografia"; CATS.pet = "Pet shop e serviços pet";
+  var CAT_GRUPOS = [
+    ["Casa e reparos", ["handyman", "marido-aluguel", "eletricista", "encanador", "pintor", "hvac", "construcao", "telhado", "pisos", "marceneiro", "drywall", "vidraceiro", "chaveiro", "dedetizacao", "montagem-moveis", "cercas", "concreto", "instalacao-tv", "lavagem-pressao", "calhas", "eletrodomesticos", "portao-garagem", "energia-solar", "cameras"]],
+    ["Limpeza e organização", ["limpeza", "diarista", "limpeza-comercial", "limpeza-pos-obra", "limpeza-carpete", "limpeza-janelas", "lavanderia", "personal-organizer"]],
+    ["Jardim e piscina", ["jardinagem", "paisagismo", "poda-arvores", "irrigacao", "piscina", "piscina-construcao"]],
+    ["Família e cuidados", ["baba", "cuidador-idosos", "au-pair", "creche", "reforco-escolar", "doula"]],
+    ["Pets", ["pet", "pet-sitter", "adestrador", "banho-tosa", "veterinario"]],
+    ["Beleza", ["beleza", "cabeleireiro", "barbearia", "manicure", "sobrancelha-cilios", "depilacao", "maquiagem", "estetica", "massagem", "tatuagem", "trancas"]],
+    ["Saúde e bem-estar", ["saude-pt", "medico", "dentista", "psicologo", "nutricionista", "fisioterapia", "fonoaudiologo", "personal-trainer", "pilates-yoga", "farmacia"]],
+    ["Carro", ["mecanico", "funilaria", "lava-jato", "pneus", "auto-eletrica", "som-automotivo", "guincho", "venda-carros", "autoescola"]],
+    ["Mudança, transporte e viagens", ["mudanca", "fretes", "caminhoneiro", "motorista", "envio-brasil", "viagens"]],
+    ["Documentos, dinheiro e leis", ["imigracao", "advogado", "contador", "tradutor", "notario", "despachante", "credito", "remessas", "seguros", "imoveis", "hipoteca", "abertura-empresa"]],
+    ["Empresas e tecnologia", ["marketing", "tecnologia", "design", "informatica", "consultoria", "empregos"]],
+    ["Festas e eventos", ["fotografia", "filmagem", "dj", "musico", "buffet", "chef-particular", "decoracao-festas", "aluguel-festas", "cerimonialista", "animador"]],
+    ["Aulas e cursos", ["aulas", "aulas-ingles", "aulas-musica", "escolinha-esportes", "artes-marciais", "danca"]],
+    ["Moda e ajustes", ["costureira", "moda", "sapateiro"]],
+    ["Comida e bebida", ["restaurante-brasileiro", "churrascaria", "padaria", "confeitaria", "salgados", "marmitas", "food-truck", "acai-cafe", "bbq", "tex-mex", "steakhouse", "hamburguer", "brunch-cafe", "comida-sulista", "asiatico", "pizza", "bar"]],
+    ["Lojas e mercados", ["mercado-brasileiro", "mercado", "compras"]],
+    ["Outros", ["outros-servicos"]]
+  ];
+  var CAT_SIN = {
+    handyman: "reparos conserto faz tudo manutencao", "marido-aluguel": "handyman faz tudo reparos pequenos consertos", eletricista: "electrician eletrica tomada fiacao luz",
+    encanador: "plumber encanamento vazamento cano esgoto water heater aquecedor", pintor: "painter pintura parede", hvac: "ar condicionado ac aquecedor heating cooling",
+    construcao: "reforma remodeling contractor empreiteiro obra", telhado: "roof roofing telha goteira", pisos: "flooring piso carpete porcelanato madeira tile",
+    marceneiro: "carpenter carpintaria armario cabinet moveis", drywall: "gesso sheetrock parede", vidraceiro: "vidro glass box espelho", chaveiro: "locksmith fechadura chave",
+    dedetizacao: "pest control barata cupim inseto rato", "montagem-moveis": "furniture assembly ikea", cercas: "fence cerca portao", concreto: "concrete calcada driveway",
+    "instalacao-tv": "tv mount home theater som", "lavagem-pressao": "pressure washing power wash", calhas: "gutter calha", eletrodomesticos: "appliance repair geladeira maquina de lavar secadora",
+    "portao-garagem": "garage door", "energia-solar": "solar painel", cameras: "security cameras alarme seguranca", limpeza: "cleaning faxina", diarista: "faxineira faxina house cleaning housekeeper",
+    "limpeza-comercial": "janitorial escritorio office cleaning", "limpeza-pos-obra": "post construction cleaning", "limpeza-carpete": "carpet cleaning sofa estofado",
+    "limpeza-janelas": "window cleaning", lavanderia: "laundry passar roupa", "personal-organizer": "organizacao closet", jardinagem: "jardineiro lawn care grama corte de grama yard",
+    paisagismo: "landscaping jardim", "poda-arvores": "tree service arvore", irrigacao: "sprinkler irrigation", piscina: "pool cleaning piscineiro limpeza de piscina pool service",
+    "piscina-construcao": "pool builder", baba: "nanny babysitter baba cuidadora de criancas", "cuidador-idosos": "caregiver elderly care idoso enfermagem home care",
+    "au-pair": "au pair intercambio", creche: "daycare berçario escolinha", "reforco-escolar": "tutor tutoria aula particular", doula: "parto amamentacao gestante",
+    pet: "pet shop racao", "pet-sitter": "dog walker passeador cachorro pet sitting hospedagem", adestrador: "dog trainer adestramento", "banho-tosa": "grooming tosa banho",
+    veterinario: "vet veterinaria", beleza: "salao beauty", cabeleireiro: "hair salon cabelo corte escova progressiva", barbearia: "barber barbeiro", manicure: "nail unha pedicure nails",
+    "sobrancelha-cilios": "lash brow extensao de cilios design de sobrancelha", depilacao: "wax waxing laser", maquiagem: "makeup maquiador", estetica: "botox harmonizacao facial limpeza de pele spa",
+    massagem: "massage massoterapia drenagem", tatuagem: "tattoo piercing", trancas: "braids box braids alongamento mega hair", "saude-pt": "medico brasileiro saude portugues",
+    medico: "doctor clinica clinic", dentista: "dentist odontologia aparelho", psicologo: "psicologa terapia therapist counseling", nutricionista: "dieta nutrition",
+    fisioterapia: "physical therapy fisio", fonoaudiologo: "speech therapy fono", "personal-trainer": "academia treino fitness", "pilates-yoga": "pilates yoga", farmacia: "pharmacy remedio",
+    mecanico: "mechanic oficina auto repair", funilaria: "body shop lanternagem batida", "lava-jato": "car wash detailing polimento", pneus: "tires alinhamento balanceamento",
+    "auto-eletrica": "auto electric bateria", "som-automotivo": "window tint insulfilm som", guincho: "towing reboque", "venda-carros": "car dealer carro usado", autoescola: "driving school carteira de motorista habilitacao",
+    mudanca: "moving mudancas", fretes: "delivery frete entrega", caminhoneiro: "truck driver trucking cdl", motorista: "driver chauffeur uber transfer aeroporto",
+    "envio-brasil": "caixa para o brasil shipping encomenda", viagens: "travel passagem aerea agencia", imigracao: "immigration green card visto", advogado: "lawyer attorney",
+    contador: "accountant imposto tax taxes income tax", tradutor: "translation traducao", notario: "notary notarizacao", despachante: "documentos passaporte cnh",
+    credito: "credit score cartao", remessas: "enviar dinheiro remessa cambio", seguros: "insurance seguro carro saude", imoveis: "realtor corretor casa aluguel",
+    hipoteca: "mortgage financiamento", "abertura-empresa": "llc empresa ein", marketing: "social media instagram trafego pago", tecnologia: "site sistema app software web",
+    design: "logo designer", informatica: "computador conserto celular phone repair", empregos: "staffing vagas emprego", fotografia: "fotografo photographer",
+    filmagem: "videomaker video drone", dj: "som festa", musico: "banda cantor", buffet: "catering festa comida", "chef-particular": "private chef cozinheiro",
+    "decoracao-festas": "decoracao balao baloes", "aluguel-festas": "bounce house pula pula tenda mesas", cerimonialista: "wedding planner casamento", animador: "recreacao festa infantil palhaco",
+    aulas: "curso escola", "aulas-ingles": "english ingles esl", "aulas-musica": "violao piano canto", "escolinha-esportes": "futebol soccer esportes", "artes-marciais": "jiu jitsu bjj capoeira luta karate",
+    danca: "dance forro samba zouk", costureira: "alteration ajuste roupa costura", moda: "roupa loja boutique", sapateiro: "conserto de sapato",
+    confeitaria: "bolo doces brigadeiro cake", salgados: "coxinha salgadinho festa", marmitas: "marmita quentinha comida caseira", "food-truck": "food truck"
+  };
+  Object.keys(NOVAS).forEach(function (k) { if (["confeitaria", "salgados", "marmitas", "food-truck"].indexOf(k) < 0) SERVICOS.push(k); });
+  var COMIDA = ["restaurante-brasileiro", "churrascaria", "padaria", "acai-cafe", "bbq", "tex-mex", "steakhouse", "hamburguer", "brunch-cafe", "comida-sulista", "asiatico", "pizza", "bar", "confeitaria", "salgados", "marmitas", "food-truck"];
   var SERV = SERVICOS.concat(["servico", "mercado-brasileiro", "governo", "transporte", "saude", "comunidade"]);
   var GRUPOS = {
     tudo: { nome: "Tudo", ic: "grid", f: function () { return true; } },
@@ -243,8 +327,16 @@
   }
   function temFotoReal(l) { return (l.fotos || []).some(function (f) { return !f.ilustrativa; }) || !!l.fotoSite ? 1 : 0; }
   function ordenaNota(a, b) { return (notas(b).guia || 0) - (notas(a).guia || 0) || (Number(b.notaCuradoria) || 0) - (Number(a.notaCuradoria) || 0) || temFotoReal(b) - temFotoReal(a) || String(a.nome || "").localeCompare(String(b.nome || "")); }
-  function stars(n) { n = Math.max(0, Math.min(5, Number(n) || 0)); return '<span class="stars" style="--n:' + n + '" aria-hidden="true">★★★★★</span>'; }
-  function rateMini(l) { var n = notas(l); return n.guia == null ? '<span class="rate"><i>sem nota</i></span>' : '<span class="rate"><span class="s1">★</span><span class="num">' + n.guia.toFixed(1) + "</span>" + (n.qtd ? "<i>(" + n.qtd + ")</i>" : "") + "</span>"; }
+  function stars(n, individual) { if (window.Reacoes) return Reacoes.selo(n, individual ? { individual: true, nome: true } : {}); n = Math.max(0, Math.min(5, Number(n) || 0)); return '<span class="stars" style="--n:' + n + '" aria-hidden="true">★★★★★</span>'; }
+  /* "clima" das avaliações: os emojis sobem e se espalham na proporção das notas (a reação da maioria aparece mais) */
+  function clima(l, op) {
+    if (!window.Reacoes) return ""; op = op || {}; var n = notas(l); if (n.guia == null) return "";
+    var av = avaliacoesDe(l.id), cont = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }; av.forEach(function (a) { var k = Math.round(Number(a.estrelas)); if (cont[k] != null) cont[k]++; });
+    var usa = av.length >= 5 && !(l.notaExterna && Number(l.notaExterna.total) > av.length * 3) ? cont : null, pes = Reacoes.pesos(n.guia, usa), top = Reacoes.ordem(pes)[0], r = Reacoes.de(top);
+    return '<div class="rx-palco' + (op.cls ? " " + op.cls : "") + '" style="--rc:' + r.c + '">' + Reacoes.nuvem(n.guia, usa, { seed: l.id, total: op.total || 20 }) +
+      '<div class="rx-palco-tx">' + Reacoes.icone(top, "rx-big") + '<div><small>A maioria reagiu</small><b>' + esc(r.t) + '</b><span>' + Reacoes.virgula(n.guia) + " de média" + (n.fonte ? " · " + esc(n.fonte) : "") + "</span></div></div></div>";
+  }
+  function rateMini(l) { var n = notas(l); return n.guia == null ? '<span class="rate"><i>sem nota</i></span>' : '<span class="rate">' + (window.Reacoes ? Reacoes.selo(n.guia, { cls: "rx-mini" }) : '<span class="s1">★</span>') + '<span class="num">' + n.guia.toFixed(1) + "</span>" + (n.qtd ? "<i>(" + n.qtd + ")</i>" : "") + "</span>"; }
   /* Preços de cada lugar: "a partir de" (o menor valor conferido no site oficial ou no cardápio), a média e o teto.
      Restaurantes: pesquisa no site da empresa (precoMin/precoMedio/precoMax) ou, quando a empresa cadastra o cardápio,
      calculado dos pratos (sem bebidas, sobremesas, acompanhamentos e menu infantil). Atrações e eventos: ingresso adulto. */
@@ -675,9 +767,9 @@
   /* Avaliações de outras plataformas: só por API oficial (gravadas pelo robô com atribuição) e links diretos para cada site. */
   function externas(l) {
     var q = encodeURIComponent(l.nome + " " + (l.cidade || (CIDADES_GUIA[regiaoGuia(l)] || cid()).principal) + " TX"), lista = Array.isArray(l.avaliacoesExternas) ? l.avaliacoesExternas.filter(function (r) { return r && r.texto && r.autor; }).slice(0, 6) : [];
-    var nota = l.notaExterna && Number(l.notaExterna.media) ? '<p class="small"><b>' + Number(l.notaExterna.media).toFixed(1) + " ★</b> no " + esc(l.notaExterna.fonte || "Google") + (l.notaExterna.total ? " · " + Number(l.notaExterna.total).toLocaleString("pt-BR") + " avaliações" : "") + "</p>" : "";
+    var nota = l.notaExterna && Number(l.notaExterna.media) ? '<p class="small">' + stars(l.notaExterna.media) + ' <b>' + Number(l.notaExterna.media).toFixed(1) + "</b> no " + esc(l.notaExterna.fonte || "Google") + (l.notaExterna.total ? " · " + Number(l.notaExterna.total).toLocaleString("pt-BR") + " avaliações" : "") + "</p>" : "";
     return '<div class="panel stack ext" style="gap:10px"><h3>' + (lista.length ? "Avaliações reais do Google" : "O que dizem em outros sites") + "</h3>" + (l.categoria === "evento" && lista.length ? '<p class="small muted">Avaliações do local onde o evento acontece.</p>' : "") + nota +
-      lista.map(function (r) { return '<div class="rv"><span class="av">' + esc(String(r.autor).charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(r.autor) + "</b>" + (r.nota ? stars(r.nota) : "") + '</div><small class="muted">' + esc(r.fonte || "Google") + (r.data ? " · " + esc(r.data) : "") + "</small><p>" + esc(String(r.texto).slice(0, 400)) + "</p>" + (url(r.link) ? '<a class="small" href="' + esc(r.link) + '" target="_blank" rel="noopener">ver no ' + esc(r.fonte || "Google") + "</a>" : "") + "</div></div>"; }).join("") +
+      lista.map(function (r) { return '<div class="rv"><span class="av">' + esc(String(r.autor).charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(r.autor) + "</b>" + (r.nota ? stars(r.nota, true) : "") + '</div><small class="muted">' + esc(r.fonte || "Google") + (r.data ? " · " + esc(r.data) : "") + "</small><p>" + esc(String(r.texto).slice(0, 400)) + "</p>" + (url(r.link) ? '<a class="small" href="' + esc(r.link) + '" target="_blank" rel="noopener">ver no ' + esc(r.fonte || "Google") + "</a>" : "") + "</div></div>"; }).join("") +
       '<div class="row"><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">Google</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.yelp.com/search?find_desc=' + encodeURIComponent(l.nome) + "&find_loc=" + encodeURIComponent((l.cidade || (CIDADES_GUIA[regiaoGuia(l)] || cid()).principal) + ", TX") + '">Yelp</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Search?q=' + q + '">Tripadvisor</a></div></div>';
   }
   /* Mapa do Google embutido, sem chave: mostra o lugar com a nota e o atalho para as avaliações no próprio Google */
@@ -702,9 +794,9 @@
       var av = avaliacoesDe(l.id), n = notas(l), cont = [0, 0, 0, 0, 0, 0];
       av.forEach(function (a) { var k = Math.max(0, Math.min(5, Math.round(Number(a.estrelas)) || 0)); cont[k]++; });
       return '<div class="stack" style="gap:14px"><div class="rsum"><div><b class="num">' + (n.guia != null ? n.guia.toFixed(1) : "–") + "</b>" + stars(n.guia) + '<small>' + (av.length ? av.length + (av.length === 1 ? " avaliação" : " avaliações") : esc(n.fonte || "sem avaliações")) + '</small></div><div class="rbars">' +
-        [5, 4, 3, 2, 1].map(function (k) { return '<div><small>' + k + '</small><span><i style="width:' + (av.length ? Math.round(cont[k] / av.length * 100) : 0) + '%"></i></span></div>'; }).join("") + "</div></div>" +
-        (av.length ? av.slice(0, 12).map(function (a) { return '<div class="rv"><span class="av">' + esc((a.nome || "V").trim().charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(a.nome || "Visitante") + "</b>" + stars(a.estrelas) + '</div><small class="muted">' + esc((a.criadoEm || "").slice(0, 10).split("-").reverse().join("/")) + "</small>" + (a.tipo === "experiencia" ? ' <span class="pill ok xp">✓ Esteve aqui' + (a.roteiro ? " · " + esc(String(a.roteiro).slice(0, 40)) : "") + "</span>" : "") + (a.texto ? "<p>" + esc(a.texto) + "</p>" : "") + fotosAval(a) + "</div></div>"; }).join("") : '<p class="muted">Ninguém avaliou ainda. A primeira nota pode ser a sua.</p>') +
-        (L.avaliando ? '<form id="rev" class="panel stack" style="gap:12px"><div class="field"><span>Sua nota</span><div class="pick" id="pick">' + [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-n="' + i + '" class="' + (i <= L.estrelas ? "on" : "") + '" aria-label="' + i + ' estrelas">★</button>'; }).join("") + "</div></div>" +
+        [5, 4, 3, 2, 1].map(function (k) { return '<div' + (window.Reacoes ? ' class="rx-bar" style="--rc:' + Reacoes.de(k).c + '"' : "") + '><small>' + (window.Reacoes ? Reacoes.icone(k) + '<em>' + Reacoes.texto(k) + "</em>" : k) + '</small><span><i style="width:' + (av.length ? Math.round(cont[k] / av.length * 100) : 0) + '%"></i></span></div>'; }).join("") + "</div></div>" +
+        (av.length ? av.slice(0, 12).map(function (a) { return '<div class="rv"><span class="av">' + esc((a.nome || "V").trim().charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(a.nome || "Visitante") + "</b>" + stars(a.estrelas, true) + '</div><small class="muted">' + esc((a.criadoEm || "").slice(0, 10).split("-").reverse().join("/")) + "</small>" + (a.tipo === "experiencia" ? ' <span class="pill ok xp">✓ Esteve aqui' + (a.roteiro ? " · " + esc(String(a.roteiro).slice(0, 40)) : "") + "</span>" : "") + (a.texto ? "<p>" + esc(a.texto) + "</p>" : "") + fotosAval(a) + "</div></div>"; }).join("") : '<p class="muted">Ninguém avaliou ainda. A primeira nota pode ser a sua.</p>') +
+        (L.avaliando ? '<form id="rev" class="panel stack" style="gap:12px"><div class="field"><span>Como foi?</span><div class="pick rx-pick" id="pick" role="radiogroup" aria-label="Sua reação">' + (window.Reacoes ? Reacoes.botoes(L.estrelas, function (i) { return ' data-n="' + i + '"'; }) : [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-n="' + i + '" class="' + (i <= L.estrelas ? "on" : "") + '" aria-label="' + i + ' estrelas">★</button>'; }).join("")) + "</div></div>" +
           '<div class="field"><label for="rev-nome">Seu nome</label><input id="rev-nome" maxlength="40" value="' + esc(L.nome) + '" placeholder="Como quer aparecer"></div><div class="field"><label for="rev-texto">Comentário (opcional)</label><textarea id="rev-texto" maxlength="600" placeholder="O que valeu a pena? O que evitar?">' + esc(L.texto) + '</textarea></div>' +
           '<div class="field"><span>Fotos da sua visita (até 3, opcional)</span><div class="rev-fs" id="rev-fs">' + (L.fotosAv || []).map(function (s2, k) { return '<figure><img src="' + esc(Store.urlFoto(s2)) + '" alt=""><button type="button" data-rev-tira="' + k + '" aria-label="Remover foto">×</button></figure>'; }).join("") + ((L.fotosAv || []).length < 3 ? '<label class="rev-add" for="rev-file">+<small>Foto</small></label>' : "") + '</div><input type="file" id="rev-file" accept="image/*" multiple hidden><small class="muted">Só fotos suas, tiradas no lugar.</small></div>' +
           '<div class="row"><button class="btn" type="submit">Publicar avaliação</button><button class="btn ghost" type="button" data-avaliar="0">Cancelar</button></div></form>'
@@ -777,11 +869,11 @@
       (fs.length > 1 ? '<div class="sp-th">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Ver foto ' + (i + 1) + '"><img src="' + esc(x.src) + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "") + "</div>" +
       '<div class="sheet-body' + (manterScroll ? " quiet" : "") + '"><div class="sb-grid"><div class="sb-main">' +
       (window.Pag ? Pag.avisoPrevia(l) : "") + '<div class="sb-tit"><p class="eyebrow">' + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (l.brasileiro ? " · Brasileiro" : "") + '</p><h2 style="margin-top:4px">' + esc(l.nome) + "</h2>" +
-      '<div class="row badges">' + (n.guia != null ? '<span class="badge"><span style="color:var(--sun)">★</span> <b class="num">' + n.guia.toFixed(1) + "</b>" + (n.qtd ? " (" + n.qtd + ")" : "") + "</span>" : "") +
+      '<div class="row badges">' + (n.guia != null ? '<span class="badge">' + stars(n.guia) + ' <b class="num">' + n.guia.toFixed(1) + "</b>" + (n.qtd ? " (" + n.qtd + ")" : "") + "</span>" : "") +
       (window.Extras && Extras.aberto(l) != null ? '<span class="badge"><i class="dot" style="background:' + (Extras.aberto(l) ? "#2E8B57" : "#C2452D") + '"></i>' + (Extras.aberto(l) ? "Aberto agora" : "Fechado agora") + "</span>" : "") +
       (fluxoDe(l) ? '<span class="badge"><i class="dot" style="background:' + FLUXO[fluxoDe(l).nivel][1] + '"></i>' + FLUXO[fluxoDe(l).nivel][0] + "</span>" : "") +
       (window.Pag && Pag.selo && Pag.selo(l) ? '<span class="badge vf" title="Negócio conferido pela equipe do CoraçãoBR">✓ Verificado CoraçãoBR</span>' : "") + (window.Pag && Pag.impulsionado && Pag.impulsionado(l) ? '<span class="badge dq">⚡ Destaque</span>' : "") + (falaPt(l) ? '<span class="badge pt">🇧🇷 Fala português</span>' : "") + (window.Recursos ? Recursos.selos(l) : "") + (Store.admin() && Store.estado.modo === "nuvem" && l.notaProvisoria ? '<span class="badge soft">nota provisória</span>' : "") + "</div></div>" +
-      (window.Checklist ? Checklist.botoes(l) : "") + acoes(l) +
+      clima(l) + (window.Checklist ? Checklist.botoes(l) : "") + acoes(l) +
       (window.Usuario ? Usuario.blocoEvento(l) : "") + (window.Recursos ? Recursos.blocoLugar(l) : "") + (window.Social ? Social.blocoLugar(l) : "") +
       '<div class="seg" role="tablist" id="seg">' + abasDe(l, av).map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (L.tab === t[0]) + '">' + t[1] + "</button>"; }).join("") + '<span class="seg-pill"></span></div>' +
       '<div id="tabc" class="tabc">' + abaConteudo(l, L.tab) + "</div>" +
@@ -792,7 +884,7 @@
       '<div class="attrs"><div>' + ic("ticket") + "<b>" + esc(precoBar) + "</b><small>" + (pz && !pz.gratis ? (pz.med ? "a partir de · média " + usd(pz.med) : "a partir de") : est ? "Faixa de preço" : "Entrada") + "</small></div>" +
       "<div>" + ic("clock") + "<b>" + esc(l.quando ? l.quando : est ? (window.Extras && Extras.aberto(l) != null ? (Extras.aberto(l) ? "Aberto" : "Fechado") : "Ver horário") : (l.tempoVisita || "Livre")) + "</b><small>" + (l.quando ? "Quando" : est ? "Agora" : "Tempo de visita") + "</small></div>" +
       "<div>" + ic("pin") + "<b>" + (mi == null ? "–" : tempo(l)) + "</b><small>" + (mi == null ? "Distância" : esc(MODOS[Geo.modo].nome.toLowerCase()) + " · " + (mi < 10 ? mi.toFixed(1).replace(".", ",") : mi.toFixed(0)) + " mi") + "</small></div>" +
-      "<div>" + ic("star") + "<b>" + (n.guia != null ? n.guia.toFixed(1) : "–") + "</b><small>" + esc(n.fonte || "sem avaliações") + "</small></div></div>" +
+      "<div>" + (n.guia != null && window.Reacoes ? Reacoes.icone(n.guia, "rx-tile") : ic("star")) + "<b>" + (n.guia != null ? (window.Reacoes ? Reacoes.texto(n.guia) + " · " : "") + n.guia.toFixed(1) : "–") + "</b><small>" + esc(n.fonte || "sem avaliações") + "</small></div></div>" +
       (l.cupom ? '<div class="ticket"><span class="tic">' + ic("ticket") + '</span><div><span class="sponsor">Oferta para quem vem pelo guia</span><b>' + esc(l.cupom) + '</b><span class="small muted">Mostre esta tela no atendimento.</span>' + (window.Comunidade ? Comunidade.botaoCupom(l) : "") + '</div></div>' : "") +
       (l.descontoClube ? '<a class="ticket tk-clube" href="#clube"><span class="tic">' + ic("star") + '</span><div><span class="sponsor">Clube CoraçãoBR</span><b>' + esc(l.descontoClube) + '</b><span class="small muted">Para membros do Clube. Mostre a carteirinha digital.</span></div></a>' : "") +
       '<a class="btn sb-go" href="https://www.google.com/maps/dir/?api=1&destination=' + destino + "&travelmode=" + MODOS[Geo.modo].maps + (Geo.gps ? "&origin=" + Geo.lat.toFixed(5) + "," + Geo.lng.toFixed(5) : "") + '" target="_blank" rel="noopener">' + ic("pin") + " Como chegar</a></aside></div>" +
@@ -870,7 +962,7 @@
     if (cp) { var tx = cp.dataset.copiar; (navigator.clipboard ? navigator.clipboard.writeText(tx) : Promise.reject()).then(function () { toast("Endereço copiado."); }).catch(function () { toast(tx); }); return; }
     var mo = e.target.closest("[data-modo]");
     if (mo) { Geo.modo = mo.dataset.modo; loc("modo", Geo.modo); folha(L.id, true); }
-    if (s) { L.estrelas = Number(s.dataset.n); Array.from(s.parentNode.children).forEach(function (c, i) { c.classList.toggle("on", i < L.estrelas); }); }
+    if (s) { L.estrelas = Number(s.dataset.n); if (window.Reacoes) Reacoes.marca(s.parentNode, L.estrelas, "n"); else Array.from(s.parentNode.children).forEach(function (c, i) { c.classList.toggle("on", i < L.estrelas); }); }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && aberto) fechar(); });
 
@@ -927,7 +1019,7 @@
     var gs = ["passeios", "gratis", "comer", "brasileiros"];
     var ls = lugares().filter(GRUPOS[R.grupo].f).filter(function (l) { return notas(l).guia != null; }).sort(ordenaNota).slice(0, 20);
     var pat = lugares().filter(GRUPOS[R.grupo].f).filter(function (l) { return l.anunciante; }).sort(ordenaNota).slice(0, 3);
-    var nota = function (l) { var n = notas(l); return '<span class="rk-s"><span><b>' + n.guia.toFixed(1) + "</b> ★</span><small>" + esc(n.fonte) + "</small></span>"; };
+    var nota = function (l) { var n = notas(l); return '<span class="rk-s"><span>' + stars(n.guia) + ' <b>' + n.guia.toFixed(1) + "</b></span><small>" + esc(n.fonte) + "</small></span>"; };
     var pod = ls.slice(0, 3).map(function (l, i) { return '<a class="rk-p rk-p' + (i + 1) + '" href="#lugar-' + esc(l.id) + '"><span class="rk-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy" decoding="async">' : "") + '<em>' + (i + 1) + "º</em></span><span class=\"rk-pt\"><b>" + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + "</small></span>" + nota(l) + "</a>"; }).join("");
     var resto = ls.slice(3).map(function (l, i) { return '<a class="rk-r" href="#lugar-' + esc(l.id) + '"><span class="rk-n">' + (i + 4) + '</span><span class="th">' + picHtml(l) + "</span><span class=\"rk-rt\"><b>" + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (precoCurto(l) ? " · " + esc(precoCurto(l)) : "") + "</small></span>" + nota(l) + "</a>"; }).join("");
     app.innerHTML = '<section class="block rk"><div class="wrap">' +
@@ -1056,7 +1148,7 @@
     var im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.semFoto) return;
     im.dataset.semFoto = "1"; im.removeAttribute("srcset"); im.src = FOTO_VAZIA; im.classList.add("sem-foto");
   }, true);
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;

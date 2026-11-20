@@ -184,7 +184,7 @@
   function itemAnuncio(l) {
     var nota = G.notas ? G.notas(l) : null, n = nota && (nota.media || nota.nota);
     return { k: "an", id: l.id, href: "#lugar-" + l.id, bg: fotoReal(l) || Store.urlFoto(l.banner.src), nome: l.nome, cor: "#0BA84A", kick: (G.CATS[l.categoria] || "Negócio") + (l.cidade ? " · " + l.cidade : ""), titulo: l.nome,
-      sub: l.cupom ? "Oferta: " + l.cupom : frase(l.historia || l.descricao || ""), info: [n ? "★ " + String(Number(n).toFixed(1)).replace(".", ",") : "", G.falaPt && G.falaPt(l) ? "Fala português" : "", l.bairro || ""].filter(Boolean), tag: "Patrocinado" };
+      sub: l.cupom ? "Oferta: " + l.cupom : frase(l.historia || l.descricao || ""), info: [n ? (window.Reacoes ? Reacoes.emoji(n) : "★") + " " + String(Number(n).toFixed(1)).replace(".", ",") : "", G.falaPt && G.falaPt(l) ? "Fala português" : "", l.bairro || ""].filter(Boolean), tag: "Patrocinado" };
   }
   function itemEvento(l) { return { k: "ev", id: l.id, href: "#lugar-" + l.id, bg: G.foto(l), nome: l.nome, kick: "Evento grátis" + (l.quando ? " · " + String(l.quando).split(" (")[0] : ""), titulo: l.nome, sub: "", info: [l.cidade || ""].filter(Boolean), tag: "" }; }
   /* fila completa, na mesma ordem para todo mundo */

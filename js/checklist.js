@@ -76,12 +76,12 @@
     var est = it.estrelas || 0;
     cx.innerHTML = '<div class="ck-box"><button type="button" class="ck-x" data-ck-fecha aria-label="Fechar">×</button>' +
       '<div class="ck-head"><span class="ck-ok">' + CHECK + "</span><div><small>" + (marcar ? "Visitado! Como foi?" : "Sua visita") + "</small><b>" + esc(l.nome) + "</b></div></div>" +
-      '<form class="ck-form"><p class="ck-lb">Sua nota</p><div class="ck-stars" role="radiogroup" aria-label="Estrelas">' + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" role="radio" data-n="' + n + '" aria-checked="' + (n === est) + '" aria-label="' + n + (n > 1 ? " estrelas" : " estrela") + '"' + (n <= est ? ' class="on"' : "") + ">★</button>"; }).join("") + "</div>" +
+      '<form class="ck-form"><p class="ck-lb">Como foi?</p><div class="ck-stars rx-pick" role="radiogroup" aria-label="Sua reação">' + (window.Reacoes ? Reacoes.botoes(est, function (n) { return ' data-n="' + n + '"'; }) : [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" role="radio" data-n="' + n + '" aria-checked="' + (n === est) + '" aria-label="' + n + (n > 1 ? " estrelas" : " estrela") + '"' + (n <= est ? ' class="on"' : "") + ">★</button>"; }).join("")) + "</div>" +
       '<label class="ck-lb" for="ck-txt">Depoimento</label><textarea id="ck-txt" maxlength="800" rows="4" placeholder="Conte como foi: o que gostou, dicas para quem vai, se vale a pena…"></textarea>' +
       '<label class="ck-lb" for="ck-nome">Seu nome</label><input id="ck-nome" maxlength="40" value="' + esc(nome) + '" placeholder="Como aparece na avaliação">' +
       '<div class="ck-acts"><button type="button" class="btn ghost" data-ck-fecha>' + (it.aval ? "Fechar" : "Avaliar depois") + "</button>" + (Store.uid && Store.uid() ? '<button type="submit" class="btn">' + (it.aval ? "Publicar nova avaliação" : "Publicar avaliação") + "</button>" : '<a class="btn" href="#entrar" data-ck-entrar>Entrar para publicar</a>') + "</div>" +
       (Store.uid && Store.uid() ? "" : '<p class="ck-nota"><b>O check já ficou salvo.</b> Para publicar estrelas e depoimento, entre na sua conta (é grátis) e volte aqui.</p>') +
-      (it.aval ? '<p class="ck-nota">Você já avaliou este lugar com ' + "★".repeat(it.estrelas || 0) + ". Uma nova avaliação fica junto da anterior.</p>" : '<p class="ck-nota">A avaliação aparece na página do lugar, com o seu nome.</p>') + "</form></div>";
+      (it.aval ? '<p class="ck-nota">Você já avaliou este lugar com ' + (window.Reacoes ? Reacoes.selo(it.estrelas, { individual: true, nome: true }) : "★".repeat(it.estrelas || 0)) + ". Uma nova avaliação fica junto da anterior.</p>" : '<p class="ck-nota">A avaliação aparece na página do lugar, com o seu nome.</p>') + "</form></div>";
     document.body.appendChild(cx); requestAnimationFrame(function () { cx.classList.add("on"); });
     var fecha = function () { cx.classList.remove("on"); setTimeout(function () { cx.remove(); }, 220); document.removeEventListener("keydown", tecla); };
     var tecla = function (ev) { if (ev.key === "Escape") fecha(); };
@@ -91,7 +91,7 @@
       if (ev.target === cx || ev.target.closest("[data-ck-fecha]")) { fecha(); return; }
       if (ev.target.closest("[data-ck-entrar]")) { try { sessionStorage.setItem("depois-login", "#lugar-" + id); } catch (er) { /* ok */ } return; }
       var s = ev.target.closest("[data-n]"); if (!s) return;
-      est = Number(s.dataset.n); cx.querySelectorAll("[data-n]").forEach(function (b) { var n = Number(b.dataset.n); b.classList.toggle("on", n <= est); b.setAttribute("aria-checked", n === est); });
+      est = Number(s.dataset.n); cx.querySelectorAll("[data-n]").forEach(function (b) { var n = Number(b.dataset.n); b.classList.toggle("on", window.Reacoes ? n === est : n <= est); b.setAttribute("aria-checked", n === est); });
     });
     setTimeout(function () { var t = $("#ck-txt"); if (t && matchMedia("(min-width:760px)").matches) t.focus(); }, 60);
     $(".ck-form", cx).onsubmit = function (ev) {
@@ -115,7 +115,7 @@
       (it ? (feito ? '<button type="button" class="ck-box-ok on" data-ck-desfaz="' + esc(l.id) + '" aria-label="Desmarcar visita">' + CHECK + "</button>" : '<button type="button" class="ck-box-ok" data-ck-feito="' + esc(l.id) + '" aria-label="Marcar como visitado">' + CHECK + "</button>") : '<button type="button" class="ck-box-ok add" data-ck-poe="' + esc(l.id) + '" aria-label="Pôr no checklist">+</button>') +
       '<a class="ck-th" href="#lugar-' + esc(l.id) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") + "</a>" +
       '<a class="ck-nm" href="#lugar-' + esc(l.id) + '"><b>' + esc(l.nome) + "</b><small>" + esc(G.CATS[l.categoria] || "") + " · " + esc(G.regiao(l)) + "</small>" +
-      (feito ? (it.estrelas ? '<span class="ck-st">' + "★".repeat(it.estrelas) + '<i>' + "★".repeat(5 - it.estrelas) + "</i></span>" : '<span class="ck-pend">Falta avaliar</span>') : "") + "</a>" +
+      (feito ? (it.estrelas ? (window.Reacoes ? Reacoes.selo(it.estrelas, { individual: true, nome: true, cls: "ck-st" }) : '<span class="ck-st">' + "★".repeat(it.estrelas) + '<i>' + "★".repeat(5 - it.estrelas) + "</i></span>") : '<span class="ck-pend">Falta avaliar</span>') : "") + "</a>" +
       '<span class="ck-ac">' + (feito ? '<button type="button" class="btn sm ' + (it.estrelas ? "ghost" : "") + '" data-chk="' + esc(l.id) + '">' + (it.estrelas ? "Ver avaliação" : "Avaliar") + "</button>" : it ? '<button type="button" class="btn sm" data-ck-feito="' + esc(l.id) + '">' + CHECK + " Visitei</button>" : "") +
       '<button type="button" class="ck-mini' + (curtido(l.id) ? " on" : "") + '" data-fav="' + esc(l.id) + '" aria-pressed="' + curtido(l.id) + '" aria-label="Curtir">' + CORACAO + "</button>" +
       (it ? '<button type="button" class="ck-mini" data-ck-tira="' + esc(l.id) + '" aria-label="Tirar do checklist">×</button>' : "") + "</span></div>";

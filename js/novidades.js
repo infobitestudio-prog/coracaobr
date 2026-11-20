@@ -107,7 +107,7 @@
   }
   function cardsIds(ids) {
     var ls = (ids || []).map(function (id) { return Store.obter("lugares", id); }).filter(Boolean).slice(0, 6);
-    return ls.length ? '<div class="as-cards">' + ls.map(function (l) { return '<a class="as-c" href="#lugar-' + esc(l.id) + '"><b>' + esc(l.nome) + "</b><small>" + esc(G.CATS[l.categoria] || l.categoria || "") + " · " + esc(G.regiao(l)) + (l.nota ? " · ★ " + Number(l.nota).toFixed(1) : "") + "</small></a>"; }).join("") + "</div>" : "";
+    return ls.length ? '<div class="as-cards">' + ls.map(function (l) { return '<a class="as-c" href="#lugar-' + esc(l.id) + '"><b>' + esc(l.nome) + "</b><small>" + esc(G.CATS[l.categoria] || l.categoria || "") + " · " + esc(G.regiao(l)) + (l.nota ? " · " + (window.Reacoes ? Reacoes.selo(l.nota) : "★") + " " + Number(l.nota).toFixed(1) : "") + "</small></a>"; }).join("") + "</div>" : "";
   }
   function viewAssistente() {
     G.app.innerHTML = '<section class="block as"><div class="wrap stack" style="max-width:760px;gap:16px">' +
@@ -326,7 +326,7 @@
     var sub = l.cupom ? "🎟 " + l.cupom : (l.dataInicio ? "📅 " + br(l.dataInicio) + " · " : "") + (G.regiao(l) || "Dallas–Fort Worth");
     quebra(ctx, sub, W - 140, 2).forEach(function (t, i) { ctx.fillText(t, 70, y2 + i * 46); });
     ctx.fillStyle = amarelo; ctx.fillRect(70, H - 150, 90, 8);
-    ctx.fillStyle = "#fff"; ctx.font = "700 38px system-ui, sans-serif"; ctx.fillText(l.nota ? "★ " + Number(l.nota).toFixed(1) + " no CoraçãoBR" : "Veja no CoraçãoBR", 70, H - 90);
+    ctx.fillStyle = "#fff"; ctx.font = "700 38px system-ui, sans-serif"; ctx.fillText(l.nota ? (window.Reacoes ? Reacoes.emoji(l.nota) : "★") + " " + Number(l.nota).toFixed(1) + " no CoraçãoBR" : "Veja no CoraçãoBR", 70, H - 90);
     ctx.font = "500 28px system-ui, sans-serif"; ctx.fillStyle = "rgba(255,255,255,.75)"; ctx.fillText("O guia dos brasileiros em DFW", 70, H - 50);
     var q = null; try { q = window.qrcode(0, "M"); q.addData(location.href.split("#")[0] + "#lugar-" + l.id); q.make(); } catch (e) { q = null; }
     if (q) { var n = q.getModuleCount(), tam = 190, c = tam / n, x0 = W - 70 - tam - 16, y0 = H - 70 - tam - 16; ctx.fillStyle = "#fff"; ctx.fillRect(x0, y0, tam + 32, tam + 32); ctx.fillStyle = "#111"; for (var a = 0; a < n; a++) for (var b2 = 0; b2 < n; b2++) if (q.isDark(a, b2)) ctx.fillRect(x0 + 16 + b2 * c, y0 + 16 + a * c, Math.ceil(c), Math.ceil(c)); }

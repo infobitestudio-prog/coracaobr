@@ -22,7 +22,7 @@
   }
   function progresso(r) { var f = r.paradas.filter(function (p) { return p.feito; }).length; return { feitos: f, total: r.paradas.length, pct: r.paradas.length ? Math.round(f / r.paradas.length * 100) : 0 }; }
   function barra(pr) { return '<div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pr.pct + '"><i style="width:' + pr.pct + '%"></i></div>'; }
-  function estrelas(n, nome) { return '<div class="rate" role="radiogroup" aria-label="Sua nota">' + [1, 2, 3, 4, 5].map(function (k) { return '<button type="button" data-nota="' + k + '" data-p="' + esc(nome) + '" aria-pressed="' + (k <= n) + '" aria-label="' + k + ' estrela' + (k > 1 ? "s" : "") + '">★</button>'; }).join("") + "</div>"; }
+  function estrelas(n, nome) { if (window.Reacoes) return '<div class="rate rx-pick" role="radiogroup" aria-label="Sua reação">' + Reacoes.botoes(n, function (k) { return ' data-nota="' + k + '" data-p="' + esc(nome) + '"'; }) + "</div>"; return '<div class="rate" role="radiogroup" aria-label="Sua nota">' + [1, 2, 3, 4, 5].map(function (k) { return '<button type="button" data-nota="' + k + '" data-p="' + esc(nome) + '" aria-pressed="' + (k <= n) + '" aria-label="' + k + ' estrela' + (k > 1 ? "s" : "") + '">★</button>'; }).join("") + "</div>"; }
 
   var abertos = {};
   function viewMeuRoteiro(rota) {
@@ -36,7 +36,7 @@
         var l = lugar(p.id); if (!l) return "";
         var aberto = !p.enviado && (abertos[p.id] || (p.feito && !p.nota)), f = G.foto(l);
         return '<li class="ck' + (p.feito ? " ok" : "") + (prox && prox.id === p.id ? " now" : "") + '" data-id="' + esc(p.id) + '"><div class="ckh"><button type="button" class="box" data-feito="' + esc(p.id) + '" aria-pressed="' + p.feito + '" aria-label="Marcar ' + esc(l.nome) + ' como visitado">' + (p.feito ? "✓" : i + 1) + '</button><a class="ckl" href="#lugar-' + esc(l.id) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") + "<span><b>" + esc(l.nome) + "</b><small>" + esc(G.CATS[l.categoria] || "") + " · " + esc(G.regiao(l)) + "</small></span></a>" +
-          (p.feito && p.nota ? '<span class="nota-ck">' + "★".repeat(p.nota) + "</span>" : "") + "</div>" +
+          (p.feito && p.nota ? (window.Reacoes ? Reacoes.selo(p.nota, { individual: true, nome: true, cls: "nota-ck" }) : '<span class="nota-ck">' + "★".repeat(p.nota) + "</span>") : "") + "</div>" +
           (aberto ? '<div class="ckb"><p class="small"><b>Como foi?</b> Sua nota aparece nas avaliações do lugar com o selo "Esteve aqui".</p>' + estrelas(p.nota, p.id) + '<textarea data-txt="' + esc(p.id) + '" maxlength="600" placeholder="Conte em poucas palavras (opcional)">' + esc(p.texto || "") + '</textarea><div class="row"><button type="button" class="btn sm" data-envia="' + esc(p.id) + '">Salvar experiência</button><button type="button" class="btn sm ghost" data-depois="' + esc(p.id) + '">Depois</button></div></div>' :
             !p.feito ? '<div class="ckb mini"><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(l.lat != null ? l.lat + "," + l.lng : (l.endereco || l.nome)) + '">' + ic("pin") + ' Como chegar</a></div>' : "") + "</li>";
       }).join("") + "</ol>" +

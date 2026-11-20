@@ -88,7 +88,7 @@
   function form(l, livres) {
     if (!Store.uid()) return '<div class="pr-form"><p>Entre na sua conta para fazer curadorias.</p><a class="btn sm" href="#entrar">Entrar</a></div>';
     if (!livres) return '<div class="pr-form"><p>Você não tem depoimentos disponíveis. A promoção de ' + G.reais(cfg().preco) + " libera " + cfg().curadorias + '.</p><a class="btn sm" href="#pagar-promo">Participar</a></div>';
-    return '<form class="pr-form" data-pr-form="' + esc(l.id) + '"><div class="field"><span>Sua nota</span><div class="pick" id="pr-pick">' + [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-pr-n="' + i + '" class="' + (i <= C.nota ? "on" : "") + '" aria-label="' + i + ' estrelas">★</button>'; }).join("") + '</div></div>' +
+    return '<form class="pr-form" data-pr-form="' + esc(l.id) + '"><div class="field"><span>Como foi?</span><div class="pick rx-pick" id="pr-pick" role="radiogroup" aria-label="Sua reação">' + (window.Reacoes ? Reacoes.botoes(C.nota, function (i) { return ' data-pr-n="' + i + '"'; }) : [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-pr-n="' + i + '" class="' + (i <= C.nota ? "on" : "") + '" aria-label="' + i + ' estrelas">★</button>'; }).join("")) + '</div></div>' +
       '<div class="field"><label>Como foi (depoimento)</label><textarea name="texto" required minlength="40" maxlength="800" placeholder="O que vale a pena, o que evitar, para quem é. Escreva com suas palavras."></textarea></div>' +
       '<div class="form2"><div class="field"><label>Dica para brasileiros (opcional)</label><input name="dica" maxlength="160" placeholder="Estacionamento, melhor horário, prato…"></div><div class="field"><label>Quando você foi</label><input name="quando" type="month" max="' + hoje().slice(0, 7) + '"></div></div>' +
       '<label class="check small"><input type="checkbox" name="ok" required> Conheço este lugar ou evento, a nota é sincera e não tenho ligação com o negócio.</label>' +
@@ -98,7 +98,7 @@
     if (!e.target.closest(".pr")) return; var b;
     if ((b = e.target.closest("[data-pr-g]"))) { C.g = b.dataset.prG; Array.from(document.querySelectorAll("[data-pr-g]")).forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); lista(); return; }
     if ((b = e.target.closest("[data-pr-av]"))) { C.aberto = C.aberto === b.dataset.prAv ? null : b.dataset.prAv; C.nota = 0; lista(); return; }
-    if ((b = e.target.closest("[data-pr-n]"))) { C.nota = +b.dataset.prN; Array.from(document.querySelectorAll("[data-pr-n]")).forEach(function (x) { x.classList.toggle("on", +x.dataset.prN <= C.nota); }); return; }
+    if ((b = e.target.closest("[data-pr-n]"))) { C.nota = +b.dataset.prN; Array.from(document.querySelectorAll("[data-pr-n]")).forEach(function (x) { x.classList.toggle("on", window.Reacoes ? +x.dataset.prN === C.nota : +x.dataset.prN <= C.nota); }); return; }
     if (e.target.closest("[data-pr-ir]")) { e.preventDefault(); var s = $("#promo-curadoria"); if (s) s.scrollIntoView({ behavior: "smooth" }); }
   });
   var tq = null;
@@ -118,7 +118,7 @@
   function blocoLugar(l) {
     var cs = Store.lista("avaliacoes").filter(function (a) { return a.lugarId === l.id && a.tipo === "parceiro"; }); if (!cs.length) return "";
     var m = cs.reduce(function (s, a) { return s + Number(a.estrelas || 0); }, 0) / cs.length;
-    return '<div class="panel stack pr-cur" style="gap:10px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Curadoria de parceiros</h3><span class="pr-m"><b>' + m.toFixed(1) + "</b> ★ · " + cs.length + (cs.length === 1 ? " curadoria" : " curadorias") + '</span></div><p class="small muted">Escritas por anunciantes do CoraçãoBR que receberam desconto no anúncio para avaliar lugares e eventos que conhecem. Ficam separadas das avaliações independentes.</p>' +
+    return '<div class="panel stack pr-cur" style="gap:10px"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Curadoria de parceiros</h3><span class="pr-m"><b>' + m.toFixed(1) + "</b> " + (window.Reacoes ? Reacoes.selo(m) : "★") + " · " + cs.length + (cs.length === 1 ? " curadoria" : " curadorias") + '</span></div><p class="small muted">Escritas por anunciantes do CoraçãoBR que receberam desconto no anúncio para avaliar lugares e eventos que conhecem. Ficam separadas das avaliações independentes.</p>' +
       cs.slice(0, 6).map(function (a) { return '<div class="rv"><span class="av">' + esc((a.nome || "P").charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(a.nome || "Parceiro") + "</b>" + G.stars(a.estrelas) + '<span class="pill xp">Parceiro' + (a.parceiro ? " · " + esc(a.parceiro) : "") + "</span></div>" + (a.quando ? '<small class="muted">esteve em ' + esc(a.quando.split("-").reverse().join("/")) + "</small>" : "") + "<p>" + esc(a.texto || "") + "</p>" + (a.dica ? '<p class="small"><b>Dica:</b> ' + esc(a.dica) + "</p>" : "") + "</div></div>"; }).join("") + "</div>";
   }
   function media(l) { var cs = Store.lista("avaliacoes").filter(function (a) { return a.lugarId === l.id && a.tipo === "parceiro"; }); return cs.length ? { m: cs.reduce(function (s, a) { return s + Number(a.estrelas || 0); }, 0) / cs.length, n: cs.length } : null; }

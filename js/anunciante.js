@@ -6,6 +6,23 @@
   var G = window.Guia, esc = G.esc, $ = function (s, r) { return (r || document).querySelector(s); };
   var D = null, ocupado = false, removidas = [];
   var CATEG = G.SERVICOS.concat(G.COMIDA, ["mercado-brasileiro", "mercado", "compras"]);
+  function catOpcoes(sel) {
+    var usados = {}, h = (G.CAT_GRUPOS || []).map(function (g) {
+      var ks = g[1].filter(function (k) { return G.CATS[k] && CATEG.indexOf(k) >= 0; }); ks.forEach(function (k) { usados[k] = 1; });
+      return ks.length ? '<optgroup label="' + esc(g[0]) + '">' + ks.map(function (k) { return '<option value="' + k + '"' + (k === sel ? " selected" : "") + ">" + esc(G.CATS[k]) + "</option>"; }).join("") + "</optgroup>" : "";
+    }).join("");
+    var resto = CATEG.filter(function (k) { return !usados[k]; });
+    return h + (resto.length ? '<optgroup label="Mais">' + resto.map(function (k) { return '<option value="' + k + '"' + (k === sel ? " selected" : "") + ">" + esc(G.CATS[k] || k) + "</option>"; }).join("") + "</optgroup>" : "");
+  }
+  function catBusca(q) {
+    var n = G.norm || function (s) { return String(s || "").toLowerCase(); }, termos = n(q).split(/\s+/).filter(Boolean); if (!termos.length) return [];
+    var grupoDe = {}, pos = {}, c = 0; (G.CAT_GRUPOS || []).forEach(function (g) { g[1].forEach(function (k) { grupoDe[k] = g[0]; pos[k] = c++; }); });
+    return CATEG.map(function (k) {
+      var nome = n(G.CATS[k] || k), extra = n(k.replace(/-/g, " ") + " " + ((G.CAT_SIN || {})[k] || "") + " " + (grupoDe[k] || "")), pts = 0;
+      for (var i = 0; i < termos.length; i++) { var w = termos[i]; if (nome.indexOf(w) === 0) pts += 6; else if (nome.indexOf(w) >= 0) pts += 4; else if (extra.indexOf(w) >= 0) pts += 2; else return null; }
+      return { k: k, pts: pts, g: grupoDe[k] || "" };
+    }).filter(Boolean).sort(function (a, b) { return b.pts - a.pts || (pos[a.k] == null ? 999 : pos[a.k]) - (pos[b.k] == null ? 999 : pos[b.k]); }).slice(0, 8);
+  }
   var MAX_FOTOS = 20, LIMITE = 3;
   var CIDADES_DFW = [["Dallas", 32.7767, -96.797], ["Fort Worth", 32.7555, -97.3308], ["Plano", 33.0198, -96.6989], ["Frisco", 33.1507, -96.8236], ["McKinney", 33.1972, -96.6398], ["Allen", 33.1032, -96.6706], ["Irving", 32.814, -96.9489], ["Carrollton", 32.9756, -96.89], ["Richardson", 32.9483, -96.7299], ["Garland", 32.9126, -96.6389], ["Arlington", 32.7357, -97.1081], ["Grand Prairie", 32.746, -96.9978], ["Grapevine", 32.9343, -97.0781], ["Euless", 32.8371, -97.082], ["Bedford", 32.844, -97.1431], ["Hurst", 32.8235, -97.1706], ["Lewisville", 33.0462, -96.9942], ["Denton", 33.2148, -97.1331], ["Addison", 32.9618, -96.8292], ["Coppell", 32.9546, -97.015], ["Southlake", 32.9412, -97.1342], ["The Colony", 33.0807, -96.8928], ["Mesquite", 32.7668, -96.5992], ["Rockwall", 32.9312, -96.4597]];
   /* cidades de cada região do guia: [nome, lat, lng, regiaoGuia] */
@@ -54,7 +71,8 @@
     var corpo =
       sec(prox(), "empresa", "Sua empresa", "O que aparece no topo do anúncio.",
         '<div class="ae-g2">' + fld("n-nome", "Nome da empresa", D.nome, 'required maxlength="80" autocomplete="organization"') +
-        '<div class="field"><label for="n-cat">Categoria</label><select id="n-cat" required>' + (D.categoria ? "" : '<option value="" selected disabled>Escolha a categoria</option>') + CATEG.map(function (k) { return '<option value="' + k + '"' + (k === D.categoria ? " selected" : "") + ">" + esc(G.CATS[k] || k) + "</option>"; }).join("") + "</select></div></div>" +
+        '<div class="field cat-f"><label for="n-cat">Categoria</label><div class="cat-busca"><input type="search" id="n-cat-q" placeholder="Pesquisa rápida: babá, handyman, eletricista, piscina…" autocomplete="off" aria-label="Pesquisar categoria" aria-controls="n-cat-res"><div class="cat-res" id="n-cat-res" role="listbox" hidden></div></div>' +
+          '<select id="n-cat" required>' + (D.categoria ? "" : '<option value="" selected disabled>Ou escolha na lista</option>') + catOpcoes(D.categoria) + "</select></div></div>" +
         '<div class="field"><label for="n-desc">O que você faz</label><textarea id="n-desc" maxlength="900" rows="5" required placeholder="Conte o que você oferece, há quanto tempo, para quem e o diferencial.">' + esc(D.historia || "") + '</textarea><small class="muted"><span id="n-dc">' + String(D.historia || "").length + "</span>/900</small></div>" +
         fld("n-cupom", "Oferta para quem vem pelo CoraçãoBR (opcional)", D.cupom, 'maxlength="90" placeholder="Ex.: 10% de desconto na primeira visita"') +
         fld("n-clube", "Desconto para membros do Clube CoraçãoBR (opcional)", D.descontoClube, 'maxlength="90" placeholder="Ex.: 15% para membros do Clube"') +
@@ -88,7 +106,24 @@
       "</form></div></section>";
     window.scrollTo(0, 0); preview();
     var f = $("#f-an");
-    f.addEventListener("input", function (e) { if (e.target.id === "n-desc") $("#n-dc").textContent = e.target.value.length; $("#ae-st").textContent = "Alterações não salvas."; preview(); });
+    /* pesquisa rápida de categoria: mostra as profissões que combinam (nome, sinônimos em português e inglês) */
+    function catMostra(q) {
+      var box = $("#n-cat-res"); if (!box) return; var r = catBusca(q);
+      if (!String(q || "").trim()) { box.hidden = true; box.innerHTML = ""; return; }
+      box.hidden = false;
+      box.innerHTML = r.length ? r.map(function (x, i) { return '<button type="button" role="option" data-cat-k="' + x.k + '"' + (i === 0 ? ' class="on"' : "") + "><b>" + esc(G.CATS[x.k]) + "</b><small>" + esc(x.g) + "</small></button>"; }).join("")
+        : '<p class="small muted">Nada encontrado para “' + esc(q) + '”.</p><button type="button" role="option" data-cat-k="outros-servicos"><b>' + esc(G.CATS["outros-servicos"]) + "</b><small>Use e descreva o serviço no texto do anúncio</small></button>";
+    }
+    function catEscolhe(k) {
+      var s = $("#n-cat"), q = $("#n-cat-q"), box = $("#n-cat-res"); if (!s || !k) return;
+      s.value = k; s.dispatchEvent(new Event("change", { bubbles: true })); s.dispatchEvent(new Event("input", { bubbles: true }));
+      if (q) q.value = ""; if (box) { box.hidden = true; box.innerHTML = ""; }
+      s.classList.add("cat-ok"); setTimeout(function () { s.classList.remove("cat-ok"); }, 900);
+    }
+    f.addEventListener("click", function (e) { var b = e.target.closest("[data-cat-k]"); if (b) { e.preventDefault(); catEscolhe(b.dataset.catK); } });
+    f.addEventListener("keydown", function (e) { if (e.target.id === "n-cat-q" && e.key === "Enter") { e.preventDefault(); var b = $("#n-cat-res [data-cat-k]"); if (b) catEscolhe(b.dataset.catK); } if (e.target.id === "n-cat-q" && e.key === "Escape") { e.target.value = ""; catMostra(""); } });
+    f.addEventListener("input", function (e) { if (e.target.id === "n-cat-q") { catMostra(e.target.value); return; } }, true);
+    f.addEventListener("input", function (e) { if (e.target.id === "n-cat-q") return; if (e.target.id === "n-desc") $("#n-dc").textContent = e.target.value.length; $("#ae-st").textContent = "Alterações não salvas."; preview(); });
     f.addEventListener("click", function (e) { var a = e.target.closest("[data-ae-ir]"); if (a) { e.preventDefault(); var s = document.getElementById("ae-" + a.dataset.aeIr); if (s) s.scrollIntoView({ behavior: "smooth", block: "start" }); } });
     $("#n-file").addEventListener("change", async function (e) {
       var files = Array.from(e.target.files || []), livres = MAX_FOTOS - D.fotos.length;
