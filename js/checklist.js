@@ -12,11 +12,22 @@
 
   function ler(k) { try { var v = JSON.parse(localStorage.getItem(k) || "[]"); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
   function grava(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { G.toast("Este navegador não deixou salvar."); } }
-  function curtidos() { return ler("lista"); }
-  function itens() { return ler("checklist").filter(function (x) { return x && x.id; }); }
+  function curtidos() { return ler("lista").filter(function (x, i, a) { return a.indexOf(x) === i; }); }
+  /* sem repetidos: a sincronização entre aparelhos pode juntar cópias do mesmo lugar; fica a mais completa */
+  function itens() {
+    var por = {}, ordem = [];
+    ler("checklist").forEach(function (x) {
+      if (!x || !x.id) return;
+      var a = por[x.id];
+      if (!a) { por[x.id] = x; ordem.push(x.id); return; }
+      var pontos = function (y) { return (y.aval ? 4 : 0) + (y.estrelas ? 2 : 0) + (y.feito ? 1 : 0); };
+      if (pontos(x) > pontos(a) || (pontos(x) === pontos(a) && String(x.visitadoEm || x.em || "") > String(a.visitadoEm || a.em || ""))) por[x.id] = x;
+    });
+    return ordem.map(function (id) { return por[id]; });
+  }
   function item(id) { return itens().filter(function (x) { return x.id === id; })[0] || null; }
   function salvaItem(id, dados) {
-    var a = itens(), i = a.map(function (x) { return x.id; }).indexOf(id);
+    var a = itens(), i = a.map(function (x) { return x.id; }).indexOf(id); /* regrava já sem repetidos */
     if (dados === null) { if (i >= 0) a.splice(i, 1); }
     else if (i >= 0) a[i] = Object.assign({}, a[i], dados); else a.push(Object.assign({ id: id, feito: false, em: new Date().toISOString() }, dados));
     grava("checklist", a);

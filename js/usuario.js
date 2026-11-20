@@ -141,6 +141,7 @@
         var v = loc;
         if (k === "meu-nome") v = loc || rem;
         else if (k === "meus-roteiros") { var ids = {}; v = []; (loc || []).concat(rem || []).forEach(function (x) { if (x && x.id && !ids[x.id]) { ids[x.id] = 1; v.push(x); } }); }
+        else if (k === "checklist") { var por = {}, ord = [], pt = function (y) { return (y.aval ? 4 : 0) + (y.estrelas ? 2 : 0) + (y.feito ? 1 : 0); }; (loc || []).concat(rem || []).forEach(function (x) { if (!x || !x.id) return; if (!por[x.id]) { por[x.id] = x; ord.push(x.id); } else if (pt(x) > pt(por[x.id])) por[x.id] = x; }); v = ord.map(function (id) { return por[id]; }); }
         else if (Array.isArray(loc) || Array.isArray(rem)) v = juntaLista(loc, rem);
         if (v != null) try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* ok */ }
       });

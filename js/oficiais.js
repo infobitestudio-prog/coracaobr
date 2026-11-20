@@ -83,11 +83,12 @@
   function slides() { return ativos().map(function (o) { return { tipo: "oficial", o: o }; }); }
   /* banner do QR-DOG: a medalha 3D do próprio site qrdogdados.com.br (gravada da animação do site, em loop) com o texto do site */
   function qrdogAnim(tag, extra) {
-    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: não é só uma medalha. Um único QR Code na coleira reúne o perfil, o contato, a saúde e os avisos do seu pet.">' +
+    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: simples por fora, completa por dentro. Sem bateria e sem aplicativo. É só prender na coleira.">' +
       '<span class="qdv-bg"></span><span class="qdv-st"></span>' +
-      '<span class="qdv-l"><span class="qdv-eb"><i></i>MEDALHA QR-DOG</span>' +
-      '<span class="qdv-h"><b>NÃO É</b><b>SÓ <em>UMA</em></b><b><em>MEDALHA.</em></b></span>' +
-      '<span class="qdv-p">Um único QR Code na coleira reúne o perfil, o contato, a saúde e os avisos do seu pet.</span>' +
+      '<span class="qdv-l"><span class="qdv-eb"><i></i>QR-DOG · A MEDALHA</span>' +
+      '<span class="qdv-h"><b>SIMPLES POR</b><b>FORA. <em>COMPLETA</em></b><b><em>POR DENTRO.</em></b></span>' +
+      '<span class="qdv-p">Sem bateria e sem aplicativo. É só prender na coleira.</span>' +
+      '<span class="qdv-nums"><span><b>1</b>QR CODE</span><span><b>0</b>APLICATIVOS</span><span><b>0</b>BATERIAS</span><span><b>4</b>CORES</span></span>' +
       '<span class="qdv-cta">Quero minha medalha <i>→</i></span></span>' +
       '<span class="qdv-r"><video class="qdv-v" autoplay muted loop playsinline preload="metadata" poster="img/patrocinadores/qrdog-medalha-poster.webp" aria-hidden="true">' +
       '<source src="img/patrocinadores/qrdog-medalha.webm" type="video/webm"><source src="img/patrocinadores/qrdog-medalha.mp4" type="video/mp4"></video></span>' +
