@@ -74,7 +74,7 @@
     }
   ];
   function ig(o) { var l = o.links.filter(function (x) { return /instagram\.com/.test(x[1]); })[0]; return l ? l[1].replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/.*$/, "") : ""; }
-  var ORDEM = ["brtvmax", "qr-dog", "infobite-card", "alexandre-no-texas", "infobite-studio", "gerson-no-trecho"];
+  var ORDEM = ["qr-dog", "brtvmax", "infobite-card", "alexandre-no-texas", "infobite-studio", "gerson-no-trecho"];
   LISTA.sort(function (a, b) { return ORDEM.indexOf(a.id) - ORDEM.indexOf(b.id); });
   function ativos() { var off = (G.config().oficiaisOcultos || []); return LISTA.filter(function (o) { return off.indexOf(o.id) < 0; }); }
   function obter(id) { return LISTA.filter(function (o) { return o.id === id; })[0]; }
