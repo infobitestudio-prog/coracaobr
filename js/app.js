@@ -326,6 +326,11 @@
   }
   /* Fotos do banner principal: versões em alta resolução quando existem (img/hero/<id>.jpg e -m.jpg para celular). */
   var HERO_HD = { "white-rock-lake": 1, "klyde-warren-park": 1, "fort-worth-stockyards": 1 };
+  /* cartões-postais de cada cidade (fotos em alta, licença livre; ver js/postais.js) */
+  var POSTAIS_CID = { dfw: ["dallas-noite", "dallas-panorama"], houston: ["houston-noite", "houston-bayou"], austin: ["austin"], sanantonio: ["sanantonio"] };
+  function postaisDa(c) { var ok = window.POSTAIS || []; return (POSTAIS_CID[c] || []).filter(function (k) { return ok.indexOf(k) >= 0; }); }
+  function postalImg(k, i) { var lazy = i ? ' loading="lazy"' : ' fetchpriority="high"'; return '<img src="img/postais/' + k + '.jpg" srcset="img/postais/' + k + '-m.jpg 1280w, img/postais/' + k + '.jpg 2560w" sizes="100vw" alt="" decoding="async"' + lazy + ">"; }
+  function credPostal(k) { var c = (window.CREDITOS_FOTOS || {})[k + ".jpg"]; return c && c.autor ? '<span class="bn-cred">Foto: ' + esc(c.autor) + " · " + esc(c.licenca) + "</span>" : ""; }
   function heroImg(l, i) {
     var lazy = i ? ' loading="lazy"' : ' fetchpriority="high"';
     if (HERO_HD[l.id]) return '<img src="img/hero/' + l.id + '.jpg" srcset="img/hero/' + l.id + '-m.jpg 1000w, img/hero/' + l.id + '.jpg 1920w" sizes="100vw" alt="" decoding="async"' + lazy + ">";
@@ -359,18 +364,19 @@
       { l: com("klyde-warren-park"), k: reais(preco) + " por mês", t: "Seu negócio no mapa de quem fala português.", s: (Number(cfg.anunciosPorPacote) || 3) + " anúncios + 1 banner, pin verde no mapa e publicações no feed.", cta: "Ver planos", h: "anuncie" },
       { l: com("fort-worth-stockyards"), k: "Brasileiros em " + cid().nome, t: "Milhares de brasileiros procurando serviços. Fale com eles aqui.", s: "Restaurantes, beleza, construção, saúde, imóveis e muito mais.", cta: "Quero anunciar", h: "anuncie" }
     ]).map(function (sl, i) { if (cidadeAtual() === "dfw") return sl; var alt = primeiro(ls.filter(function (x) { return x.tipo !== "estabelecimento" && (x.fotos || []).some(function (f) { return !f.ilustrativa; }); }).sort(ordenaNota))[i]; return alt ? Object.assign({}, sl, { l: alt }) : sl; }).filter(function (s) { return s.l && foto(s.l); });
-    if (window.Oficiais) {
-      var ofs = Oficiais.lista().map(function (o) { return { of: o, h: "oficial-" + o.id }; });
-      var mist = []; slides.forEach(function (x, i) { mist.push(x); if (ofs[i * 2]) mist.push(ofs[i * 2]); if (ofs[i * 2 + 1]) mist.push(ofs[i * 2 + 1]); });
-      slides = mist.concat(ofs.slice(slides.length * 2));
-    }
+    if (!(cfg.heroSlides && cfg.heroSlides.length)) postaisDa(cidadeAtual()).forEach(function (k, i) { if (slides[i]) slides[i] = Object.assign({}, slides[i], { post: k }); });
+    /* rodízio: patrocinadores e anunciantes da rodada atual (troca a cada 30 min), no mesmo tamanho dos slides com título */
+    heroRod = window.Social && Social.rodada ? Social.rodada() : 0;
+    var bns = window.Social && Social.rodadaItens && window.Oficiais ? Social.rodadaItens(heroRod).map(function (it) { return { bn: it, h: it.href.replace(/^#/, "") }; }) : [];
+    if (bns.length) { var mist = []; slides.forEach(function (x, i) { mist.push(x); if (bns[i]) mist.push(bns[i]); }); slides = mist.concat(bns.slice(slides.length)); }
     if (!slides.length) slides = [{ t: cid().principal + " em português.", h: "explorar", g: "tudo" }];
     if (slideAtual >= slides.length) slideAtual = 0;
     var servN = function (c) { return ls.filter(function (l) { return l.categoria === c; }).length; };
     var perto = primeiro(ls.filter(function (l) { return kmDe(l) != null && ["evento", "governo", "transporte", "saude", "comunidade", "servico"].indexOf(l.categoria) < 0; }).sort(function (a, b) { return kmDe(a) - kmDe(b); }).slice(0, 12)).slice(0, 4);
     var ad = adFaixa(false);
     app.innerHTML = '<section class="ph" id="hero">' + slides.map(function (s, i) {
-      return '<a class="slide' + (s.of ? " of" : "") + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.of ? Oficiais.heroSlide(s.of, i) : (s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.k ? '<span class="kick">' + esc(s.k) + "</span>" : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + (s.s ? '<p class="hsub">' + esc(s.s) + "</p>" : "") + (s.cta ? '<span class="hcta">' + esc(s.cta) + ' <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' : "") + "</div></div>") + "</a>";
+      if (s.bn) return '<a class="slide bnr bnr-' + esc(s.bn.visual || "foto") + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + ": " + esc(s.bn.nome || s.bn.titulo) + '" href="#' + esc(s.h) + '" style="--c:' + esc(s.bn.cor || "#0BA84A") + '">' + Oficiais.slideHero(s.bn, i) + "</a>";
+      return '<a class="slide' + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.post ? postalImg(s.post, i) + credPostal(s.post) : s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.k ? '<span class="kick">' + esc(s.k) + "</span>" : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + (s.s ? '<p class="hsub">' + esc(s.s) + "</p>" : "") + (s.cta ? '<span class="hcta">' + esc(s.cta) + ' <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' : "") + "</div></div>" + "</a>";
     }).join("") +
       '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
       '<button type="button" class="pchip" data-partida>' + ic("pin") + (Geo.gps ? "Perto de você" : '<span class="pc-pre">Saindo de </span>' + esc(Geo.nome)) + "</button>" +
@@ -898,7 +904,7 @@
   function viewAnuncie() {
     var c = config(), ls = lugares(), preco = reais(window.Pag ? Pag.preco() : c.precoAnuncio), npk = c.anunciosPorPacote || 3, promo = window.Pag && Pag.promocional() ? Pag.chamada() : "", cks = function (a) { return a.map(function (t) { return '<li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' + t + "</li>"; }).join(""); };
     var cidades = Array.from(new Set(ls.map(function (l) { return l.cidade; }).filter(Boolean))).length;
-    var onde = [["sparkle", "Carrossel da página inicial", "Seu banner (1600 × 640) entra na rodada de 30 minutos, até 10 anunciantes por vez, sem repetir."], ["pin", "Pin verde no mapa", "No mapa, seu negócio aparece em verde, destacado dos lugares comuns."], ["chart", "Topo das buscas", "Em Explorar e no Ranking, patrocinados aparecem primeiro, com moldura amarela."], ["megaphone", "Feed e Mural", "Publique novidades, ofertas, vagas e classificados para toda a comunidade."]];
+    var onde = [["sparkle", "Carrossel da página inicial", "Seu banner é montado sozinho com a foto de capa, o nome e a sua oferta, e entra no rodízio: a cada 30 minutos, novos anunciantes, sem repetir."], ["pin", "Pin verde no mapa", "No mapa, seu negócio aparece em verde, destacado dos lugares comuns."], ["chart", "Topo das buscas", "Em Explorar e no Ranking, patrocinados aparecem primeiro, com moldura amarela."], ["megaphone", "Feed e Mural", "Publique novidades, ofertas, vagas e classificados para toda a comunidade."]];
     var faq = [["Como funciona o preço?", "Cada pacote custa " + preco + " e libera " + npk + " anúncios por 1 mês. Os pacotes somam: 2 pacotes = " + (2 * npk) + " anúncios, 3 pacotes = " + (3 * npk) + " anúncios, e assim por diante."], ["Como eu pago?", "Por Pix, em reais. O painel gera o QR Code e o Pix copia e cola com o valor certo. A equipe confirma e os anúncios entram no ar 1 hora depois."], ["E quando o plano termina?", "Você recebe e-mail 3, 2 e 1 dia antes do fim. Dá para renovar antes, sem perder nenhum dia. Depois do fim há 2 dias de tolerância."], ["Posso cancelar quando quiser?", "Sim. Não há fidelidade nem renovação automática: é só não renovar."], ["O que é o selo Verificado?", "A equipe confere seu negócio (nome, contato e endereço) e seus anúncios ganham um selo verde de confiança. Pagamento único de " + reais(c.precoVerificado || 30) + "."], ["Como apareço no topo?", "Use Impulsionar no painel: por " + reais(c.precoImpulso || 25) + " seu anúncio fica no topo das listas e do mapa por " + (c.diasImpulso || 7) + " dias, com a etiqueta Destaque."], ["Tem vantagem para quem indica?", "Sim. Cada empresa que você indicar e que fizer o primeiro pagamento dá a você 50% de desconto em 1 pacote. O link fica no seu painel."], ["O cliente consegue agendar comigo?", "Sim. Seu anúncio tem o botão Agendar: o cliente escolhe data e horário e o pedido chega no seu e-mail ou no seu WhatsApp."], ["Precisa de aprovação?", "Não. Você monta o anúncio e ele entra no ar na hora. A equipe pode remover conteúdo que viole os termos de uso."], ["Como é feito o pagamento?", (c.pagamentos && (c.pagamentos.anuncio || c.pagamentos.basico)) ? "Por cartão, em página segura de pagamento, com renovação mensal automática." : "A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX)."], ["Quem vê meu anúncio?", "Brasileiros e falantes de português que usam o guia para decidir onde comer, comprar e contratar serviços."]];
     app.innerHTML = '<section class="block an"><div class="wrap">' +
       '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p>' + (promo ? '<a class="an-promo" href="#promo">' + ic("sparkle") + esc(promo) + " Ver a promoção →</a>" : "") + '<h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
@@ -974,6 +980,9 @@
     if (rota() === "explorar") { pintada = null; render(false); }
   });
   window.addEventListener("hashchange", function () { render(false); });
+  /* a cada 30 min entra a próxima rodada de banners, sem recarregar a página */
+  var heroRod = null;
+  setInterval(function () { if (rota() === "inicio" && window.Social && Social.rodada && heroRod != null && Social.rodada() !== heroRod && !document.querySelector("dialog[open]") && !aberto) { var y = window.scrollY; pintada = null; render(false); window.scrollTo(0, y); } }, 60000);
   /* menu do topo em sanfona: o título abre as opções (o mouse por cima também abre, pelo CSS) */
   function fechaNav(exceto) { Array.from(document.querySelectorAll(".nav-g.on")).forEach(function (g) { if (g !== exceto) { g.classList.remove("on"); g.querySelector(".nav-gt").setAttribute("aria-expanded", "false"); } }); }
   document.addEventListener("click", function (e) {

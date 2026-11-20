@@ -170,34 +170,51 @@
   });
 
   /* ---------- carrossel de banners ---------- */
-  function cfgVitrine() { return Object.assign({ minutos: 30, limite: 10 }, G.config().vitrine || {}); }
-  function rodada() { return Math.floor(Date.now() / (Math.max(5, Number(cfgVitrine().minutos) || 30) * 60000)); }
+  /* ---------- rodízio de banners ----------
+     Fila única: patrocinadores oficiais + anunciantes com plano (1 banner por conta). A cada intervalo (30 min)
+     entra o próximo grupo da fila, sem repetir dentro da rodada, e o ciclo recomeça sozinho, sem pausa.
+     Todos os visitantes veem a mesma rodada. O banner principal mostra a rodada atual; o carrossel, a seguinte. */
+  function cfgVitrine() { var c = Object.assign({ minutos: 30, limite: 3 }, G.config().vitrine || {}); c.minutos = Math.max(5, Number(c.minutos) || 30); c.limite = Math.max(1, Math.min(10, Number(c.limite) || 3)); return c; }
+  function rodada() { return Math.floor(Date.now() / (cfgVitrine().minutos * 60000)); }
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
-  function bannersAtivos() { return G.lugares().filter(function (l) { return l.anunciante && l.banner && l.banner.src && Store.urlFoto(l.banner.src) && !l.bannerPausado; }); }
-  /* Monta a rodada: um banner por anunciante, até o limite; o rodízio muda a cada intervalo, igual para todo mundo. */
+  function fotoReal(l) { var f = (l.fotos || []).filter(function (x) { return x && x.src && !x.ilustrativa; })[0]; return f ? Store.urlFoto(f.src) : ""; }
+  /* anúncios no ar com foto (o banner é montado em HTML com a foto e o nome: nada de texto ou botão na imagem) */
+  function bannersAtivos() { return G.lugares().filter(function (l) { var pago = l.anunciante || (l._dono && window.Pag && Pag.visivel(l) && l.publicado !== false); return pago && !l.bannerPausado && (fotoReal(l) || (l.banner && l.banner.src && Store.urlFoto(l.banner.src))); }); }
+  function frase(t) { t = String(t || "").replace(/\s+/g, " ").trim(); var m = t.match(/^.{20,120}?[.!?](\s|$)/); return m ? m[0].trim() : t.slice(0, 110) + (t.length > 110 ? "…" : ""); }
+  function itemAnuncio(l) {
+    var nota = G.notas ? G.notas(l) : null, n = nota && (nota.media || nota.nota);
+    return { k: "an", id: l.id, href: "#lugar-" + l.id, bg: fotoReal(l) || Store.urlFoto(l.banner.src), nome: l.nome, cor: "#0BA84A", kick: (G.CATS[l.categoria] || "Negócio") + (l.cidade ? " · " + l.cidade : ""), titulo: l.nome,
+      sub: l.cupom ? "Oferta: " + l.cupom : frase(l.historia || l.descricao || ""), info: [n ? "★ " + String(Number(n).toFixed(1)).replace(".", ",") : "", G.falaPt && G.falaPt(l) ? "Fala português" : "", l.bairro || ""].filter(Boolean), tag: "Patrocinado" };
+  }
+  function itemEvento(l) { return { k: "ev", id: l.id, href: "#lugar-" + l.id, bg: G.foto(l), nome: l.nome, kick: "Evento grátis" + (l.quando ? " · " + String(l.quando).split(" (")[0] : ""), titulo: l.nome, sub: "", info: [l.cidade || ""].filter(Boolean), tag: "" }; }
+  /* fila completa, na mesma ordem para todo mundo */
+  function fila() {
+    var ofs = window.Oficiais ? Oficiais.lista().map(function (o) { return Oficiais.item(o); }) : [];
+    var porConta = {}; bannersAtivos().forEach(function (l) { var d = l._dono || l.donoUid || l.id; (porConta[d] = porConta[d] || []).push(l); });
+    var ans = Object.keys(porConta).sort(function (a, b) { return hash(a) - hash(b); }).map(function (d) { return { conta: d, ls: porConta[d].sort(function (a, b) { return a.id < b.id ? -1 : 1; }) }; });
+    return ofs.map(function (o) { return { it: o }; }).concat(ans.map(function (a) { return { an: a }; }));
+  }
+  /* rodada k: lim banners seguidos da fila, a partir de onde a rodada anterior parou */
+  function rodadaItens(k) {
+    var c = cfgVitrine(), f = fila(), N = f.length; k = k == null ? rodada() : k; if (!N) return [];
+    var lim = Math.min(c.limite, N), ini = ((k * lim) % N + N) % N, out = [];
+    for (var i = 0; i < lim; i++) { var x = f[(ini + i) % N]; out.push(x.it || itemAnuncio(x.an.ls[Math.floor(k / Math.max(1, Math.ceil(N / lim))) % x.an.ls.length])); }
+    return out;
+  }
   function montaRodada(k) {
-    var c = cfgVitrine(), lim = Math.max(1, Math.min(10, Number(c.limite) || 10)); k = k == null ? rodada() : k;
-    var porConta = {}; bannersAtivos().forEach(function (l) { var d = donoDe(l.id) || l.donoUid || l.id; (porConta[d] = porConta[d] || []).push(l); });
-    var contas = Object.keys(porConta).sort(function (a, b) { return hash(a) - hash(b); }), N = contas.length, esc2 = [];
-    if (N) { var ini = (k * lim) % N; for (var i = 0; i < Math.min(lim, N); i++) esc2.push(contas[(ini + i) % N]); }
-    var slides = esc2.map(function (d) { var bs = porConta[d].sort(function (a, b) { return a.id < b.id ? -1 : 1; }); var l = bs[k % bs.length]; return { tipo: "anuncio", l: l }; });
-    if (slides.length < lim) {
+    var it = rodadaItens(k == null ? rodada() + 1 : k), c = cfgVitrine();
+    if (it.length < c.limite) {
       var hj = G.hojeISO(), R = window.Recursos;
       var evs = G.lugares().filter(function (l) { return (l.categoria === "evento" || l.categoria === "show") && (l.gratuito || Number(l.precoMin) === 0) && G.foto(l) && !(R && (R.encerrado(l) || l.cancelado)) && (!l.dataFim || l.dataFim >= hj); })
         .sort(function (a, b) { return (a.dataInicio || "9999") < (b.dataInicio || "9999") ? -1 : 1; });
-      if (evs.length) { var off = k % evs.length; for (var j = 0; j < evs.length && slides.length < lim; j++) slides.push({ tipo: "evento", l: evs[(off + j) % evs.length] }); }
+      for (var j = 0; j < evs.length && it.length < c.limite; j++) it.push(itemEvento(evs[(rodada() + j) % evs.length]));
     }
-    return (window.Oficiais ? Oficiais.slides() : []).concat(slides);
+    return it;
   }
   function secaoVitrine() {
     if (!on("vitrine")) return "";
     var s = montaRodada(); if (!s.length) return "";
-    return '<section class="block reveal vit-sec"><div class="vit" data-rodada="' + rodada() + '" aria-roledescription="carrossel" aria-label="Anunciantes e eventos"><div class="vit-trilho">' + s.map(function (x, i) {
-      if (x.tipo === "oficial") return Oficiais.slideHtml(x.o, i);
-      var l = x.l;
-      if (x.tipo === "anuncio") return '<a class="vit-slide" href="#lugar-' + esc(l.id) + '" aria-label="' + esc(l.nome) + ' (patrocinado)"><img src="' + esc(Store.urlFoto(l.banner.src)) + '" alt="' + esc(l.banner.texto || l.nome) + '"' + (i ? ' loading="lazy"' : "") + '><span class="vit-tag">Patrocinado</span></a>';
-      return '<a class="vit-slide ev" href="#lugar-' + esc(l.id) + '"><img src="' + esc(G.foto(l)) + '" alt=""' + (i ? ' loading="lazy"' : "") + '><span class="vit-cap"><small>Evento grátis' + (l.quando ? " · " + esc(String(l.quando).split(" (")[0]) : "") + "</small><b>" + esc(l.nome) + "</b></span></a>";
-    }).join("") + '</div><div class="vit-dots">' + s.map(function (x, i) { return '<button type="button" data-vit="' + i + '" aria-label="Banner ' + (i + 1) + '" aria-current="' + (i === 0) + '"></button>'; }).join("") + "</div></div></section>";
+    return '<section class="block reveal vit-sec"><div class="vit" data-rodada="' + rodada() + '" aria-roledescription="carrossel" aria-label="Anunciantes e eventos"><div class="vit-trilho">' + s.map(function (x, i) { return window.Oficiais ? Oficiais.bannerVit(x, i) : ""; }).join("") + '</div><div class="vit-dots">' + s.map(function (x, i) { return '<button type="button" data-vit="' + i + '" aria-label="Banner ' + (i + 1) + '" aria-current="' + (i === 0) + '"></button>'; }).join("") + "</div></div></section>";
   }
   /* avanço automático a cada 6 s e troca da rodada no horário certo */
   function vitAtual(v) { var tr = v.querySelector(".vit-trilho"); return Math.round(tr.scrollLeft / Math.max(1, tr.clientWidth)); }
@@ -214,18 +231,17 @@
 
   /* ---------- painel master: Banners e Publicações ---------- */
   function abaBanners(el) {
-    var c = cfgVitrine(), k = rodada(), agora = montaRodada(k), prox = montaRodada(k + 1), bs = bannersAtivos();
-    var semBanner = G.lugares().filter(function (l) { return l.anunciante && !(l.banner && l.banner.src); });
-    function lin(x) { if (x.tipo === "oficial") return '<div class="lrow" style="grid-template-columns:96px minmax(0,1fr);padding:8px 12px;cursor:default"><span class="th" style="width:96px;height:38px;border-radius:8px;overflow:hidden">' + (x.o.banner ? '<img src="' + esc(x.o.banner) + '" alt="" style="width:100%;height:100%;object-fit:cover">' : "") + '</span><span><b>' + esc(x.o.nome) + '</b><small>Patrocinador oficial (sempre na rodada)</small></span></div>';
-      return '<div class="lrow" style="grid-template-columns:96px minmax(0,1fr);padding:8px 12px;cursor:default"><span class="th" style="width:96px;height:38px;border-radius:8px;overflow:hidden">' + '<img src="' + esc(x.tipo === "anuncio" ? Store.urlFoto(x.l.banner.src) : G.foto(x.l)) + '" alt="" style="width:100%;height:100%;object-fit:cover"></span><span><b>' + esc(x.l.nome) + "</b><small>" + (x.tipo === "anuncio" ? "Anunciante" : "Evento grátis (completa a rodada)") + "</small></span></div>"; }
-    el.innerHTML = '<div class="stack"><div class="panel stack" style="gap:10px"><h3>Carrossel da página inicial</h3><p class="small muted">Cada anúncio pago tem 1 banner. Por rodada entram até ' + Math.min(10, c.limite) + " anunciantes, um banner de cada, sem repetir anunciante. A rodada muda a cada " + c.minutos + " minutos, igual para todos os visitantes. Se faltarem anunciantes, eventos grátis completam as vagas.</p>" +
+    var c = cfgVitrine(), k = rodada(), agora = rodadaItens(k), prox = rodadaItens(k + 1), bs = bannersAtivos(), N = fila().length;
+    var semBanner = G.lugares().filter(function (l) { return (l.anunciante || l._dono) && !fotoReal(l) && !(l.banner && l.banner.src); });
+    function lin(x) { return '<div class="lrow" style="grid-template-columns:96px minmax(0,1fr);padding:8px 12px;cursor:default"><span class="th" style="width:96px;height:38px;border-radius:8px;overflow:hidden;background:' + esc(x.cor || "#0BA84A") + '">' + (x.bg ? '<img src="' + esc(x.bg) + '" alt="" style="width:100%;height:100%;object-fit:cover">' : "") + '</span><span><b>' + esc(x.nome || x.titulo) + "</b><small>" + (x.k === "of" ? "Patrocinador oficial" : x.k === "an" ? "Anunciante" : "Evento grátis (completa a rodada)") + "</small></span></div>"; }
+    el.innerHTML = '<div class="stack"><div class="panel stack" style="gap:10px"><h3>Rodízio de banners</h3><p class="small muted">Patrocinadores oficiais e anunciantes com plano formam uma fila única (' + N + ' na fila). A cada ' + c.minutos + ' minutos entram ' + c.limite + ' banners da fila, sem repetir, e o ciclo recomeça sozinho, sem pausa. O banner principal do topo mostra a rodada atual; o carrossel, a próxima. Os banners são montados em HTML com a foto e o nome do anúncio: sem texto nem botão dentro da imagem.</p>' +
       '<div class="form2"><div class="field"><label for="vt-min">Troca a cada (minutos)</label><input id="vt-min" type="number" min="5" max="240" value="' + esc(c.minutos) + '"></div><div class="field"><label for="vt-lim">Banners por rodada (até 10)</label><input id="vt-lim" type="number" min="1" max="10" value="' + esc(c.limite) + '"></div></div><button type="button" class="btn" data-vt-salvar style="justify-self:start">Salvar carrossel</button></div>' +
       '<div class="panel stack" style="gap:8px"><h3>No ar agora (' + agora.length + ")</h3>" + (agora.length ? '<div class="list">' + agora.map(lin).join("") + "</div>" : '<p class="muted small">Nada para mostrar: nenhum banner enviado e nenhum evento grátis com foto.</p>') + "</div>" +
       '<div class="panel stack" style="gap:8px"><h3>Próxima rodada</h3>' + (prox.length ? '<div class="list">' + prox.map(lin).join("") + "</div>" : '<p class="muted small">—</p>') + "</div>" +
       '<div class="panel stack" style="gap:8px"><h3>Banners enviados (' + bs.length + ")</h3>" + (G.lugares().filter(function (l) { return l.anunciante && l.banner && l.banner.src; }).map(function (l) { return '<div class="lrow" style="grid-template-columns:96px minmax(0,1fr) auto;padding:8px 12px;cursor:default"><span class="th" style="width:96px;height:38px;border-radius:8px;overflow:hidden"><img src="' + esc(Store.urlFoto(l.banner.src)) + '" alt="" style="width:100%;height:100%;object-fit:cover"></span><span><b>' + esc(l.nome) + "</b><small>" + (l.bannerPausado ? "Pausado pela equipe" : "No rodízio") + '</small></span><button type="button" class="btn ghost sm" data-vt-pausa="' + esc(l.id) + '">' + (l.bannerPausado ? "Voltar ao rodízio" : "Pausar") + "</button></div>"; }).join("") || '<p class="muted small">Nenhum anunciante enviou banner ainda.</p>') + "</div>" +
       (semBanner.length ? '<div class="panel stack" style="gap:8px"><h3>Anúncios sem banner (' + semBanner.length + ')</h3><p class="small muted">Não entram no carrossel até o anunciante enviar o banner no painel dele.</p><p class="small">' + semBanner.map(function (l) { return esc(l.nome); }).join(" · ") + "</p></div>" : "") + "</div>";
     el.onclick = function (e) {
-      if (e.target.closest("[data-vt-salvar]")) { var cfg = Object.assign({}, Store.obter("config", "geral") || {}); cfg.vitrine = { minutos: Math.max(5, Math.min(240, Number($("#vt-min", el).value) || 30)), limite: Math.max(1, Math.min(10, Number($("#vt-lim", el).value) || 10)) }; Store.gravar("config", "geral", cfg).then(function () { G.toast("Carrossel salvo."); abaBanners(el); }); return; }
+      if (e.target.closest("[data-vt-salvar]")) { var cfg = Object.assign({}, Store.obter("config", "geral") || {}); cfg.vitrine = { minutos: Math.max(5, Math.min(240, Number($("#vt-min", el).value) || 30)), limite: Math.max(1, Math.min(10, Number($("#vt-lim", el).value) || 3)) }; Store.gravar("config", "geral", cfg).then(function () { G.toast("Carrossel salvo."); abaBanners(el); }); return; }
       var p = e.target.closest("[data-vt-pausa]"); if (p) { var l = Store.obter("lugares", p.dataset.vtPausa); if (!l) return; var d = Object.assign({}, l); d.bannerPausado = !l.bannerPausado; Store.gravar("lugares", l.id, d).then(function () { G.toast(d.bannerPausado ? "Banner pausado." : "Banner de volta ao rodízio."); setTimeout(function () { abaBanners(el); }, 300); }); }
     };
   }
@@ -243,5 +259,5 @@
 
   Store.assinar(function (col) { if (!Store.estado.pronto) return; if (col === "posts" || col === "curtidas" || col === "seguindo") { var h = location.hash; if (h === "#feed" || h.indexOf("#perfil-") === 0) rerender(); } });
   G.views.feed = viewFeed; G.views.perfil = viewPerfil;
-  window.Social = { secao: secaoVitrine, blocoLugar: blocoLugar, blocoConta: blocoConta, blocoPainel: blocoPainel, abaBanners: abaBanners, abaPosts: abaPosts, montaRodada: montaRodada, TIPOS: TIPOS };
+  window.Social = { rodadaItens: rodadaItens, rodada: rodada, secao: secaoVitrine, blocoLugar: blocoLugar, blocoConta: blocoConta, blocoPainel: blocoPainel, abaBanners: abaBanners, abaPosts: abaPosts, montaRodada: montaRodada, TIPOS: TIPOS };
 })();

@@ -51,7 +51,8 @@ html,body{background:#0c1122}
 </div>
 <script>
 (function () {
-  var esc = function () { document.documentElement.style.setProperty("--esc", Math.max(innerWidth / 1920, innerHeight / 768)); };
+  /* quadro largo: cobre todo o espaço; quadro mais estreito: encaixa pela largura (nada do texto é cortado) */
+  var esc = function () { var r = innerWidth / Math.max(1, innerHeight); document.documentElement.style.setProperty("--esc", r < 2.2 ? innerWidth / 1920 : Math.max(innerWidth / 1920, innerHeight / 768)); };
   esc(); addEventListener("resize", esc);
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var s = document.getElementById("capa");

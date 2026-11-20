@@ -73,6 +73,44 @@
       contato: ""
     }
   ];
+  /* Banners em HTML (nada de botão desenhado: o banner inteiro é o link). Foto de fundo em alta, ou um visual
+     feito em código de acordo com o que a empresa faz. */
+  var BAN = {
+    "brtvmax": { bg: "img/postais/rodeio-arena", kick: "Canal de TV · rodeio e sertanejo", titulo: "Os maiores rodeios do Brasil, ao vivo.", sub: "Rodeio, música sertaneja e vida no interior. Na parabólica digital, canal 200, e em brtvmax.com.", info: ["424 mil inscritos no YouTube", "Parabólica · canal 200"], selo: "Ao vivo" },
+    "gerson-no-trecho": { bg: "img/postais/rodeio-touro", kick: "Programa de rodeio · Gerson TC", titulo: "O rodeio do Brasil aos EUA, com Gerson TC.", sub: "Montarias, bastidores e peões brasileiros: da PBR Brasil e Barretos aos rodeios do Texas.", info: ["No canal BRTVMAX", "500+ vídeos no YouTube"] },
+    "alexandre-no-texas": { bg: "img/hero/fort-worth-stockyards", kick: "Criador de conteúdo · Dallas, TX", titulo: "A vida de brasileiro no Texas e a PBR de perto.", sub: "Toda quinta, as montarias no Stockyards de Fort Worth, ranchos e o dia a dia nos EUA.", info: ["@alexandrenotexas", "35,2 mil no YouTube"] },
+    "infobite-studio": { visual: "studio", kick: "Tecnologia, sites e conteúdo", titulo: "Sites, automações com IA e estúdio de podcast.", sub: "Atendimento no WhatsApp com IA, CRM, social media e audiovisual. Landing page a partir de R$ 600.", info: ["Diagnóstico em 1 dia útil", "Em até 12x"] },
+    "infobite-card": { visual: "cartao", kick: "Cartão de visita digital", titulo: "Seu cartão de visita em um toque.", sub: "WhatsApp, agenda, rotas e redes num link só, com QR Code e cartão NFC.", info: ["R$ 19,90 por mês", "130+ profissões"] },
+    "qr-dog": { visual: "qrdog", kick: "Medalha com QR Code para pets", titulo: "Seu pet perdido volta para casa com um scan.", sub: "Medalha com QR Code na coleira: sem app e sem bateria. Pagamento único de R$ 39,90.", info: ["130+ raças", "R$ 39,90 pagamento único"] }
+  };
+  var CRED = window.CREDITOS_FOTOS || {};
+  function credDe(bg) { var k = String(bg || "").split("/").pop(); var c = CRED[k]; return c ? "Foto: " + c.autor + " · " + c.licenca : ""; }
+  /* foto de fundo só se o cartão-postal já estiver no site; senão, o logo grande na cor da marca */
+  function temFoto(bg) { if (!bg) return false; if (bg.indexOf("img/postais/") < 0) return true; return (window.POSTAIS || []).indexOf(bg.split("/").pop()) >= 0; }
+  function item(o) { var b = BAN[o.id] || {}, f = temFoto(b.bg); return { k: "of", id: o.id, href: "#oficial-" + o.id, bg: f ? b.bg + ".jpg" : "", bgM: f ? b.bg + "-m.jpg" : "", visual: b.visual || (f ? "" : "logo"), cor: o.cor, logo: o.avatar, nome: o.nome, kick: b.kick || o.tipo, titulo: b.titulo || o.resumo, sub: b.sub || "", info: b.info || [], selo: b.selo || "", tag: "Patrocinador oficial", cred: f ? credDe(b.bg) : "" }; }
+  var QR_SVG = '<svg viewBox="0 0 21 21" aria-hidden="true">' + (function () { var m = "111111101011101111111100000101100101000001101110100011101011101101110101110001011101101110101001101011101100000101010101000001111111101010101111111000000000110100000000101101110011101001101100100100110110101010101111001011101001011011110010000000000101001100100101111111100110101100101100000101110101100100101110100001111111001101110101001010100010101101110100110111011010100000101101011100110111111110101111010110100"; var o = ""; for (var y = 0; y < 21; y++) for (var x = 0; x < 21; x++) if (m.charAt(y * 21 + x) === "1") o += '<rect x="' + x + '" y="' + y + '" width="1" height="1"/>'; return o; })() + "</svg>";
+  /* visuais feitos em código (não são botões: só ilustração) */
+  function visual(v, it) {
+    if (v === "logo" && it && it.logo) return '<span class="bv bv-logo" aria-hidden="true"><i></i><i></i><img src="' + esc(it.logo) + '" alt=""></span>';
+    if (v === "cartao") return '<span class="bv bv-card" aria-hidden="true"><span class="bv-ct"><i class="bv-av"></i><span><b>Ana Souza</b><small>Corretora de imóveis</small></span></span><span class="bv-cq">' + QR_SVG + '</span><span class="bv-nfc"><svg viewBox="0 0 24 24"><path d="M6 8.5a5 5 0 0 1 0 7M9.5 6a8.5 8.5 0 0 1 0 12M13 3.5a12 12 0 0 1 0 17"/></svg>NFC</span><span class="bv-ic"><i></i><i></i><i></i><i></i></span></span>';
+    if (v === "studio") return '<span class="bv bv-std" aria-hidden="true"><span class="bv-win"><span class="bv-dots"><i></i><i></i><i></i></span><code><b>const</b> atendimento = <em>IA</em>();<br><b>await</b> whatsapp.<em>responder</em>(cliente);<br><b>site</b>.publicar(<em>"no ar"</em>);</code></span><span class="bv-mic"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg></span><span class="bv-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>';
+    return "";
+  }
+  /* banner do carrossel (mesmo formato para patrocinador, anunciante e evento) */
+  function bannerVit(it, i) {
+    var lz = i ? ' loading="lazy"' : "", bg = it.visual === "qrdog" ? qrdogFrame() : it.bg ? '<img class="bn2-bg" src="' + esc(it.bg) + '"' + (it.bgM ? ' srcset="' + esc(it.bgM) + " 1280w, " + esc(it.bg) + ' 2560w" sizes="(max-width: 860px) 100vw, 1200px"' : "") + ' alt=""' + lz + ' decoding="async">' : "";
+    return '<a class="vit-slide bn2 bn2-' + (it.visual || "foto") + ' bn2-' + it.k + '" href="' + esc(it.href) + '" style="--c:' + esc(it.cor || "#0BA84A") + '" aria-label="' + esc(it.nome || it.titulo) + (it.tag ? " (" + esc(it.tag.toLowerCase()) + ")" : "") + '">' + bg + visual(it.visual, it) +
+      (it.visual === "qrdog" ? "" : '<span class="bn2-tx"><span class="bn2-k">' + (it.logo ? '<img src="' + esc(it.logo) + '" alt=""' + lz + ">" : "") + esc(it.kick) + "</span><b class=\"bn2-t\">" + esc(it.titulo) + "</b>" + (it.sub ? '<span class="bn2-s">' + esc(it.sub) + "</span>" : "") +
+        (it.info && it.info.length || it.selo ? '<span class="bn2-i">' + (it.selo ? '<em class="bn2-live"><i></i>' + esc(it.selo) + "</em>" : "") + esc((it.info || []).filter(Boolean).join(" · ")) + "</span>" : "") + "</span>") +
+      (it.tag ? '<span class="bn2-tag">' + esc(it.tag) + "</span>" : "") + (it.cred ? '<span class="bn2-cr">' + esc(it.cred) + "</span>" : "") + "</a>";
+  }
+  /* slide do banner principal (mesmo formato dos slides com título) */
+  function slideHero(it, i) {
+    var lz = i ? ' loading="lazy"' : "";
+    var fundo = it.visual === "qrdog" ? '<span class="bnh bnh-qd">' + qrdogFrame() + "</span>" : it.bg ? '<img src="' + esc(it.bg) + '"' + (it.bgM ? ' srcset="' + esc(it.bgM) + " 1280w, " + esc(it.bg) + ' 2560w" sizes="100vw"' : "") + ' alt="" decoding="async"' + lz + ">" : '<span class="bnh bnh-' + esc(it.visual) + '" style="--c:' + esc(it.cor) + '">' + visual(it.visual, it) + "</span>";
+    return fundo + '<div class="cap' + (it.visual === "qrdog" ? " cap-qd" : "") + '"><div class="wrap"><span class="kick bn-kick">' + (it.logo ? '<img src="' + esc(it.logo) + '" alt="">' : "") + esc(it.tag ? it.tag + " · " + it.nome : it.kick) + '</span><div class="h1">' + esc(it.titulo) + '</div><p class="hsub">' + esc(it.sub) + "</p>" +
+      (it.info && it.info.length || it.selo ? '<p class="bn-info">' + (it.selo ? '<em class="bn2-live"><i></i>' + esc(it.selo) + "</em>" : "") + esc(it.info.join(" · ")) + "</p>" : "") + "</div></div>" + (it.cred ? '<span class="bn-cred">' + esc(it.cred) + "</span>" : "");
+  }
   function ig(o) { var l = o.links.filter(function (x) { return /instagram\.com/.test(x[1]); })[0]; return l ? l[1].replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/.*$/, "") : ""; }
   var ORDEM = ["qr-dog", "brtvmax", "infobite-card", "alexandre-no-texas", "infobite-studio", "gerson-no-trecho"];
   LISTA.sort(function (a, b) { return ORDEM.indexOf(a.id) - ORDEM.indexOf(b.id); });
@@ -81,6 +119,7 @@
 
   /* slides do carrossel: os oficiais entram sempre, antes dos anunciantes da rodada */
   function slides() { return ativos().map(function (o) { return { tipo: "oficial", o: o }; }); }
+  function qrdogFrame() { return '<iframe class="qda-f" src="img/patrocinadores/qrdog-apresentacao/index.html" title="QR-DOG: a medalha que leva seu pet de volta para casa" tabindex="-1" aria-hidden="true" scrolling="no" loading="lazy"></iframe>'; }
   /* banner do QR-DOG: a capa da apresentação oficial (qrdogdados.com.br/apresentacao), animada em HTML num quadro 5:2 */
   function qrdogAnim(tag, extra) {
     return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: a medalha que leva seu pet de volta para casa">' +
@@ -114,7 +153,7 @@
     if (!o) { location.hash = "inicio"; return; }
     G.app.innerHTML = '<section class="block ofp" style="--ofc:' + o.cor + '"><div class="wrap">' +
       '<a class="more" href="#inicio">← início</a>' +
-      (o.id === "qr-dog" ? '<div class="ofp-ban">' + qrdogAnim("div") + "</div>" : '<div class="ofp-ban"><img src="' + esc(o.banner) + '" alt="' + esc(o.nome) + '"></div>') +
+      (o.id === "qr-dog" ? '<div class="ofp-ban">' + qrdogAnim("div") + "</div>" : '<div class="ofp-ban vit">' + bannerVit(Object.assign(item(o), { href: "#oficial-" + o.id }), 0) + "</div>") +
       '<div class="ofp-grid"><div class="ofp-main">' +
       '<div class="ofp-h"><span class="ofc-av big"><img src="' + esc(o.avatar) + '" alt=""></span><div><p class="eyebrow">Patrocinador oficial · ' + esc(o.tipo) + "</p><h1 class=\"page-h\">" + esc(o.nome) + "</h1></div></div>" +
       '<p class="ofp-txt">' + esc(o.texto) + "</p>" +
@@ -131,5 +170,5 @@
     el.innerHTML = '<span class="f-ofc-t">Patrocinadores oficiais</span>' + ativos().map(function (o) { return '<a href="#oficial-' + esc(o.id) + '"><img src="' + esc(o.avatar) + '" alt="" loading="lazy">' + esc(o.nome) + "</a>"; }).join("");
   }
   G.views.oficial = view;
-  window.Oficiais = { lista: ativos, slides: slides, slideHtml: slideHtml, heroSlide: heroSlide, secao: secao, rodape: rodape };
+  window.Oficiais = { lista: ativos, slides: slides, slideHtml: slideHtml, heroSlide: heroSlide, secao: secao, rodape: rodape, item: item, bannerVit: bannerVit, slideHero: slideHero };
 })();

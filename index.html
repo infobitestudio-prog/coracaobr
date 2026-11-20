@@ -2088,6 +2088,67 @@ body.home .top .nav .nav-dd a:hover, body.home .top .nav .nav-dd a[aria-current=
 @media (min-width: 860px) and (max-width: 1000px) { .top .nav > a, .nav-gt { padding: 8px 8px; font-size: .86rem } }
 
 @media (min-width: 860px) and (max-width: 959px) { .top .brand > span { display: none } }
+
+/* ===== banners em HTML (patrocinadores, anunciantes e eventos): mesmo formato, sem botões na imagem ===== */
+.vit-slide.bn2 { overflow: hidden; color: #fff; background: #0B0F0D; text-decoration: none; isolation: isolate }
+@media (max-width: 699px) { .vit-slide { aspect-ratio: 2 / 1 } }
+.bn2 > .bn2-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2 }
+.bn2::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(4,10,7,.86) 0%, rgba(4,10,7,.62) 42%, rgba(4,10,7,.12) 78%), linear-gradient(0deg, rgba(4,10,7,.55), transparent 55%) }
+.bn2-cartao, .bn2-studio { background: radial-gradient(120% 140% at 85% 30%, color-mix(in srgb, var(--c) 70%, #fff 0%) 0%, color-mix(in srgb, var(--c) 45%, #08100c) 45%, #08100c 100%) }
+.bn2-cartao::before, .bn2-studio::before { background: linear-gradient(90deg, rgba(4,10,7,.75) 0%, rgba(4,10,7,.35) 50%, transparent 75%) }
+.bn2-qrdog { background: #0c1122 } .bn2-qrdog::before { display: none } .bn2-qrdog .qda-f { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none }
+.bn2-tx { position: absolute; left: 5%; right: 42%; bottom: 11%; display: grid; gap: 6px; z-index: 2 }
+.bn2-k { display: inline-flex; align-items: center; gap: 8px; font: 700 .7rem/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #FFC20E }
+.bn2-k img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.85); flex: none }
+.bn2-t { font: 700 clamp(1.15rem, 3.1vw, 2.45rem)/1.04 "Outfit", var(--body); letter-spacing: -.02em; text-wrap: balance; text-shadow: 0 2px 18px rgba(0,0,0,.4) }
+.bn2-s { font-size: clamp(.8rem, 1.25vw, 1.02rem); line-height: 1.4; color: rgba(255,255,255,.88); max-width: 52ch }
+.bn2-i { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font: 600 .8rem/1.3 var(--body); color: rgba(255,255,255,.8) }
+.bn2-live { display: inline-flex; align-items: center; gap: 6px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .72rem; color: #fff } .bn2-live i { width: 9px; height: 9px; border-radius: 50%; background: #FF3B30; box-shadow: 0 0 0 0 rgba(255,59,48,.6); animation: bnLive 1.6s infinite }
+@keyframes bnLive { 70% { box-shadow: 0 0 0 9px rgba(255,59,48,0) } }
+.bn2-tag { position: absolute; top: 12px; right: 12px; z-index: 3; font: 700 .62rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.92); background: rgba(0,0,0,.38); border: 1px solid rgba(255,255,255,.22); padding: 5px 9px; border-radius: 99px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); pointer-events: none }
+.bn2-cr, .bn-cred { position: absolute; right: 10px; bottom: 6px; z-index: 3; font: 500 .58rem/1 var(--body); color: rgba(255,255,255,.55); pointer-events: none; max-width: 60%; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+@media (max-width: 699px) { .bn2-tx { right: 30%; bottom: 10%; gap: 4px } .bn2-s { display: none } .bn2-k { font-size: .6rem } .bn2-k img { width: 22px; height: 22px } .bn2-i { font-size: .7rem } .bn2-tag { top: 8px; right: 8px; font-size: .55rem; padding: 4px 7px } }
+/* visuais feitos em código */
+.bv { position: absolute; z-index: 1; pointer-events: none }
+.bv-card { right: 6%; top: 50%; transform: translateY(-50%) rotate(-6deg); width: min(34%, 360px); aspect-ratio: 1.6; border-radius: 18px; padding: 5%; background: linear-gradient(150deg, #fff, #F3F4F2); color: #141716; box-shadow: 0 30px 60px -20px rgba(0,0,0,.6); display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; gap: 6% 8% }
+.bv-ct { display: flex; gap: 8px; align-items: center; grid-column: 1 / -1 } .bv-av { width: 2.4em; height: 2.4em; border-radius: 50%; background: linear-gradient(135deg, #FF5A1F, #FFB347); flex: none } .bv-ct b { display: block; font: 700 clamp(.6rem, 1.2vw, 1rem) "Outfit", var(--body) } .bv-ct small { display: block; font-size: clamp(.5rem, .9vw, .75rem); color: #6B716E }
+.bv-cq { grid-column: 2; grid-row: 2 / 4; align-self: end; width: clamp(40px, 7vw, 92px) } .bv-cq svg { width: 100%; height: auto; display: block; fill: #141716 }
+.bv-nfc { grid-column: 1; grid-row: 2; display: inline-flex; align-items: center; gap: 4px; font: 800 clamp(.5rem, .9vw, .78rem) var(--mono); color: #FF5A1F } .bv-nfc svg { width: 1.6em; height: 1.6em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round }
+.bv-ic { grid-column: 1; grid-row: 3; display: flex; gap: 6px } .bv-ic i { width: clamp(12px, 2vw, 24px); aspect-ratio: 1; border-radius: 50%; background: #E8EAE9 } .bv-ic i:first-child { background: #25D366 }
+.bv-std { right: 5%; top: 50%; transform: translateY(-50%); width: min(40%, 420px); display: grid; gap: 10px; justify-items: end }
+.bv-win { width: 100%; border-radius: 14px; background: rgba(10,14,12,.86); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 30px 60px -24px rgba(0,0,0,.7); padding: 10px 14px 14px; text-align: left }
+.bv-dots { display: flex; gap: 5px; margin-bottom: 8px } .bv-dots i { width: 8px; height: 8px; border-radius: 50%; background: #FF5F57 } .bv-dots i:nth-child(2) { background: #FEBC2E } .bv-dots i:nth-child(3) { background: #28C840 }
+.bv-win code { display: block; font: 500 clamp(.5rem, 1vw, .82rem)/1.65 var(--mono); color: #D7E3DC; white-space: nowrap; overflow: hidden } .bv-win b { color: #FF9F5A; font-weight: 600 } .bv-win em { color: #7EE2A8; font-style: normal }
+.bv-mic { position: absolute; left: -8%; bottom: -14%; width: clamp(40px, 6vw, 74px); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--c); color: #fff; box-shadow: 0 16px 30px -12px rgba(0,0,0,.7) } .bv-mic svg { width: 55%; height: 55%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round }
+.bv-wave { display: flex; gap: 4px; align-items: center; height: 26px } .bv-wave i { width: 4px; border-radius: 4px; background: rgba(255,255,255,.75); animation: bvOnda 1.1s ease-in-out infinite } .bv-wave i:nth-child(odd) { animation-delay: .25s } .bv-wave i:nth-child(3n) { animation-delay: .5s }
+@keyframes bvOnda { 0%, 100% { height: 6px } 50% { height: 24px } }
+@media (max-width: 699px) { .bv-card { width: 38%; right: 4% } .bv-std { width: 40%; right: 3% } .bv-wave, .bv-mic { display: none } }
+/* banner principal: patrocinadores e anunciantes no mesmo formato dos slides com título */
+.ph .slide.bnr { background: #0B0F0D }
+.ph .slide.bnr > img { filter: brightness(.82) }
+.ph .bnh { position: absolute; inset: 0; z-index: 0 }
+.ph .bnh-cartao, .ph .bnh-studio { background: radial-gradient(90% 120% at 82% 28%, color-mix(in srgb, var(--c) 72%, #fff 0%) 0%, color-mix(in srgb, var(--c) 40%, #08100c) 40%, #08100c 85%) }
+.ph .bnh .bv-card { right: 8%; top: 38%; width: min(30%, 420px) } .ph .bnh .bv-std { right: 7%; top: 38%; width: min(34%, 480px) }
+.ph .bnh-qd { background: #0c1122 } .ph .bnh-qd .qda-f { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none }
+.ph .slide.bnr-qrdog::before { display: none } .ph .slide.bnr-qrdog .cap-qd { display: none }
+@media (min-width: 860px) { .ph .bnh-qd { bottom: 150px } }
+@media (max-width: 859px) { .ph .bnh-qd { top: 72px; bottom: auto; height: 40vw } .ph .slide.bnr-qrdog .cap-qd { display: block } .ph .bnh .bv-card, .ph .bnh .bv-std { top: 30%; width: 52%; right: 50%; transform: translate(50%, -50%) rotate(-5deg) } .ph .bnh .bv-std { transform: translate(50%, -50%) } }
+.ph .bn-kick { display: inline-flex !important; align-items: center; gap: 8px } .ph .bn-kick img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.85); margin-left: -4px }
+.ph .bn-info { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 12px 0 0; font: 600 .9rem/1.3 var(--body); color: rgba(255,255,255,.85) }
+.ph .bn-cred { right: 14px; bottom: 6px }
+@media (max-width: 559px) { .ph .bn-info { font-size: .78rem; margin-top: 8px } }
+
+.bn2-logo { background: radial-gradient(110% 140% at 82% 40%, color-mix(in srgb, var(--c) 80%, #fff 0%) 0%, color-mix(in srgb, var(--c) 42%, #08100c) 42%, #08100c 92%) } .bn2-logo::before { background: linear-gradient(90deg, rgba(4,10,7,.7) 0%, rgba(4,10,7,.3) 50%, transparent 72%) }
+.ph .bnh-logo { background: radial-gradient(90% 120% at 80% 32%, color-mix(in srgb, var(--c) 80%, #fff 0%) 0%, color-mix(in srgb, var(--c) 40%, #08100c) 40%, #08100c 88%) }
+.bv-logo { right: 9%; top: 50%; transform: translateY(-50%); width: min(26%, 300px); aspect-ratio: 1; display: grid; place-items: center }
+.bv-logo img { width: 72%; height: 72%; border-radius: 50%; object-fit: cover; border: 5px solid rgba(255,255,255,.9); box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); position: relative; z-index: 1 }
+.bv-logo i { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); animation: bvAnel 3s ease-out infinite } .bv-logo i + i { animation-delay: 1.5s }
+@keyframes bvAnel { 0% { transform: scale(.75); opacity: .9 } 100% { transform: scale(1.25); opacity: 0 } }
+.ph .bnh .bv-logo { right: 10%; top: 40%; width: min(24%, 340px) }
+@media (max-width: 859px) { .ph .bnh .bv-logo { top: 28%; right: 50%; transform: translate(50%, -50%); width: 46% } }
+@media (max-width: 699px) { .bv-logo { width: 30%; right: 5% } }
+
+@media (max-width: 699px) { .bn2-studio .bn2-tx, .bn2-cartao .bn2-tx, .bn2-logo .bn2-tx { right: 44% } .bv-std { width: 38%; right: 3% } .bv-win { padding: 7px 8px 9px } .bv-win code { font-size: .42rem } .bv-dots { margin-bottom: 5px } .bv-dots i { width: 6px; height: 6px } }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -2255,6 +2316,7 @@ body.home .top .nav .nav-dd a:hover, body.home .top .nav .nav-dd a[aria-current=
 
 <script src="js/store.js"></script>
 <script src="js/horario.js"></script>
+<script src="js/postais.js"></script>
 <script src="js/app.js"></script>
 <script src="js/cardapio.js"></script>
 <script src="js/pix.js"></script>

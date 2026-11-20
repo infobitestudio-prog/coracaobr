@@ -1,0 +1,3 @@
+/* Gerado por tools/postais.py: cartões-postais disponíveis e o crédito de cada foto (licenças livres). */
+window.POSTAIS = ["dallas-noite", "houston-bayou"];
+window.CREDITOS_FOTOS = {"dallas-noite.jpg": {"autor": "Gattacal", "licenca": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/w/index.php?curid=63756792"}, "houston-bayou.jpg": {"autor": "Michael Barera", "licenca": "CC BY-SA 4.0", "pagina": "https://commons.wikimedia.org/wiki/File:Houston_May_2022_13_(Buffalo_Bayou_Park_and_skyline).jpg"}, "fort-worth-stockyards.jpg": {"autor": "Wikimedia Commons", "licenca": "licença livre", "pagina": ""}};
