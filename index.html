@@ -2056,6 +2056,14 @@ html.obg-on, html.obg-on body { overflow: hidden }
 .ia-aviso svg { width: 22px; height: 22px; flex: none; color: #FFC20E }
 .ia-aviso-pg { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; border-radius: 16px; background: #FFF4CC; color: #6B4A00; font-weight: 700; width: 100%; box-sizing: border-box }
 :root[data-theme="dark"] .ia-aviso-pg { background: rgba(255,194,14,.14); color: #FFE08A }
+
+.pm-mp { gap: 12px; border-color: rgba(178,106,0,.4); background: linear-gradient(135deg, #FFF6E0, var(--k-card)) }
+.pm-mp.ok { border-color: rgba(11,168,74,.35); background: linear-gradient(135deg, #E3F6EA, var(--k-card)) }
+.pm-mp-t { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start } .pm-mp-t > svg.i { position: static; width: 42px; height: 42px; padding: 10px; border-radius: 13px; background: #1E9C8F; color: #fff }
+.pm-mp.ok .pm-mp-t > svg.i { background: #0BA84A } .pm-mp-t b { display: block; font-size: 1rem } .pm-mp-t small { display: block; color: var(--k-mut); font-size: .86rem; line-height: 1.45; margin-top: 2px; padding-right: 0 } .pm-mp-t small b { display: inline; font-size: inherit; color: var(--k-ink) }
+.pm-mp-f { display: flex; flex-wrap: wrap; gap: 8px } .pm-mp-f input { flex: 1 1 240px; min-width: 0; padding: 11px 14px; border-radius: 14px; border: 1px solid var(--k-line); background: var(--k-card); color: var(--k-ink); font: inherit }
+.pm-mp-m { margin: 0; color: #B42318 } .pm-mp-m:empty { display: none } .pm-mp .more { justify-self: start; background: none; border: 0; padding: 0; cursor: pointer }
+:root[data-theme="dark"] .pm-mp { background: linear-gradient(135deg, rgba(178,106,0,.16), var(--k-card)) } :root[data-theme="dark"] .pm-mp.ok { background: linear-gradient(135deg, rgba(11,168,74,.16), var(--k-card)) }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -2221,35 +2229,35 @@ html.obg-on, html.obg-on body { overflow: hidden }
 <dialog id="dlg"></dialog>
 <div id="toast" class="toast" hidden role="status"></div>
 
-<script src="js/store.js?v=202611201631"></script>
-<script src="js/horario.js?v=202611201631"></script>
-<script src="js/app.js?v=202611201631"></script>
-<script src="js/cardapio.js?v=202611201631"></script>
-<script src="js/pix.js?v=202611201631"></script>
-<script src="js/pagamento.js?v=202611201631"></script>
-<script src="js/promo.js?v=202611201631"></script>
-<script src="js/oficiais.js?v=202611201631"></script>
-<script src="js/metro.js?v=202611201631"></script>
+<script src="js/store.js?v=202611201640"></script>
+<script src="js/horario.js?v=202611201640"></script>
+<script src="js/app.js?v=202611201640"></script>
+<script src="js/cardapio.js?v=202611201640"></script>
+<script src="js/pix.js?v=202611201640"></script>
+<script src="js/pagamento.js?v=202611201640"></script>
+<script src="js/promo.js?v=202611201640"></script>
+<script src="js/oficiais.js?v=202611201640"></script>
+<script src="js/metro.js?v=202611201640"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="js/anunciante.js?v=202611201631"></script>
-<script src="js/extras.js?v=202611201631"></script>
-<script src="js/checklist.js?v=202611201631"></script>
-<script src="js/diferenciais.js?v=202611201631"></script>
-<script src="js/galeria.js?v=202611201631"></script>
-<script src="js/dash.js?v=202611201631"></script>
-<script src="js/usuario.js?v=202611201631"></script>
-<script src="js/custo.js?v=202611201631"></script>
-<script src="js/comunidade.js?v=202611201631"></script>
-<script src="js/novidades.js?v=202611201631"></script>
-<script src="js/jornada.js?v=202611201631"></script>
-<script src="js/paginas.js?v=202611201631"></script>
-<script src="js/efeitos.js?v=202611201631"></script>
+<script src="js/anunciante.js?v=202611201640"></script>
+<script src="js/extras.js?v=202611201640"></script>
+<script src="js/checklist.js?v=202611201640"></script>
+<script src="js/diferenciais.js?v=202611201640"></script>
+<script src="js/galeria.js?v=202611201640"></script>
+<script src="js/dash.js?v=202611201640"></script>
+<script src="js/usuario.js?v=202611201640"></script>
+<script src="js/custo.js?v=202611201640"></script>
+<script src="js/comunidade.js?v=202611201640"></script>
+<script src="js/novidades.js?v=202611201640"></script>
+<script src="js/jornada.js?v=202611201640"></script>
+<script src="js/paginas.js?v=202611201640"></script>
+<script src="js/efeitos.js?v=202611201640"></script>
 <script src="vendor/leaflet.js"></script>
-<script src="js/recursos.js?v=202611201631"></script>
-<script src="js/mapa.js?v=202611201631"></script>
-<script src="js/social.js?v=202611201631"></script>
-<script src="js/idiomas.js?v=202611201631"></script>
-<script src="js/painel.js?v=202611201631"></script>
-<script src="js/painel-recursos.js?v=202611201631"></script>
-<script src="js/auth.js?v=202611201631"></script>
+<script src="js/recursos.js?v=202611201640"></script>
+<script src="js/mapa.js?v=202611201640"></script>
+<script src="js/social.js?v=202611201640"></script>
+<script src="js/idiomas.js?v=202611201640"></script>
+<script src="js/painel.js?v=202611201640"></script>
+<script src="js/painel-recursos.js?v=202611201640"></script>
+<script src="js/auth.js?v=202611201640"></script>
 </body></html>

@@ -150,7 +150,12 @@
     var abertas = pend.filter(function (r) { return r[0] > 0; });
     var REG = window.Guia.CIDADES_GUIA || {}, porReg = {};
     ls.forEach(function (l) { var r = G.regiaoGuia ? G.regiaoGuia(l) : "dfw"; porReg[r] = (porReg[r] || 0) + 1; });
-    el.innerHTML = '<div class="pm-res">' +
+    var srvOn = Store.servidor && Store.servidor(), auto = !!(Store.estado.sessao && Store.estado.sessao.pixAuto);
+    var cardMp = srvOn && !auto ? '<form class="dk-card pm-mp" data-pm-mp><div class="pm-mp-t">' + D("pix") + '<div><b>Pix automático desligado</b><small>Hoje cada pagamento espera a equipe confirmar. Cole o <b>Access Token</b> da conta Mercado Pago do coracaobr.oficial@gmail.com: o Pix passa a ser confirmado sozinho e o anúncio é liberado na hora.</small></div></div>' +
+      '<div class="pm-mp-f"><label class="sr" for="pm-mp-tk">Access Token do Mercado Pago</label><input id="pm-mp-tk" name="token" type="password" autocomplete="off" placeholder="APP_USR-..." required><button class="btn" type="submit">Ligar Pix automático</button></div>' +
+      '<button type="button" class="more" data-dk-ir="pagamentos">Como pegar o Access Token</button><p class="pm-mp-m small" role="status"></p></form>'
+      : srvOn ? '<div class="dk-card pm-mp ok"><div class="pm-mp-t">' + D("check") + '<div><b>Pix automático ligado</b><small>Pagamentos confirmados pelo Mercado Pago liberam os anúncios na hora, sem a equipe.</small></div></div></div>' : "";
+    el.innerHTML = '<div class="pm-res">' + cardMp +
       '<div class="dk-card dk-dark pm-hero"><div><small>Receita do mês</small><b class="dk-big">' + G.reais(receitaMes) + "</b><p>" + vendas + (vendas === 1 ? " pacote vendido" : " pacotes vendidos") + " · " + ativos + (ativos === 1 ? " anunciante ativo" : " anunciantes ativos") + '</p></div><div class="ad-pl-a"><button type="button" class="btn" data-dk-ir="pagamentos">' + (pix ? "Confirmar " + pix + " Pix" : "Pagamentos") + '</button><button type="button" class="btn ghost" data-dk-ir="receita">Ver receita</button></div></div>' +
       '<div class="dk-grid dk-g4">' + (Store.servidor && Store.servidor() ? card("…", "Contas", "users", "usuarios") : card(ls.length, "Lugares no guia", "pin", "lugares")) + card(ativos, "Anunciantes ativos", "store", "anunciantes") + card(pix, "Pix a confirmar", "pix", "pagamentos") + card(av.length, "Avaliações", "star", "avaliacoes") + "</div>" +
       '<div class="dk-grid dk-g2"><div class="dk-card dk-flat"><div class="dk-ch"><h3>Pendências</h3><span class="pill ' + (abertas.length ? "warn" : "ok") + '">' + (abertas.length ? abertas.length + " para resolver" : "tudo em dia") + "</span></div>" +
@@ -159,6 +164,13 @@
       '<p class="small muted" style="margin:10px 0 0">' + atr.length + " atrações (" + atr.filter(function (l) { return l.gratuito; }).length + " grátis) · " + (ls.length - atr.length) + " estabelecimentos</p></div></div>" +
       '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Acesso rápido</h3></div><div class="dk-ats dk-ats4">' +
       [["usuarios", "Abrir uma conta", "área de qualquer pessoa", "users"], ["financas", "Valores e Pix", "preços e chave Pix", "money"], ["aparencia", "Aparência", "cores e banner do topo", "image"], ["novidades", "Assistente e push", "IA e notificações", "spark"]].filter(function (a) { return a[0] !== "usuarios" || (Store.servidor && Store.servidor()); }).map(function (a) { return '<button type="button" class="dk-at" data-dk-ir="' + a[0] + '">' + D(a[3]) + "<b>" + a[1] + "</b><small>" + a[2] + "</small></button>"; }).join("") + "</div></div></div>";
+    var fm = el.querySelector("[data-pm-mp]");
+    if (fm) fm.onsubmit = function (ev) {
+      ev.preventDefault(); var t = fm.token.value.trim(), m = fm.querySelector(".pm-mp-m"), b = fm.querySelector("button[type=submit]"); if (!t) return;
+      b.disabled = true; b.textContent = "Conferindo no Mercado Pago…"; m.textContent = "";
+      Store.api("pix_token", { token: t }).then(function (j) { if (Store.estado.sessao) Store.estado.sessao.pixAuto = true; G.toast(j.msg); abaResumo(el); })
+        .catch(function (er) { b.disabled = false; b.textContent = "Ligar Pix automático"; m.textContent = er.message || "Não foi possível ligar agora."; });
+    };
     if (Store.servidor && Store.servidor()) Store.api("usuarios").then(function (j) { var b = el.querySelector("[data-pm-contas]"); if (b) b.textContent = (j.usuarios || []).length; }).catch(function () { var b = el.querySelector("[data-pm-contas]"); if (b) b.textContent = "—"; });
   }
 
