@@ -47,6 +47,9 @@ shutil.copy(ROOT / "INSTALAR.txt", OUT / "INSTALAR.txt")
 (OUT / "vendor").mkdir()
 for f in ("leaflet.js", "leaflet.css"):
     shutil.copy(ROOT / "vendor" / f, OUT / "vendor" / f)
+import sys as _sys
+if "--zip" not in _sys.argv:
+    print(OUT, "(sem zip; use --zip para gerar o pacote)"); raise SystemExit(0)
 z = ROOT / "dist" / "coracaobr.zip"
 with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zz:
     for f in OUT.rglob("*"):

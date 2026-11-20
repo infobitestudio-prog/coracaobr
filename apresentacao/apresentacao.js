@@ -34,7 +34,7 @@
         { s: T.inicio, intro: 'front', dur: 7200,
           t: 'Tudo em português, na palma da mão.',
           p: 'Lugares com fotos de licença livre e crédito, eventos, serviços e comunidade. Funciona como app no celular, pode ser instalado e tem tema claro e escuro.',
-          facts: [['600+', 'lugares no guia'], ['4', 'cidades: DFW, Austin, San Antonio e Houston chegando'], ['3', 'idiomas: português, inglês e espanhol']] }
+          facts: [['700+', 'lugares no guia'], ['4', 'cidades: Dallas–Fort Worth, Houston, Austin e San Antonio'], ['3', 'idiomas: português, inglês e espanhol']] }
       ]
     },
     {
@@ -54,7 +54,7 @@
       steps: [
         { s: T.cidade, tr: 'sheet', tap: [86, 4.2], dur: 7000, zoom: [50, 80, 1.32],
           t: 'Na primeira visita, a pessoa escolhe a cidade.',
-          p: 'Dallas–Fort Worth, Austin e San Antonio, cada uma com seus lugares; Houston aparece como “em breve”. A escolha fica lembrada e pode ser trocada no topo a qualquer momento.' },
+          p: 'Dallas–Fort Worth, Houston, Austin e San Antonio, cada uma com seus lugares, eventos e igrejas. A escolha fica lembrada e pode ser trocada no topo a qualquer momento.' },
         { s: T.inicio, tr: 'fade', tap: [50, 61.8], dur: 6600, zoom: [30, 60, 1.43],
           t: 'Ou deixa o guia descobrir onde ela está.',
           p: 'Com “Usar minha localização”, a tela inicial já abre na região certa e mostra primeiro os lugares mais perto de você.' }

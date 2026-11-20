@@ -1762,6 +1762,9 @@ html:not([data-cidade="dfw"]) a[href="#metro"]{display:none!important}
 .lrow .n{min-width:0}.lrow .n b{overflow-wrap:anywhere}.lrow .n small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 body:has(.popup.on) .toast{bottom:calc(var(--tab) + 150px + env(safe-area-inset-bottom,0px))}
+
+@media (max-width:959px){.ae-bar{bottom:calc(var(--tab) - 6px + env(safe-area-inset-bottom,0px))}}
+.dk-card>small{display:block;padding-right:30px}
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
