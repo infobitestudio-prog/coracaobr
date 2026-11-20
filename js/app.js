@@ -974,6 +974,15 @@
     if (rota() === "explorar") { pintada = null; render(false); }
   });
   window.addEventListener("hashchange", function () { render(false); });
+  /* menu do topo em sanfona: o título abre as opções (o mouse por cima também abre, pelo CSS) */
+  function fechaNav(exceto) { Array.from(document.querySelectorAll(".nav-g.on")).forEach(function (g) { if (g !== exceto) { g.classList.remove("on"); g.querySelector(".nav-gt").setAttribute("aria-expanded", "false"); } }); }
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest(".nav-gt");
+    if (t) { var g = t.parentNode, abre = !g.classList.contains("on"); fechaNav(g); g.classList.toggle("on", abre); t.setAttribute("aria-expanded", String(abre)); return; }
+    if (!e.target.closest(".nav-dd") || e.target.closest("a")) fechaNav();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") fechaNav(); });
+  window.addEventListener("hashchange", function () { fechaNav(); });
   window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
