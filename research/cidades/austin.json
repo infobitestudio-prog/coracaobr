@@ -30,16 +30,11 @@
   "menu": [],
   "fotos": [
    {
-    "src": "fotos_cidades/austin/aus-fogo-de-chao-austin/aus-fogo-de-chao-austin-1.jpg",
-    "credito": "nan palmero",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://www.flickr.com/photos/97402086@N00/13013118653"
-   },
-   {
-    "src": "fotos_cidades/austin/aus-fogo-de-chao-austin/aus-fogo-de-chao-austin-2.jpg",
-    "credito": "nan palmero",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://www.flickr.com/photos/97402086@N00/13012932575"
+    "src": "img/ilustra-churrascaria-1.jpg",
+    "credito": "rawpixel.com",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Caipirinha_with_lime.jpg",
+    "ilustrativa": true
    }
   ],
   "atualizadoEm": "2026-11",
@@ -76,10 +71,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-churrascaria-1.jpg",
-    "credito": "rawpixel.com",
-    "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Caipirinha_with_lime.jpg",
+    "src": "img/ilustra-churrascaria-2.jpg",
+    "credito": "Dominic Lockyer",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chimichurri_Sauce_Recipe_(13294574784).jpg",
     "ilustrativa": true
    }
   ],
@@ -117,10 +112,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-churrascaria-2.jpg",
-    "credito": "Dominic Lockyer",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Chimichurri_Sauce_Recipe_(13294574784).jpg",
+    "src": "img/ilustra-churrascaria-3.jpg",
+    "credito": "Leonardo Sakaki",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Churrasco00003.jpg",
     "ilustrativa": true
    }
   ],
@@ -158,10 +153,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-churrascaria-3.jpg",
-    "credito": "Leonardo Sakaki",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Churrasco00003.jpg",
+    "src": "img/ilustra-churrascaria-4.jpg",
+    "credito": "User Carioca",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Farofa_brazil.jpg",
     "ilustrativa": true
    }
   ],
@@ -199,10 +194,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-churrascaria-4.jpg",
-    "credito": "User Carioca",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Farofa_brazil.jpg",
+    "src": "img/ilustra-churrascaria-5.jpg",
+    "credito": "Adrião",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Feijoada_%C3%A0_transmontada.jpg",
     "ilustrativa": true
    }
   ],
@@ -332,12 +327,6 @@
     "credito": "Larry D. Moore",
     "licenca": "CC BY 4.0",
     "pagina": "https://commons.wikimedia.org/wiki/File:Franklin_Barbecue_Austin_About_to_Open.jpg"
-   },
-   {
-    "src": "fotos_cidades/austin/aus-franklin-barbecue/aus-franklin-barbecue-3.jpg",
-    "credito": "Steve Snodgrass from Shreveport, USA",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Barbecue_in_Texas_(2647300392).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -514,12 +503,6 @@
    },
    {
     "src": "fotos_cidades/austin/aus-salt-lick-bbq-driftwood/aus-salt-lick-bbq-driftwood-2.jpg",
-    "credito": "I'll Never Grow Up from USA",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Driftwood_Banner.jpg"
-   },
-   {
-    "src": "fotos_cidades/austin/aus-salt-lick-bbq-driftwood/aus-salt-lick-bbq-driftwood-3.jpg",
     "credito": "vxla from Chicago, US",
     "licenca": "CC BY 2.0",
     "pagina": "https://commons.wikimedia.org/wiki/File:Barbecued_meats.jpg"
@@ -651,10 +634,11 @@
   "menu": [],
   "fotos": [
    {
-    "src": "fotos_cidades/austin/aus-matts-el-rancho/aus-matts-el-rancho-1.jpg",
-    "credito": "Mr. Matté (if there is an issue with this image, contact me using this image's Commons talk page , my Commons user talk ",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:US_219_nb_entering_Ridgway_Twp.,_PA_from_Horton_Twp.,_Aug._2024.jpg"
+    "src": "img/ilustra-tex-mex-1.jpg",
+    "credito": "Larry Miller",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
+    "ilustrativa": true
    }
   ],
   "atualizadoEm": "2026-11",
@@ -691,10 +675,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-1.jpg",
-    "credito": "Larry Miller",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:001_Tacos_de_carnitas,_carne_asada_y_al_pastor.jpg",
+    "src": "img/ilustra-tex-mex-2.jpg",
+    "credito": "Wackyrussell at English Wikipedia",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chili_con_queso_(cropped).jpg",
     "ilustrativa": true
    }
   ],
@@ -732,10 +716,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-tex-mex-2.jpg",
-    "credito": "Wackyrussell at English Wikipedia",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Chili_con_queso_(cropped).jpg",
+    "src": "img/ilustra-tex-mex-3.jpg",
+    "credito": "Carstor",
+    "licenca": "CC BY-SA 2.5",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bowl_of_chili.jpg",
     "ilustrativa": true
    }
   ],
@@ -895,11 +879,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-hamburguer-1.jpg",
-    "credito": "Renee Comet (photographer)",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Cheeseburger.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-dirty-martins-place/aus-dirty-martins-place-1.jpg",
+    "credito": "BurgerAustin",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/42022505@N03/4389347406"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-dirty-martins-place/aus-dirty-martins-place-2.jpg",
+    "credito": "BurgerAustin",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/42022505@N03/4389347024"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -936,10 +925,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-hamburguer-3.jpg",
-    "credito": "StockSnap",
-    "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:French_Fries.JPG",
+    "src": "img/ilustra-hamburguer-1.jpg",
+    "credito": "Renee Comet (photographer)",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cheeseburger.jpg",
     "ilustrativa": true
    }
   ],
@@ -977,11 +966,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-1.jpg",
-    "credito": "Bex Walton from London, England",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Avocado_toast_at_Voyager_Espresso_(33134505776).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-kerbey-lane-cafe/aus-kerbey-lane-cafe-1.jpg",
+    "credito": "Slamforeman",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Original_%E2%80%9CKerbey_Lane%E2%80%9D_restaurant_in_Austin,_Texas_Dec_2023.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-kerbey-lane-cafe/aus-kerbey-lane-cafe-2.jpg",
+    "credito": "Skeltoac",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Huevos_Motule%C3%B1os.png"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1018,11 +1012,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-2.jpg",
-    "credito": "No machine-readable author provided. Kaszeta assumed (based ",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Biscuits-and-gravy.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-magnolia-cafe/aus-magnolia-cafe-1.jpg",
+    "credito": "M Silberman",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Magnolia_Cafe,_Austin_-_exterior_2006.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-magnolia-cafe/aus-magnolia-cafe-2.jpg",
+    "credito": "Val H",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mag_Mud_-_Magnolia_Cafe,_Austin_Texas.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1059,11 +1058,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-brunch-cafe-3.jpg",
-    "credito": "Vee Satayamas",
+    "src": "fotos_cidades/austin/aus-jos-coffee-south-congress/aus-jos-coffee-south-congress-1.jpg",
+    "credito": "Tom Purves",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Cappuccino_in_original.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Jo%27s_Coffee_%26_Tacos,_Austin.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-jos-coffee-south-congress/aus-jos-coffee-south-congress-2.jpg",
+    "credito": "Lars Plougmann",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:South_Congress_Austin_-_i_love_you_so_much.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1100,11 +1104,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comida-sulista-1.jpg",
-    "credito": "Dale Cruse",
+    "src": "fotos_cidades/austin/aus-monument-cafe/aus-monument-cafe-1.jpg",
+    "credito": "rutlo",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Loveless_Cafe_Biscuits.jpg",
-    "ilustrativa": true
+    "pagina": "https://www.flickr.com/photos/26809429@N02/3772032271"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-monument-cafe/aus-monument-cafe-2.jpg",
+    "credito": "dwight_parker",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/96816407@N07/16319427005"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1141,10 +1150,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comida-sulista-2.jpg",
-    "credito": "LeeMNichols",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Chicken_Fried_Steak.jpg",
+    "src": "img/ilustra-comida-sulista-1.jpg",
+    "credito": "Dale Cruse",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Loveless_Cafe_Biscuits.jpg",
     "ilustrativa": true
    }
   ],
@@ -1182,10 +1191,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comida-sulista-3.jpg",
-    "credito": "Evan-Amos",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Collard-Greens-Bundle.jpg",
+    "src": "img/ilustra-comida-sulista-2.jpg",
+    "credito": "LeeMNichols",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chicken_Fried_Steak.jpg",
     "ilustrativa": true
    }
   ],
@@ -1305,11 +1314,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-pizza-1.jpg",
-    "credito": "Bex Walton from London, England",
+    "src": "fotos_cidades/austin/aus-home-slice-pizza/aus-home-slice-pizza-1.jpg",
+    "credito": "Gino Barasa",
     "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Neapolitan_pizza_at_Trappica_(48701940197).jpg",
-    "ilustrativa": true
+    "pagina": "https://www.flickr.com/photos/96523293@N00/5559915917"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1346,11 +1354,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-padaria-1.jpg",
-    "credito": "Kritzolina",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Cinnamon_roll_in_Stockholm.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-round-rock-donuts/aus-round-rock-donuts-1.jpg",
+    "credito": "TerraFrost",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Round_Rock_Glazed_Donuts.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-round-rock-donuts/aus-round-rock-donuts-2.jpg",
+    "credito": "TerraFrost",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Round_Rock_Donuts.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1387,11 +1400,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-mercado-brasileiro-1.jpg",
-    "credito": "User Mayra (Maych) on Flickr",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Brigadeiro.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-whole-foods-market-lamar/aus-whole-foods-market-lamar-1.jpg",
+    "credito": "ajay_suresh",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Whole_Foods_Market_Headquarters_-_Austin,_Texas_(54984998394).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-whole-foods-market-lamar/aus-whole-foods-market-lamar-2.jpg",
+    "credito": "adam*b",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/51103012@N00/1914269618"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1428,11 +1446,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-mercado-brasileiro-1.jpg",
-    "credito": "User Mayra (Maych) on Flickr",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Brigadeiro.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-central-market-north-lamar/aus-central-market-north-lamar-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Central_Market_Austin_Westgate_2026.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-central-market-north-lamar/aus-central-market-north-lamar-2.jpg",
+    "credito": "Mulder416",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Central_Market_north_Austin.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1469,11 +1492,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-1.jpg",
-    "credito": "KOREA.NET - Official page of the Republic of Korea",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jeju_beer_09_(cropped).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-scholz-garten/aus-scholz-garten-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Scholz_garden_2007.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-scholz-garten/aus-scholz-garten-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Scholz_Garten_Interior_Austin.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-scholz-garten/aus-scholz-garten-3.jpg",
+    "credito": "miheco",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bier_Garden_-_Scholz_Garten_in_Austin.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1510,10 +1544,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-2.jpg",
-    "credito": "Henning Schlottmann (User:H-stt)",
-    "licenca": "CC BY 1.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Hofbraeukeller_5906.JPG",
+    "src": "img/ilustra-bar-1.jpg",
+    "credito": "KOREA.NET - Official page of the Republic of Korea",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Jeju_beer_09_(cropped).jpg",
     "ilustrativa": true
    }
   ],
@@ -1551,10 +1585,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-3.jpg",
-    "credito": "Luca Galuzzi (Lucag)",
-    "licenca": "CC BY-SA 2.5",
-    "pagina": "https://commons.wikimedia.org/wiki/File:8210_Brewery_in_Abbaye_Notre-Dame_de_Saint-Remy_Rochefort_2007_Luca_Galuzzi.jpg",
+    "src": "img/ilustra-bar-2.jpg",
+    "credito": "Henning Schlottmann (User:H-stt)",
+    "licenca": "CC BY 1.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hofbraeukeller_5906.JPG",
     "ilustrativa": true
    }
   ],
@@ -1592,10 +1626,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-4.jpg",
-    "credito": "Ralf Roletschek",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0084.jpg",
+    "src": "img/ilustra-bar-3.jpg",
+    "credito": "Luca Galuzzi (Lucag)",
+    "licenca": "CC BY-SA 2.5",
+    "pagina": "https://commons.wikimedia.org/wiki/File:8210_Brewery_in_Abbaye_Notre-Dame_de_Saint-Remy_Rochefort_2007_Luca_Galuzzi.jpg",
     "ilustrativa": true
    }
   ],
@@ -1633,10 +1667,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-5.jpg",
-    "credito": "Akke Monasso",
+    "src": "img/ilustra-bar-4.jpg",
+    "credito": "Ralf Roletschek",
     "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:MargaritaReal.jpg",
+    "pagina": "https://commons.wikimedia.org/wiki/File:15-09-26-RalfR-WLC-0084.jpg",
     "ilustrativa": true
    }
   ],
@@ -1674,11 +1708,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-6.jpg",
-    "credito": "Martintoy",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Michelada_mexicana.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-jester-king-brewery/aus-jester-king-brewery-1.jpg",
+    "credito": "NE Ent",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:JesterKing12.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-jester-king-brewery/aus-jester-king-brewery-2.jpg",
+    "credito": "NE Ent",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:JesterKing04.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1715,11 +1754,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-1.jpg",
-    "credito": "KOREA.NET - Official page of the Republic of Korea",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jeju_beer_09_(cropped).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-little-longhorn-saloon/aus-little-longhorn-saloon-1.jpg",
+    "credito": "Lars Plougmann",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://www.flickr.com/photos/75062596@N00/51826448382"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1756,11 +1794,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bar-2.jpg",
-    "credito": "Henning Schlottmann (User:H-stt)",
-    "licenca": "CC BY 1.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Hofbraeukeller_5906.JPG",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-the-driskill-bar/aus-the-driskill-bar-1.jpg",
+    "credito": "Billy Hathorn",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Driskill_Hotel,_Austin,_TX,_2013_IMG_6496.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-the-driskill-bar/aus-the-driskill-bar-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Driskill_austin_2006.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-the-driskill-bar/aus-the-driskill-bar-3.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Driskill_Hotel_20160907222324.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-the-driskill-bar/aus-the-driskill-bar-4.jpg",
+    "credito": "Kenneth C. Zirkel",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Driskill_Hotel_Exterior.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1797,11 +1852,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-1.jpg",
-    "credito": "SteveHopson at English Wikipedia",
-    "licenca": "CC BY 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:ACL2009SBH.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-acl-live-moody-theater/aus-acl-live-moody-theater-1.jpg",
+    "credito": "Christophe lavigne",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chris_lavigne_live_at_3TEN_ACL_in_Austin_Texas.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-acl-live-moody-theater/aus-acl-live-moody-theater-2.jpg",
+    "credito": "Christophe lavigne",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Chris_lavigne_Live_at_3TEN_ACL_-_Austin_City_Limits.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-acl-live-moody-theater/aus-acl-live-moody-theater-3.jpg",
+    "credito": "Nan Palmero from San Antonio, TX, USA",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Shins_at_ACL_Live_3-18-12_(7013935439).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1838,11 +1904,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-2.jpg",
-    "credito": "Malagalabombonera",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Wikipedia_space_ibiza(03).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-continental-club/aus-continental-club-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Continental_Club_Austin_2019.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-continental-club/aus-continental-club-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Continental_Club_Door_Austin_2019.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-continental-club/aus-continental-club-3.jpg",
+    "credito": "Paul Lowry",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hutch_and_Wayne_-_The_Continental_Club,_Austin_2009.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1879,11 +1956,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-3.jpg",
-    "credito": "Diego Delso",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Teatro_de_San_Carlos,_N%C3%A1poles,_Italia,_2023-03-25,_DD_184-186_HDR.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-broken-spoke/aus-broken-spoke-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Broken_Spoke_Austin_Texas_2024.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-broken-spoke/aus-broken-spoke-2.jpg",
+    "credito": "SueRostvold",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Broken_Spoke_Austin_exterior_2025.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-broken-spoke/aus-broken-spoke-3.jpg",
+    "credito": "Paul Lowry",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Broken_Spoke_at_Night.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1920,11 +2008,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-4.jpg",
-    "credito": "User:Grateful Dead, aka mark l. knowles, aka rainbow_trout, ",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jerry-Mickey_at_Red_Rocks_taken_08-11-87.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-stubbs-bar-b-q/aus-stubbs-bar-b-q-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Stubbs_bbq_austin_tx_2014.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-stubbs-bar-b-q/aus-stubbs-bar-b-q-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Stubbs_BBQ_Austin_Texas_2019.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-stubbs-bar-b-q/aus-stubbs-bar-b-q-3.jpg",
+    "credito": "John Feinberg",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:David_Shaw_of_The_Revivalists_at_Stubb%27s_Austin.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -1961,11 +2060,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-show-5.jpg",
-    "credito": "Bonnie from Kendall Park, NJ, USA",
+    "src": "fotos_cidades/austin/aus-antones-nightclub/aus-antones-nightclub-1.jpg",
+    "credito": "Randall Chancellor",
     "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jesus_is_coming.._Look_Busy_(George_Carlin).jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Constellations_at_Antone%27s.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2125,11 +2223,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comunidade-1.jpg",
-    "credito": "Atleett",
-    "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Husby-Sjuhundra_kyrka.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-st-mary-cathedral/aus-st-mary-cathedral-1.jpg",
+    "credito": "Farragutful",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:St._Mary_-_Austin_12.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-st-mary-cathedral/aus-st-mary-cathedral-2.jpg",
+    "credito": "Farragutful",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:St._Mary_-_Austin_sign.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-st-mary-cathedral/aus-st-mary-cathedral-3.jpg",
+    "credito": "Farragutful",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:St._Mary_-_Austin_05.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-st-mary-cathedral/aus-st-mary-cathedral-4.jpg",
+    "credito": "Farragutful",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:St._Mary_-_Austin_06.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2166,11 +2281,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comunidade-1.jpg",
-    "credito": "Atleett",
-    "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Husby-Sjuhundra_kyrka.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-st-davids-episcopal-church/aus-st-davids-episcopal-church-1.jpg",
+    "credito": "Dtobias",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:St-davids-episcopal-austin.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-st-davids-episcopal-church/aus-st-davids-episcopal-church-2.jpg",
+    "credito": "LoneStarMike",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:StDavidsEpiscopalAustin-Apr2008.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-st-davids-episcopal-church/aus-st-davids-episcopal-church-3.jpg",
+    "credito": "ajay_suresh",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:St._David%27s_Episcopal_Church_-_Austin,_TX_(54987419723).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2248,11 +2374,52 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comunidade-1.jpg",
-    "credito": "Atleett",
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-1.jpg",
+    "credito": "LoneStarMike",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:TexasStateCapitol-2010-01.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-2.jpg",
+    "credito": "Daderot",
     "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Husby-Sjuhundra_kyrka.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Capitol_-_Austin,_Texas_-_DSC08268.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-3.jpg",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Capitol_-_Austin,_Texas_-_DSC07601.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-4.jpg",
+    "credito": "Daniel Mayer",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Capitol_building-front_left_front_oblique_view.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-5.jpg",
+    "credito": "CupWithSoda19",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Capitol_during_January_2023_renovation.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-6.jpg",
+    "credito": "CupWithSoda19",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Capitol_and_Volunteer_Firemen_Monument_in_January_2023.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-7.jpg",
+    "credito": "Farragutful",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:2025_Texas_State_Capitol_02.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-8.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_State_Capitol_Closed_Covid_2020.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2289,11 +2456,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-museu-1.jpg",
-    "credito": "Mizzvizz9",
+    "src": "fotos_cidades/austin/aus-bullock-texas-state-history-museum/aus-bullock-texas-state-history-museum-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bullock_Museum_Capitol_Mall_Austin_Texas_2023.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-bullock-texas-state-history-museum/aus-bullock-texas-state-history-museum-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bullock_Texas_State_History_Museum_Dome_Interior.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-bullock-texas-state-history-museum/aus-bullock-texas-state-history-museum-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Texas_state_history_museum.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-bullock-texas-state-history-museum/aus-bullock-texas-state-history-museum-4.jpg",
+    "credito": "Michael Barera",
     "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Asia-Society-Gallery.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_03_(Bullock_Texas_State_History_Museum).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-bullock-texas-state-history-museum/aus-bullock-texas-state-history-museum-5.jpg",
+    "credito": "WhisperToMe",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:BobBullockMuseumAustinTX.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2330,11 +2520,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
+    "src": "fotos_cidades/austin/aus-barton-springs-pool/aus-barton-springs-pool-1.jpg",
+    "credito": "Ligocsicnarf89",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Barton_Springs_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-barton-springs-pool/aus-barton-springs-pool-2.jpg",
+    "credito": "Todd Dwyer from Austin, Texas, USA",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Barton_Springs-_Austin,_Texas.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-barton-springs-pool/aus-barton-springs-pool-3.jpg",
+    "credito": "Todd Dwyer",
     "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Barton_Springs_Pool_at_Night_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-barton-springs-pool/aus-barton-springs-pool-4.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Barton_Springs_Pool_20160905160817.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2371,11 +2578,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-parque-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-zilker-park/aus-zilker-park-1.jpg",
+    "credito": "crockodile",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Zilker_Park_2017-01-20.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-park/aus-zilker-park-2.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Zilker_Park_20160905150454.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-park/aus-zilker-park-3.jpg",
+    "credito": "Matthew Rutledge",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Art_Deco_Zilker_Park.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-park/aus-zilker-park-4.jpg",
+    "credito": "Mwyzykowski0821",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin-skyline.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2412,11 +2636,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-2.jpg",
-    "credito": "Loadmaster (David R. Tribble) This image was made by Loadmas",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Bluebonnet-8100.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-zilker-botanical-garden/aus-zilker-botanical-garden-1.jpg",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mabel_Davis_Rose_Garden_-_Zilker_Botanical_Garden_-_Austin,_Texas_-_DSC08873.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-botanical-garden/aus-zilker-botanical-garden-2.jpg",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Walkway_-_Zilker_Botanical_Garden_-_Austin,_Texas_-_DSC08882.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-botanical-garden/aus-zilker-botanical-garden-3.jpg",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fountain_-_Zilker_Botanical_Garden_-_Austin,_Texas_-_DSC08862.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-botanical-garden/aus-zilker-botanical-garden-4.jpg",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Compost_Demonstration_Garden_-_Zilker_Botanical_Garden_-_Austin,_Texas_-_DSC08845.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-zilker-botanical-garden/aus-zilker-botanical-garden-5.jpg",
+    "credito": "Daderot",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Walkway_-_Zilker_Botanical_Garden_-_Austin,_Texas_-_DSC09011.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2453,11 +2700,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-3.jpg",
-    "credito": "John Knouse",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jefferson_Memorial_Forest-Bee_Lick_Creek.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-congress-avenue-bridge-bats/aus-congress-avenue-bridge-bats-1.jpg",
+    "credito": "Aleksandr Zykov from Russia",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Congress_Avenue_Bridge_Bats_(8095564615).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-congress-avenue-bridge-bats/aus-congress-avenue-bridge-bats-2.jpg",
+    "credito": "Aleksandr Zykov from Russia",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Congress_Avenue_Bridge_Bats_(8095582452).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-congress-avenue-bridge-bats/aus-congress-avenue-bridge-bats-3.jpg",
+    "credito": "Aleksandr Zykov from Russia",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Congress_Avenue_Bridge_Bats_(8095573371).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2494,11 +2752,40 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-parque-2.jpg",
-    "credito": "John Knouse",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jefferson_Memorial_Forest-Bee_Lick_Creek.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-lady-bird-lake-butler-trail/aus-lady-bird-lake-butler-trail-1.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_19_(skyline_and_Lady_Bird_Lake).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-lake-butler-trail/aus-lady-bird-lake-butler-trail-2.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_27_(skyline_and_Lady_Bird_Lake).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-lake-butler-trail/aus-lady-bird-lake-butler-trail-3.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_24_(skyline_and_Lady_Bird_Lake).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-lake-butler-trail/aus-lady-bird-lake-butler-trail-4.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_28_(skyline_and_Lady_Bird_Lake).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-lake-butler-trail/aus-lady-bird-lake-butler-trail-5.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_20_(skyline_and_Lady_Bird_Lake).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-lake-butler-trail/aus-lady-bird-lake-butler-trail-6.jpg",
+    "credito": "Dana Yared",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Boardwalk_at_Lady_Bird_Lake.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2535,11 +2822,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-mirante-1.jpg",
-    "credito": "Robert Hensley",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_view.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-mount-bonnell/aus-mount-bonnell-1.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Covert_Park_at_Mount_Bonnell_20160905130035.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-mount-bonnell/aus-mount-bonnell-2.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Covert_Park_at_Mount_Bonnell_20160905125252.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-mount-bonnell/aus-mount-bonnell-3.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Covert_Park_at_Mount_Bonnell_20160905125852.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-mount-bonnell/aus-mount-bonnell-4.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Covert_Park_at_Mount_Bonnell_20160905125411.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2576,11 +2880,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-1.jpg",
-    "credito": "Robert Hensley",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_view.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-south-congress-avenue/aus-south-congress-avenue-1.jpg",
+    "credito": "formulanone from Huntsville, United States",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:South_Congress_Avenue_-_Austin_(36426710105).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-south-congress-avenue/aus-south-congress-avenue-2.jpg",
+    "credito": "OpalDivine",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Frans_Burgers,_Austin_Tx.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-south-congress-avenue/aus-south-congress-avenue-3.jpg",
+    "credito": "LoneStarMike",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Soco-Austin-Jul2010-1.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-south-congress-avenue/aus-south-congress-avenue-4.jpg",
+    "credito": "LoneStarMike",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Soco-StagForMen.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-south-congress-avenue/aus-south-congress-avenue-5.jpg",
+    "credito": "LoneStarMike",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:MagnoliaCafe-Nov2007.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2617,11 +2944,40 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-2.jpg",
-    "credito": "Original author: Tim Morgan",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Tulsa_Oklahoma_Sister_Cities_Sign_crop.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-sixth-street/aus-sixth-street-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sixth_Street_Austin.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sixth-street/aus-sixth-street-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sixth_street_east_1400_block_2015.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sixth-street/aus-sixth-street-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sixth_street_2012.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sixth-street/aus-sixth-street-4.jpg",
+    "credito": "Kevin Payravi",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin,_TX_Sixth_Street_(Shakespeare%27s_Pub,_Roppolo%27s,_Ritz).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sixth-street/aus-sixth-street-5.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sixth_Street_20160907223424.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sixth-street/aus-sixth-street-6.jpg",
+    "credito": "Spawnzilla",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sixth_Street_20160907224258.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2658,11 +3014,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-arte-1.jpg",
-    "credito": "Didier Descouens",
+    "src": "fotos_cidades/austin/aus-blanton-museum-of-art/aus-blanton-museum-of-art-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Blanton_Museum_of_Art_Austin_Texas_2023.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-blanton-museum-of-art/aus-blanton-museum-of-art-2.jpg",
+    "credito": "Daderot",
     "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Capitole_Toulouse_-_Salle_des_Illustres_-_Toulouse_coop%C3%A9rant_%C3%A0_la_d%C3%A9fense_nationale_1897_-_Jean-Andr%C3%A9_Rixens.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Our_Lady_of_Miracles,_artist_unknown,_Cuzco,_Peru,_17th_or_18th_century,_oil_on_copper_with_gold_-_Blanton_Museum_of_Art_-_Austin,_Texas_-_DSC08098.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-blanton-museum-of-art/aus-blanton-museum-of-art-3.jpg",
+    "credito": "Daderot",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Portrait_of_a_Lady_as_Venus_with_Cupid,_Pierre_Mignard,_Paris,_1680s,_oil_on_canvas_-_Blanton_Museum_of_Art_-_Austin,_Texas_-_DSC07845.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-blanton-museum-of-art/aus-blanton-museum-of-art-4.jpg",
+    "credito": "Daderot",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Our_Lady_of_the_Rosary_of_Pomata,_artist_unknown,_Cuzco,_Peru,_late_17th_or_18th_century,_oil_on_canvas_-_Blanton_Museum_of_Art_-_Austin,_Texas_-_DSC08114.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2699,10 +3072,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-museu-2.jpg",
-    "credito": "User:Gloumouth1",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Le_Louvre_-_Aile_Richelieu.jpg",
+    "src": "img/ilustra-museu-1.jpg",
+    "credito": "Mizzvizz9",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Asia-Society-Gallery.jpg",
     "ilustrativa": true
    }
   ],
@@ -2740,11 +3113,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-comunidade-1.jpg",
-    "credito": "Atleett",
+    "src": "fotos_cidades/austin/aus-ut-tower/aus-ut-tower-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Tower,_University_of_Texas_at_Austin_(ca_1980).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-ut-tower/aus-ut-tower-2.jpg",
+    "credito": "Insightwm",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:University_of_Texas_at_Austin_Tower_viewed_from_the_east.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-ut-tower/aus-ut-tower-3.jpg",
+    "credito": "Kurt Kaiser",
     "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Husby-Sjuhundra_kyrka.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:University_of_Texas_Main_Building_Tower_3.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-ut-tower/aus-ut-tower-4.jpg",
+    "credito": "Kurt Kaiser",
+    "licenca": "CC0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:University_of_Texas_Main_Building_Tower_2.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-ut-tower/aus-ut-tower-5.jpg",
+    "credito": "Jakembradford",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:University_of_Texas_Tower.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2781,11 +3177,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-4.jpg",
-    "credito": "G. Lamar",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_(50753440137).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-lady-bird-johnson-wildflower-center/aus-lady-bird-johnson-wildflower-center-1.jpg",
+    "credito": "Margaretwmiller",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lady_Bird_Johnson_Wildflower_Center.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-johnson-wildflower-center/aus-lady-bird-johnson-wildflower-center-2.jpg",
+    "credito": "Tracy Keller",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lady_Bird_Johnson_Wildflower_Center_and_Circle_C_Ranch.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-lady-bird-johnson-wildflower-center/aus-lady-bird-johnson-wildflower-center-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cupressus_glabra_Wildflower_Center_Austin_Texas_2024.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2822,11 +3229,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-mckinney-falls-state-park/aus-mckinney-falls-state-park-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mckinney_lower_falls.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-mckinney-falls-state-park/aus-mckinney-falls-state-park-2.jpg",
+    "credito": "G. Lamar",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:McKinney_Falls_-_Onion_Creek_(50910463891).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-mckinney-falls-state-park/aus-mckinney-falls-state-park-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:McKinney_Falls_Limestone.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-mckinney-falls-state-park/aus-mckinney-falls-state-park-4.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Gristmill_Ruins_McKinney_Falls_State_Park_2022.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2863,11 +3287,40 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-2.jpg",
-    "credito": "Loadmaster (David R. Tribble) This image was made by Loadmas",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Bluebonnet-8100.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-hamilton-pool-preserve/aus-hamilton-pool-preserve-1.jpg",
+    "credito": "jcutrer",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hamilton_Pool_Preserve_Waterfall.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-hamilton-pool-preserve/aus-hamilton-pool-preserve-2.jpg",
+    "credito": "Alex Garrido",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hamilton_Pool_Preserve,_Lake_Travis,_Austin,_TX_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-hamilton-pool-preserve/aus-hamilton-pool-preserve-3.jpg",
+    "credito": "Fredlyfish4",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hamilton_Pool_March_2016_1.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-hamilton-pool-preserve/aus-hamilton-pool-preserve-4.jpg",
+    "credito": "Halljenalyn",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hamilton_Pool_Waterfall.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-hamilton-pool-preserve/aus-hamilton-pool-preserve-5.jpg",
+    "credito": "Fredlyfish4",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hamilton_Pool_March_2016_5.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-hamilton-pool-preserve/aus-hamilton-pool-preserve-6.jpg",
+    "credito": "Fredlyfish4",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Hamilton_Pool_March_2016_2.JPG"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2945,11 +3398,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-compras-1.jpg",
-    "credito": "Daderot",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Bon_March%C3%A9,_Paris_-_interior_view.JPG",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-the-domain/aus-the-domain-1.jpg",
+    "credito": "Slamforeman",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Domain_Northside_Austin_Texas_Dec_2023.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-the-domain/aus-the-domain-2.jpg",
+    "credito": "Slamforeman",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Sign_Marking_The_Entrance_To_The_Domain_Jan_2023.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -2986,10 +3444,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-compras-2.jpg",
-    "credito": "Billy Hathorn",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Westside_Market_in_Manhattan,_NYC_IMG_5615.JPG",
+    "src": "img/ilustra-compras-1.jpg",
+    "credito": "Daderot",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bon_March%C3%A9,_Paris_-_interior_view.JPG",
     "ilustrativa": true
    }
   ],
@@ -3027,11 +3485,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-familia-2.jpg",
-    "credito": "User Aleš Tošovský",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Amaterske_akvarium.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-kalahari-resorts-round-rock/aus-kalahari-resorts-round-rock-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Kalahari_Resort_Hotel_Round_Rock_Texas_2025.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3068,11 +3525,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-esporte-1.jpg",
-    "credito": "Mass Communication Specialist 2nd Class Michael A. Lantron, ",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Larry_Fitzgerald_catches_TD_at_2009_Pro_Bowl.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-dell-diamond-round-rock-express/aus-dell-diamond-round-rock-express-1.jpg",
+    "credito": "Donald G. Martin",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dell_diamond_4DM.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-dell-diamond-round-rock-express/aus-dell-diamond-round-rock-express-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dell_Diamond_Southwest_Entrance_2017.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-dell-diamond-round-rock-express/aus-dell-diamond-round-rock-express-3.jpg",
+    "credito": "Austex",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dell_Diamond_DM.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3109,11 +3577,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-esporte-2.jpg",
-    "credito": "Dmoore5556",
+    "src": "fotos_cidades/austin/aus-q2-stadium-austin-fc/aus-q2-stadium-austin-fc-1.jpg",
+    "credito": "cornfield948",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_FC_VS_FC_Dallas_by_cornfield948_(20210830150401).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-q2-stadium-austin-fc/aus-q2-stadium-austin-fc-2.jpg",
+    "credito": "Daniel Ziegler",
     "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Fenway_Park_20-April-2021.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_FC_Stadium_vs._Columbus_Crew.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-q2-stadium-austin-fc/aus-q2-stadium-austin-fc-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Q2_Stadium_Austin_Texas_2021.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-q2-stadium-austin-fc/aus-q2-stadium-austin-fc-4.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_FC_Stadium_Construction_July_2020.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3150,11 +3635,28 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-esporte-3.jpg",
-    "credito": "Beauwell",
+    "src": "fotos_cidades/austin/aus-circuit-of-the-americas/aus-circuit-of-the-americas-1.jpg",
+    "credito": "Zach Catanzareti Photo",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Circuit_of_the_americas_cota_(52781066233).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-circuit-of-the-americas/aus-circuit-of-the-americas-2.jpg",
+    "credito": "Spheroidite",
     "licenca": "CC0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Golf_course_Golfplatz_Wittenbeck_Mecklenburg_Ostsee_Baltic_Sea_Germany.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Circuit_of_the_Americas_aerial_view_from_WN4430.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-circuit-of-the-americas/aus-circuit-of-the-americas-3.jpg",
+    "credito": "Kushinumi",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Circuit_of_the_Americas_turn_15.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-circuit-of-the-americas/aus-circuit-of-the-americas-4.jpg",
+    "credito": "HoverVan",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:2018_US_Grand_Prix_at_the_Circuit_of_the_Americas.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3191,11 +3693,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-1.jpg",
-    "credito": "Robert Hensley",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Dallas_view.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-georgetown-courthouse-square/aus-georgetown-courthouse-square-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Williamson_county_courthouse_2008.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-georgetown-courthouse-square/aus-georgetown-courthouse-square-2.jpg",
+    "credito": "25or6to4",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Williamson_County_Courthouse_(2018),_Georgetown,_TX.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-georgetown-courthouse-square/aus-georgetown-courthouse-square-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:The_Williamson_Museum_Georgetown_Texas.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-georgetown-courthouse-square/aus-georgetown-courthouse-square-4.jpg",
+    "credito": "Leslie Knox",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Courthouse_square_in_Georgetown.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-georgetown-courthouse-square/aus-georgetown-courthouse-square-5.jpg",
+    "credito": "Renelibrary",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Williamson_County_Courthouse_(1_of_1).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3232,11 +3757,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-3.jpg",
-    "credito": "John Knouse",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Jefferson_Memorial_Forest-Bee_Lick_Creek.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-inner-space-cavern/aus-inner-space-cavern-1.jpg",
+    "credito": "Brad Fults from Austin, Texas",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Inner_Space_Cavern_2016.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-inner-space-cavern/aus-inner-space-cavern-2.jpg",
+    "credito": "Another Believer",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Georgetown,_Texas_(2018)_-_174.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-inner-space-cavern/aus-inner-space-cavern-3.jpg",
+    "credito": "Rvassar",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Innerspace_cavern_0699.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3273,11 +3809,40 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-bairro-2.jpg",
-    "credito": "Original author: Tim Morgan",
+    "src": "fotos_cidades/austin/aus-fredericksburg-centro-historico/aus-fredericksburg-centro-historico-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_historic_district_2008.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-fredericksburg-centro-historico/aus-fredericksburg-centro-historico-2.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_July_2017_6_(E_Main_Street).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-fredericksburg-centro-historico/aus-fredericksburg-centro-historico-3.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_July_2017_9_(E_Main_Street).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-fredericksburg-centro-historico/aus-fredericksburg-centro-historico-4.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_July_2017_8_(E_Main_Street).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-fredericksburg-centro-historico/aus-fredericksburg-centro-historico-5.jpg",
+    "credito": "Brendansoloughlin",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Fredericksburg_Flower_Mural.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-fredericksburg-centro-historico/aus-fredericksburg-centro-historico-6.jpg",
+    "credito": "Archinia",
     "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Tulsa_Oklahoma_Sister_Cities_Sign_crop.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:242_E_Main_Fredericksburg.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3314,11 +3879,40 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-4.jpg",
-    "credito": "G. Lamar",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_(50753440137).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-enchanted-rock/aus-enchanted-rock-1.jpg",
+    "credito": "Ligocsicnarf89",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Visitors_to_Enchanted_Rock_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-enchanted-rock/aus-enchanted-rock-2.jpg",
+    "credito": "Ligocsicnarf89",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_2.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-enchanted-rock/aus-enchanted-rock-3.jpg",
+    "credito": "Ligocsicnarf89",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-enchanted-rock/aus-enchanted-rock-4.jpg",
+    "credito": "8bit12man",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_Landscape_Early_Morning_2024.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-enchanted-rock/aus-enchanted-rock-5.jpg",
+    "credito": "Jmbuytaert",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Aerial_View_of_Enchanted_Rock.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-enchanted-rock/aus-enchanted-rock-6.jpg",
+    "credito": "HAL333",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Enchanted_Rock_Vernal_Pool.png"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3355,11 +3949,34 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-natureza-1.jpg",
-    "credito": "No machine-readable author provided. Marius~commonswiki assu",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Lake_Idro_Italy_2005-08-16.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-pedernales-falls-state-park/aus-pedernales-falls-state-park-1.jpg",
+    "credito": "glg61",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/37837501@N04/13788427254"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-pedernales-falls-state-park/aus-pedernales-falls-state-park-2.jpg",
+    "credito": "glg61",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/37837501@N04/13788050385"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-pedernales-falls-state-park/aus-pedernales-falls-state-park-3.jpg",
+    "credito": "glg61",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/37837501@N04/13788122403"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-pedernales-falls-state-park/aus-pedernales-falls-state-park-4.jpg",
+    "credito": "glg61",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/37837501@N04/13788061423"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-pedernales-falls-state-park/aus-pedernales-falls-state-park-5.jpg",
+    "credito": "glg61",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/37837501@N04/13788116213"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3396,11 +4013,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-arte-2.jpg",
-    "credito": "Wikimedia Commons",
+    "src": "fotos_cidades/austin/aus-greetings-from-austin-mural/aus-greetings-from-austin-mural-1.jpg",
+    "credito": "Bex.Walton",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/7831824@N04/40441347842"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-greetings-from-austin-mural/aus-greetings-from-austin-mural-2.jpg",
+    "credito": "Bex.Walton",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/7831824@N04/40441340152"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-greetings-from-austin-mural/aus-greetings-from-austin-mural-3.jpg",
+    "credito": "mrflip",
     "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:The_Scallop,_Maggi_Hambling,_Aldeburgh.jpg",
-    "ilustrativa": true
+    "pagina": "https://www.flickr.com/photos/90106931@N00/8917616"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3437,11 +4065,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-1.jpg",
-    "credito": "Fabio Becchelli",
-    "licenca": "CC BY 2.5 it",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Neve_a_Verona_17.01.2006_033.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-rodeo-austin/aus-rodeo-austin-1.jpg",
+    "credito": "Carol M Highsmith",
+    "licenca": "CC0",
+    "pagina": "https://www.rawpixel.com/image/582598/carol-highsmiths-texas-photograph"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-rodeo-austin/aus-rodeo-austin-2.jpg",
+    "credito": "leeleblanc",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://www.flickr.com/photos/21369373@N00/12893462355"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3478,11 +4111,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-2.jpg",
-    "credito": "Steven Gerner",
+    "src": "fotos_cidades/austin/aus-sxsw/aus-sxsw-1.jpg",
+    "credito": "David Cirone",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:SXSW_Japan_Nite_banner.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sxsw/aus-sxsw-2.jpg",
+    "credito": "Cory Doctorow",
     "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Holi_Festival_of_Colors_Utah,_United_States_2013.jpg",
-    "ilustrativa": true
+    "pagina": "https://commons.wikimedia.org/wiki/File:Samantha_Cole_discussing_How_Sex_Changed_the_Internet,_SXSW,_Austin,_Texas,_USA.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-sxsw/aus-sxsw-3.jpg",
+    "credito": "Cory Doctorow",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Rebecca_Giblin_and_me_on_the_red_carpet_2,_SXSW,_Austin,_Texas,_USA.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3519,11 +4163,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-3.jpg",
-    "credito": "Rob Chandler",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:New_Year%27s_Eve_on_Sydney_Harbour.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-acl-music-festival/aus-acl-music-festival-1.jpg",
+    "credito": "KUTXAustin",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Flora_%26_Fawna_performs_during_the_Austin_City_Limits_Music_Festival_on_Oct._16,_2022,_in_Austin._-_52432943969.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-acl-music-festival/aus-acl-music-festival-2.jpg",
+    "credito": "KUTXAustin",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Flora_%26_Fawna_performs_during_the_Austin_City_Limits_Music_Festival_on_Oct._16,_2022,_in_Austin._-_52433190083.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3560,11 +4209,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-4.jpg",
-    "credito": "Bratislavská župa from Bratislava, Slovakia",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:BSK_CSOB_MARATON046_(33791445325).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-trail-of-lights/aus-trail-of-lights-1.jpg",
+    "credito": "That Other Paper",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Trail_of_Lights_Austin.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3601,11 +4249,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-5.jpg",
-    "credito": "Heribert Pohl --- Thanks for half a million clicks! from Ger",
-    "licenca": "CC BY-SA 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:O%27zapft_is!_M%C3%BCnchens_5_Jahreszeit_hat_begonnen_-_O%27zapft_is!_Munich_5_season,_the_Oktoberfest_has_begun_(9855483374).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-formula-1-us-grand-prix/aus-formula-1-us-grand-prix-1.jpg",
+    "credito": "HoverVan",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:2018_US_Grand_Prix_at_the_Circuit_of_the_Americas.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-formula-1-us-grand-prix/aus-formula-1-us-grand-prix-2.jpg",
+    "credito": "rsyphotography",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:2021_United_States_Grand_Prix_14.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-formula-1-us-grand-prix/aus-formula-1-us-grand-prix-3.jpg",
+    "credito": "rsyphotography",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:2021_United_States_Grand_Prix_21.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3642,11 +4301,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-6.jpg",
-    "credito": "Anthony Quintano from Mount Laurel, United States",
-    "licenca": "CC BY 2.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Macy%27s_Thanksgiving_Day_Parade_2022_New_York_City_(52523112564).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-austin-marathon/aus-austin-marathon-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_Marathon_2019_Downtown.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3683,11 +4341,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-7.jpg",
-    "credito": "Wikimedia Commons",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:StampedeRodeo2002.JPG",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-carnaval-brasileiro/aus-carnaval-brasileiro-1.jpg",
+    "credito": "satanoid",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Carnaval_Brasileiro_Austin_2015_46.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3724,10 +4381,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-8.jpg",
-    "credito": "David Shankbone at English Wikipedia",
-    "licenca": "CC BY 2.5",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Union_Square_street_fair.jpg",
+    "src": "img/ilustra-evento-1.jpg",
+    "credito": "Fabio Becchelli",
+    "licenca": "CC BY 2.5 it",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Neve_a_Verona_17.01.2006_033.jpg",
     "ilustrativa": true
    }
   ],
@@ -3765,11 +4422,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-evento-1.jpg",
-    "credito": "Fabio Becchelli",
-    "licenca": "CC BY 2.5 it",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Neve_a_Verona_17.01.2006_033.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-eeyores-birthday-party/aus-eeyores-birthday-party-1.jpg",
+    "credito": "satanoid",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Eeyore%27s_Birthday_Party_2009_Austin_TX_08.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-eeyores-birthday-party/aus-eeyores-birthday-party-2.jpg",
+    "credito": "satanoid",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Eeyore%27s_Birthday_Party_2009_Austin_TX_06.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3888,11 +4550,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-transporte-1.jpg",
-    "credito": "Phil Richards",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:25.09.26_Chicago_Ogilvie_Transit_Center_100_and_107_(cropped).jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-austin-bergstrom-international-airport/aus-austin-bergstrom-international-airport-1.jpg",
+    "credito": "Brett Spangler",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_Bergstrom_Airport_4_January_2024_DSC7658-Enhanced-NR.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-austin-bergstrom-international-airport/aus-austin-bergstrom-international-airport-2.jpg",
+    "credito": "Brett Spangler",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Southwest_airlines_arriving_at_Austin%E2%80%93Bergstrom_International_Airport.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-austin-bergstrom-international-airport/aus-austin-bergstrom-international-airport-3.jpg",
+    "credito": "Lars Plougmann",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_Airport,_May_2021.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -3929,11 +4602,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-transporte-2.jpg",
-    "credito": "*Youngjin",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Kumgang_Express_1080.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-capmetro/aus-capmetro-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Capital_MetroRail_MLK_Jr_Station_2021.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-capmetro/aus-capmetro-2.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lakeline_metrorail_station_2014.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-capmetro/aus-capmetro-3.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Capital_MetroRail_MLK_Jr_Station_Night_2021.jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4011,11 +4695,22 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-governo-2.jpg",
-    "credito": "Joe Ravi",
-    "licenca": "CC BY-SA 3.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Panorama_of_United_States_Supreme_Court_Building_at_Dusk.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-austin-city-hall/aus-austin-city-hall-1.jpg",
+    "credito": "WhisperToMe",
+    "licenca": "Public domain",
+    "pagina": "https://commons.wikimedia.org/wiki/File:AustinTXCityHall.JPG"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-austin-city-hall/aus-austin-city-hall-2.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_31_(Austin_City_Hall).jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-austin-city-hall/aus-austin-city-hall-3.jpg",
+    "credito": "Michael Barera",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Austin_August_2019_30_(Austin_City_Hall).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4052,11 +4747,16 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-saude-1.jpg",
-    "credito": "AleWi",
-    "licenca": "CC BY-SA 4.0",
-    "pagina": "https://commons.wikimedia.org/wiki/File:Stockholm,_ambulans,_2014,_21.jpg",
-    "ilustrativa": true
+    "src": "fotos_cidades/austin/aus-dell-seton-medical-center/aus-dell-seton-medical-center-1.jpg",
+    "credito": "Larry D. Moore",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dell_Seton_Medical_Center_East_Elevation_2020.jpg"
+   },
+   {
+    "src": "fotos_cidades/austin/aus-dell-seton-medical-center/aus-dell-seton-medical-center-2.jpg",
+    "credito": "ajay_suresh",
+    "licenca": "CC BY 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Dell_Seton_Medical_Center_-_UT_Austin_(54984998484).jpg"
    }
   ],
   "atualizadoEm": "2026-11",
@@ -4093,10 +4793,10 @@
   "menu": [],
   "fotos": [
    {
-    "src": "img/ilustra-saude-2.jpg",
-    "credito": "Robert Kaufmann",
-    "licenca": "Public domain",
-    "pagina": "https://commons.wikimedia.org/wiki/File:FEMA_-_18213_-_Photograph_by_Robert_Kaufmann_taken_on_10-25-2005_in_Louisiana.jpg",
+    "src": "img/ilustra-saude-1.jpg",
+    "credito": "AleWi",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Stockholm,_ambulans,_2014,_21.jpg",
     "ilustrativa": true
    }
   ],
