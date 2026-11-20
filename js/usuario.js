@@ -108,7 +108,7 @@
     var pe = [];
     if (papel === "anunciante" || papel === "master") pe.push({ nome: "Painel do anunciante", ic: "store", href: "#anunciante" });
     if (Store.admin()) pe.push({ nome: "Painel master", ic: "chart", href: "#painel" });
-    pe.push({ nome: "Tema claro/escuro", ic: "moon", acao: "data-tema" });
+    pe.push({ nome: "Tema claro/escuro", ic: "moon", acao: "data-cor" });
     if (logado) pe.push({ nome: "Sair", ic: "out", acao: "data-sair" });
     G.app.innerHTML = Dash.montar({ chave: "usuario", marca: "Minha conta", titulo: nome || (cta && cta.nome) || "Visitante", avatar: (nome || (cta && cta.nome) || "?").trim().charAt(0).toUpperCase(), menu: menu, pe: pe,
       secoes: { geral: geral, eventos: eventos, roteiro: roteiro, atividade: window.Social ? Social.blocoConta() : "", avaliacoes: avs, perfil: perfilSec, mais: mais } });
