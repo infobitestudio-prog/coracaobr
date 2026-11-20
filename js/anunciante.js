@@ -192,7 +192,7 @@
     var pe = master ? [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] : [{ nome: "Minha conta", ic: "user", href: "#conta" }, { nome: "Tema claro/escuro", ic: "moon", acao: "data-tema" }, { nome: "Sair", ic: "out", acao: "data-sair" }];
     var nomeConta = (Store.conta && Store.conta() && Store.conta().nome) || (l && l.nome) || "Anunciante";
     G.app.innerHTML = Dash.montar({ chave: "anunciante", marca: master ? "Visão do administrador" : "Painel do anunciante", titulo: master && l ? l.nome : nomeConta, avatar: (nomeConta || "?").charAt(0).toUpperCase(), menu: menu, pe: pe,
-      secoes: { geral: geral, anuncios: anuncios, contratar: contratar, turbinar: window.Diferenciais && !master ? Diferenciais.blocoTurbinar(uid, ls) : "", depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });
+      secoes: { geral: geral, anuncios: anuncios, contratar: contratar, turbinar: window.Diferenciais && !master ? Diferenciais.blocoTurbinar(uid, ls) : "", depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? qrAvalie(l) + divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });
     if (l && l.cupom && window.Comunidade) Comunidade.validadorInit(l);
     if (l && window.Extras) Extras.kitInit(l);
     G.app.querySelector("section").onclick = function (ev) {
@@ -204,6 +204,20 @@
     };
   }
   /* Kit de divulgação: texto pronto e botões para Facebook e WhatsApp. */
+  /* QR Code "Avalie-nos no CoraçãoBR": o cliente aponta a câmera e cai direto no formulário de avaliação (estrelas, depoimento e fotos) */
+  function qrAvalie(l) {
+    var link = location.origin + location.pathname + "#avaliar-" + encodeURIComponent(l.id), svg = "";
+    try { var q = window.qrcode(0, "M"); q.addData(link); q.make(); svg = q.createSvgTag({ cellSize: 6, margin: 2, scalable: true }); } catch (e) { svg = ""; }
+    return '<div class="panel stack av-qr" style="gap:12px"><h3>QR Code "Avalie-nos"</h3><p class="muted small">Imprima e deixe no balcão, na mesa ou no cartão. O cliente aponta a câmera e avalia seu negócio no CoraçãoBR com estrelas, depoimento e fotos. Avaliações reais deixam seu anúncio mais forte.</p>' +
+      '<div class="av-qr-b"><div class="av-qr-c" data-qr-svg>' + svg + '</div><div class="stack" style="gap:8px"><b>' + esc(l.nome) + '</b><input readonly value="' + esc(link) + '" aria-label="Link de avaliação"><div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + esc(link) + '">Copiar link</button><button type="button" class="btn ghost sm" data-imprime-qr="' + esc(l.id) + '">Imprimir cartaz</button><a class="btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent("Você já veio no " + l.nome + "? Deixe sua avaliação no CoraçãoBR: " + link) + '">Pedir no WhatsApp</a></div></div></div></div>';
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-imprime-qr]"); if (!b) return;
+    var l = Store.obter("lugares", b.dataset.imprimeQr), box = b.closest(".av-qr"), svg = box ? box.querySelector("[data-qr-svg]").innerHTML : ""; if (!l) return;
+    var w = window.open("", "_blank"); if (!w) { G.toast("Permita janelas pop-up para imprimir."); return; }
+    w.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Avalie-nos · ' + esc(l.nome) + '</title><style>body{margin:0;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;background:#fff;color:#0E1311}.c{width:520px;text-align:center;padding:40px;border:3px solid #0BA84A;border-radius:28px}.k{font:700 14px/1 monospace;letter-spacing:.2em;color:#0B7A35}h1{font-size:44px;margin:14px 0 6px}h1 span{color:#E8A800}p{font-size:19px;color:#444;margin:0 0 22px}.q svg{width:300px;height:300px}.n{font-size:24px;font-weight:700;margin-top:16px}.f{margin-top:18px;font-size:15px;color:#666}@media print{.c{border-width:2px}}</style></head><body><div class="c"><div class="k">CORAÇÃOBR</div><h1>Avalie-<span>nos</span>!</h1><p>Aponte a câmera do celular e conte como foi.</p><div class="q">' + svg + '</div><div class="n">' + esc(l.nome) + '</div><div class="f">Sua opinião ajuda outros brasileiros 💚💛</div></div><script>setTimeout(function(){print()},400)<\/script></body></html>');
+    w.document.close();
+  });
   function divulgar(l) {
     var link = location.origin + location.pathname + "#lugar-" + l.id;
     var texto = l.nome + " · " + (G.CATS[l.categoria] || "") + (l.cidade ? " em " + l.cidade : "") + "\n\n" + (l.historia || "") + (l.cupom ? "\n\nOferta: " + l.cupom + " (mostre o anúncio do CoraçãoBR)." : "") + (l.whatsapp ? "\n\nWhatsApp: " + l.whatsapp : l.telefone ? "\n\nTelefone: " + l.telefone : "") + "\n\nVeja fotos, avaliações e como chegar: " + link + "\n\n#BrasileirosEmDallas #BrasileirosNoTexas #CoracaoBR";

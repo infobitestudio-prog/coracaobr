@@ -32,7 +32,7 @@
       if (o.horas != null) { if (typeof o.horas !== "object" || Array.isArray(o.horas)) delete o.horas; else Object.keys(o.horas).forEach(function (k) { var v = o.horas[k]; o.horas[k] = Array.isArray(v) ? v.filter(function (x) { return x && typeof x === "object"; }) : []; }); }
       if (o.categoria === undefined) o.categoria = "";
     }
-    if (col === "avaliacoes") { var e = Math.round(Number(o.estrelas)); if (!(e >= 1)) return null; o.estrelas = Math.min(5, e); o.nome = txt(o.nome).slice(0, 60); o.texto = txt(o.texto).slice(0, 1200); o.lugarId = txt(o.lugarId); o.tipo = o.tipo === "experiencia" || o.tipo === "parceiro" ? o.tipo : ""; o.roteiro = txt(o.roteiro).slice(0, 60); o.dica = txt(o.dica).slice(0, 160); o.quando = txt(o.quando).slice(0, 7); o.parceiro = txt(o.parceiro).slice(0, 80); }
+    if (col === "avaliacoes") { var e = Math.round(Number(o.estrelas)); if (!(e >= 1)) return null; o.estrelas = Math.min(5, e); o.nome = txt(o.nome).slice(0, 60); o.texto = txt(o.texto).slice(0, 1200); o.lugarId = txt(o.lugarId); o.tipo = o.tipo === "experiencia" || o.tipo === "parceiro" ? o.tipo : ""; o.roteiro = txt(o.roteiro).slice(0, 60); o.dica = txt(o.dica).slice(0, 160); o.quando = txt(o.quando).slice(0, 7); o.parceiro = txt(o.parceiro).slice(0, 80); o.fotos = Array.isArray(o.fotos) ? o.fotos.filter(function (f) { return typeof f === "string" && FOTO_OK.test(f); }).slice(0, 3) : []; }
     if (col === "fluxos") { if (o.nivel === "baixo") o.nivel = "pouco"; if (["pouco", "medio", "alto"].indexOf(o.nivel) < 0) return null; o.lugarId = txt(o.lugarId); }
     if (col === "classificados") { o.titulo = txt(o.titulo).slice(0, 90); o.texto = txt(o.texto).slice(0, 800); o.tipo = txt(o.tipo); o.cidade = txt(o.cidade).slice(0, 40); o.whatsapp = txt(o.whatsapp).replace(/[^\d+]/g, "").slice(0, 18); o.preco = num(o.preco); if (!o.titulo) return null; }
     if (col === "alertas") { o.titulo = txt(o.titulo).slice(0, 120); o.texto = txt(o.texto).slice(0, 600); o.tipo = txt(o.tipo); if (!o.titulo) return null; }
@@ -224,7 +224,7 @@
       var j = await api("sessao");
       st.servidor = true; st.sessao = j; st.visitante = j.visitante;
       var c = j.conta;
-      db = dbServidor; assets = c && (c.papel === "anunciante" || c.papel === "master") ? assetsServidor : null;
+      db = dbServidor; assets = c ? assetsServidor : null;   /* qualquer conta envia fotos (usuários: fotos das avaliações, com limite no servidor) */
       uid = c ? c.uid : null; st.admin = !!(c && c.papel === "master"); st.nome = c ? c.nome : ""; st.papel = c ? c.papel : "";
       st.podeFotosNuvem = !!assets;
       bootCloud();
@@ -322,7 +322,7 @@
   async function salvarFoto(file) {
     var r = await resize(file, st.modo === "nuvem" ? 1600 : 1100);
     if (st.modo === "nuvem") {
-      if (!assets) throw new Error("Só quem pode editar este guia envia fotos.");
+      if (!assets) throw new Error(st.servidor ? "Entre na sua conta para enviar fotos." : "Só quem pode editar este guia envia fotos.");
       var up = await assets.upload(r.blob, { type: "image/jpeg" });
       return "asset:" + up.id;
     }

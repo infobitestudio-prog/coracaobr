@@ -554,6 +554,14 @@
       lista.map(function (r) { return '<div class="rv"><span class="av">' + esc(String(r.autor).charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(r.autor) + "</b>" + (r.nota ? stars(r.nota) : "") + '</div><small class="muted">' + esc(r.fonte || "Google") + (r.data ? " · " + esc(r.data) : "") + "</small><p>" + esc(String(r.texto).slice(0, 400)) + "</p>" + (url(r.link) ? '<a class="small" href="' + esc(r.link) + '" target="_blank" rel="noopener">ver no ' + esc(r.fonte || "Google") + "</a>" : "") + "</div></div>"; }).join("") +
       '<div class="row"><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">Google</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.yelp.com/search?find_desc=' + encodeURIComponent(l.nome) + "&find_loc=" + encodeURIComponent((l.cidade || "Dallas") + ", TX") + '">Yelp</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Search?q=' + q + '">Tripadvisor</a></div></div>';
   }
+  /* Mapa do Google embutido, sem chave: mostra o lugar com a nota e o atalho para as avaliações no próprio Google */
+  function mapaGoogle(l, alt) {
+    var q = encodeURIComponent([l.nome, l.endereco || ((l.cidade || "Dallas") + ", TX")].filter(Boolean).join(", "));
+    return '<div class="gmap"><iframe title="' + esc(l.nome) + ' no Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=' + q + '&hl=pt-BR&z=15&output=embed" style="height:' + (alt || 300) + 'px"></iframe>' +
+      '<div class="gmap-a"><a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">' + ic("star") + " Ver avaliações e fotos no Google</a></div></div>";
+  }
+  /* fotos enviadas junto com a avaliação */
+  function fotosAval(a) { var fs = (a.fotos || []).map(function (s) { return Store.urlFoto(s); }).filter(Boolean); return fs.length ? '<div class="rv-fotos">' + fs.map(function (u) { return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="Foto da avaliação" loading="lazy"></a>'; }).join("") + "</div>" : ""; }
   function abaConteudo(l, tab) {
     var est = l.tipo === "estabelecimento";
     if (tab === "ir") {
@@ -561,7 +569,7 @@
       return '<div class="stack" style="gap:14px"><div class="row" style="justify-content:space-between"><span class="small muted">Tempos estimados</span><button type="button" class="more" data-partida style="color:var(--accent-mid);font-weight:600">' + (Geo.gps ? "da sua localização" : "saindo de " + esc(Geo.nome)) + "</button></div>" +
         '<div class="modes">' + Object.keys(MODOS).map(function (m) { return '<button type="button" class="mode" data-modo="' + m + '" aria-pressed="' + (Geo.modo === m) + '"><span class="tic">' + ic(m === "carro" ? "car" : m === "pe" ? "walk" : "bike") + "</span><b>" + tempo(l, m) + "</b><small>" + MODOS[m].nome + "</small></button>"; }).join("") + "</div>" +
         apps(l) + '<p class="small muted">Calculado pela distância (' + (kmDe(l) < 10 ? kmDe(l).toFixed(1).replace(".", ",") : kmDe(l).toFixed(0)) + " km em linha reta), sem trânsito. O tempo exato aparece no Maps.</p>" +
-        (l.estacionamento ? tile("car", "Estacionamento", esc(l.estacionamento), "", "wide") : "") + "</div>";
+        (l.estacionamento ? tile("car", "Estacionamento", esc(l.estacionamento), "", "wide") : "") + mapaGoogle(l, 280) + "</div>";
     }
     if (tab === "menu") return window.Cardapio ? Cardapio.bloco(l) : menuHtml(l);
     if (tab === "aval") {
@@ -569,10 +577,12 @@
       av.forEach(function (a) { var k = Math.max(0, Math.min(5, Math.round(Number(a.estrelas)) || 0)); cont[k]++; });
       return '<div class="stack" style="gap:14px"><div class="rsum"><div><b class="num">' + (n.guia != null ? n.guia.toFixed(1) : "–") + "</b>" + stars(n.guia) + '<small>' + (av.length ? av.length + (av.length === 1 ? " avaliação" : " avaliações") : esc(n.fonte || "sem avaliações")) + '</small></div><div class="rbars">' +
         [5, 4, 3, 2, 1].map(function (k) { return '<div><small>' + k + '</small><span><i style="width:' + (av.length ? Math.round(cont[k] / av.length * 100) : 0) + '%"></i></span></div>'; }).join("") + "</div></div>" +
-        (av.length ? av.slice(0, 12).map(function (a) { return '<div class="rv"><span class="av">' + esc((a.nome || "V").trim().charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(a.nome || "Visitante") + "</b>" + stars(a.estrelas) + '</div><small class="muted">' + esc((a.criadoEm || "").slice(0, 10).split("-").reverse().join("/")) + "</small>" + (a.tipo === "experiencia" ? ' <span class="pill ok xp">✓ Esteve aqui' + (a.roteiro ? " · " + esc(String(a.roteiro).slice(0, 40)) : "") + "</span>" : "") + (a.texto ? "<p>" + esc(a.texto) + "</p>" : "") + "</div></div>"; }).join("") : '<p class="muted">Ninguém avaliou ainda. A primeira nota pode ser a sua.</p>') +
+        (av.length ? av.slice(0, 12).map(function (a) { return '<div class="rv"><span class="av">' + esc((a.nome || "V").trim().charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(a.nome || "Visitante") + "</b>" + stars(a.estrelas) + '</div><small class="muted">' + esc((a.criadoEm || "").slice(0, 10).split("-").reverse().join("/")) + "</small>" + (a.tipo === "experiencia" ? ' <span class="pill ok xp">✓ Esteve aqui' + (a.roteiro ? " · " + esc(String(a.roteiro).slice(0, 40)) : "") + "</span>" : "") + (a.texto ? "<p>" + esc(a.texto) + "</p>" : "") + fotosAval(a) + "</div></div>"; }).join("") : '<p class="muted">Ninguém avaliou ainda. A primeira nota pode ser a sua.</p>') +
         (L.avaliando ? '<form id="rev" class="panel stack" style="gap:12px"><div class="field"><span>Sua nota</span><div class="pick" id="pick">' + [1, 2, 3, 4, 5].map(function (i) { return '<button type="button" data-n="' + i + '" class="' + (i <= L.estrelas ? "on" : "") + '" aria-label="' + i + ' estrelas">★</button>'; }).join("") + "</div></div>" +
-          '<div class="field"><label for="rev-nome">Seu nome</label><input id="rev-nome" maxlength="40" value="' + esc(L.nome) + '" placeholder="Como quer aparecer"></div><div class="field"><label for="rev-texto">Comentário (opcional)</label><textarea id="rev-texto" maxlength="600" placeholder="O que valeu a pena? O que evitar?">' + esc(L.texto) + '</textarea></div><div class="row"><button class="btn" type="submit">Publicar avaliação</button><button class="btn ghost" type="button" data-avaliar="0">Cancelar</button></div></form>'
-          : '<button type="button" class="btn soft" data-avaliar="1" style="justify-self:start">' + ic("star") + " Avaliar este lugar</button>") + (window.Promo ? Promo.blocoLugar(l) : "") + externas(l) + "</div>";
+          '<div class="field"><label for="rev-nome">Seu nome</label><input id="rev-nome" maxlength="40" value="' + esc(L.nome) + '" placeholder="Como quer aparecer"></div><div class="field"><label for="rev-texto">Comentário (opcional)</label><textarea id="rev-texto" maxlength="600" placeholder="O que valeu a pena? O que evitar?">' + esc(L.texto) + '</textarea></div>' +
+          '<div class="field"><span>Fotos da sua visita (até 3, opcional)</span><div class="rev-fs" id="rev-fs">' + (L.fotosAv || []).map(function (s2, k) { return '<figure><img src="' + esc(Store.urlFoto(s2)) + '" alt=""><button type="button" data-rev-tira="' + k + '" aria-label="Remover foto">×</button></figure>'; }).join("") + ((L.fotosAv || []).length < 3 ? '<label class="rev-add" for="rev-file">+<small>Foto</small></label>' : "") + '</div><input type="file" id="rev-file" accept="image/*" multiple hidden><small class="muted">Só fotos suas, tiradas no lugar.</small></div>' +
+          '<div class="row"><button class="btn" type="submit">Publicar avaliação</button><button class="btn ghost" type="button" data-avaliar="0">Cancelar</button></div></form>'
+          : '<button type="button" class="btn soft" data-avaliar="1" style="justify-self:start">' + ic("star") + " Avaliar este lugar</button>") + (window.Promo ? Promo.blocoLugar(l) : "") + externas(l) + '<div class="panel stack" style="gap:10px"><h3>No Google Maps</h3><p class="small muted">Nota e avaliações públicas no Google, direto do mapa.</p>' + mapaGoogle(l, 240) + "</div></div>";
     }
     var hist = String(l.historia || ""), longo = hist.length > 360 && !L.lermais, f = fluxoDe(l), meu = sess("fluxo-" + l.id + "-" + hojeISO());
     var t = [];
@@ -599,16 +609,25 @@
     var s = $("#seg", sheetCard); if (!s) return; var b = s.querySelector('[aria-selected="true"]'), p = s.querySelector(".seg-pill"); if (!b || !p) return;
     p.style.width = b.offsetWidth + "px"; p.style.transform = "translateX(" + b.offsetLeft + "px)";
   }
+  var avaliarPend = null;   /* link #avaliar-<lugar> (QR Code "Avalie-nos"): abre a ficha já no formulário */
   function ligaForm() {
     var f = $("#rev", sheetCard); if (!f) return; var id = L.id;
     $("#rev-nome", sheetCard).addEventListener("input", function (e) { L.nome = e.target.value; });
     $("#rev-texto", sheetCard).addEventListener("input", function (e) { L.texto = e.target.value; });
+    var rf = $("#rev-file", sheetCard);
+    if (rf) rf.addEventListener("change", async function (e) {
+      var fl = Array.from(e.target.files || []).slice(0, 3 - (L.fotosAv || []).length); L.fotosAv = L.fotosAv || [];
+      for (var i = 0; i < fl.length; i++) { try { L.fotosAv.push(await Store.salvarFoto(fl[i])); } catch (er) { toast(er.message || "Não foi possível enviar a foto."); break; } }
+      e.target.value = ""; trocaAba("aval");
+    });
+    var rfs = $("#rev-fs", sheetCard);
+    if (rfs) rfs.addEventListener("click", function (e) { var b = e.target.closest("[data-rev-tira]"); if (!b) return; var x = L.fotosAv.splice(Number(b.dataset.revTira), 1)[0]; if (x) Store.apagarFoto(x); trocaAba("aval"); });
     f.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!L.estrelas) { toast("Escolha de 1 a 5 estrelas antes de publicar."); return; }
-      var doc = { lugarId: id, estrelas: L.estrelas, nome: L.nome.trim() || "Visitante", texto: L.texto.trim(), criadoEm: new Date().toISOString(), uid: Store.uid() || "" };
+      var doc = { lugarId: id, estrelas: L.estrelas, nome: L.nome.trim() || "Visitante", texto: L.texto.trim(), fotos: (L.fotosAv || []).slice(0, 3), criadoEm: new Date().toISOString(), uid: Store.uid() || "" };
       var nid = Store.novoId("av");
-      (function () { try { if (doc.nome) localStorage.setItem("meu-nome", JSON.stringify(doc.nome)); } catch (e) { /* ok */ } })(), Store.gravar("avaliacoes", nid, doc).then(function () { if (window.Usuario) Usuario.registraAval(nid); L.estrelas = 0; L.texto = ""; L.avaliando = false; toast("Avaliação publicada."); trocaAba("aval"); })
+      (function () { try { if (doc.nome) localStorage.setItem("meu-nome", JSON.stringify(doc.nome)); } catch (e) { /* ok */ } })(), Store.gravar("avaliacoes", nid, doc).then(function () { if (window.Usuario) Usuario.registraAval(nid); L.estrelas = 0; L.texto = ""; L.fotosAv = []; L.avaliando = false; toast("Avaliação publicada."); trocaAba("aval"); })
         .catch(function (er) { toast(er && er.message && !er.code ? er.message : "Não deu para publicar agora. Tente de novo."); });
     });
   }
@@ -616,6 +635,7 @@
     var l = Store.obter("lugares", id);
     if (!l) { fechar(); toast("Este lugar não está mais no guia."); return; }
     if (L.id !== id) L = { id: id, foto: 0, estrelas: 0, nome: L.nome || meuNome(), texto: "", tab: "sobre", lermais: false, avaliando: false };
+    if (avaliarPend === id) { L.avaliando = true; L.tab = "aval"; avaliarPend = null; }
     var sc = $(".sheet-scroll", sheetCard), topo = manterScroll && sc ? sc.scrollTop : 0;
     var fs = fotosDe(l); if (L.foto >= fs.length) L.foto = 0;
     var f = fs[L.foto], n = notas(l), av = avaliacoesDe(id), est = l.tipo === "estabelecimento", mi = milhas(l);
@@ -830,6 +850,7 @@
   var base = "inicio", pintada = null, sujo = false;
   function rota() { var h = (location.hash || "").replace(/^#/, ""); return h || "inicio"; }
   function pinta(r) {
+    if (r.indexOf("avaliar-") === 0) { avaliarPend = decodeURIComponent(r.slice(8)); location.replace("#lugar-" + encodeURIComponent(avaliarPend)); return; }
     var fn = views[r] || (r.indexOf("extra-") === 0 && views.extra) || (r.indexOf("mural-") === 0 && views.mural) || (r.indexOf("meu-roteiro-") === 0 && views["meu-roteiro"]) || (r.indexOf("roteiro-") === 0 && views.roteiro) || (r.indexOf("redefinir-") === 0 && views.redefinir) || (r.indexOf("busca-") === 0 && views.mapa) || (r.indexOf("local-") === 0 && views.local) || (r.indexOf("parceiro-") === 0 && views.parceiro) || (r.indexOf("perfil-") === 0 && views.perfil) || (r.indexOf("oficial-") === 0 && views.oficial) || viewInicio;
     document.body.classList.toggle("home", r !== "painel" && fn === viewInicio);
     if (r === "painel" && window.Painel) Painel.abrir(app); else fn(r);

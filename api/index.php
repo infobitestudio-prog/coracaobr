@@ -526,8 +526,8 @@ case 'apagar': {
 case 'foto': {
   if ($metodo !== 'POST') erro('Use POST.', 405);
   $u = exigeLogin();
-  if (!in_array($u['papel'], ['anunciante', 'master'], true)) erro('Só anunciantes e a equipe enviam fotos.', 403);
-  if (!master() && !limite('foto:' . $u['id'], 60, 3600)) erro('Limite de fotos por hora atingido.', 429);
+  $maxH = in_array($u['papel'], ['anunciante', 'master'], true) ? 60 : 12;   // usuários: fotos das avaliações
+  if (!master() && !limite('foto:' . $u['id'], $maxH, 3600)) erro('Limite de fotos por hora atingido. Tente de novo mais tarde.', 429);
   $f = $_FILES['foto'] ?? null;
   if (!$f || $f['error'] !== UPLOAD_ERR_OK || $f['size'] > 6_000_000) erro('Foto inválida ou maior que 6 MB.');
   $info = @getimagesize($f['tmp_name']);
