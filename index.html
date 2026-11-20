@@ -2032,6 +2032,25 @@ html.obg-on, html.obg-on body { overflow: hidden }
 .cx2-ab input { width: 20px; height: 20px; margin-top: 2px; accent-color: #0BA84A } .cx2-ab b { display: block } .cx2-ab small { color: var(--muted); font-size: .84rem }
 .cx2-ben { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px } .cx2-ben li { display: flex; gap: 10px; align-items: center; font-size: .9rem; color: var(--muted) } .cx2-ben svg.i { width: 18px; height: 18px; color: #0BA84A; flex: none }
 .cx2 .sac-c { max-width: 1060px }
+
+/* convite do app: botões iPhone / Android, dicas curtas e seta apontando o botão do navegador */
+.ia-os { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 4px }
+.ia-os .ia-bt { margin: 0; min-height: 64px; font-size: 1.1rem; gap: 10px } .ia-os .ia-bt svg { width: 26px; height: 26px }
+.ia-bt.ia-alt { background: rgba(255,255,255,.1); color: #fff; box-shadow: none; border: 1.5px solid rgba(255,255,255,.3) }
+.ia-bt.ia-big { min-height: 62px; font-size: 1.15rem } .ia-bt.ia-big svg { width: 26px; height: 26px }
+.ia-dica { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; box-sizing: border-box; text-align: left; padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.92); font-size: 1rem; line-height: 1.4 }
+.ia-dica b { color: #fff } .ia-dica svg { width: 19px; height: 19px; vertical-align: -4px; color: #4DA3FF }
+.ia-n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #FFC20E; color: #1A1300; font: 800 .95rem var(--body) }
+.ia-pq { font-size: .82rem !important; opacity: .75 }
+.ia-sp { width: 46px; height: 46px; border-radius: 50%; border: 4px solid rgba(255,255,255,.18); border-top-color: #FFC20E; animation: pxaGira .8s linear infinite }
+.ia-seta.cima-dir { top: calc(8px + env(safe-area-inset-top, 0px)); right: 14px; bottom: auto; left: auto } .ia-seta.cima-share { right: calc(18% - 22px) }
+.ia-seta.baixo-dir { top: auto; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); right: 14px; left: auto } .ia-seta.baixo-dir svg, .ia-seta.baixo-meio svg { transform: rotate(180deg) }
+.ia-seta.baixo-meio { top: auto; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); left: calc(50% - 22px); right: auto }
+.ia-seta.baixo-dir, .ia-seta.baixo-meio { animation-name: iaSetaB } @keyframes iaSetaB { 50% { transform: translateY(6px) } }
+.intro.ia-ov { animation: obgIn .3s ease both }
+.ia-seta { pointer-events: none } .intro.espera:has(> .ia-seta.baixo-meio) .intro-app, .intro.espera:has(> .ia-seta.baixo-dir) .intro-app { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) }
+
+.ia-pgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100% } .btn.ia-pg { min-height: 60px; font-size: 1.1rem }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -2046,60 +2065,104 @@ html.obg-on, html.obg-on body { overflow: hidden }
 <script>
 /* Abertura: no computador, logo por 2 segundos. No celular, aberto no navegador e sem o app instalado,
    o coração fica batendo e convida a instalar como aplicativo (uma vez só: depois de instalar ou de escolher
-   continuar no navegador, não aparece mais). Aberto pelo ícone (modo app), nunca aparece. */
+   continuar no navegador, não aparece mais). Aberto pelo ícone (modo app), nunca aparece.
+   Dois botões: iPhone e Android.
+   - Android: abre a janela nativa "Instalar app" do navegador (1 toque). O Chrome só libera a janela depois de
+     alguns segundos na página; até lá o botão mostra "Preparando…" e vira "Instalar agora".
+   - iPhone: a Apple não deixa nenhum site se instalar sozinho; o botão aponta, com uma seta, o lugar exato do
+     Compartilhar do navegador e diz o único toque que falta ("Adicionar à Tela de Início").
+   window.CBRApp.abrir() abre o mesmo convite a partir de qualquer botão "Instalar no celular". */
 (function () {
-  var e = document.getElementById("intro"); if (!e) return;
+  var e = document.getElementById("intro");
   var d = document.documentElement, ua = navigator.userAgent || "";
   var mq = function (q) { return !!(window.matchMedia && matchMedia(q).matches); };
   var ls = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (x) { return null; } return v; };
   var r = mq("(prefers-reduced-motion: reduce)");
   var app = mq("(display-mode: standalone)") || mq("(display-mode: fullscreen)") || mq("(display-mode: minimal-ui)") || navigator.standalone === true;
   if (app) { ls("app-instalado", "1"); d.classList.add("modo-app"); }
-  var ios = /iPhone|iPod/i.test(ua), android = /Android/i.test(ua) && /Mobile/i.test(ua);
-  var cel = ios || android || (mq("(pointer: coarse)") && Math.min(screen.width, screen.height) < 600);
+  var ios = /iPhone|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1), android = /Android/i.test(ua);
+  var cel = /iPhone|iPod/i.test(ua) || (android && /Mobile/i.test(ua)) || (mq("(pointer: coarse)") && Math.min(screen.width, screen.height) < 600);
   var interno = /FBAN|FBAV|FB_IAB|Instagram|Line\/|; wv\)|GSA\//i.test(ua);
   var robo = /bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(ua);
+  /* onde fica o botão Compartilhar no iPhone: Chrome (topo, na barra do endereço), Safari 26 (••• embaixo à direita), Safari antigo (embaixo no meio) */
+  var iosNav = /CriOS/.test(ua) ? "chrome" : /FxiOS|EdgiOS/.test(ua) ? "outro" : (Number((ua.match(/Version\/(\d+)/) || [])[1]) >= 26 ? "safari26" : "safari");
+  var bip = window.__bip || null, ov = null, box = null, fase = "", escolha = "", espera = null, viaIntro = false;
+  window.addEventListener("beforeinstallprompt", function (ev) { ev.preventDefault(); bip = ev; window.__bip = ev; if (fase === "preparando") pinta("pronto-instalar"); });
+  window.addEventListener("appinstalled", function () { ls("app-instalado", "1"); ls("convite-app", "instalou"); bip = null; window.__bip = null; if (ov && ov.parentNode) pinta("pronto"); });
+  var APPLE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.4-.9-2.4-3.9zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>';
+  var ANDROID = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 9.5 19.3 6.6a.4.4 0 0 0-.7-.4l-1.7 3a10.6 10.6 0 0 0-9.8 0l-1.7-3a.4.4 0 0 0-.7.4l1.7 2.9A9.9 9.9 0 0 0 1.9 17h20.2a9.9 9.9 0 0 0-4.5-7.5zM7.2 14.3a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm9.6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>';
+  var SH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4"/><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5H17"/></svg>';
+  var OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+  var SETA = function (pos) { return '<span class="ia-seta ' + pos + '" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span>'; };
+  function fecha() {
+    clearInterval(espera);
+    var alvo = ov; if (!alvo) return; alvo.classList.add("fim");
+    setTimeout(function () { if (alvo.parentNode) alvo.remove(); if (!document.querySelector(".intro")) d.classList.remove("intro-on"); if (viaIntro) document.dispatchEvent(new Event("intro-fim")); viaIntro = false; }, 400);
+    ov = null; box = null; fase = "";
+  }
+  function x() { return '<button type="button" class="ia-x" data-ia-x>Continuar no navegador</button>'; }
+  function pinta(f) {
+    fase = f; if (!box) return;
+    var h = "", seta = "";
+    if (f === "pronto") h = '<span class="ia-ok">' + OK + '</span><h2>Pronto! O app está instalado</h2><p class="ia-s">Toque no ícone <b>CoraçãoBR</b> na tela inicial: ele abre direto como aplicativo, em tela cheia.</p>' + x();
+    else if (interno) h = '<p class="ia-k">Aplicativo CoraçãoBR</p><h2>Abra no navegador para instalar</h2><p class="ia-s">Este é o navegador interno de outro app e ele não deixa instalar. Toque em <b>•••</b> e escolha <b>Abrir no navegador</b>.</p><button type="button" class="ia-bt" data-ia-copia>Copiar o link do site</button>' + x();
+    else if (f === "ios") {
+      var onde = iosNav === "chrome" ? ["cima-dir cima-share", "Toque em <b>Compartilhar</b> " + SH + " no topo, ao lado do endereço"] : iosNav === "safari26" ? ["baixo-dir", "Toque em <b>•••</b> aqui embaixo e depois em <b>Compartilhar</b> " + SH] : iosNav === "safari" ? ["baixo-meio", "Toque em <b>Compartilhar</b> " + SH + " aqui embaixo"] : ["cima-dir", "Abra o menu do navegador e toque em <b>Compartilhar</b> " + SH];
+      seta = SETA(onde[0]);
+      h = '<p class="ia-k">iPhone · quase lá</p><h2>Adicione à Tela de Início</h2><div class="ia-dica"><span class="ia-n">1</span><span>' + onde[1] + '.</span></div><div class="ia-dica"><span class="ia-n">2</span><span>Toque em <b>Adicionar à Tela de Início</b> e em <b>Adicionar</b>. O app abre pelo ícone <b>CoraçãoBR</b>.</span></div>' +
+        '<p class="ia-s ia-pq">A Apple não deixa nenhum site se instalar sozinho no iPhone: esse toque é do próprio iPhone.</p><button type="button" class="ia-x" data-ia-volta>Voltar</button>';
+    }
+    else if (f === "preparando") h = '<span class="ia-sp"></span><h2>Preparando a instalação…</h2><p class="ia-s">O navegador libera a instalação em alguns segundos. Deixe esta tela aberta.</p>' + x();
+    else if (f === "pronto-instalar") h = '<p class="ia-k">Android · tudo pronto</p><h2>Instalar o CoraçãoBR</h2><button type="button" class="ia-bt ia-big" data-ia-instalar>' + ANDROID + " Instalar agora</button>" + x();
+    else if (f === "menu") { seta = SETA("cima-dir"); h = '<p class="ia-k">Android · quase lá</p><h2>Instale pelo menu</h2><div class="ia-dica"><span class="ia-n">1</span><span>Toque nos <b>três pontinhos ⋮</b> no canto de cima.</span></div><div class="ia-dica"><span class="ia-n">2</span><span>Toque em <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>).</span></div>' + x(); }
+    else {
+      var pri = ios ? "ios" : android ? "android" : "";
+      h = '<p class="ia-k">Aplicativo CoraçãoBR · grátis</p><h2>Instale o app no seu celular</h2><p class="ia-s">Abre direto da tela inicial, em tela cheia, com avisos do que está perto de você. Escolha o seu celular:</p>' +
+        '<div class="ia-os"><button type="button" class="ia-bt' + (pri === "ios" ? "" : " ia-alt") + '" data-ia-os="ios">' + APPLE + "iPhone</button>" + '<button type="button" class="ia-bt' + (pri === "android" ? "" : " ia-alt") + '" data-ia-os="android">' + ANDROID + "Android</button></div>" + x();
+    }
+    box.innerHTML = h;
+    var velha = ov.querySelector(":scope > .ia-seta"); if (velha) velha.remove();
+    if (seta) ov.insertAdjacentHTML("beforeend", seta);
+  }
+  function instalarAndroid() {
+    if (bip) {
+      var b = bip; bip = null; window.__bip = null;
+      try { b.prompt(); } catch (er) { pinta("menu"); return; }
+      (b.userChoice || Promise.resolve({})).then(function (c) { if (c && c.outcome === "accepted") { ls("convite-app", "instalou"); ls("app-instalado", "1"); pinta("pronto"); } else pinta(""); }).catch(function () { pinta("menu"); });
+      return;
+    }
+    if (!android) { pinta("menu"); return; }
+    /* o Chrome ainda não liberou: espera até 35 s pelo instalador; se não vier (Firefox, por exemplo), mostra o menu */
+    pinta("preparando"); var t0 = Date.now(); clearInterval(espera);
+    espera = setInterval(function () { if (fase !== "preparando") { clearInterval(espera); return; } if (bip) { clearInterval(espera); pinta("pronto-instalar"); } else if (Date.now() - t0 > 35000) { clearInterval(espera); pinta("menu"); } }, 500);
+  }
+  function monta(alvo) {
+    ov = alvo; ov.classList.add("espera"); ov.removeAttribute("aria-hidden"); ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "Instalar o aplicativo CoraçãoBR");
+    box = document.createElement("div"); box.className = "intro-app"; ov.appendChild(box); pinta("");
+    ov.addEventListener("click", function (ev) {
+      var t = ev.target;
+      if (t.closest("[data-ia-x]")) { ls("convite-app", "navegador"); fecha(); return; }
+      if (t.closest("[data-ia-volta]")) { pinta(""); return; }
+      var os = t.closest("[data-ia-os]"); if (os) { escolha = os.dataset.iaOs; if (escolha === "ios") pinta("ios"); else instalarAndroid(); return; }
+      if (t.closest("[data-ia-instalar]")) { instalarAndroid(); return; }
+      if (t.closest("[data-ia-copia]")) { var u = location.href.split("#")[0], b2 = t.closest("[data-ia-copia]"); (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(function () { b2.textContent = "Link copiado. Cole no Chrome ou no Safari."; }).catch(function () { prompt("Copie o link:", u); }); }
+    });
+  }
+  /* abre o convite a qualquer momento (botões "Instalar no celular" do site) */
+  window.CBRApp = { abrir: function (os) { if (app) return false; if (ov) return true; var o = document.createElement("div"); o.className = "intro ia-ov"; o.innerHTML = e && e.querySelector(".intro-c") ? '<div class="intro-c">' + e.querySelector(".intro-c").innerHTML + "</div>" : (document.getElementById("intro-tpl") || {}).innerHTML || '<div class="intro-c"><b class="intro-w">Coração<span>BR</span></b></div>'; document.body.appendChild(o); d.classList.add("intro-on"); monta(o); if (os === "ios") pinta("ios"); else if (os === "android") instalarAndroid(); return true; }, instalado: function () { return app; } };
+  if (!e) return;
+  /* guarda o desenho do logo para reabrir o convite depois que a abertura some */
+  var tpl = document.createElement("template"); tpl.id = "intro-tpl"; tpl.innerHTML = '<div class="intro-c">' + e.querySelector(".intro-c").innerHTML + "</div>"; document.body.appendChild(tpl);
   var convida = cel && !app && !robo && window.top === window && window.isSecureContext && !ls("convite-app") && !ls("app-instalado") &&
     !/[?&]noapp\b/.test(location.search) && !/^#(clube-validar-|redefinir-|avaliar-|pergunta-|painel|pagar)/.test(location.hash);
   window.__convite = { convida: convida, cel: cel, app: app };
   d.classList.add("intro-on");
-  function fecha() { e.classList.add("fim"); setTimeout(function () { if (e.parentNode) e.remove(); d.classList.remove("intro-on"); document.dispatchEvent(new Event("intro-fim")); }, 400); }
-  if (!convida) { setTimeout(fecha, r ? 300 : 1620); return; }
-  /* o navegador entrega o instalador (Android/Chrome) */
-  var bip = null, fase = "";
-  window.addEventListener("beforeinstallprompt", function (ev) { ev.preventDefault(); bip = ev; window.__bip = ev; if (fase === "passos" || fase === "inicio") pinta("inicio"); });
-  window.addEventListener("appinstalled", function () { ls("app-instalado", "1"); ls("convite-app", "instalou"); if (document.getElementById("intro")) pinta("pronto"); });
-  var SH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4"/><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5H17"/></svg>';
-  var PL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/></svg>';
-  var OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
-  var box = null;
-  function pinta(f) {
-    fase = f; if (!box) return;
-    var h = "", x = '<button type="button" class="ia-x" data-ia-x>Continuar no navegador</button>';
-    if (f === "pronto") h = '<span class="ia-ok">' + OK + '</span><h2>Pronto! O app está no seu celular</h2><p class="ia-s">Agora toque no ícone <b>CoraçãoBR</b> na tela inicial: ele abre direto como aplicativo, em tela cheia. Daqui em diante é só usar o ícone.</p>' + x;
-    else if (interno) h = '<p class="ia-k">Aplicativo CoraçãoBR</p><h2>Abra no navegador para instalar</h2><p class="ia-s">Você está no navegador interno de outro app (Instagram, Facebook...). Ele não deixa instalar.</p><ol class="ia-p"><li>Toque em <b>•••</b> no canto da tela.</li><li>Escolha <b>Abrir no navegador</b> (Chrome ou Safari).</li><li>Lá, instale o CoraçãoBR em 1 toque.</li></ol><button type="button" class="ia-bt" data-ia-copia>Copiar o link do site</button>' + x;
-    else if (ios) h = '<p class="ia-k">Aplicativo CoraçãoBR · grátis</p><h2>Instale o app no seu iPhone</h2><p class="ia-s">Abre direto da tela inicial, em tela cheia, com avisos do que está perto de você. Sem App Store e sem ocupar espaço.</p><ol class="ia-p"><li>Toque em <b>Compartilhar</b> ' + SH + ' na barra do Safari <small>(no iOS 26: toque em <b>•••</b> e depois em Compartilhar)</small>.</li><li>Role e toque em <b>Adicionar à Tela de Início</b> ' + PL + '.</li><li>Toque em <b>Adicionar</b> e abra pelo ícone <b>CoraçãoBR</b>.</li></ol>' + x;
-    else if (f === "passos") h = '<p class="ia-k">Aplicativo CoraçãoBR · grátis</p><h2>Falta só 1 passo</h2><ol class="ia-p"><li>Toque nos <b>três pontinhos ⋮</b> no canto de cima do navegador.</li><li>Toque em <b>Instalar aplicativo</b> (ou <b>Adicionar à tela inicial</b>).</li><li>Confirme e abra pelo ícone <b>CoraçãoBR</b>.</li></ol><span class="ia-seta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span>' + x;
-    else h = '<p class="ia-k">Aplicativo CoraçãoBR · grátis</p><h2>Instale o app no seu celular</h2><p class="ia-s">Abre direto da tela inicial, em tela cheia, com avisos do que está perto de você. Sem loja e sem ocupar espaço.</p><button type="button" class="ia-bt" data-ia-instalar>' + PL + ' Instalar o aplicativo</button>' + x;
-    box.innerHTML = h;
-    var velha = e.querySelector(":scope > .ia-seta"), nova = box.querySelector(".ia-seta"); if (velha) velha.remove(); if (nova) e.appendChild(nova); /* fora da caixa animada: fica presa no canto da tela */
-  }
-  function espera() {
-    e.classList.add("espera"); e.removeAttribute("aria-hidden"); e.setAttribute("role", "dialog"); e.setAttribute("aria-modal", "true"); e.setAttribute("aria-label", "Instalar o aplicativo CoraçãoBR");
-    box = document.createElement("div"); box.className = "intro-app"; e.appendChild(box); pinta("inicio");
-    e.addEventListener("click", function (ev) {
-      var t = ev.target;
-      if (t.closest("[data-ia-x]")) { ls("convite-app", "navegador"); fecha(); return; }
-      if (t.closest("[data-ia-copia]")) { var u = location.href.split("#")[0]; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(function () { t.closest("[data-ia-copia]").textContent = "Link copiado. Cole no Chrome ou no Safari."; }).catch(function () { prompt("Copie o link:", u); }); return; }
-      if (t.closest("[data-ia-instalar]")) {
-        if (!bip) { pinta("passos"); return; }
-        var b = bip; bip = null; window.__bip = null;
-        b.prompt(); (b.userChoice || Promise.resolve({})).then(function (c) { if (c && c.outcome === "accepted") { ls("convite-app", "instalou"); pinta("pronto"); } else pinta("passos"); }).catch(function () { pinta("passos"); });
-      }
-    });
-  }
+  ov = e;
+  var fechaIntro = function () { ov = e; fecha(); };
+  if (!convida) { ov = null; setTimeout(function () { ov = e; viaIntro = true; fecha(); }, r ? 300 : 1620); return; }
+  ov = null;
   /* já instalado neste aparelho (Android informa)? então não convida */
-  var decide = function () { if (navigator.getInstalledRelatedApps) navigator.getInstalledRelatedApps().then(function (a) { if (a && a.length) { ls("app-instalado", "1"); window.__appInstalado = true; fecha(); } else espera(); }).catch(espera); else espera(); };
+  var decide = function () { viaIntro = true; if (navigator.getInstalledRelatedApps) navigator.getInstalledRelatedApps().then(function (a) { if (a && a.length) { ls("app-instalado", "1"); window.__appInstalado = true; fechaIntro(); } else monta(e); }).catch(function () { monta(e); }); else monta(e); };
   setTimeout(decide, r ? 300 : 1620);
 })();
 </script>
@@ -2153,35 +2216,35 @@ html.obg-on, html.obg-on body { overflow: hidden }
 <dialog id="dlg"></dialog>
 <div id="toast" class="toast" hidden role="status"></div>
 
-<script src="js/store.js?v=202611201539"></script>
-<script src="js/horario.js?v=202611201539"></script>
-<script src="js/app.js?v=202611201539"></script>
-<script src="js/cardapio.js?v=202611201539"></script>
-<script src="js/pix.js?v=202611201539"></script>
-<script src="js/pagamento.js?v=202611201539"></script>
-<script src="js/promo.js?v=202611201539"></script>
-<script src="js/oficiais.js?v=202611201539"></script>
-<script src="js/metro.js?v=202611201539"></script>
+<script src="js/store.js?v=202611201629"></script>
+<script src="js/horario.js?v=202611201629"></script>
+<script src="js/app.js?v=202611201629"></script>
+<script src="js/cardapio.js?v=202611201629"></script>
+<script src="js/pix.js?v=202611201629"></script>
+<script src="js/pagamento.js?v=202611201629"></script>
+<script src="js/promo.js?v=202611201629"></script>
+<script src="js/oficiais.js?v=202611201629"></script>
+<script src="js/metro.js?v=202611201629"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-<script src="js/anunciante.js?v=202611201539"></script>
-<script src="js/extras.js?v=202611201539"></script>
-<script src="js/checklist.js?v=202611201539"></script>
-<script src="js/diferenciais.js?v=202611201539"></script>
-<script src="js/galeria.js?v=202611201539"></script>
-<script src="js/dash.js?v=202611201539"></script>
-<script src="js/usuario.js?v=202611201539"></script>
-<script src="js/custo.js?v=202611201539"></script>
-<script src="js/comunidade.js?v=202611201539"></script>
-<script src="js/novidades.js?v=202611201539"></script>
-<script src="js/jornada.js?v=202611201539"></script>
-<script src="js/paginas.js?v=202611201539"></script>
-<script src="js/efeitos.js?v=202611201539"></script>
+<script src="js/anunciante.js?v=202611201629"></script>
+<script src="js/extras.js?v=202611201629"></script>
+<script src="js/checklist.js?v=202611201629"></script>
+<script src="js/diferenciais.js?v=202611201629"></script>
+<script src="js/galeria.js?v=202611201629"></script>
+<script src="js/dash.js?v=202611201629"></script>
+<script src="js/usuario.js?v=202611201629"></script>
+<script src="js/custo.js?v=202611201629"></script>
+<script src="js/comunidade.js?v=202611201629"></script>
+<script src="js/novidades.js?v=202611201629"></script>
+<script src="js/jornada.js?v=202611201629"></script>
+<script src="js/paginas.js?v=202611201629"></script>
+<script src="js/efeitos.js?v=202611201629"></script>
 <script src="vendor/leaflet.js"></script>
-<script src="js/recursos.js?v=202611201539"></script>
-<script src="js/mapa.js?v=202611201539"></script>
-<script src="js/social.js?v=202611201539"></script>
-<script src="js/idiomas.js?v=202611201539"></script>
-<script src="js/painel.js?v=202611201539"></script>
-<script src="js/painel-recursos.js?v=202611201539"></script>
-<script src="js/auth.js?v=202611201539"></script>
+<script src="js/recursos.js?v=202611201629"></script>
+<script src="js/mapa.js?v=202611201629"></script>
+<script src="js/social.js?v=202611201629"></script>
+<script src="js/idiomas.js?v=202611201629"></script>
+<script src="js/painel.js?v=202611201629"></script>
+<script src="js/painel-recursos.js?v=202611201629"></script>
+<script src="js/auth.js?v=202611201629"></script>
 </body></html>
