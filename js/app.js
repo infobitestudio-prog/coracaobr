@@ -370,9 +370,19 @@
       var b = e.target.closest("button"); if (!b) return;
       if (b.dataset.limpa) { F.aberto = false; F.pt = false; F.preco = "todos"; F.cat = ""; }
       else if (b.dataset.ab) F.aberto = !F.aberto; else if (b.dataset.fp) F.pt = !F.pt; else if (b.dataset.p) F.preco = F.preco === b.dataset.p ? "todos" : b.dataset.p; else if (b.dataset.c != null) F.cat = F.cat === b.dataset.c ? "" : b.dataset.c;
-      subchips(); grade();
+      marcaFiltros(); grade(true);
     });
     subchips(); grade();
+  }
+  /* Atualiza só o estado dos botões, sem recriar o painel (a lista de categorias continua aberta). */
+  var catAberta = null;
+  function marcaFiltros() {
+    var el = $("#f-cat"); if (!el) return;
+    Array.from(el.querySelectorAll("[data-ab]")).forEach(function (b) { b.setAttribute("aria-pressed", F.aberto); });
+    Array.from(el.querySelectorAll("[data-fp]")).forEach(function (b) { b.setAttribute("aria-pressed", F.pt); });
+    Array.from(el.querySelectorAll("[data-p]")).forEach(function (b) { b.setAttribute("aria-pressed", F.preco === b.dataset.p); });
+    Array.from(el.querySelectorAll("[data-c]")).forEach(function (b) { b.setAttribute("aria-pressed", (F.cat || "") === b.dataset.c); });
+    var lp = el.querySelector("[data-limpa]"); if (lp) lp.hidden = !(F.aberto || F.pt || F.preco !== "todos" || F.cat);
   }
   function subchips() {
     var el = $("#f-cat"); if (!el) return;
@@ -382,11 +392,13 @@
     var temAtr = base.some(function (l) { return l.tipo !== "estabelecimento"; }) && F.grupo !== "gratis";
     var tg = function (attr, on, txt) { return '<button type="button" class="xp-tg" ' + attr + ' aria-pressed="' + on + '"><i></i>' + txt + "</button>"; };
     var ativos = F.aberto || F.pt || F.preco !== "todos" || F.cat;
-    el.innerHTML = '<div class="xp-th"><p class="xp-t">Filtros</p>' + (ativos ? '<button type="button" class="more" data-limpa="1">limpar</button>' : "") + "</div>" +
+    var abre = catAberta != null ? catAberta : (!!F.cat || matchMedia("(min-width: 960px)").matches);
+    el.innerHTML = '<div class="xp-th"><p class="xp-t">Filtros</p><button type="button" class="more" data-limpa="1"' + (ativos ? "" : " hidden") + '>limpar</button></div>' +
       tg('data-ab="1"', F.aberto, "Aberto agora") + tg('data-fp="1"', F.pt, "Fala português") +
       (temAtr ? tg('data-p="gratis"', F.preco === "gratis", "Gratuitos") + tg('data-p="pagos"', F.preco === "pagos", "Pagos") : "") +
-      (cats.length > 1 ? '<details class="xp-cats"' + (F.cat || matchMedia("(min-width: 960px)").matches ? " open" : "") + '><summary class="xp-t">Categorias <span>' + cats.length + '</span></summary><div class="xp-list"><button type="button" class="xp-c" data-c="" aria-pressed="' + !F.cat + '">Todas<em>' + base.length + "</em></button>" +
+      (cats.length > 1 ? '<details class="xp-cats"' + (abre ? " open" : "") + '><summary class="xp-t">Categorias <span>' + cats.length + '</span></summary><div class="xp-list"><button type="button" class="xp-c" data-c="" aria-pressed="' + !F.cat + '">Todas<em>' + base.length + "</em></button>" +
         cats.map(function (c) { return '<button type="button" class="xp-c" data-c="' + esc(c) + '" aria-pressed="' + (F.cat === c) + '">' + esc(CATS[c] || c) + "<em>" + n[c] + "</em></button>"; }).join("") + "</div></details>" : "");
+    var dt = el.querySelector("details"); if (dt) dt.addEventListener("toggle", function () { catAberta = dt.open; });
   }
   /* Explorar mostra 36 cards por vez e carrega mais ao chegar no fim da lista (celulares mais simples agradecem). */
   var POR_VEZ = 36, gradeLista = [], gradeN = 0, gradeIO = null;
@@ -479,7 +491,7 @@
   }
   function abasDe(l, av) {
     var t = [["sobre", "Sobre"], ["ir", "Como ir"]];
-    if ((l.menu || []).length) t.push(["menu", "Cardápio"]);
+    if (window.Cardapio ? Cardapio.temAlgo(l) : (l.menu || []).length) t.push(["menu", window.Cardapio ? Cardapio.rotulo(l) : "Cardápio"]);
     t.push(["aval", "Avaliações" + (av.length ? " " + av.length : "")]);
     if (!t.some(function (x) { return x[0] === L.tab; })) L.tab = "sobre";
     return t;
@@ -502,7 +514,7 @@
         apps(l) + '<p class="small muted">Calculado pela distância (' + (kmDe(l) < 10 ? kmDe(l).toFixed(1).replace(".", ",") : kmDe(l).toFixed(0)) + " km em linha reta), sem trânsito. O tempo exato aparece no Maps.</p>" +
         (l.estacionamento ? tile("car", "Estacionamento", esc(l.estacionamento), "", "wide") : "") + "</div>";
     }
-    if (tab === "menu") return menuHtml(l);
+    if (tab === "menu") return window.Cardapio ? Cardapio.bloco(l) : menuHtml(l);
     if (tab === "aval") {
       var av = avaliacoesDe(l.id), n = notas(l), cont = [0, 0, 0, 0, 0, 0];
       av.forEach(function (a) { var k = Math.max(0, Math.min(5, Math.round(Number(a.estrelas)) || 0)); cont[k]++; });
@@ -516,7 +528,6 @@
     var hist = String(l.historia || ""), longo = hist.length > 360 && !L.lermais, f = fluxoDe(l), meu = sess("fluxo-" + l.id + "-" + hojeISO());
     var t = [];
     if (l.endereco) t.push(tile("pin", "Endereço", esc(l.endereco), '<button type="button" class="link" data-copiar="' + esc(l.endereco) + '">Copiar</button>', "wide"));
-    if (l.horario || l.semana) t.push('<div class="tile wide"><span class="tic">' + ic("clock") + '</span><div><small>Horário</small>' + (window.Horario ? Horario.html(l, esc) : "<b>" + esc(l.horario) + "</b>") + "</div></div>");
     if (!est) t.push(tile("ticket", "Entrada", esc(l.preco || (l.gratuito ? "Gratuito" : "Valor não levantado")) + (l.precoMin > 0 ? brl(l.precoMin) : ""), '<span class="small muted">' + (l.precoConfirmado === false ? "A confirmar · " : "") + (l.atualizadoEm ? "conferido em " + esc(l.atualizadoEm) : "") + (url(l.fontePreco) ? ' · <a href="' + esc(l.fontePreco) + '" target="_blank" rel="noopener">fonte</a>' : "") + "</span>", "wide"));
     if (l.quando) t.push(tile("clock", "Quando", esc(l.quando), "", "wide"));
     t.push(tile("users", "Movimento", f ? '<i class="dot" style="background:' + FLUXO[f.nivel][1] + '"></i>' + FLUXO[f.nivel][0] : "Sem informação hoje", '<span class="small muted">' + (f ? f.fonte : "") + "</span>" + (meu ? '<span class="small muted">Obrigado pela informação.</span>' : '<span class="row" style="gap:6px;margin-top:8px">' + [["pouco", "Tranquilo"], ["medio", "Médio"], ["alto", "Cheio"]].map(function (o) { return '<button type="button" class="chip xs" data-fluxo="' + o[0] + '">' + o[1] + "</button>"; }).join("") + "</span>"), "wide"));
@@ -567,25 +578,29 @@
       (f ? '<img src="' + esc(Store.urlFoto(f.src)) + '" alt="Foto de ' + esc(l.nome) + '">' + (f.credito ? '<span class="cred">' + (f.ilustrativa ? "Foto ilustrativa: " : "Foto: ") + (url(f.pagina) ? '<a href="' + esc(f.pagina) + '" target="_blank" rel="noopener">' + esc(f.credito) + "</a>" : esc(f.credito)) + (f.licenca ? " · " + esc(f.licenca) : "") + "</span>" : "") : '<div class="phx">' + esc(l.nome) + "</div>") +
       '<button type="button" class="round close" data-fechar aria-label="Fechar">' + ic("down") + "</button>" +
       (window.Extras ? Extras.botaoFav(l) : "") +
-      (fs.length > 1 ? '<button type="button" class="round prev" data-foto="-1" aria-label="Foto anterior">' + ic("left") + '</button><button type="button" class="round next" data-foto="1" aria-label="Próxima foto">' + ic("right") + '</button><div class="dots">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Foto ' + (i + 1) + '"></button>'; }).join("") + "</div>" : "") + "</div>" +
-      '<div class="sheet-body' + (manterScroll ? " quiet" : "") + '">' +
-      '<div><p class="eyebrow">' + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (l.brasileiro ? " · Brasileiro" : "") + '</p><h2 style="margin-top:4px">' + esc(l.nome) + "</h2>" +
+      (fs.length > 1 ? '<button type="button" class="round prev" data-foto="-1" aria-label="Foto anterior">' + ic("left") + '</button><button type="button" class="round next" data-foto="1" aria-label="Próxima foto">' + ic("right") + '</button><div class="dots">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Foto ' + (i + 1) + '"></button>'; }).join("") + "</div>" : "") +
+      (fs.length > 1 ? '<div class="sp-th">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Ver foto ' + (i + 1) + '"><img src="' + esc(Store.urlFoto(x.src)) + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "") + "</div>" +
+      '<div class="sheet-body' + (manterScroll ? " quiet" : "") + '"><div class="sb-grid"><div class="sb-main">' +
+      '<div class="sb-tit"><p class="eyebrow">' + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (l.brasileiro ? " · Brasileiro" : "") + '</p><h2 style="margin-top:4px">' + esc(l.nome) + "</h2>" +
       '<div class="row badges">' + (n.guia != null ? '<span class="badge"><span style="color:var(--sun)">★</span> <b class="num">' + n.guia.toFixed(1) + "</b>" + (n.qtd ? " (" + n.qtd + ")" : "") + "</span>" : "") +
       (window.Extras && Extras.aberto(l) != null ? '<span class="badge"><i class="dot" style="background:' + (Extras.aberto(l) ? "#2E8B57" : "#C2452D") + '"></i>' + (Extras.aberto(l) ? "Aberto agora" : "Fechado agora") + "</span>" : "") +
       (fluxoDe(l) ? '<span class="badge"><i class="dot" style="background:' + FLUXO[fluxoDe(l).nivel][1] + '"></i>' + FLUXO[fluxoDe(l).nivel][0] + "</span>" : "") +
       (falaPt(l) ? '<span class="badge pt">🇧🇷 Fala português</span>' : "") + (window.Recursos ? Recursos.selos(l) : "") + (Store.admin() && Store.estado.modo === "nuvem" && l.notaProvisoria ? '<span class="badge soft">nota provisória</span>' : "") + "</div></div>" +
       acoes(l) +
-      '<div class="attrs"><div>' + ic("ticket") + "<b>" + esc(est ? (l.faixaPreco || "–") : l.gratuito ? "Gratuito" : l.precoMin > 0 ? usd(l.precoMin) : "Pago") + "</b><small>" + (est ? "Faixa de preço" : "Entrada") + "</small></div>" +
-      "<div>" + ic("clock") + "<b>" + esc(l.quando ? l.quando : est ? (window.Extras && Extras.aberto(l) != null ? (Extras.aberto(l) ? "Aberto" : "Fechado") : "Ver horário") : (l.tempoVisita || "Livre")) + "</b><small>" + (l.quando ? "Quando" : est ? "Agora" : "Tempo de visita") + "</small></div>" +
-      "<div>" + ic("pin") + "<b>" + (mi == null ? "–" : tempo(l)) + "</b><small>" + (mi == null ? "Distância" : esc(MODOS[Geo.modo].nome.toLowerCase()) + " · " + (mi < 10 ? mi.toFixed(1).replace(".", ",") : mi.toFixed(0)) + " mi") + "</small></div>" +
-      "<div>" + ic("star") + "<b>" + (n.guia != null ? n.guia.toFixed(1) : "–") + "</b><small>" + (n.qtd ? n.qtd + (n.qtd === 1 ? " avaliação" : " avaliações") : "curadoria") + "</small></div></div>" +
-      (l.cupom ? '<div class="ticket"><span class="tic">' + ic("ticket") + '</span><div><span class="sponsor">Oferta para quem vem pelo guia</span><b>' + esc(l.cupom) + '</b><span class="small muted">Mostre esta tela no atendimento.</span>' + (window.Comunidade ? Comunidade.botaoCupom(l) : "") + '</div></div>' : "") +
       (window.Usuario ? Usuario.blocoEvento(l) : "") + (window.Recursos ? Recursos.blocoLugar(l) : "") + (window.Social ? Social.blocoLugar(l) : "") +
       '<div class="seg" role="tablist" id="seg">' + abasDe(l, av).map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (L.tab === t[0]) + '">' + t[1] + "</button>"; }).join("") + '<span class="seg-pill"></span></div>' +
       '<div id="tabc" class="tabc">' + abaConteudo(l, L.tab) + "</div>" +
       (function () { if (l.categoria !== "evento") return ""; var ou = eventosDoLocal(l).filter(function (o) { return o.id !== l.id; }); return ou.length ? '<div><div class="head"><h2 style="font-size:1.3rem">Outros eventos neste local</h2></div><div class="list">' + ou.map(function (o) { return '<a class="lrow nopos" href="#lugar-' + esc(o.id) + '"><span class="th">' + (foto(o) ? '<img src="' + esc(foto(o)) + '" alt="" loading="lazy">' : "") + "</span><span><b>" + esc(o.nome) + "</b><small>" + esc(o.quando || "") + '</small></span><span class="val">' + esc(precoCurto(o)) + "</span></a>"; }).join("") + "</div></div>" : ""; })() +
       (ad ? '<a class="adband" ' + alvo(ad) + '><div><span class="sponsor">Patrocinado</span><b>' + esc(ad.titulo) + '</b><span class="small muted">' + esc(ad.texto || "") + "</span></div>" + ic("arrow") + "</a>" : "") +
-      (perto.length ? '<div><div class="head"><h2 style="font-size:1.3rem">Perto daqui</h2></div><div class="hscroll">' + perto.map(card).join("") + "</div></div>" : "") +
+      '</div><aside class="sb-side">' +
+      ((l.horario || l.semana || l.horas) ? '<div class="sb-card sb-hor"><p class="xp-t">' + ic("clock") + " Horário</p>" + (window.Horario ? Horario.html(l, esc) : "<b>" + esc(l.horario) + "</b>") + "</div>" : "") +
+      '<div class="attrs"><div>' + ic("ticket") + "<b>" + esc(est ? (l.faixaPreco || "–") : l.gratuito ? "Gratuito" : l.precoMin > 0 ? usd(l.precoMin) : "Pago") + "</b><small>" + (est ? "Faixa de preço" : "Entrada") + "</small></div>" +
+      "<div>" + ic("clock") + "<b>" + esc(l.quando ? l.quando : est ? (window.Extras && Extras.aberto(l) != null ? (Extras.aberto(l) ? "Aberto" : "Fechado") : "Ver horário") : (l.tempoVisita || "Livre")) + "</b><small>" + (l.quando ? "Quando" : est ? "Agora" : "Tempo de visita") + "</small></div>" +
+      "<div>" + ic("pin") + "<b>" + (mi == null ? "–" : tempo(l)) + "</b><small>" + (mi == null ? "Distância" : esc(MODOS[Geo.modo].nome.toLowerCase()) + " · " + (mi < 10 ? mi.toFixed(1).replace(".", ",") : mi.toFixed(0)) + " mi") + "</small></div>" +
+      "<div>" + ic("star") + "<b>" + (n.guia != null ? n.guia.toFixed(1) : "–") + "</b><small>" + (n.qtd ? n.qtd + (n.qtd === 1 ? " avaliação" : " avaliações") : "curadoria") + "</small></div></div>" +
+      (l.cupom ? '<div class="ticket"><span class="tic">' + ic("ticket") + '</span><div><span class="sponsor">Oferta para quem vem pelo guia</span><b>' + esc(l.cupom) + '</b><span class="small muted">Mostre esta tela no atendimento.</span>' + (window.Comunidade ? Comunidade.botaoCupom(l) : "") + '</div></div>' : "") +
+      '<a class="btn sb-go" href="https://www.google.com/maps/dir/?api=1&destination=' + destino + "&travelmode=" + MODOS[Geo.modo].maps + (Geo.gps ? "&origin=" + Geo.lat.toFixed(5) + "," + Geo.lng.toFixed(5) : "") + '" target="_blank" rel="noopener">' + ic("pin") + " Como chegar</a></aside></div>" +
+      (perto.length ? '<div class="sb-perto"><div class="head"><h2 style="font-size:1.3rem">Perto daqui</h2></div><div class="hscroll">' + perto.map(card).join("") + "</div></div>" : "") +
       '</div></div><div class="sheet-bar"><div class="v"><b>' + esc(precoBar) + "</b>" + (!est && !l.gratuito && l.precoMin > 0 ? brl(l.precoMin) : "") + "<small>" + (est ? "faixa de preço" : l.gratuito ? "entrada livre" : "adulto, a partir de") + '</small></div><a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=' + destino + "&travelmode=" + MODOS[Geo.modo].maps + (Geo.gps ? "&origin=" + Geo.lat.toFixed(5) + "," + Geo.lng.toFixed(5) : "") + '" target="_blank" rel="noopener">' + ic("pin") + " Como chegar</a></div>";
     $(".sheet-scroll", sheetCard).scrollTop = topo;
     pilula(); ligaForm();
@@ -731,7 +746,7 @@
     var faq = [["Posso cancelar quando quiser?", "Sim. Não há fidelidade nem multa. O anúncio fica no ar até o fim do mês já pago."], ["Quantos anúncios posso ter?", "Até 3 anúncios na mesma conta, cada um com seu banner, pelo mesmo valor de " + preco + " por mês."], ["Precisa de aprovação?", "Não. Você monta o anúncio e ele entra no ar na hora. A equipe pode remover conteúdo que viole os termos de uso."], ["Como é feito o pagamento?", (c.pagamentos && (c.pagamentos.anuncio || c.pagamentos.basico)) ? "Por cartão, em página segura de pagamento, com renovação mensal automática." : "A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX)."], ["Quem vê meu anúncio?", "Brasileiros e falantes de português que usam o guia para decidir onde comer, comprar e contratar serviços."]];
     app.innerHTML = '<section class="block an"><div class="wrap">' +
       '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p><h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
-      '<div class="row an-cta"><a class="btn" href="#anunciar" data-plano="anuncio">Anunciar agora ' + ic("arrow") + '</a><a class="btn ghost" href="#explorar">Ver como fica</a></div>' +
+      '<div class="row an-cta"><a class="btn" href="#anunciar" data-plano="anuncio">Anunciar agora ' + ic("arrow") + '</a></div>' +
       '<dl class="an-st"><div><dt>Lugares no guia</dt><dd>' + ls.length + '</dd></div><div><dt>Cidades</dt><dd>' + cidades + '</dd></div><div><dt>Idiomas</dt><dd>3</dd></div></dl></div>' +
       '<aside class="an-plan"><p class="an-pl">Plano único</p><div class="an-pv">' + preco + '<small>/mês</small></div>' + brl(c.precoAnuncio) +
       '<ul class="an-ck">' + cks(["Até 3 anúncios com banner próprio", "Banner no carrossel da página inicial", "Pin verde no mapa e topo das buscas", "Publicações no feed e no Mural", "Página com fotos, cardápio, horário e contatos", "Cupom com QR Code e painel de métricas"]) + '</ul>' +

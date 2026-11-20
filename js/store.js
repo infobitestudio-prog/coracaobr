@@ -25,6 +25,8 @@
       o.fotos = Array.isArray(o.fotos) ? o.fotos.filter(function (f) { return f && typeof f === "object" && typeof f.src === "string"; }) : [];
       o.fotos.forEach(function (f) { if (typeof f.credito === "string") f.credito = f.credito.replace(/(Unknown author\s*)+/gi, "autor desconhecido").trim(); });
       if (o.menu != null && !Array.isArray(o.menu)) delete o.menu;
+      if (o.cardapioPaginas != null) o.cardapioPaginas = Array.isArray(o.cardapioPaginas) ? o.cardapioPaginas.filter(function (x) { return typeof x === "string"; }).slice(0, 16) : [];
+      if (o.cardapioLink != null && typeof o.cardapioLink !== "string") delete o.cardapioLink;
       if (Array.isArray(o.menu)) o.menu = o.menu.filter(function (m) { return m && typeof m === "object"; });
       if (o.semana != null && !(Array.isArray(o.semana) && o.semana.length === 7 && o.semana.every(function (d) { return d == null || (Array.isArray(d) && d.every(function (x) { return Array.isArray(x) && x.length === 2 && isFinite(x[0]) && isFinite(x[1]); })); }))) delete o.semana;
       if (o.horas != null) { if (typeof o.horas !== "object" || Array.isArray(o.horas)) delete o.horas; else Object.keys(o.horas).forEach(function (k) { var v = o.horas[k]; o.horas[k] = Array.isArray(v) ? v.filter(function (x) { return x && typeof x === "object"; }) : []; }); }

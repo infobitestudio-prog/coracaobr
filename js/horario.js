@@ -96,16 +96,22 @@
   }
 
   function html(l, esc) {
-    var d = dados(l), ag = agora(l), hoje = agoraDallas().getDay();
+    var d = dados(l), ag = agora(l), n = agoraDallas(), hoje = n.getDay(), mAgora = n.getHours() * 60 + n.getMinutes();
     if (!d.semana) {
-      return '<div class="hor"><div class="hor-st"><i class="dot" style="background:#9A9F9A"></i>Horário variável</div>' + (l.horario ? '<p class="small muted">' + esc(l.horario) + "</p>" : "") + "</div>";
+      return '<div class="hor"><div class="hor-top"><span class="hor-st var">Horário variável</span></div>' + (l.horario ? '<p class="hor-res">' + esc(l.horario) + "</p>" : "") + "</div>";
     }
-    var ordem = [1, 2, 3, 4, 5, 6, 0];
-    return '<div class="hor">' + (ag ? '<div class="hor-st"><i class="dot" style="background:' + (ag.aberto ? "#2E8B57" : "#C2452D") + '"></i>' + ag.txt + "</div>" : d.vago ? '<div class="hor-st"><i class="dot" style="background:#C98A12"></i>Horário aproximado</div>' : "") +
-      '<ul class="semana">' + ordem.map(function (k) {
-        var f = d.semana[k], v = f == null ? '<span class="muted">—</span>' : f.length ? f.map(faixaTxt).join("<br>") : '<span class="muted">Fechado</span>';
-        return "<li" + (k === hoje ? ' class="hoje"' : "") + "><span>" + CURTO[k] + (k === hoje ? " <em>hoje</em>" : "") + "</span><b>" + v + "</b></li>";
-      }).join("") + "</ul>" +
+    var ordem = [1, 2, 3, 4, 5, 6, 0], partes = ag ? ag.txt.split(" · ") : [];
+    var st = ag ? '<span class="hor-st ' + (ag.aberto ? "ab" : "fe") + '">' + esc(partes[0]) + "</span>" + (partes[1] ? '<span class="hor-tx">' + esc(partes[1]) + "</span>" : "") : d.vago ? '<span class="hor-st var">Horário aproximado</span>' : "";
+    var pct = function (m) { return Math.max(0, Math.min(100, m / 1440 * 100)).toFixed(2); };
+    var linhas = ordem.map(function (k) {
+      var f = d.semana[k], txt = f == null ? "—" : f.length ? f.map(faixaTxt).join(" · ") : "Fechado";
+      var barras = (f || []).map(function (x) { var a = x[0], fim = Math.min(x[1], 1440); return '<i style="left:' + pct(a) + "%;width:" + (pct(fim) - pct(a)).toFixed(2) + '%"></i>'; }).join("");
+      var vira = d.semana[(k + 6) % 7] || []; vira.forEach(function (x) { if (x[1] > 1440) barras += '<i style="left:0;width:' + pct(x[1] - 1440) + '%"></i>'; });
+      return '<li class="' + (k === hoje ? "hoje" : "") + (f && !f.length ? " fechado" : "") + '"><span class="hd">' + CURTO[k] + (k === hoje ? "<em>hoje</em>" : "") + '</span><span class="hb">' + barras + (k === hoje ? '<b class="agora" style="left:' + pct(mAgora) + '%"></b>' : "") + '</span><span class="ht">' + txt + "</span></li>";
+    }).join("");
+    return '<div class="hor"><div class="hor-top">' + st + "</div>" +
+      '<ul class="semana2">' + linhas + '</ul><div class="hor-esc"><span></span><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span></div>' +
+      '<p class="hor-res">' + esc(texto(d.semana.map(function (x) { return x || []; }))) + "</p>" +
       (d.notas.length ? '<p class="small muted">' + d.notas.map(esc).join(" · ") + "</p>" : "") + "</div>";
   }
 
@@ -113,10 +119,10 @@
   function editor(l) {
     var d = dados(l), s = (d.semana && !d.vago) ? d.semana : [null, null, null, null, null, null, null], ordem = [1, 2, 3, 4, 5, 6, 0];
     function hm(m) { m = m % 1440; return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); }
-    function faixa(f, ab) { return '<span class="hed-f"><input type="time" data-ab value="' + (f ? hm(f[0]) : "09:00") + '"' + (ab ? "" : " disabled") + ' aria-label="Abre às"><span>às</span><input type="time" data-fe value="' + (f ? hm(f[1]) : "18:00") + '"' + (ab ? "" : " disabled") + ' aria-label="Fecha às"></span>'; }
+    function faixa(f, ab, extra) { return '<span class="hed-f' + (extra ? " extra" : "") + '"><input type="time" data-ab value="' + (f ? hm(f[0]) : "09:00") + '"' + (ab ? "" : " disabled") + ' aria-label="Abre às"><span>às</span><input type="time" data-fe value="' + (f ? hm(f[1]) : "18:00") + '"' + (ab ? "" : " disabled") + ' aria-label="Fecha às">' + (extra ? '<button type="button" class="hed-x" data-tira-faixa aria-label="Remover este horário">×</button>' : "") + '</span>'; }
     return '<div class="hed">' + ordem.map(function (k) {
       var fs = s[k] || [], ab = fs.length > 0;
-      return '<div class="hed-r" data-dia="' + k + '"' + (s[k] == null ? ' data-desconhecido="1"' : "") + '><label class="hed-d"><input type="checkbox" data-aberto' + (ab ? " checked" : "") + "> " + CURTO[k] + '</label><div class="hed-fs">' + (fs.length ? fs.map(function (f) { return faixa(f, true); }).join("") : faixa(null, false)) + '</div><button type="button" class="mini" data-mais-faixa aria-label="Adicionar outro horário neste dia"' + (ab ? "" : " disabled") + ">+</button></div>";
+      return '<div class="hed-r" data-dia="' + k + '"' + (s[k] == null ? ' data-desconhecido="1"' : "") + '><label class="hed-d"><input type="checkbox" data-aberto' + (ab ? " checked" : "") + "> " + CURTO[k] + '</label><div class="hed-fs">' + (fs.length ? fs.map(function (f, i) { return faixa(f, true, i > 0); }).join("") : faixa(null, false)) + '</div><button type="button" class="mini" data-mais-faixa aria-label="Adicionar outro horário neste dia"' + (ab ? "" : " disabled") + ">+</button></div>";
     }).join("") + '<p class="small muted">Marque os dias abertos. Use + para um segundo horário no mesmo dia (almoço e jantar). Para 24 horas, use 00:00 às 00:00.</p></div>';
   }
   function lerEditor(el) {
@@ -147,9 +153,11 @@
   });
 
   document.addEventListener("click", function (e) {
+    var x = e.target.closest("[data-tira-faixa]");
+    if (x) { var rr = x.closest(".hed-r"); x.closest(".hed-f").remove(); if (rr) { rr.dataset.mexeu = "1"; var hh = rr.closest(".hed"); if (hh) hh.dataset.mudou = "1"; } return; }
     var b = e.target.closest("[data-mais-faixa]"); if (!b) return;
     var r = b.closest(".hed-r"), fs = r.querySelector(".hed-fs"); if (fs.children.length >= 3) return;
-    fs.insertAdjacentHTML("beforeend", '<span class="hed-f"><input type="time" data-ab value="17:00" aria-label="Abre às"><span>às</span><input type="time" data-fe value="22:00" aria-label="Fecha às"></span>');
+    fs.insertAdjacentHTML("beforeend", '<span class="hed-f extra"><input type="time" data-ab value="17:00" aria-label="Abre às"><span>às</span><input type="time" data-fe value="22:00" aria-label="Fecha às"><button type="button" class="hed-x" data-tira-faixa aria-label="Remover este horário">×</button></span>');
     r.dataset.mexeu = "1"; var h = r.closest(".hed"); if (h) h.dataset.mudou = "1";
   });
   window.Horario = { paraObj: paraObj, agoraDallas: agoraDallas, ler: ler, dados: dados, agora: agora, html: html, editor: editor, lerEditor: lerEditor, texto: texto };

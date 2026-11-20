@@ -39,10 +39,6 @@
   function aviso(tipo, l, valor) { return Store.gravar("avisos", Store.novoId("av"), { tipo: tipo, lugarId: l.id, nome: l.nome, categoria: l.categoria, valor: valor || 0, criadoEm: new Date().toISOString(), lido: false }); }
   function fotosHtml() { return (D.fotos || []).map(function (f, i) { return '<figure><img src="' + esc(Store.urlFoto(f.src)) + '" alt=""><button type="button" data-tirar="' + i + '" aria-label="Remover foto">×</button></figure>'; }).join(""); }
 
-  function linhaMenu(m) { m = m || {}; return '<div class="mrow"><input data-k="secao" value="' + esc(m.secao || "") + '" placeholder="Seção (ex.: Pratos)" aria-label="Seção"><input data-k="item" value="' + esc(m.item || "") + '" placeholder="Item" aria-label="Item"><input data-k="descricao" value="' + esc(m.descricao || "") + '" placeholder="Descrição" aria-label="Descrição"><input data-k="preco" value="' + esc(m.preco == null ? "" : m.preco) + '" placeholder="US$" inputmode="decimal" aria-label="Preço"><button type="button" class="btn sm danger" data-tira-menu aria-label="Remover item">×</button></div>'; }
-  function lerMenu() {
-    return Array.from(document.querySelectorAll("#n-menu .mrow")).map(function (r) { var o = {}; Array.from(r.querySelectorAll("input")).forEach(function (i) { o[i.dataset.k] = i.value.trim(); }); var p = String(o.preco).replace(",", "."); o.preco = p === "" || isNaN(Number(p)) ? null : Math.round(Number(p) * 100) / 100; return o; }).filter(function (m) { return m.item; }).slice(0, 30);
-  }
   /* ---------- formulário ---------- */
   function viewAnunciar(id) {
     var c = G.config(), existente = id ? Store.obter("lugares", id) : null;
@@ -67,9 +63,7 @@
       '<div class="panel stack" style="gap:12px"><h3>Onde você atende</h3>' + fld("n-end", "Endereço (opcional para quem atende em domicílio)", D.endereco) +
       '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + partida.map(function (p) { return '<option' + (p === D.cidade ? " selected" : "") + ">" + esc(p) + "</option>"; }).join("") + "</select></div>" +
       '<div class="field"><span>Horário de atendimento</span>' + Horario.editor(D) + "</div>" + "</div>" +
-      '<div class="panel stack" style="gap:12px"><h3>Cardápio ou tabela de preços</h3><p class="small muted">Opcional. Preços em dólar; o guia mostra também o valor aproximado em reais.</p><div id="n-menu">' + (D.menu || []).map(linhaMenu).join("") + '</div><button type="button" class="btn ghost sm" id="n-mais" style="justify-self:start">Adicionar item</button></div>' +
-      '<div class="panel stack" style="gap:12px"><h3>Fotos (<span id="n-nf">' + D.fotos.length + '</span> de 10)</h3><div class="photos" id="n-fotos">' + fotosHtml() + '</div><label class="sr" for="n-file">Adicionar fotos</label><input type="file" id="n-file" accept="image/*" multiple style="max-width:100%;min-width:0"><p class="small muted">A primeira foto vira a capa do anúncio.</p></div>' +
-      '<div class="panel stack" style="gap:10px"><h3>Banner do carrossel</h3><p class="small muted">Imagem horizontal de 1600 × 640 px (proporção 5:2), JPG ou PNG, com a sua arte e a sua oferta. Ela aparece no carrossel da página inicial em rodízio com os outros anunciantes. Sem banner, este anúncio não entra no carrossel.</p><div id="n-ban">' + bannerHtml() + '</div><label class="sr" for="n-bfile">Enviar banner</label><input type="file" id="n-bfile" accept="image/*" style="max-width:100%;min-width:0">' + fld("n-btxt", "Texto alternativo do banner (para leitores de tela)", D.banner && D.banner.texto, 'maxlength="120"') + '</div>' +
+      (window.Cardapio ? Cardapio.editor(D) : "") +
       (existente ? '<div class="panel stack" style="gap:10px"><h3>Assinatura</h3><p>' + (D.assinatura.status === "ativa" ? "Ativa. Próxima cobrança de " + G.usd(D.assinatura.valor) + " em <b>" + dataBR(D.assinatura.proximaCobranca) + "</b>." : "Renovação cancelada. O anúncio fica no ar até <b>" + dataBR(D.assinatura.proximaCobranca) + "</b>.") + '</p><div class="row"><button class="btn" type="submit">Salvar alterações</button>' + (D.assinatura.status === "ativa" ? '<button type="button" class="btn danger" id="n-cancelar">Cancelar renovação</button>' : '<button type="button" class="btn ghost" id="n-reativar">Reativar por ' + G.usd(c.precoAnuncio) + "</button>") + "</div></div>"
         : incluido ? '<div class="panel stack" style="gap:12px"><h3>Plano</h3><p>Este é o anúncio ' + (meusLugares().length + 1) + ' de ' + LIMITE + ' e está <b>incluído no seu plano</b>. Não há cobrança extra.</p><button class="btn" type="submit" id="n-pagar">Publicar anúncio</button></div>'
         : '<div class="panel stack" style="gap:12px"><h3>Plano e pagamento</h3><div class="opt" style="cursor:default"><span><b>Anunciante · ' + G.usd(precoPlano()) + ' por mês</b><small>Até 3 anúncios, cada um com banner no carrossel, publicações no feed, cupom e métricas</small></span></div><p class="small muted">Renovação automática todo mês. Cancele quando quiser.</p>' + (linkPlano() ? '<p class="note">Depois de publicar, abrimos a página segura de pagamento (cartão) para ativar a cobrança mensal.</p>' : '<p class="note">O anúncio entra no ar na hora. A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX).</p>') + '<button class="btn" type="submit" id="n-pagar">' + (linkPlano() ? "Publicar e ir para o pagamento" : "Publicar anúncio") + '</button></div>') +
@@ -84,8 +78,6 @@
       }
       e.target.value = "";
     });
-    $("#n-mais").addEventListener("click", function () { if (document.querySelectorAll("#n-menu .mrow").length >= 30) { G.toast("Até 30 itens."); return; } $("#n-menu").insertAdjacentHTML("beforeend", linhaMenu()); });
-    $("#n-menu").addEventListener("click", function (e) { var b = e.target.closest("[data-tira-menu]"); if (b) b.closest(".mrow").remove(); });
     $("#n-fotos").addEventListener("click", function (e) { var b = e.target.closest("[data-tirar]"); if (!b) return; var x = D.fotos.splice(Number(b.dataset.tirar), 1)[0]; if (x) removidas.push(x.src); this.innerHTML = fotosHtml(); $("#n-nf").textContent = D.fotos.length; });
     $("#n-bfile").addEventListener("change", function (e) {
       var f = (e.target.files || [])[0]; if (!f) return;
@@ -108,7 +100,7 @@
       e.preventDefault(); if (ocupado) return;
       var reg = CIDADES_AN.filter(function (p) { return p[0] === v("n-reg"); })[0] || CIDADES_AN[0];
       D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom"); D.brasileiro = v("n-br") === "1";
-      D.menu = lerMenu(); D.menuVerificadoEm = D.menu.length ? G.hojeISO().slice(0, 7) : ""; D.whatsapp = v("n-wa"); D.telefone = v("n-tel"); D.instagram = v("n-ig"); D.facebook = v("n-fb"); D.site = v("n-site"); D.endereco = v("n-end"); D.cidade = reg[0]; var sem = Horario.lerEditor($("#f-an .hed")); if (sem) sem = sem.map(function (x) { return x || []; }); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; D.horario = sem ? Horario.texto(sem) : (existente ? D.horario : "");
+      if (window.Cardapio) Cardapio.ler(document, D); D.menuVerificadoEm = (D.menu || []).length ? G.hojeISO().slice(0, 7) : ""; D.whatsapp = v("n-wa"); D.telefone = v("n-tel"); D.instagram = v("n-ig"); D.facebook = v("n-fb"); D.site = v("n-site"); D.endereco = v("n-end"); D.cidade = reg[0]; var sem = Horario.lerEditor($("#f-an .hed")); if (sem) sem = sem.map(function (x) { return x || []; }); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; D.horario = sem ? Horario.texto(sem) : (existente ? D.horario : "");
       if (!existente || !D.lat || D.coordsAprox) { D.lat = reg[1]; D.lng = reg[2]; D.coordsAprox = true; }
       D.falaPortugues = !!($("#n-pt") && $("#n-pt").checked);
       if (document.querySelector("[data-an-etq]")) D.etiquetas = Array.from(document.querySelectorAll("[data-an-etq]")).filter(function (x) { return x.checked; }).map(function (x) { return x.dataset.anEtq; });
