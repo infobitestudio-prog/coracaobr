@@ -164,6 +164,7 @@
     var est = D.tipo === "estabelecimento", cats = (est ? EST : ATR).map(function (c) { return [c, G.CATS[c] || c]; });
     dlg.innerHTML = '<form method="dialog" id="f-lugar"><div class="dlg-head"><h3>' + (D.id ? "Editar: " + esc(D.nome) : est ? "Novo estabelecimento" : "Novo ponto turístico") + '</h3><button type="button" class="btn sm ghost" data-fechar>Fechar</button></div><div class="dlg-body">' +
       '<div class="form2">' + fld("e-nome", "Nome", D.nome, { attr: "required maxlength=90" }) + sel("e-cat", "Categoria", D.categoria, cats) +
+      '<div class="field"><label for="e-reg">Cidade do guia</label><select id="e-reg">' + Object.keys(G.CIDADES_GUIA || { dfw: { nome: "Dallas–Fort Worth" } }).map(function (k) { return '<option value="' + k + '"' + ((D.regiaoGuia || (D.id ? "dfw" : (G.cidadeAtual ? G.cidadeAtual() : "dfw"))) === k ? " selected" : "") + ">" + esc(G.CIDADES_GUIA[k].nome) + "</option>"; }).join("") + "</select></div>" +
       fld("e-cidade", "Cidade", D.cidade) + fld("e-bairro", "Bairro ou região", D.bairro) + fld("e-end", "Endereço completo", D.endereco, { cls: "full" }) +
       fld("e-lat", "Latitude", D.lat, { attr: 'inputmode="decimal"' }) + fld("e-lng", "Longitude", D.lng, { attr: 'inputmode="decimal"' }) +
       '<div class="field full"><span>Horário por dia</span>' + Horario.editor(D) + "</div>" + fld("e-hor", "Horário em texto (usado quando os dias acima não forem alterados)", D.horario, { cls: "full" }) + fld("e-site", "Site", D.site, { attr: 'placeholder="https://"' }) + fld("e-tel", "Telefone", D.telefone) + fld("e-ig", "Instagram (@usuario)", D.instagram) + fld("e-wa", "WhatsApp (com DDD)", D.whatsapp, { attr: 'inputmode="tel"' }) + fld("e-cupom", "Oferta para quem vem pelo guia", D.cupom, { cls: "full" }) + fld("e-estac", "Estacionamento (onde parar e quanto custa)", D.estacionamento, { cls: "full" }) + fld("e-quando", "Quando acontece (só para eventos)", D.quando) + fld("e-di", "Data de início", D.dataInicio, { attr: 'type="date"' }) + fld("e-df", "Data de término (some do guia depois dela)", D.dataFim, { attr: 'type="date"' }) + "</div>" +
@@ -201,7 +202,7 @@
     };
     $("#f-lugar", dlg).addEventListener("submit", function (e) {
       e.preventDefault(); if (ocupado) return;
-      D.nome = v("e-nome"); D.categoria = v("e-cat"); D.cidade = v("e-cidade"); D.bairro = v("e-bairro"); D.endereco = v("e-end");
+      D.nome = v("e-nome"); D.categoria = v("e-cat"); D.cidade = v("e-cidade"); D.regiaoGuia = v("e-reg") || "dfw"; D.bairro = v("e-bairro"); D.endereco = v("e-end");
       D.lat = num("e-lat"); D.lng = num("e-lng"); var txtAntes = D.horario || ""; D.horario = v("e-hor"); var hed = dlg.querySelector(".hed");
       if (hed && hed.dataset.mudou) { var sem = Horario.lerEditor(hed); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; if (sem) D.horario = Horario.texto(sem); }
       else if (D.horario !== txtAntes) { delete D.semana; D.horas = null; } D.site = v("e-site"); D.telefone = v("e-tel"); D.instagram = v("e-ig"); D.whatsapp = v("e-wa"); D.cupom = v("e-cupom"); D.estacionamento = v("e-estac"); D.quando = v("e-quando"); D.dataInicio = v("e-di"); D.dataFim = v("e-df");

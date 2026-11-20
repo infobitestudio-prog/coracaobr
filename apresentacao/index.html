@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CoraçãoBR em ação</title>
+<meta name="description" content="Apresentação animada do CoraçãoBR, o guia em português para brasileiros no Texas: como funciona para quem mora, para quem anuncia e para a administração.">
+<meta name="theme-color" content="#04341A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600&family=Outfit:wght@700&display=swap">
+<link rel="stylesheet" href="apresentacao.css">
+</head>
+<body data-tone="green">
+
+<!-- Símbolo da marca (coração com check), definido uma vez e reutilizado -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="hgL" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#0AA23C"/><stop offset=".6" stop-color="#088F36"/><stop offset="1" stop-color="#05692A"/></linearGradient>
+    <linearGradient id="hgF" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#05501F"/><stop offset="1" stop-color="#0B7A32" stop-opacity="0"/></linearGradient>
+    <linearGradient id="hgY" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7B500"/><stop offset="1" stop-color="#FFC20E"/></linearGradient>
+    <linearGradient id="hgC" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#078A35"/><stop offset=".8" stop-color="#0A9A3D"/><stop offset="1" stop-color="#46B86E"/></linearGradient>
+    <symbol id="bsym" viewBox="0 0 270 200">
+      <g transform="scale(0.3333)">
+        <path fill="url(#hgL)" d="M270 30 C330 32 365 60 385 100 L330 190 C300 165 250 150 200 160 C160 168 148 200 152 240 C160 330 230 430 330 520 L368 556 C240 520 110 430 50 340 C10 270 15 160 70 90 C120 40 200 28 270 30 Z"/>
+        <path fill="url(#hgF)" d="M152 200 C160 120 195 66 250 38 L292 34 C238 66 210 112 206 162 C180 166 160 176 152 200 Z"/>
+        <path fill="url(#hgY)" d="M322 188 C360 110 440 30 540 22 C610 18 670 50 705 105 L640 148 C600 122 540 112 480 132 C440 146 410 190 386 255 Z"/>
+        <path fill="none" stroke="url(#hgC)" stroke-width="108" stroke-linecap="round" stroke-linejoin="round" d="M270 382 L394 518 L748 172"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <a class="brand" href="#" id="brandHome" aria-label="CoraçãoBR, voltar ao início da apresentação">
+    <svg class="bsym" viewBox="0 0 270 200" aria-hidden="true"><use href="#bsym"/></svg>
+    <span class="wordmark">Coração<b>BR</b></span>
+  </a>
+  <p class="aud" id="aud"></p>
+  <button class="btn-index" id="btnIndex" type="button" aria-haspopup="dialog" aria-controls="index">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+    <span>Capítulos</span>
+  </button>
+</header>
+
+<main class="stage" id="stage">
+  <div class="phone-col">
+    <div class="phone-persp" id="persp">
+      <div class="phone" id="phone" role="img" aria-label="Celular mostrando o app CoraçãoBR">
+        <!-- espessura do aparelho (camadas) -->
+        <div class="slices" id="slices" aria-hidden="true"></div>
+
+        <!-- botões laterais -->
+        <div class="btns" aria-hidden="true">
+          <i class="b-action"></i><i class="b-volup"></i><i class="b-voldn"></i>
+          <i class="b-power"></i><i class="b-camctl"></i>
+        </div>
+
+        <!-- frente -->
+        <div class="face front">
+          <div class="frame">
+            <div class="bezel">
+              <div class="screen" id="screen">
+                <div class="sbar" id="sbar">
+                  <span class="sb-time">9:41</span>
+                  <span class="sb-icons" aria-hidden="true">
+                    <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+                    <svg viewBox="0 0 16 12"><path d="M8 11.6 5.6 9a3.4 3.4 0 0 1 4.8 0L8 11.6Zm-4.1-4.3L2.3 5.6a8 8 0 0 1 11.4 0l-1.6 1.7a5.7 5.7 0 0 0-8.2 0ZM.6 3.9-.9 2.2a11.4 11.4 0 0 1 17.8 0L15.4 3.9a9.1 9.1 0 0 0-14.8 0Z"/></svg>
+                    <svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="22" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".45"/><rect x="2.2" y="2.2" width="16" height="7.6" rx="1.8"/><path d="M24.2 4v4c.9-.3 1.5-1.1 1.5-2s-.6-1.7-1.5-2Z" opacity=".5"/></svg>
+                  </span>
+                </div>
+                <div class="island" aria-hidden="true"><i></i></div>
+                <div class="viewport" id="viewport">
+                  <div class="zoomer" id="zoomer">
+                    <img class="layer" id="layerA" alt="" decoding="async">
+                    <img class="layer" id="layerB" alt="" decoding="async">
+                  </div>
+                  <div class="touch" id="touch" aria-hidden="true"><i></i><i></i><i></i></div>
+                </div>
+                <div class="glare" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- traseira com platô de câmeras -->
+        <div class="face back" aria-hidden="true">
+          <div class="plateau">
+            <span class="lens l1"></span><span class="lens l2"></span><span class="lens l3"></span>
+            <span class="flash"></span><span class="lidar"></span><span class="mic"></span>
+          </div>
+          <svg class="emboss" viewBox="0 0 270 200"><use href="#bsym"/></svg>
+        </div>
+      </div>
+      <div class="floor" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <section class="copy" id="copy" aria-live="polite"></section>
+</main>
+
+<footer class="bar">
+  <div class="ctrls">
+    <button class="cbtn" id="btnPrev" type="button" aria-label="Voltar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="cbtn play" id="btnPlay" type="button" aria-label="Pausar">
+      <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>
+      <svg class="i-replay" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5"/></svg>
+    </button>
+    <button class="cbtn" id="btnNext" type="button" aria-label="Avançar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <nav class="segs" id="segs" aria-label="Capítulos da apresentação"></nav>
+  <p class="count" id="count"></p>
+</footer>
+
+<div class="index" id="index" role="dialog" aria-modal="true" aria-labelledby="indexTitle" hidden>
+  <div class="index-scrim" data-close></div>
+  <div class="index-panel">
+    <div class="index-head">
+      <h2 id="indexTitle">Capítulos</h2>
+      <button class="cbtn" type="button" data-close aria-label="Fechar capítulos">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="index-list" id="indexList"></div>
+    <p class="index-keys">Use as setas ← → para navegar e a barra de espaço para pausar.</p>
+  </div>
+</div>
+
+<script src="apresentacao.js"></script>
+</body>
+</html>

@@ -48,7 +48,9 @@
     out.mural = '<section class="block reveal"><div class="head"><h2>' + esc(tx("mural", "Mural de vagas e classificados")) + '</h2><a class="more" href="#mural">ver todos</a></div>' +
       (cl.length ? '<div class="hscroll">' + cl.map(cardClass).join("") + "</div>" : '<a class="panel muralvazio" href="#mural"><b>Emprego, aluguel, carona e venda entre brasileiros.</b><span class="muted small">Seja o primeiro a publicar.</span></a>') + "</section>";
     out.custo = '<section class="block reveal"><a class="bn alt" href="#custo"><i></i><small>Vai morar no Texas?</small><b>' + esc(tx("custo", "Compare aluguel, escolas e impostos em 14 cidades da região")) + "</b><span>Comparar cidades " + ic("arrow") + "</span></a></section>";
-    out.cidades = '<section class="block reveal"><div class="head"><h2>' + esc(tx("cidades", "Em breve em outras cidades")) + '</h2><a class="more" href="#cidades">avise-me</a></div><div class="cityrow">' + CIDADES.map(function (k) { return '<a class="city" href="#cidades"><b>' + esc(k[0]) + "</b><small>" + esc(k[1]) + "</small></a>"; }).join("") + "</div></section>";
+    var outras = G.CIDADES_GUIA ? Object.keys(G.CIDADES_GUIA).filter(function (k) { return k !== G.cidadeAtual(); }) : [];
+    out.cidades = outras.length ? '<section class="block reveal"><div class="head"><h2>' + esc(tx("cidades", "O CoraçãoBR em outras cidades")) + '</h2><button type="button" class="more" data-cid-mais>próximas cidades</button></div><div class="cityrow">' + outras.map(function (k) { var c = G.CIDADES_GUIA[k], n = Store.lista("lugares").filter(function (l) { return G.regiaoGuia(l) === k && l.publicado !== false && !l.demo; }).length; return '<button type="button" class="city" data-troca-cidade="' + k + '"' + (n ? "" : " disabled") + "><b>" + esc(c.nome) + "</b><small>" + (n ? n + " lugares · ver o guia de lá" : "em breve") + "</small></button>"; }).join("") + "</div></section>" : "";
+    if (G.cidadeAtual && G.cidadeAtual() !== "dfw") out.custo = "";
     /* Depoimentos: só avaliações reais de quem usa o guia (4 ou 5 estrelas e com texto). */
     var depo = Store.lista("avaliacoes").filter(function (a) { return Number(a.estrelas) >= 4 && String(a.texto || "").trim().length >= 25 && lugar(a.lugarId); })
       .sort(function (a, b) { return (b.criadoEm || "").localeCompare(a.criadoEm || ""); }).slice(0, 10);
@@ -198,10 +200,10 @@
   }
 
   /* ---------- outras cidades ---------- */
-  var CIDADES = [["Houston", "Maior comunidade brasileira do Texas"], ["Austin", "Capital, tecnologia e música"], ["San Antonio", "Riverwalk e as missões espanholas"]];
+  var CIDADES = [["Orlando", "Flórida, a maior comunidade brasileira dos EUA"], ["Miami", "Sol, praia e negócios em português"], ["Boston", "Tradição brasileira em Massachusetts"], ["Nova York", "Newark e Nova York"], ["Atlanta", "Geórgia em crescimento"]];
   function viewCidades() {
     var meu = Store.obter("interesse", Store.idProprio("cidades")) || {}, sel = meu.cidades || [];
-    G.app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:16px;max-width:760px"><div><p class="eyebrow">Expansão</p><h1 class="page-h">Próximas cidades</h1><p class="muted">Dallas é a cidade piloto. Marque onde você quer o guia e avisamos quando abrir.</p></div>' +
+    G.app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:16px;max-width:760px"><div><p class="eyebrow">Expansão</p><h1 class="page-h">Próximas cidades</h1><p class="muted">O CoraçãoBR já está em Dallas–Fort Worth, Houston, Austin e San Antonio. Marque onde mais você quer o guia e avisamos quando abrir.</p></div>' +
       '<div class="cityrow big">' + CIDADES.map(function (k) { var on = sel.indexOf(k[0]) >= 0; return '<button type="button" class="city" data-cid="' + esc(k[0]) + '" aria-pressed="' + on + '"><b>' + esc(k[0]) + "</b><small>" + esc(k[1]) + '</small><span class="pill ' + (on ? "ok" : "") + '">' + (on ? "Vou ser avisado" : "Avise-me") + "</span></button>"; }).join("") + "</div>" +
       '<p class="note">Quer ser parceiro em uma dessas cidades? Fale com a equipe pelo <a href="#anuncie">Anuncie</a>.</p></div></section>';
     G.app.querySelector(".cityrow").onclick = function (e) {
@@ -210,6 +212,10 @@
     };
   }
 
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-troca-cidade]"); if (t && !t.disabled && G.trocaCidade) { G.trocaCidade(t.dataset.trocaCidade); return; }
+    if (e.target.closest("[data-cid-mais]") && window.Novidades) Novidades.seletorCidade();
+  });
   /* ---------- instalar no celular ---------- */
   var promptInstalar = null;
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); promptInstalar = e; });

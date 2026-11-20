@@ -198,7 +198,7 @@
       campo("d-nova", "Nova senha (deixe em branco para manter)", "password", 'autocomplete="new-password" maxlength="200"') +
       campo("d-atual", "Senha atual (obrigatória para trocar e-mail ou senha)", "password", 'autocomplete="current-password" maxlength="200"') +
       '<p class="auth-msg" id="d-msg" role="alert" hidden></p><div class="row" style="gap:8px"><button class="btn sm" type="submit">Salvar</button>' +
-      (c.papel !== "master" ? '<button type="button" class="link" data-excluir style="color:var(--danger,#B3261E)">Excluir minha conta</button>' : "") + "</div></form></div>";
+      (c.papel !== "master" ? '<button type="button" class="link" data-excluir-conta style="color:var(--danger,#B3261E)">Excluir minha conta</button>' : "") + "</div></form></div>";
   }
   /* newsletter na conta: mostra o estado e liga/desliga */
   document.addEventListener("change", function (e) {
@@ -210,10 +210,10 @@
   document.addEventListener("click", function (e) {
     if (e.target.closest("[data-sair]")) { Store.api("sair", {}).then(function () { vaiPara("#inicio"); }).catch(function () { vaiPara("#inicio"); }); return; }
     if (e.target.closest("[data-dados]")) { var f = $("#f-dados"); if (f) { f.hidden = !f.hidden; ligaDados(); } return; }
-    if (e.target.closest("[data-excluir]")) {
+    if (e.target.closest("[data-excluir-conta]")) {
       var m = $("#d-msg"), s = $("#d-atual") ? $("#d-atual").value : "";
       if (!s) { msg(m, "Para excluir a conta, digite a sua senha atual e toque de novo em Excluir minha conta."); return; }
-      var b = e.target.closest("[data-excluir]");
+      var b = e.target.closest("[data-excluir-conta]");
       if (!b.dataset.confirma) { b.dataset.confirma = "1"; b.textContent = "Confirmar exclusão definitiva"; msg(m, "Isto apaga a conta, as avaliações, os roteiros e os anúncios. Não dá para desfazer."); return; }
       Store.api("excluir_conta", { senha: s }).then(function () { try { ["lista", "checklist", "lembretes", "meus-roteiros", "minhas-avaliacoes", "meu-nome", "meus-anuncios"].forEach(function (k) { localStorage.removeItem(k); }); } catch (er) { /* ok */ } vaiPara("#inicio"); }).catch(function (er) { msg(m, er.message); });
     }

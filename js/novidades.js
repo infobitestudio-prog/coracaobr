@@ -132,7 +132,7 @@
       if (location.hash === "#assistente") viewAssistente();
     };
     if (servidor()) {
-      Store.api("assistente", { pergunta: q, historico: hist }).then(function (j) { fim(j.resposta, j.ids, j.modo === "busca" && !j.resposta ? "Veja o que encontrei no guia:" : ""); })
+      Store.api("assistente", { pergunta: q, historico: hist, cidade: G.cidadeAtual ? G.cidadeAtual() : "dfw" }).then(function (j) { fim(j.resposta, j.ids, j.modo === "busca" && !j.resposta ? "Veja o que encontrei no guia:" : ""); })
         .catch(function (er) { fim("", buscaLocal(q), er.message || "Não consegui responder agora. Veja o que encontrei no guia:"); });
     } else setTimeout(function () { var ids = buscaLocal(q); fim("", ids, ids.length ? "Veja o que encontrei no guia:" : ""); }, 350);
   }
@@ -277,10 +277,10 @@
   });
 
   /* ======================= Cidades ======================= */
-  var CIDADES = [["dfw", "Dallas–Fort Worth", "TX", true], ["houston", "Houston", "TX"], ["austin", "Austin", "TX"], ["sanantonio", "San Antonio", "TX"], ["orlando", "Orlando", "FL"], ["miami", "Miami", "FL"], ["boston", "Boston", "MA"], ["novayork", "Nova York", "NY"], ["newark", "Newark", "NJ"], ["atlanta", "Atlanta", "GA"], ["charlotte", "Charlotte", "NC"], ["losangeles", "Los Angeles", "CA"]];
+  var CIDADES = [["orlando", "Orlando", "FL"], ["miami", "Miami", "FL"], ["boston", "Boston", "MA"], ["novayork", "Nova York", "NY"], ["newark", "Newark", "NJ"], ["atlanta", "Atlanta", "GA"], ["charlotte", "Charlotte", "NC"], ["losangeles", "Los Angeles", "CA"]];
   function seletorCidade() {
     var avisos = []; try { avisos = JSON.parse(localStorage.getItem("cidades-aviso") || "[]"); } catch (e) { /* ok */ }
-    var d = dlgAbre('<h3>Escolha sua cidade</h3><p class="small muted">O CoraçãoBR começou em Dallas–Fort Worth e está chegando a outras cidades com muitos brasileiros.</p><div class="cid-l">' + CIDADES.map(function (c) {
+    var d = dlgAbre('<h3>Próximas cidades</h3><p class="small muted">O CoraçãoBR já está em Dallas–Fort Worth, Houston, Austin e San Antonio e vai chegar a outras cidades com muitos brasileiros. Peça para ser avisado.</p><div class="cid-l">' + CIDADES.map(function (c) {
       return c[3] ? '<button type="button" class="cid on" data-fecha><b>' + c[1] + "</b><small>" + c[2] + ' · você está aqui</small><span class="pill ok">Ativa</span></button>'
         : '<div class="cid"><b>' + c[1] + "</b><small>" + c[2] + ' · em breve</small><button type="button" class="btn sm' + (avisos.indexOf(c[0]) >= 0 ? " ghost" : "") + '" data-cid-av="' + c[0] + '">' + (avisos.indexOf(c[0]) >= 0 ? "Vamos te avisar ✓" : "Avise-me") + "</button></div>";
     }).join("") + '</div><button class="btn ghost" type="button" data-fecha>Fechar</button>');
@@ -297,8 +297,9 @@
   }
   function botaoCidade() {
     var top = $("header.top .wrap"); if (!top || $(".cid-bt", top)) return;
-    var b = document.createElement("button"); b.type = "button"; b.className = "cid-bt"; b.setAttribute("aria-label", "Cidade: Dallas–Fort Worth. Trocar cidade");
-    b.innerHTML = ic("pin") + "<span>DFW</span>"; b.onclick = seletorCidade;
+    var b = document.createElement("button"); b.type = "button"; b.className = "cid-bt";
+    var rot = function () { var c = G.cid ? G.cid() : { nome: "Dallas–Fort Worth", curto: "DFW" }; b.setAttribute("aria-label", "Cidade: " + c.nome + ". Trocar cidade"); b.innerHTML = ic("pin") + "<span>" + esc(c.curto) + "</span>"; };
+    rot(); document.addEventListener("cidade", rot); b.onclick = function () { if (G.perguntaCidade) G.perguntaCidade(false); else seletorCidade(); };
     var brand = $(".brand", top); brand.parentNode.insertBefore(b, brand.nextSibling);
   }
 

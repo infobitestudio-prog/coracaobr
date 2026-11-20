@@ -18,7 +18,7 @@
   function normaliza(col, o) {
     if (!o || typeof o !== "object") return null;
     if (col === "lugares" || col === "anunciantes") {
-      ["nome", "categoria", "tipo", "endereco", "cidade", "bairro", "regiao", "descricao", "historia", "dica", "horario", "quando", "dataInicio", "dataFim", "preco", "telefone", "whatsapp", "instagram", "facebook", "site", "telegram", "x", "linkedin", "catalogo", "catalogoNome", "descontoClube"].forEach(function (k) { if (o[k] != null && typeof o[k] !== "string") o[k] = txt(o[k]); });
+      ["nome", "categoria", "tipo", "endereco", "cidade", "bairro", "regiao", "descricao", "historia", "dica", "horario", "quando", "dataInicio", "dataFim", "preco", "telefone", "whatsapp", "instagram", "facebook", "site", "telegram", "x", "linkedin", "catalogo", "catalogoNome", "descontoClube", "regiaoGuia"].forEach(function (k) { if (o[k] != null && typeof o[k] !== "string") o[k] = txt(o[k]); });
       if (!o.nome) return null;
       o.lat = num(o.lat); o.lng = num(o.lng);
       ["precoMin", "precoMax", "notaCuradoria"].forEach(function (k) { if (o[k] != null) o[k] = num(o[k]); });
@@ -334,7 +334,7 @@
     }
   }
   /* Só aceita fotos do próprio guia (pasta img/, armazenamento do Artifact) ou imagens embutidas; links externos de terceiros são ignorados. */
-  var FOTO_OK = /^(asset:[0-9a-f-]{8,64}$|img\/[\w.-]+\.(jpe?g|png|webp)$|fotos_eventos\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|data:image\/(jpeg|png|webp);base64,)/i;
+  var FOTO_OK = /^(asset:[0-9a-f-]{8,64}$|img\/[\w.-]+\.(jpe?g|png|webp)$|fotos_eventos\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|fotos_cidades\/[\w-]+\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|data:image\/(jpeg|png|webp);base64,)/i;
   function urlFoto(src) {
     if (!src || typeof src !== "string" || !FOTO_OK.test(src)) return "";
     if (/^asset:/.test(src)) return st.servidor ? "uploads/" + src.slice(6) + ".jpg" : "/_blob/" + src.slice(6);

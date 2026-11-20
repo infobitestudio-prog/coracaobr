@@ -7,7 +7,14 @@
   var D = null, ocupado = false, removidas = [];
   var CATEG = G.SERVICOS.concat(G.COMIDA, ["mercado-brasileiro", "mercado", "compras"]);
   var MAX_FOTOS = 20, LIMITE = 3;
-  var CIDADES = [["Dallas", 32.7767, -96.797], ["Fort Worth", 32.7555, -97.3308], ["Plano", 33.0198, -96.6989], ["Frisco", 33.1507, -96.8236], ["McKinney", 33.1972, -96.6398], ["Allen", 33.1032, -96.6706], ["Irving", 32.814, -96.9489], ["Carrollton", 32.9756, -96.89], ["Richardson", 32.9483, -96.7299], ["Garland", 32.9126, -96.6389], ["Arlington", 32.7357, -97.1081], ["Grand Prairie", 32.746, -96.9978], ["Grapevine", 32.9343, -97.0781], ["Euless", 32.8371, -97.082], ["Bedford", 32.844, -97.1431], ["Hurst", 32.8235, -97.1706], ["Lewisville", 33.0462, -96.9942], ["Denton", 33.2148, -97.1331], ["Addison", 32.9618, -96.8292], ["Coppell", 32.9546, -97.015], ["Southlake", 32.9412, -97.1342], ["The Colony", 33.0807, -96.8928], ["Mesquite", 32.7668, -96.5992], ["Rockwall", 32.9312, -96.4597]];
+  var CIDADES_DFW = [["Dallas", 32.7767, -96.797], ["Fort Worth", 32.7555, -97.3308], ["Plano", 33.0198, -96.6989], ["Frisco", 33.1507, -96.8236], ["McKinney", 33.1972, -96.6398], ["Allen", 33.1032, -96.6706], ["Irving", 32.814, -96.9489], ["Carrollton", 32.9756, -96.89], ["Richardson", 32.9483, -96.7299], ["Garland", 32.9126, -96.6389], ["Arlington", 32.7357, -97.1081], ["Grand Prairie", 32.746, -96.9978], ["Grapevine", 32.9343, -97.0781], ["Euless", 32.8371, -97.082], ["Bedford", 32.844, -97.1431], ["Hurst", 32.8235, -97.1706], ["Lewisville", 33.0462, -96.9942], ["Denton", 33.2148, -97.1331], ["Addison", 32.9618, -96.8292], ["Coppell", 32.9546, -97.015], ["Southlake", 32.9412, -97.1342], ["The Colony", 33.0807, -96.8928], ["Mesquite", 32.7668, -96.5992], ["Rockwall", 32.9312, -96.4597]];
+  /* cidades de cada região do guia: [nome, lat, lng, regiaoGuia] */
+  var CIDADES = CIDADES_DFW.map(function (c) { return c.concat("dfw"); }).concat([
+    ["Houston", 29.7604, -95.3698, "houston"], ["Sugar Land", 29.6197, -95.6349, "houston"], ["Katy", 29.7858, -95.8245, "houston"], ["The Woodlands", 30.1658, -95.4613, "houston"], ["Pearland", 29.5636, -95.286, "houston"], ["Spring", 30.0799, -95.4172, "houston"], ["Cypress", 29.9691, -95.6972, "houston"], ["Pasadena", 29.6911, -95.2091, "houston"], ["League City", 29.5075, -95.0949, "houston"], ["Galveston", 29.3013, -94.7977, "houston"], ["Conroe", 30.3119, -95.456, "houston"], ["Missouri City", 29.6186, -95.5377, "houston"],
+    ["Austin", 30.2672, -97.7431, "austin"], ["Round Rock", 30.5083, -97.6789, "austin"], ["Cedar Park", 30.5052, -97.8203, "austin"], ["Pflugerville", 30.4394, -97.62, "austin"], ["Georgetown", 30.6333, -97.6779, "austin"], ["Leander", 30.5788, -97.8531, "austin"], ["Kyle", 29.9891, -97.8772, "austin"], ["Buda", 30.0852, -97.8403, "austin"], ["San Marcos", 29.8833, -97.9414, "austin"], ["Lakeway", 30.3633, -97.9795, "austin"],
+    ["San Antonio", 29.4241, -98.4936, "sanantonio"], ["New Braunfels", 29.703, -98.1245, "sanantonio"], ["Boerne", 29.7947, -98.732, "sanantonio"], ["Schertz", 29.5522, -98.2697, "sanantonio"], ["Seguin", 29.5688, -97.9647, "sanantonio"], ["Converse", 29.518, -98.316, "sanantonio"], ["Helotes", 29.5786, -98.6897, "sanantonio"], ["Universal City", 29.548, -98.2911, "sanantonio"]
+  ]);
+  var NOME_REG = { dfw: "Dallas–Fort Worth", houston: "Região de Houston", austin: "Região de Austin", sanantonio: "Região de San Antonio" };
 
   function meusIds() { try { return JSON.parse(localStorage.getItem("meus-anuncios") || "[]"); } catch (e) { return []; } }
   function guardaMeu(id) { var m = meusIds(); if (m.indexOf(id) < 0) m.push(id); try { localStorage.setItem("meus-anuncios", JSON.stringify(m)); } catch (e) { /* ok */ } }
@@ -40,13 +47,13 @@
       G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:30px"><h1 class="page-h">Você usou todos os seus anúncios</h1><p class="muted">Seu plano libera ' + maximo() + ' anúncios. Cada pacote de ' + G.reais(window.Pag ? Pag.preco() : 50) + " soma mais " + (window.Pag ? Pag.porPacote() : 3) + ' anúncios.</p><a class="btn" href="#pagar">Contratar mais anúncios</a><a class="more" href="#anunciante">Voltar ao painel</a></div></section>';
       return;
     }
-    D = existente ? JSON.parse(JSON.stringify(existente)) : { id: "", tipo: "estabelecimento", nome: "", categoria: "handyman", brasileiro: true, cidade: "Dallas", fotos: [], menu: [] };
+    D = existente ? JSON.parse(JSON.stringify(existente)) : { id: "", tipo: "estabelecimento", nome: "", categoria: "", brasileiro: true, cidade: G.cid ? G.cid().principal : "Dallas", fotos: [], menu: [] };
     D.fotos = D.fotos || []; removidas = [];
     var podeBanner = (D.banner && D.banner.src) || bannersLivres(existente && existente.id) > 0, n = 0, prox = function () { return ++n; };
     var corpo =
       sec(prox(), "empresa", "Sua empresa", "O que aparece no topo do anúncio.",
         '<div class="ae-g2">' + fld("n-nome", "Nome da empresa", D.nome, 'required maxlength="80" autocomplete="organization"') +
-        '<div class="field"><label for="n-cat">Categoria</label><select id="n-cat">' + CATEG.map(function (k) { return '<option value="' + k + '"' + (k === D.categoria ? " selected" : "") + ">" + esc(G.CATS[k] || k) + "</option>"; }).join("") + "</select></div></div>" +
+        '<div class="field"><label for="n-cat">Categoria</label><select id="n-cat" required>' + (D.categoria ? "" : '<option value="" selected disabled>Escolha a categoria</option>') + CATEG.map(function (k) { return '<option value="' + k + '"' + (k === D.categoria ? " selected" : "") + ">" + esc(G.CATS[k] || k) + "</option>"; }).join("") + "</select></div></div>" +
         '<div class="field"><label for="n-desc">O que você faz</label><textarea id="n-desc" maxlength="900" rows="5" required placeholder="Conte o que você oferece, há quanto tempo, para quem e o diferencial.">' + esc(D.historia || "") + '</textarea><small class="muted"><span id="n-dc">' + String(D.historia || "").length + "</span>/900</small></div>" +
         fld("n-cupom", "Oferta para quem vem pelo CoraçãoBR (opcional)", D.cupom, 'maxlength="90" placeholder="Ex.: 10% de desconto na primeira visita"') +
         fld("n-clube", "Desconto para membros do Clube CoraçãoBR (opcional)", D.descontoClube, 'maxlength="90" placeholder="Ex.: 15% para membros do Clube"') +
@@ -64,7 +71,7 @@
         fld("n-li", "LinkedIn (link)", D.linkedin, 'placeholder="https://linkedin.com/company/…"') + fld("n-site", "Site da empresa", D.site, 'placeholder="https://"') + "</div>") +
       sec(prox(), "endereco", "Endereço e horário", "Quem atende em domicílio pode deixar o endereço em branco.",
         '<div class="ae-g2">' + fld("n-end", "Endereço", D.endereco, 'autocomplete="street-address" placeholder="Rua, número, cidade, TX"') +
-        '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + CIDADES.map(function (p) { return "<option" + (p[0] === D.cidade ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</select></div></div>" +
+        '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).map(function (rg) { var padrao = D.cidade || (G.CIDADES_GUIA && G.cid ? G.cid().principal : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
         '<div class="field"><span>Horário de atendimento</span>' + Horario.editor(D) + "</div>") +
       sec(prox(), "cardapio", "Cardápio, catálogo e preços", "Cardápio em livreto, tabela de preços ou o link do seu catálogo.",
         '<div class="ae-g2">' + fld("n-cat-link", "Link do catálogo, portfólio ou loja", D.catalogo, 'placeholder="https://"') + fld("n-cat-nome", "Nome do botão", D.catalogoNome, 'maxlength="24" placeholder="Catálogo"') + "</div>" + (window.Cardapio ? Cardapio.editor(D) : ""));
@@ -105,13 +112,14 @@
     $("#n-ban").addEventListener("click", function (e) { if (e.target.closest("#n-btira")) { if (D.banner && D.banner.src) removidas.push(D.banner.src); D.banner = null; $("#n-ban").innerHTML = bannerHtml(); } });
     f.addEventListener("submit", function (e) {
       e.preventDefault(); if (ocupado) return;
+      if (!v("n-cat")) { G.toast("Escolha a categoria do seu negócio."); var sc = $("#n-cat"); if (sc) { sc.scrollIntoView({ behavior: "smooth", block: "center" }); sc.focus(); } return; }
       if (!v("n-nome") || !v("n-desc")) { G.toast("Preencha o nome da empresa e o que você faz."); var s = $("#ae-empresa"); if (s) s.scrollIntoView({ behavior: "smooth" }); return; }
       var reg = CIDADES.filter(function (p) { return p[0] === v("n-reg"); })[0] || CIDADES[0];
-      D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom"); D.descontoClube = v("n-clube"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
+      D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom");  D.descontoClube = v("n-clube"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
       if (window.Cardapio) Cardapio.ler(document, D); D.menuVerificadoEm = (D.menu || []).length ? G.hojeISO().slice(0, 7) : "";
       D.whatsapp = v("n-wa"); D.telefone = v("n-tel"); D.instagram = v("n-ig"); D.facebook = v("n-fb"); D.telegram = v("n-tg"); D.x = v("n-x"); D.linkedin = v("n-li"); D.site = v("n-site");
       var cl = v("n-cat-link"); D.catalogo = /^https?:\/\//i.test(cl) ? cl.slice(0, 400) : ""; D.catalogoNome = v("n-cat-nome").slice(0, 24);
-      D.endereco = v("n-end"); D.cidade = reg[0];
+      D.endereco = v("n-end"); D.cidade = reg[0]; D.regiaoGuia = reg[3] || "dfw";
       var sem = Horario.lerEditor($("#f-an .hed")); if (sem) sem = sem.map(function (x) { return x || []; }); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; D.horario = sem ? Horario.texto(sem) : (existente ? D.horario : "");
       if (!existente || !D.lat || D.coordsAprox) { D.lat = reg[1]; D.lng = reg[2]; D.coordsAprox = true; }
       if (document.querySelector("[data-an-etq]")) D.etiquetas = Array.from(document.querySelectorAll("[data-an-etq]")).filter(function (x) { return x.checked; }).map(function (x) { return x.dataset.anEtq; });
