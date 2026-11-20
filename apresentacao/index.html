@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CoraçãoBR em ação</title>
-<meta name="description" content="Apresentação animada do CoraçãoBR, o guia em português para brasileiros no Texas: como funciona para quem mora, para quem anuncia e para a administração.">
+<title>CoraçãoBR · Como funciona</title>
+<meta name="description" content="Apresentação animada do CoraçãoBR, a plataforma brasileira nos EUA: quem chega, empresas, interação, diferenciais, crescimento, valores e créditos.">
 <meta name="theme-color" content="#04341A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,7 @@
   <p class="aud" id="aud"></p>
   <button class="btn-index" id="btnIndex" type="button" aria-haspopup="dialog" aria-controls="index">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-    <span>Capítulos</span>
+    <span>Categorias</span>
   </button>
 </header>
 
@@ -76,6 +76,10 @@
                     <img class="layer" id="layerB" alt="" decoding="async">
                   </div>
                   <div class="touch" id="touch" aria-hidden="true"><i></i><i></i><i></i></div>
+                </div>
+                <div class="notif" id="notif" aria-live="polite">
+                  <span class="nf-ic"><svg viewBox="0 0 270 200" aria-hidden="true"><use href="#bsym"/></svg></span>
+                  <div class="nf-tx"><p class="nf-h"><b>CoraçãoBR</b><small>agora</small></p><strong id="nfT"></strong><p id="nfP"></p></div>
                 </div>
                 <div class="glare" aria-hidden="true"></div>
               </div>
@@ -121,13 +125,14 @@
   <div class="index-scrim" data-close></div>
   <div class="index-panel">
     <div class="index-head">
-      <h2 id="indexTitle">Capítulos</h2>
-      <button class="cbtn" type="button" data-close aria-label="Fechar capítulos">
+      <h2 id="indexTitle">Categorias</h2>
+      <button class="cbtn" type="button" data-close aria-label="Fechar categorias">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </div>
     <div class="index-list" id="indexList"></div>
-    <p class="index-keys">Use as setas ← → para navegar e a barra de espaço para pausar.</p>
+    <div class="index-cor"><span>Cor do iPhone</span><button type="button" data-cor="laranja" aria-pressed="true"><i class="sw-or"></i>Laranja</button><button type="button" data-cor="grafite" aria-pressed="false"><i class="sw-gr"></i>Grafite</button></div>
+    <p class="index-keys">Setas ← → navegam, espaço pausa e as teclas 1 a 8 vão direto para cada categoria.</p>
   </div>
 </div>
 
