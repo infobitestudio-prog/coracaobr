@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Diagnóstico · CoraçãoBR</title>
+<style>
+:root {
+  --bg: #F4F6F5; --card: #FFFFFF; --ink: #0E1311; --mut: #5A6560; --line: #E1E6E3;
+  --green: #0B7A35; --green-deep: #04341A; --green-soft: #E3F3E8;
+  --warn: #9A5B00; --warn-soft: #FFF1D6; --bad: #B3261E; --bad-soft: #FCE8E6; --info-soft: #EEF1EF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0B0E0D; --card: #131816; --ink: #EEF2F0; --mut: #9AA5A0; --line: #252C29;
+    --green: #34C46A; --green-deep: #04341A; --green-soft: #143322; --warn: #F2B35B; --warn-soft: #2E2410; --bad: #FF8A80; --bad-soft: #3A1714; --info-soft: #1B211E; color-scheme: dark; }
+}
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif }
+header { background: var(--green-deep); color: #fff; padding: 22px 16px 26px }
+.w { max-width: 860px; margin: 0 auto }
+.marca { font-weight: 800; font-size: 1.15rem; letter-spacing: -.01em } .marca b { color: #FFC20E }
+h1 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); line-height: 1.15; margin: 14px 0 6px }
+header p { margin: 0; opacity: .85; max-width: 60ch }
+.resumo { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: -14px auto 0; padding: 0 16px; max-width: 860px }
+.rs { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; min-width: 0 }
+.rs b { display: block; font-size: 1.6rem; font-variant-numeric: tabular-nums; line-height: 1.1 }
+.rs small { color: var(--mut); font-weight: 600 }
+.rs.ok b { color: var(--green) } .rs.av b { color: var(--warn) } .rs.er b { color: var(--bad) }
+main { max-width: 860px; margin: 0 auto; padding: 18px 16px 40px }
+.acoes { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px }
+button, .bt { font-family: inherit; font-size: .92rem; font-weight: 600; line-height: 1; padding: 11px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px }
+button.pri { background: var(--green); border-color: var(--green); color: #fff }
+@media (prefers-color-scheme: dark) { button.pri { color: #04140A } }
+section { margin-top: 22px }
+h2 { font-size: 1.05rem; margin: 0 0 8px; display: flex; align-items: center; gap: 8px }
+h2 span { font-size: .78rem; font-weight: 600; color: var(--mut) }
+.lista { display: grid; gap: 8px; padding: 0; margin: 0; list-style: none }
+.it { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; align-items: start }
+.st { grid-row: span 3; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .95rem; background: var(--info-soft); color: var(--mut) }
+.it.ok .st { background: var(--green-soft); color: var(--green) } .it.av .st { background: var(--warn-soft); color: var(--warn) } .it.er .st { background: var(--bad-soft); color: var(--bad) }
+.it b { font-size: .98rem } .it .d { color: var(--mut); font-size: .88rem; overflow-wrap: anywhere }
+.it .fix { font-size: .86rem; margin-top: 4px; padding: 8px 10px; border-radius: 10px; background: var(--info-soft) }
+.it.er .fix { background: var(--bad-soft) } .it.av .fix { background: var(--warn-soft) }
+.it.carregando .st { animation: g 1s linear infinite } @keyframes g { to { transform: rotate(360deg) } }
+.nota { margin-top: 26px; font-size: .86rem; color: var(--mut) }
+code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--info-soft); padding: 1px 5px; border-radius: 6px }
+</style>
+</head>
+<body>
+<header><div class="w">
+  <div class="marca">Coração<b>BR</b> · diagnóstico</div>
+  <h1>A instalação está pronta?</h1>
+  <p>Esta página confere o site, o servidor, a segurança, o Google e o que está ligado no painel. Abra pelo domínio, depois de subir os arquivos.</p>
+</div></header>
+<div class="resumo" id="resumo">
+  <div class="rs ok"><b id="n-ok">–</b><small>OK</small></div>
+  <div class="rs av"><b id="n-av">–</b><small>Atenção</small></div>
+  <div class="rs er"><b id="n-er">–</b><small>Erro</small></div>
+  <div class="rs"><b id="n-tot">–</b><small>Itens</small></div>
+</div>
+<main>
+  <div class="acoes">
+    <button class="pri" type="button" id="rodar">Rodar de novo</button>
+    <button type="button" id="copiar">Copiar relatório</button>
+    <a class="bt" href="./#entrar">Entrar como master</a>
+    <a class="bt" href="./">Abrir o site</a>
+  </div>
+  <div id="grupos"></div>
+  <p class="nota">Com a conta master logada neste navegador, a página também mostra Pix automático, IA, tags do Google e da Meta, robô diário e notificações. Nenhuma chave ou senha aparece aqui. Página fora do Google (noindex).</p>
+</main>
+<script>
+(function () {
+  "use strict";
+  var GRUPOS = [
+    ["site", "Site e arquivos"], ["servidor", "Servidor (PHP e banco)"], ["seguranca", "Segurança"],
+    ["google", "Google, velocidade e app"], ["painel", "Configurações do painel"]
+  ];
+  var itens = [];
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function add(g, titulo, st, det, fix) { itens.push({ g: g, t: titulo, st: st, d: det || "", f: st === "ok" || st === "info" ? "" : (fix || "") }); }
+  function pinta() {
+    var h = "";
+    GRUPOS.forEach(function (g) {
+      var xs = itens.filter(function (x) { return x.g === g[0]; }); if (!xs.length) return;
+      var ok = xs.filter(function (x) { return x.st === "ok"; }).length;
+      h += '<section><h2>' + esc(g[1]) + ' <span>' + ok + " de " + xs.length + " OK</span></h2><ul class=\"lista\">" + xs.map(function (x) {
+        var ic = { ok: "✓", av: "!", er: "×", info: "i" }[x.st];
+        return '<li class="it ' + x.st + '"><span class="st" aria-hidden="true">' + ic + "</span><b>" + esc(x.t) + "</b>" + (x.d ? '<span class="d">' + esc(x.d) + "</span>" : "") + (x.f ? '<span class="fix"><strong>Como resolver:</strong> ' + esc(x.f) + "</span>" : "") + "</li>";
+      }).join("") + "</ul></section>";
+    });
+    document.getElementById("grupos").innerHTML = h;
+    var c = function (s) { return itens.filter(function (x) { return x.st === s; }).length; };
+    document.getElementById("n-ok").textContent = c("ok"); document.getElementById("n-av").textContent = c("av");
+    document.getElementById("n-er").textContent = c("er"); document.getElementById("n-tot").textContent = itens.length;
+  }
+  function pega(url, op) {
+    var t0 = performance.now();
+    return fetch(url, Object.assign({ cache: "no-store", credentials: "same-origin", redirect: "follow" }, op || {}))
+      .then(function (r) { return r.text().then(function (tx) { return { st: r.status, ok: r.ok, h: r.headers, tx: tx, ms: Math.round(performance.now() - t0), url: r.url }; }); })
+      .catch(function (e) { return { st: 0, ok: false, h: new Headers(), tx: "", ms: 0, erro: e.message }; });
+  }
+  function json(tx) { try { return JSON.parse(tx); } catch (e) { return null; } }
+  function kb(n) { return (n / 1024).toFixed(0) + " KB"; }
+
+  async function rodar() {
+    itens = []; document.getElementById("grupos").innerHTML = '<ul class="lista"><li class="it carregando"><span class="st">◌</span><b>Conferindo…</b></li></ul>';
+    var base = location.href.replace(/[^/]*([?#].*)?$/, "");
+
+    /* ---------- site ---------- */
+    add("site", "Endereço seguro (HTTPS)", location.protocol === "https:" ? "ok" : "er", location.protocol === "https:" ? "O site abre com cadeado." : "O site abriu sem HTTPS.",
+      "No hPanel da Hostinger: Segurança → SSL, ative o certificado gratuito e force HTTPS. Pix, login, app instalável e notificações precisam de HTTPS.");
+    var ini = await pega(base);
+    add("site", "Página inicial", ini.ok && /Coração/.test(ini.tx) ? "ok" : "er", ini.ok ? "Carregou em " + ini.ms + " ms (" + kb(ini.tx.length) + ")." : "Status " + ini.st + ".",
+      "Confira se o index.html está na pasta do domínio (public_html/ ou public_html/coracaobr/).");
+    var falta = [];
+    for (var f of ["js/app.js", "js/store.js", "js/pagamento.js", "js/marketing.js", "js/postais.js"]) { var r = await pega(base + f); if (!r.ok) falta.push(f + " (" + r.st + ")"); }
+    add("site", "Scripts do app", falta.length ? "er" : "ok", falta.length ? "Faltando: " + falta.join(", ") : "Todos os scripts principais respondem.", "Suba de novo a pasta js/ inteira do zip.");
+    var sd = await pega(base + "data/seed.json"), sj = json(sd.tx);
+    var nL = sj && sj.lugares ? sj.lugares.length : 0, nP = sj && sj.lugares ? sj.lugares.filter(function (l) { return l.precoMin > 0 && l.precoConferidoEm; }).length : 0;
+    add("site", "Lugares do guia (data/seed.json)", nL > 100 ? "ok" : "er", nL ? nL + " lugares, " + nP + " com preço conferido · versão " + sj.versao : "Não carregou (status " + sd.st + ").", "Suba a pasta data/ do zip.");
+    var po = await pega(base + "img/postais/dallas-noite-m.jpg");
+    add("site", "Cartões-postais do banner", po.ok ? "ok" : "er", po.ok ? "Fotos em alta presentes." : "img/postais/ não encontrada (status " + po.st + ").", "Suba a pasta img/postais/ do zip.");
+    var pt = await pega(base + "img/patrocinadores/qrdog-apresentacao/index.html");
+    add("site", "Banners dos patrocinadores", pt.ok ? "ok" : "av", pt.ok ? "Pasta dos patrocinadores presente." : "Banner animado do QR-DOG não encontrado.", "Suba a pasta img/patrocinadores/ do zip.");
+
+    /* ---------- servidor ---------- */
+    var se = await pega(base + "api/?acao=sessao"), sj2 = json(se.tx);
+    if (!sj2 || !sj2.ok) {
+      add("servidor", "API em PHP", "er", se.st ? "A API respondeu status " + se.st + " sem os dados esperados." : "A API não respondeu.",
+        "Confira se a pasta api/ foi enviada e se a hospedagem tem PHP 8.1 ou mais novo (hPanel → Avançado → Configuração do PHP). Em GitHub Pages a API não roda: use a Hostinger.");
+    } else add("servidor", "API em PHP", "ok", "Respondeu em " + se.ms + " ms.");
+    var dg = json((await pega(base + "api/?acao=diagnostico")).tx);
+    if (dg && dg.ok) {
+      add("servidor", "Versão do PHP", dg.phpOk ? "ok" : "er", "PHP " + dg.php + (dg.phpOk ? "" : " (precisa 8.1+)"), "hPanel → Avançado → Configuração do PHP → escolha 8.2 ou 8.3.");
+      var fx = Object.keys(dg.ext).filter(function (k) { return !dg.ext[k]; });
+      add("servidor", "Extensões do PHP", fx.length ? (fx.indexOf("pdo_sqlite") >= 0 || fx.indexOf("curl") >= 0 ? "er" : "av") : "ok", fx.length ? "Faltando: " + fx.join(", ") : "pdo_sqlite, curl, gd, mbstring, openssl, json e fileinfo ativas.", "hPanel → Configuração do PHP → Extensões: ative as que faltam.");
+      add("servidor", "Fotos em WebP (compressão)", dg.webp ? "ok" : "av", dg.webp ? "As fotos enviadas viram WebP leve." : "Sem WebP: as fotos ficam em JPEG (maiores).", "Ative a extensão gd com suporte a WebP na Configuração do PHP.");
+      add("servidor", "Banco de dados", dg.banco ? "ok" : "er", dg.banco ? (dg.lugares || 0) + " lugares no banco." : "O banco não abriu.", "A pasta dados/ precisa poder ser gravada pelo PHP (permissão 755).");
+      add("servidor", "Pasta dados/ gravável", dg.dadosGravavel ? "ok" : "er", dg.dadosGravavel ? "Contas, anúncios e pagamentos podem ser salvos." : "O PHP não consegue gravar em dados/.", "Gerenciador de Arquivos → dados/ → Permissões 755.");
+      add("servidor", "Pasta uploads/ gravável", dg.uploadsGravavel ? "ok" : "er", dg.uploadsGravavel ? "As empresas podem enviar fotos." : "O PHP não consegue gravar em uploads/.", "Crie a pasta uploads/ ao lado do index.html, com permissão 755.");
+      var seedOk = dg.seedArquivo && dg.seedArquivo === dg.seedBanco;
+      add("servidor", "Lugares e preços importados", seedOk ? "ok" : "av", seedOk ? "Versão " + dg.seedBanco + " importada." : "Arquivo " + (dg.seedArquivo || "–") + " · banco " + (dg.seedBanco || "ainda não importado"), "Abra o site uma vez: a importação acontece sozinha no primeiro acesso.");
+      add("servidor", "Configuração (api/config.php)", dg.configPhp && dg.chaveInstalacao ? "ok" : dg.configPhp ? "av" : "er", dg.configPhp ? (dg.chaveInstalacao ? "Arquivo presente, com a chave de instalação." : "Arquivo presente, sem a chave de instalação.") : "api/config.php não encontrado.", "Use o api/config.php que veio no zip (ele já traz a chave de instalação).");
+      add("servidor", "Conta master criada", dg.instalado ? "ok" : "av", dg.instalado ? "A instalação foi concluída." : "Ainda não há conta master.", "Abra o site → #instalar, informe a chave de instalação e crie a conta master.");
+      add("servidor", "Envio de e-mails", dg.mail ? "ok" : "av", dg.mail ? "A função de e-mail do PHP está disponível." : "mail() desativado.", "Peça à Hostinger para liberar o envio de e-mails do PHP, ou crie o e-mail nao-responda@seu-dominio no hPanel.");
+      add("servidor", "Biblioteca da IA (api/vendor)", dg.vendor ? "ok" : "av", dg.vendor ? "Presente." : "Ausente: o assistente usa só a busca do guia.", "Suba a pasta api/vendor/ do zip.");
+      add("servidor", "Robô diário (5h)", dg.diario ? "ok" : "av", dg.diario ? "Última atualização: " + dg.diario : "Ainda não rodou.", "Painel master → Site → copie o link do robô diário e crie uma tarefa Cron no hPanel (todo dia às 5h).");
+    } else if (sj2 && sj2.ok) add("servidor", "Diagnóstico do servidor", "av", "A API está no ar, mas sem o diagnóstico.", "Suba o api/index.php mais novo do zip.");
+
+    /* ---------- segurança ---------- */
+    var cf = await pega(base + "api/config.php");
+    add("seguranca", "api/config.php protegido", cf.st === 403 || cf.st === 404 ? "ok" : cf.st === 200 && !cf.tx.trim() ? "av" : "er",
+      cf.st === 403 || cf.st === 404 ? "Bloqueado pela web (status " + cf.st + ")." : cf.st === 200 && !cf.tx.trim() ? "Responde vazio: o conteúdo não aparece, mas o .htaccess não está ativo." : "Status " + cf.st + ": confira já.",
+      "Confira se o arquivo .htaccess (oculto) foi enviado para a pasta do site. No Gerenciador de Arquivos, ative 'Mostrar arquivos ocultos'.");
+    var db = await pega(base + "dados/coracaobr.sqlite");
+    add("seguranca", "Banco bloqueado pela web", db.st === 403 || db.st === 404 ? "ok" : "er", "Status " + db.st + ".", "O .htaccess precisa estar na pasta do site. Sem ele, o banco pode ser baixado: corrija antes de divulgar.");
+    var vd = await pega(base + "api/vendor/autoload.php");
+    add("seguranca", "Bibliotecas bloqueadas pela web", vd.st === 403 || vd.st === 404 || (vd.st === 200 && !vd.tx.trim()) ? "ok" : "av", "Status " + vd.st + ".", "Envie o .htaccess da raiz do zip.");
+    var up = await pega(base + "uploads/");
+    add("seguranca", "Listagem de pastas desligada", /Index of/i.test(up.tx) ? "er" : "ok", /Index of/i.test(up.tx) ? "A pasta uploads/ lista os arquivos." : "As pastas não listam arquivos.", "O .htaccess desliga a listagem (Options -Indexes).");
+
+    /* ---------- google, velocidade e app ---------- */
+    var sm = await pega(base + "sitemap.xml");
+    var smOk = sm.ok && /<urlset/.test(sm.tx), smDom = smOk && sm.tx.indexOf(location.host) >= 0, nU = (sm.tx.match(/<loc>/g) || []).length;
+    add("google", "Mapa do site (sitemap.xml)", smOk && smDom ? "ok" : smOk ? "av" : "er", smOk ? nU + " endereços" + (smDom ? ", com este domínio." : ", mas com outro domínio.") : "Não encontrado (status " + sm.st + ").",
+      "O .htaccess gera o sitemap com o endereço real. Depois, envie " + base + "sitemap.xml no Google Search Console.");
+    var rb = await pega(base + "robots.txt");
+    add("google", "robots.txt", rb.ok && /Sitemap:/i.test(rb.tx) ? "ok" : "av", rb.ok ? rb.tx.trim().split("\n").slice(-1)[0] : "Não encontrado.", "Envie o .htaccess da raiz do zip.");
+    var gp = await pega(base + "guia/churrascaria/");
+    add("google", "Páginas para o Google (guia/)", gp.ok && /application\/ld\+json/.test(gp.tx) ? "ok" : "er", gp.ok ? "Páginas por categoria e cidade, com dados estruturados e preços." : "guia/ não encontrada.", "Suba a pasta guia/ do zip.");
+    var js = await pega(base + "js/app.js"), enc = (js.h.get("content-encoding") || "").toLowerCase();
+    add("google", "Compressão (gzip/brotli)", enc ? "ok" : "av", enc ? "Scripts comprimidos (" + enc + ")." : "O servidor não informou compressão.", "Na Hostinger isso costuma vir ligado; confira se o .htaccess foi enviado.");
+    var cc = (po.h && (po.h.get("cache-control") || po.h.get("expires"))) || "";
+    add("google", "Cache das imagens", cc && !/no-cache|no-store/.test(cc) ? "ok" : "av", cc ? "Cache: " + cc : "Sem cabeçalho de cache.", "O .htaccess define 30 dias de cache para fotos.");
+    var mf = await pega(base + "manifest.webmanifest"), mj = json(mf.tx), ic = await pega(base + "icon-512.png");
+    add("google", "App instalável (manifest e ícones)", mj && mj.name && ic.ok ? "ok" : "er", mj ? "\"" + mj.name + "\", ícones " + (ic.ok ? "presentes" : "faltando") + "." : "manifest.webmanifest não carregou.", "Suba manifest.webmanifest, icon-192.png e icon-512.png.");
+    var sw = await pega(base + "sw.js");
+    add("google", "Funciona como app (sw.js)", sw.ok && "serviceWorker" in navigator ? "ok" : "er", sw.ok ? "Service worker presente." : "sw.js não encontrado.", "Suba o sw.js da raiz do zip.");
+
+    /* ---------- painel ---------- */
+    if (sj2 && sj2.ok) {
+      add("painel", "Pix automático (Mercado Pago)", sj2.pixAuto ? "ok" : "av", sj2.pixAuto ? "Pix confirmado e anúncio liberado na hora." : "Desligado: os pagamentos dependem de confirmação manual.", "Painel master → visão geral → cartão Mercado Pago: cole o Access Token de produção.");
+      var m = dg && dg.master;
+      if (!m) add("painel", "Detalhes do painel", "info", sj2.conta ? "Entre com a conta master para ver Pix, IA, Google e notificações." : "Entre com a conta master neste navegador e rode de novo.");
+      else {
+        add("painel", "Chave Pix e e-mail oficial", m.pixChave && m.emailOficial ? "ok" : "av", "Pix: " + (m.pixChave || "–") + " · e-mail: " + (m.emailOficial || "–"), "Painel master → Configurações → Pagamentos.");
+        add("painel", "Assistente com IA", m.ia ? "ok" : "av", m.ia ? "Ligado." : "Sem chave: responde com a busca do guia.", "Painel master → Novidades → chave da IA.");
+        add("painel", "Fotos do Google (Places)", m.google ? "ok" : "av", m.google ? "Ligado." : "Sem chave do Google Places.", "Painel master → Configurações → chave do Google Places (opcional).");
+        add("painel", "Google Analytics / Tag Manager", m.ga4 || m.gtm ? "ok" : "av", m.ga4 || m.gtm ? "Configurado." : "Nenhuma tag de medição.", "Painel master → Configurações → Google e anúncios: cole o ID do GA4 (G-...).");
+        add("painel", "Google Ads e Pixel da Meta", m.ads || m.pixel ? "ok" : "av", [m.ads ? "Google Ads" : "", m.pixel ? "Pixel da Meta" : ""].filter(Boolean).join(" · ") || "Nada configurado.", "Para tráfego pago, cole o ID do Google Ads (AW-...) e do Pixel em Configurações → Google e anúncios.");
+        if (m.gsc) { var gv = await pega(base + m.gsc); add("painel", "Verificação do Search Console", gv.ok && /google-site-verification/.test(gv.tx) ? "ok" : "er", base + m.gsc + " · status " + gv.st, "Confira o nome do arquivo em Configurações → Google e anúncios e se o .htaccess foi enviado."); }
+        else add("painel", "Verificação do Search Console", "av", "Nenhum arquivo informado.", "No Search Console, escolha 'Arquivo HTML' e cole o nome do arquivo em Configurações → Google e anúncios.");
+        add("painel", "Notificações no celular", m.push ? "ok" : "info", m.push + (m.push === 1 ? " aparelho inscrito." : " aparelhos inscritos."));
+      }
+    }
+    pinta();
+  }
+  document.getElementById("rodar").onclick = rodar;
+  document.getElementById("copiar").onclick = function () {
+    var tx = "Diagnóstico CoraçãoBR · " + location.host + " · " + new Date().toLocaleString("pt-BR") + "\n" + itens.map(function (x) { return "[" + { ok: "OK", av: "ATENÇÃO", er: "ERRO", info: "INFO" }[x.st] + "] " + x.t + " — " + x.d; }).join("\n");
+    (navigator.clipboard ? navigator.clipboard.writeText(tx) : Promise.reject()).then(function () { document.getElementById("copiar").textContent = "Copiado ✓"; }, function () { prompt("Copie o relatório:", tx); });
+  };
+  rodar();
+})();
+</script>
+</body>
+</html>

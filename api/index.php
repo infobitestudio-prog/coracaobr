@@ -1140,6 +1140,36 @@ case 'push_enviar': {
 case 'push_info': {
   exigeMaster(); sai(['ok' => true, 'inscritos' => (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'push'")->fetchColumn(), 'ultima' => json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'push-ultima'")->fetchColumn(), true)]);
 }
+/* ===== Diagnóstico da instalação (usado por diagnostico.html) =====
+   Público: só respostas sim/não sobre o servidor, sem chaves nem dados de ninguém. Com o master logado: também o que está ligado no painel. */
+case 'diagnostico': {
+  header('Cache-Control: no-store');
+  $ext = []; foreach (['pdo_sqlite', 'curl', 'gd', 'mbstring', 'openssl', 'json', 'fileinfo'] as $x) $ext[$x] = extension_loaded($x);
+  $dir = dirname($CFG['db']); $up = $CFG['uploads'] ?? (__DIR__ . '/../uploads');
+  $o = ['ok' => true, 'php' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION, 'phpOk' => PHP_VERSION_ID >= 80100, 'ext' => $ext,
+    'webp' => function_exists('imagewebp') && (gd_info()['WebP Support'] ?? false), 'https' => $https, 'mail' => function_exists('mail'),
+    'configPhp' => is_file(__DIR__ . '/config.php'), 'chaveInstalacao' => trim((string)($CFG['chave_instalacao'] ?? '')) !== '',
+    'vendor' => is_file(__DIR__ . '/vendor/autoload.php'), 'fuso' => date_default_timezone_get()];
+  try {
+    $pdo = banco();
+    $o['banco'] = true; $o['dadosGravavel'] = is_writable($dir);
+    $o['instalado'] = temMaster();
+    $o['lugares'] = (int)$pdo->query("SELECT COUNT(*) FROM docs WHERE col = 'lugares'")->fetchColumn();
+    $seed = is_file($CFG['seed']) ? json_decode((string)file_get_contents($CFG['seed']), true) : null;
+    $o['seedArquivo'] = (string)($seed['versao'] ?? ''); $o['seedBanco'] = (string)$pdo->query("SELECT v FROM meta WHERE k = 'seed'")->fetchColumn();
+    $o['diario'] = (string)$pdo->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn();
+  } catch (Throwable $e) { $o['banco'] = false; $o['dadosGravavel'] = is_dir($dir) ? is_writable($dir) : is_writable(dirname($dir)); }
+  if (!is_dir($up)) @mkdir($up, 0755, true);
+  $o['uploadsGravavel'] = is_dir($up) && is_writable($up);
+  if (master()) {
+    $g = (array)(configDoc('geral') ?? []); $mk = (array)($g['marketing'] ?? []);
+    $o['master'] = ['pixAuto' => mpToken() !== '', 'ia' => chaveIA() !== '', 'google' => (trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents($dir . '/GOOGLE-PLACES.key'))) !== '',
+      'cron' => is_file($dir . '/CHAVE-CRON.txt'), 'push' => (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'push'")->fetchColumn(),
+      'ga4' => !empty($mk['ga4']), 'gtm' => !empty($mk['gtm']), 'ads' => !empty($mk['ads']), 'pixel' => !empty($mk['pixel']), 'gsc' => (string)($mk['gsc'] ?? ''),
+      'emailOficial' => (string)($CFG['email_oficial'] ?? ''), 'pixChave' => chavePix((string)((array)($g['pagamentos'] ?? []))['pix'] ?? '')];
+  }
+  sai($o);
+}
 /* ===== Mapa do site para o Google (sitemap.xml e robots.txt, com o endereço real do site) ===== */
 case 'sitemap': {
   header('Content-Type: application/xml; charset=utf-8'); header('Cache-Control: public, max-age=3600');

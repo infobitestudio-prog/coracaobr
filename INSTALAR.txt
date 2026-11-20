@@ -11,7 +11,14 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
    (hPanel → Gerenciador de Arquivos → public_html/coracaobr/dados/). Preencha a chave, nome, e-mail e senha.
    Depois disso esse formulário some sozinho. Essa é a SUA conta de administrador.
 
-3. PRONTO
+3. CONFERIR SE ESTÁ TUDO CERTO
+   Abra https://SEU-SITE/coracaobr/diagnostico.html
+   A página confere o site, o PHP, as pastas, a segurança (.htaccess), o Google (sitemap, robots,
+   páginas do guia), o app instalável e, com a conta master logada no mesmo navegador, o Pix automático,
+   a IA, as tags do Google/Meta e o robô diário. Cada item que não estiver OK mostra como resolver.
+   Use "Copiar relatório" para mandar o resultado ao suporte.
+
+4. PRONTO
    - Visitantes navegam sem conta.
    - Uma conta só para todo mundo (e-mail, senha e CEP americano/ZIP obrigatório). Com ela a pessoa
      curte, comenta, avalia, salva roteiros e recebe avisos do que está perto do CEP dela.
