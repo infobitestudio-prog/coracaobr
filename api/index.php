@@ -519,6 +519,11 @@ case 'newsletter_cron': {
   banco()->prepare('INSERT INTO envios (assunto, modo, enviados, falhas, em) VALUES (?, ?, ?, ?, ?)')->execute([$d['assunto'], 'automático', $env, $fal, agora()]);
   sai(['ok' => true, 'enviados' => $env, 'falhas' => $fal]);
 }
+case 'metro': {
+  $f = __DIR__ . '/../dados/metro.json'; $g = __DIR__ . '/../data/metro.json';
+  $arq = is_file($f) && (!is_file($g) || filemtime($f) >= filemtime($g)) ? $f : $g;
+  header('Cache-Control: public, max-age=3600'); readfile($arq); exit;
+}
 case 'cron_info': {
   exigeMaster();
   $f = dirname($CFG['db']) . '/CHAVE-CRON.txt';
