@@ -15,6 +15,10 @@ RedirectMatch 404 /api/vendor(/|$)
 <FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|log)$">
   Require all denied
 </FilesMatch>
+# Configuração da instalação (chave): só o PHP lê, pela web nunca
+<FilesMatch "^config(\.exemplo)?\.php$">
+  Require all denied
+</FilesMatch>
 
 # HTML, JS e CSS: o navegador confere se há versão nova a cada visita (resposta rápida 304 quando não mudou)
 <IfModule mod_headers.c>

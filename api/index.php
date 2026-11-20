@@ -285,7 +285,7 @@ function aplicaPacote(string $uid, array $c, string $pagId): array {
   avisaEquipe('Pix aprovado · R$ ' . number_format($pk['valor'], 2, ',', '.'), "Pagamento Pix aprovado e liberado automaticamente.\n\nConta: {$u['nome']} <{$u['email']}>\nPlano: $desc\nPeríodo: " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . "\nMercado Pago: $pagId");
   if (filter_var($u['email'], FILTER_VALIDATE_EMAIL)) {
     global $CFG; $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
-    @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: pagamento confirmado, seus anúncios estão no ar') . '?=', "Olá, {$u['nome']}.\n\nRecebemos seu Pix de R$ " . number_format($pk['valor'], 2, ',', '.') . ".\nPlano: $desc, de " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . ".\n\nAcompanhe no painel: " . baseUrl() . "#anunciante\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+    @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: pagamento confirmado, seus anúncios estão no ar') . '?=', "Olá, {$u['nome']}.\n\nRecebemos seu Pix de R$ " . number_format($pk['valor'], 2, ',', '.') . ".\nPlano: $desc, de " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . ".\n\nAcompanhe no painel: " . baseUrl() . "#anunciante" . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   }
   return $pk;
 }
@@ -303,7 +303,7 @@ function premiaIndicacao(string $uid): void {
   $u = $pdo->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $u->execute([$por]); $u = $u->fetch();
   if ($u && filter_var($u['email'], FILTER_VALIDATE_EMAIL)) {
     global $CFG; $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
-    @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: você ganhou 50% de desconto') . '?=', "Olá, {$u['nome']}.\n\nUma empresa que você indicou acabou de anunciar no CoraçãoBR. Obrigado!\nVocê ganhou 50% de desconto em 1 pacote. Ele é aplicado sozinho na sua próxima compra:\n" . baseUrl() . "#pagar\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+    @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: você ganhou 50% de desconto') . '?=', "Olá, {$u['nome']}.\n\nUma empresa que você indicou acabou de anunciar no CoraçãoBR. Obrigado!\nVocê ganhou 50% de desconto em 1 pacote. Ele é aplicado sozinho na sua próxima compra:\n" . baseUrl() . "#pagar" . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   }
 }
 /* consulta o pagamento no Mercado Pago e, se aprovado, libera o pacote (usado pelo aviso automático, pela tela do anunciante e pela rotina diária) */
@@ -314,7 +314,14 @@ function processaPagamento(string $pagId): array {
   $pg = mp('GET', '/v1/payments/' . rawurlencode($pagId));
   if (!is_array($pg) || empty($pg['id'])) return ['status' => $c['status'] ?? 'pendente'];
   $s = (string)($pg['status'] ?? '');
-  if ($s === 'approved' && abs((float)($pg['transaction_amount'] ?? 0) - (float)$c['valor']) < 0.01) { $c['status'] = 'aprovado'; $c['aprovadoEm'] = gmdate('c'); $c['pacote'] = aplicaPacote($c['uid'], $c, $pagId); }
+  if ($s === 'approved' && abs((float)($pg['transaction_amount'] ?? 0) - (float)$c['valor']) < 0.01) {
+    $c['status'] = 'aprovado'; $c['aprovadoEm'] = gmdate('c');
+    if (($c['plano'] ?? '') === 'caixinha') {
+      $av = ['tipo' => 'caixinha', 'nome' => 'Apoio pela caixinha', 'valor' => (float)$c['valor'], 'moeda' => 'BRL', 'criadoEm' => gmdate('c'), 'lido' => false, 'pagamento' => 'mp:' . $pagId];
+      $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('avisos', ?, ?, ?) ON CONFLICT(col, id) DO NOTHING")->execute(['cx-' . $pagId, json_encode($av, JSON_UNESCAPED_UNICODE), agora()]); versao('avisos');
+      try { avisaEquipe('Apoio recebido pela caixinha · R$ ' . number_format((float)$c['valor'], 2, ',', '.'), "Pix da caixinha aprovado pelo Mercado Pago.\nValor: R$ " . number_format((float)$c['valor'], 2, ',', '.') . "\nPagamento: $pagId"); } catch (Throwable $e) { /* o aviso no painel já ficou registrado */ }
+    } else $c['pacote'] = aplicaPacote($c['uid'], $c, $pagId);
+  }
   elseif (in_array($s, ['cancelled', 'rejected', 'refunded', 'charged_back'], true)) $c['status'] = 'cancelado';
   elseif (!empty($c['expira']) && time() > strtotime($c['expira'])) $c['status'] = 'expirado';
   $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$pagId, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
@@ -420,8 +427,8 @@ case 'esqueci': {
     $link = linkSenha($u['id']);
     $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
     $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
-    $txt = "Olá, {$u['nome']}.\n\nRecebemos um pedido para criar uma nova senha na CoraçãoBR.\nAbra o link abaixo em até 24 horas:\n\n$link\n\nSe não foi você, ignore este e-mail; sua senha atual continua valendo.\n\nEquipe CoraçãoBR";
-    @mail($email, '=?UTF-8?B?' . base64_encode('CoraçãoBR: crie uma nova senha') . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+    $txt = "Olá, {$u['nome']}.\n\nRecebemos um pedido para criar uma nova senha na CoraçãoBR.\nAbra o link abaixo em até 24 horas:\n\n$link\n\nSe não foi você, ignore este e-mail; sua senha atual continua valendo.";
+    @mail($email, '=?UTF-8?B?' . base64_encode('CoraçãoBR: crie uma nova senha') . '?=', $txt . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   }
   sai(['ok' => true, 'msg' => $msg]);
 }
@@ -823,7 +830,7 @@ case 'atualizar_diario': {
       if (!$u || !filter_var($u['email'], FILTER_VALIDATE_EMAIL)) continue;
       $q = (int)($pk['anuncios'] ?? 3); $fim = date('d/m/Y', strtotime($pk['fim']));
       $txt = "Olá, {$u['nome']}.\n\nSeu plano no CoraçãoBR (" . $q . ($q === 1 ? ' anúncio' : ' anúncios') . ") termina em $dias " . ($dias === 1 ? 'dia' : 'dias') . ", no dia $fim.\n\nPara seus anúncios continuarem no ar sem interrupção, renove pelo painel do anunciante:\n" . baseUrl() . "#pagar\n\n"
-        . "Pagamento por Pix:\nChave (CNPJ): " . ($pix['pix'] ?? '32.021.268/0001-04') . "\nFavorecido: " . ($pix['pixNome'] ?? 'Danilo Araujo Santos Desenvolvedor') . "\nNo painel você encontra o QR Code e o Pix copia e cola com o valor certo.\n\nDepois do fim, há 2 dias de tolerância; em seguida os anúncios saem do ar até a renovação.\n\nEquipe CoraçãoBR\n" . emailOficial();
+        . "Pagamento por Pix:\nChave Pix (e-mail · Mercado Pago): " . chavePix($pix['pix'] ?? '') . "\nFavorecido: " . ($pix['pixNome'] ?? 'Danilo Araujo Santos Desenvolvedor') . "\nNo painel você encontra o QR Code e o Pix copia e cola com o valor certo.\n\nDepois do fim, há 2 dias de tolerância; em seguida os anúncios saem do ar até a renovação." . sacAssinatura();
       $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
       if (@mail($u['email'], '=?UTF-8?B?' . base64_encode("CoraçãoBR: seu anúncio termina em $dias " . ($dias === 1 ? 'dia' : 'dias')) . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n")) { $env++; }
       $feitos[] = $marca; $mudou = true;
@@ -847,7 +854,7 @@ case 'atualizar_diario': {
         $linhas[] = "• {$it['nome']}: " . ($t['v'] ?? 0) . " visualizações, " . ($t['r'] ?? 0) . " rotas, " . ($t['c'] ?? 0) . " cliques em contato, $cup cupons usados, $ped pedidos"; }
       if (!$linhas) continue;
       $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
-      if (@mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: seu relatório de ' . date('m/Y', strtotime($mesAnt . '-01'))) . '?=', "Olá, {$u['nome']}.\n\nResumo dos seus anúncios em " . date('m/Y', strtotime($mesAnt . '-01')) . ":\n\n" . implode("\n", $linhas) . "\n\nTotal: $sv visualizações.\n\nDicas: anúncios com mais fotos, cupom e selo Verificado recebem mais contatos. Para aparecer no topo por " . precosServidor()['diasImpulso'] . " dias, use Impulsionar no painel:\n" . baseUrl() . "#anunciante\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n")) $nR++;
+      if (@mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: seu relatório de ' . date('m/Y', strtotime($mesAnt . '-01'))) . '?=', "Olá, {$u['nome']}.\n\nResumo dos seus anúncios em " . date('m/Y', strtotime($mesAnt . '-01')) . ":\n\n" . implode("\n", $linhas) . "\n\nTotal: $sv visualizações.\n\nDicas: anúncios com mais fotos, cupom e selo Verificado recebem mais contatos. Para aparecer no topo por " . precosServidor()['diasImpulso'] . " dias, use Impulsionar no painel:\n" . baseUrl() . "#anunciante" . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n")) $nR++;
     }
     $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('relatorio-mensal', ?)")->execute([$agoraD->format('Y-m')]);
     $rel['feito'][] = "Relatórios mensais enviados: $nR";
@@ -889,8 +896,28 @@ case 'atualizar_diario': {
 }
 case 'pix_criar': {
   if ($metodo !== 'POST') erro('Use POST.', 405);
-  $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
+  $u = eu(); $caixinha = ($corpo['plano'] ?? '') === 'caixinha';
+  if (!$u && !$caixinha) erro('Entre na sua conta para continuar.', 401);
   if (mpToken() === '') erro('O Pix automático ainda não foi ligado pela equipe.', 409);
+  if ($caixinha) {
+    /* caixinha do desenvolvedor: valor livre, pode ser visitante sem conta */
+    $quem = $u ? $u['id'] : $_SESSION['visitante'];
+    if (!limite('pix:' . $quem, 20, 3600) || !limite('pixip:' . ip(), 40, 3600)) erro('Muitas cobranças geradas. Aguarde alguns minutos.', 429); marca('pix:' . $quem); marca('pixip:' . ip());
+    $valor = round((float)str_replace(',', '.', (string)($corpo['valor'] ?? 0)), 2);
+    if ($valor < 1 || $valor > 5000) erro('Escolha um valor entre R$ 1 e R$ 5.000.');
+    $expira = (new DateTime('+30 minutes'))->format('Y-m-d\TH:i:s.vP');
+    $host = preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? '')); if (!preg_match('/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i', $host) || filter_var($host, FILTER_VALIDATE_IP)) $host = 'coracaobr.app';
+    $nome = $u ? explode(' ', trim($u['nome']), 2) : ['Apoiador', 'CoraçãoBR'];
+    $r = mp('POST', '/v1/payments', ['transaction_amount' => $valor, 'description' => 'CoraçãoBR · apoio pela caixinha', 'payment_method_id' => 'pix', 'date_of_expiration' => $expira,
+      'payer' => ['email' => $u ? $u['email'] : 'apoio+' . substr($quem, 0, 12) . '@' . $host, 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $quem . '|caixinha|1',
+      'notification_url' => baseUrl() . 'api/?acao=pix_webhook'], bin2hex(random_bytes(16)));
+    $tx = $r['point_of_interaction']['transaction_data'] ?? null;
+    if (!is_array($r) || empty($r['id']) || !$tx) erro('O Mercado Pago não gerou o Pix agora. Tente de novo em instantes.' . (isset($r['message']) ? ' (' . mb_substr((string)$r['message'], 0, 120) . ')' : ''), 502);
+    $id = (string)$r['id'];
+    $c = ['uid' => $quem, 'plano' => 'caixinha', 'qtd' => 1, 'valor' => $valor, 'status' => 'pendente', 'criadoEm' => gmdate('c'), 'expira' => $expira];
+    banco()->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$id, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
+    sai(['ok' => true, 'id' => $id, 'valor' => $valor, 'copiaecola' => $tx['qr_code'] ?? '', 'qr' => $tx['qr_code_base64'] ?? '', 'expira' => $expira]);
+  }
   if (!limite('pix:' . $u['id'], 20, 3600)) erro('Muitas cobranças geradas. Aguarde alguns minutos.', 429); marca('pix:' . $u['id']);
   $p = precosServidor(); $plano = in_array($corpo['plano'] ?? '', ['pacote', 'promo', 'verificado', 'impulso', 'clube', 'mural'], true) ? $corpo['plano'] : 'pacote'; $promo = $plano === 'promo';
   $qtd = $plano === 'pacote' ? max(1, min(30, (int)($corpo['qtd'] ?? 1))) : 1;
@@ -916,10 +943,11 @@ case 'pix_criar': {
   sai(['ok' => true, 'id' => $id, 'valor' => $valor, 'copiaecola' => $tx['qr_code'] ?? '', 'qr' => $tx['qr_code_base64'] ?? '', 'expira' => $expira]);
 }
 case 'pix_status': {
-  $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
+  $u = eu(); $quem = $u ? $u['id'] : $_SESSION['visitante'];
   $id = preg_replace('/\D/', '', (string)($_GET['id'] ?? ''));
   $st = banco()->prepare("SELECT data FROM docs WHERE col = 'cobrancas' AND id = ?"); $st->execute([$id]); $c = json_decode((string)$st->fetchColumn(), true);
-  if (!is_array($c) || ($c['uid'] !== $u['id'] && !master())) erro('Cobrança não encontrada.', 404);
+  if (!$u && !(is_array($c) && ($c['plano'] ?? '') === 'caixinha')) erro('Entre na sua conta para continuar.', 401);
+  if (!is_array($c) || ($c['uid'] !== $quem && !($u && $c['uid'] === $_SESSION['visitante']) && !master())) erro('Cobrança não encontrada.', 404);
   $r = processaPagamento($id); sai(['ok' => true, 'status' => $r['status'], 'pacote' => $r['cobranca']['pacote'] ?? null]);
 }
 case 'pix_webhook': {
@@ -960,9 +988,9 @@ case 'pedido': {
   if (!$u || !filter_var($u['email'], FILTER_VALIDATE_EMAIL)) erro('Este anúncio não recebe pedidos pelo site. Use o WhatsApp.', 404);
   $an = ''; $q = banco()->prepare("SELECT data FROM docs WHERE col = 'anunciantes' AND id = ?"); $q->execute([$dono]); $dd = json_decode((string)$q->fetchColumn(), true); if (is_array($dd)) foreach ((array)($dd['itens'] ?? []) as $k => $it) if ($dono . '~' . $k === $lid || ($it['id'] ?? '') === $lid) $an = (string)($it['nome'] ?? '');
   global $CFG; $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
-  $txt = "Olá, {$u['nome']}.\n\nVocê recebeu um pedido pelo CoraçãoBR" . ($an ? " no anúncio \"$an\"" : '') . ":\n\nTipo: " . ($tipo ?: 'Contato') . "\nNome: $nome\nContato: $cont" . ($dia ? "\nData desejada: " . date('d/m/Y', strtotime($dia)) . ($hora ? " às $hora" : '') : '') . ($msg ? "\n\nMensagem:\n$msg" : '') . "\n\nResponda direto para o cliente. Bons negócios!\nEquipe CoraçãoBR";
+  $txt = "Olá, {$u['nome']}.\n\nVocê recebeu um pedido pelo CoraçãoBR" . ($an ? " no anúncio \"$an\"" : '') . ":\n\nTipo: " . ($tipo ?: 'Contato') . "\nNome: $nome\nContato: $cont" . ($dia ? "\nData desejada: " . date('d/m/Y', strtotime($dia)) . ($hora ? " às $hora" : '') : '') . ($msg ? "\n\nMensagem:\n$msg" : '') . "\n\nResponda direto para o cliente. Bons negócios!";
   $rt = filter_var($cont, FILTER_VALIDATE_EMAIL) ? $cont : emailOficial();
-  $ok = @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: novo pedido de ' . $nome) . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: $rt\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+  $ok = @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: novo pedido de ' . $nome) . '?=', $txt . sacAssinatura(), "From: CoraçãoBR <$de>\r\nReply-To: $rt\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   $k = 'pedidos:' . $lid . ':' . date('Y-m'); banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute([$k]);
   sai(['ok' => true, 'enviado' => (bool)$ok]);
 }
@@ -1204,6 +1232,14 @@ function moldura(string $miolo, string $token): string {
     '<p style="font-size:12px;color:#5F6B64;margin-top:16px">Você recebe este e-mail porque se inscreveu na CoraçãoBR. <a href="' . htmlspecialchars($sair) . '" style="color:#5F6B64">Sair da lista</a>.</p></div></body></html>';
 }
 /* E-mail oficial da CoraçãoBR (config.php ou o padrão acima). */
+/* Todo recebimento cai no Pix do e-mail oficial (conta Mercado Pago); a chave CNPJ antiga é trocada sozinha */
+function chavePix(?string $k): string { $k = trim((string)$k); return ($k === '' || preg_replace('/\D/', '', $k) === '32021268000104') ? 'coracaobr.oficial@gmail.com' : $k; }
+/* SAC: atendimento por e-mail e WhatsApp, assinado em todo e-mail para clientes */
+function sacZap(): string { $g = configDoc('geral'); $z = preg_replace('/\D/', '', (string)($g['whatsappAviso'] ?? '')); return $z !== '' ? $z : '5511983573266'; }
+function sacAssinatura(): string {
+  $z = sacZap(); $br = strlen($z) >= 12 && substr($z, 0, 2) === '55' ? '(' . substr($z, 2, 2) . ') ' . substr($z, 4, strlen($z) - 8) . '-' . substr($z, -4) : '+' . $z;
+  return "\n\nEquipe CoraçãoBR\n\nSAC CoraçãoBR (atendimento)\nE-mail: " . emailOficial() . "\nWhatsApp: $br · https://wa.me/$z";
+}
 function emailOficial(): string {
   global $CFG; $e = trim((string)($CFG['email_oficial'] ?? ''));
   return filter_var($e, FILTER_VALIDATE_EMAIL) ? $e : 'coracaobr.oficial@gmail.com';

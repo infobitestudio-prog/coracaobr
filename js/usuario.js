@@ -98,13 +98,13 @@
       '<div class="dk-grid dk-g2"><div class="dk-card dk-flat"><div class="dk-ch"><h3>Próximo evento</h3><button type="button" class="more" data-dk-ir="eventos">ver todos</button></div>' + (prox ? '<div class="list">' + linhaEv(prox) + "</div>" : vazio("Nenhum evento com lembrete ainda.", "#explorar", "Ver eventos")) + "</div>" +
       (cartaoPerto || '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Atalhos</h3></div><div class="dk-ats">' + atalho("#mapa", "Mapa", "o que tem perto", "pin") + atalho("#feed", "Feed", "novidades", "grid") + atalho("#meus-roteiros", "Checklists", "seus roteiros", "route") + atalho("#roteiro-ia", "Roteiro IA", "monte em segundos", "spark") + "</div></div>") + "</div>" +
       (cartaoPerto ? '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Atalhos</h3></div><div class="dk-ats dk-ats4">' + atalho("#mapa", "Mapa", "o que tem perto", "pin") + atalho("#feed", "Feed", "novidades", "grid") + atalho("#meus-roteiros", "Checklists", "seus roteiros", "route") + atalho("#roteiro-ia", "Roteiro IA", "monte em segundos", "spark") + "</div></div>" : "");
-    var perfilSec = '<div class="dk-card dk-flat">' + cabecalho() + "</div>" + (window.Auth ? Auth.blocoConta() : "") + (window.Jornada ? Jornada.blocoConfig() : "");
+    var perfilSec = '<div class="dk-card dk-flat">' + cabecalho() + "</div>" + (window.Auth ? Auth.blocoConta() : "") + (window.Jornada ? Jornada.blocoConfig() : "") + '<div class="dk-card dk-flat">' + (G.sacHtml ? G.sacHtml("") : "") + "</div>";
     var eventos = '<div class="dk-card dk-flat">' + (lem.length ? '<div class="list">' + lem.map(linhaEv).join("") + "</div>" : vazio('Abra um evento e toque em "Lembrar-me" para receber aviso na véspera e no dia.', "#explorar", "Encontrar eventos")) + "</div>";
     var roteiro = window.Checklist ? Checklist.painel("check") : ''; var roteiroAntigo = '<div class="dk-card dk-flat">' + (salvos.length ? '<div class="list">' + salvos.slice(0, 12).map(G.linha).join("") + "</div>" + (salvos.length > 12 ? '<a class="more" href="#lista">ver os ' + salvos.length + "</a>" : "") : vazio("Toque no coração de um lugar para montar o seu roteiro.", "#explorar", "Explorar lugares")) + "</div>" +
       '<div class="dk-grid dk-g3">' + atalho("#meus-roteiros", "Meus roteiros", "checklist por dia", "route") + atalho("#roteiro-ia", "Roteiro com IA", "pronto em segundos", "spark") + atalho("#roteiros", "Roteiros prontos", "feitos pela equipe", "grid") + "</div>";
     if (window.Checklist) roteiro = '<div class="dk-card dk-flat">' + roteiro + "</div>" + (roteiroAntigo.indexOf('<div class="dk-grid dk-g3">') >= 0 ? roteiroAntigo.slice(roteiroAntigo.indexOf('<div class="dk-grid dk-g3">')) : ""); else roteiro = roteiroAntigo;
     var avs = '<div class="dk-card dk-flat">' + (av.length ? '<div class="list">' + av.map(function (a) { var l = Store.obter("lugares", a.lugarId); return '<a class="lrow nopos" href="#lugar-' + esc(a.lugarId) + '"><span class="th">' + (l && G.foto(l) ? '<img src="' + esc(G.foto(l)) + '" alt="">' : "") + "</span><span><b>" + esc(l ? l.nome : "") + "</b><small>" + esc(a.texto || "") + '</small></span><span class="val">' + G.stars(a.estrelas) + "</span></a>"; }).join("") + "</div>" : vazio("Suas avaliações aparecem aqui. Avalie os lugares que você visitou: isso ajuda outros brasileiros.", "#explorar", "Avaliar um lugar")) + "</div>";
-    var mais = '<div class="dk-grid dk-g3">' + atalho("#mural", "Mural", "vagas e classificados", "tag") + atalho("#custo", "Custo de vida", "por cidade", "chart") + atalho("#chegada", "Primeiros 30 dias", "checklist da chegada", "home") + atalho("#temas", "Alertas de eventos", "seus temas", "bell") + atalho("#fala-portugues", "Fala português", "profissionais", "user") + atalho("#conversor", "Conversor", "dólar ↔ real", "money") + atalho("#cidades", "Outras cidades", "avise-me", "share") + atalho("#instalar", "Instalar no celular", "como app", "plus") + atalho("#caixinha", "Apoie o guia", "caixinha", "heart") + "</div>";
+    var mais = '<div class="dk-grid dk-g3">' + atalho("#mural", "Mural", "vagas e classificados", "tag") + atalho("#custo", "Custo de vida", "por cidade", "chart") + atalho("#chegada", "Primeiros 30 dias", "checklist da chegada", "home") + atalho("#temas", "Alertas de eventos", "seus temas", "bell") + atalho("#fala-portugues", "Fala português", "profissionais", "user") + atalho("#conversor", "Conversor", "dólar ↔ real", "money") + atalho("#cidades", "Outras cidades", "avise-me", "share") + atalho("#instalar", "Instalar no celular", "como app", "plus") + atalho("#caixinha", "Apoie o guia", "caixinha", "heart") + "</div>" + '<div class="dk-card dk-flat">' + (G.sacHtml ? G.sacHtml("") : "") + "</div>";
     var menu = [
       { id: "geral", nome: "Visão geral", ic: "home", titulo: logado || nome ? "Olá, " + primeiro : "Minha conta", sub: logado ? "Sua conta em um lugar: guia, avisos e o seu negócio." : "Seus salvos ficam neste aparelho. <a href=\"#entrar\">Entre</a> para levar para qualquer lugar." },
       { id: "eventos", nome: "Meus eventos", ic: "cal", n: lem.length || "", grupo: "Guia", acao: '<button type="button" class="btn ghost sm" data-notif>' + Dash.ic("bell") + "Ativar notificações</button>" },
@@ -120,6 +120,8 @@
     var pe = [];
     if (ehMaster || Store.admin()) pe.push({ nome: "Painel master", ic: "shield", href: "#painel" });
     if (logado) pe.push({ nome: "Sair", ic: "out", acao: "data-sair" });
+    /* veio de um pagamento ou link para uma seção do negócio que esta conta ainda não tem: abre em Meu negócio */
+    try { var pedida = sessionStorage.getItem("dash-usuario"); if (pedida && !menu.some(function (m) { return m.id === pedida; }) && ["anuncios", "contratar", "turbinar", "depoimentos", "publicar", "divulgar", "cupom"].indexOf(pedida) >= 0) sessionStorage.setItem("dash-usuario", "negocio"); } catch (e) { /* ok */ }
     var rot = window.Auth && Auth.rotulo ? Auth.rotulo(cta) : "";
     var topo = '<div class="dk-hero"><span class="dk-av">' + esc(nomeV.trim().charAt(0).toUpperCase() || "?") + '</span><div class="dk-hw"><small>Minha conta</small><b>' + esc(nomeV) + '</b><span class="dk-tags">' + (rot ? '<em class="' + (rot === "Usuário" ? "" : "ok") + '">' + esc(rot) + "</em>" : '<em>Visitante</em>') + (cta && cta.zipCidade ? "<em>" + Dash.ic("pin") + esc(cta.zipCidade) + "</em>" : "") + "</span></div>" + (ehMaster ? '<a class="btn sm" href="#painel">Master</a>' : logado ? "" : '<a class="btn sm" href="#entrar">Entrar</a>') + "</div>";
     G.app.innerHTML = Dash.montar({ chave: "usuario", marca: rot || "Minha conta", titulo: nomeV, avatar: nomeV.trim().charAt(0).toUpperCase() || "?", menu: menu, pe: pe, topo: topo, secoes: secoes });
@@ -173,6 +175,7 @@
   /* Caixinha: Pix para a chave oficial com valor livre (a pessoa digita no app do banco) ou um valor sugerido */
   var CX = 0;
   function viewCaixinha() {
+    CX_CHAVE = false;
     var c = G.config().caixinha || {}, vals = (c.valoresPix && c.valoresPix.length) ? c.valoresPix : [5, 10, 20, 50];
     G.app.innerHTML = '<section class="block cx"><div class="wrap stack in" style="max-width:720px">' +
       '<div style="text-align:center;display:grid;justify-items:center;gap:10px"><span class="tic" style="width:64px;height:64px">' + ic("heart") + '</span><h1 class="page-h">Apoie o CoraçãoBR</h1>' +
@@ -180,15 +183,26 @@
       '<div class="panel stack cx-box"><div class="cx-vs" role="group" aria-label="Valor do apoio"><button type="button" data-cx="0" aria-pressed="' + (CX === 0) + '">Valor livre</button>' + vals.map(function (v) { return '<button type="button" data-cx="' + v + '" aria-pressed="' + (CX === v) + '">' + G.reais(v) + "</button>"; }).join("") + '</div>' +
       '<div class="cx-out"><label for="cx-v">Outro valor (R$)</label><input id="cx-v" type="number" min="1" step="1" inputmode="decimal" placeholder="Digite o valor" value="' + (CX && vals.indexOf(CX) < 0 ? CX : "") + '"></div>' +
       '<div id="cx-pix">' + pixCaixinha() + "</div>" +
-      '<p class="small muted" style="text-align:center">Com <b>valor livre</b>, o QR Code vem sem valor e você digita quanto quiser no app do banco. Obrigado por fazer o CoraçãoBR bater mais forte. 💚💛</p></div>' +
-      "</div></section>";
+      '<p class="small muted" style="text-align:center">' + (cxAuto() ? "O Pix é confirmado sozinho. Obrigado por fazer o CoraçãoBR bater mais forte. 💚💛" : "Com <b>valor livre</b>, o QR Code vem sem valor e você digita quanto quiser no app do banco. Obrigado por fazer o CoraçãoBR bater mais forte. 💚💛") + '</p></div>' +
+      (G.sacHtml ? G.sacHtml("o apoio", true) : "") + "</div></section>";
   }
+  /* Pix automático ligado (Mercado Pago): QR com valor e confirmação; ao entrar o pagamento, agradece e volta para o início */
+  var CX_CHAVE = false;
+  function cxAuto() { return !!(window.Pag && Pag.pixAuto && Pag.pixAuto()) && !CX_CHAVE; }
   function pixCaixinha() {
+    if (cxAuto()) return CX >= 1 ? '<div class="pxa cx-auto"><div class="pxa-hd"><span class="pg-ic">' + ic("heart") + '</span><div><b>Pix com confirmação automática</b><small>Assim que o pagamento entrar, a gente agradece e volta para a página inicial.</small></div></div><button type="button" class="btn pxa-go" data-cx-gerar>Gerar Pix de ' + G.reais(CX) + '</button><button type="button" class="more" data-cx-chave>Prefiro usar a chave Pix</button></div>'
+      : '<div class="pxa cx-auto"><p class="muted" style="margin:0">Escolha um valor acima ou digite quanto quer apoiar para gerar o Pix.</p><button type="button" class="more" data-cx-chave>Prefiro usar a chave Pix (valor livre)</button></div>';
     if (!window.Pix) return "";
     var h = Pix.bloco(CX, "CAIXINHA" + (CX ? String(CX).replace(/\D/g, "") : "LIVRE"), "Apoio CoracaoBR");
     return CX ? h : h.replace(/<p class="pix-v">[\s\S]*?<\/p>/, '<p class="pix-v"><small>Valor</small><b>Você escolhe</b></p>');
   }
   document.addEventListener("click", function (e) {
+    if (e.target.closest("[data-cx-chave]")) { CX_CHAVE = true; var ec = $("#cx-pix"); if (ec) ec.innerHTML = pixCaixinha(); return; }
+    if (e.target.closest("[data-cx-gerar]")) {
+      var el = $("#cx-pix"); if (!el || !(CX >= 1)) return;
+      Pag.pixAvulso(el, { plano: "caixinha", valor: CX, aprovado: function (r) { Pag.obrigado({ k: "Pix recebido", titulo: "Obrigado pelo apoio!", texto: "Seu Pix de " + G.reais(r.valor) + " fez o CoraçãoBR bater mais forte. É você quem mantém o guia gratuito e atualizado.", botao: "Voltar para o início", ir: function () { CX = 0; location.hash = "#inicio"; } }); } });
+      return;
+    }
     var b = e.target.closest("[data-cx]"); if (!b) return;
     CX = Number(b.dataset.cx) || 0; var i = $("#cx-v"); if (i) i.value = "";
     Array.from(document.querySelectorAll("[data-cx]")).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });

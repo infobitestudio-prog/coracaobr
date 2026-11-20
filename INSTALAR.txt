@@ -23,6 +23,15 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
    - No celular, na primeira visita pelo navegador, o site convida a instalar como aplicativo
      (uma vez só). Aberto pelo ícone, o convite nunca aparece.
 
+PAGAMENTOS (PIX) E ATENDIMENTO (SAC)
+   - Todo recebimento cai no Pix do e-mail coracaobr.oficial@gmail.com (conta Mercado Pago).
+   - Pix com confirmação automática: no Painel master → Pagamentos e Pix, cole o Access Token de
+     produção dessa MESMA conta Mercado Pago (mercadopago.com.br/developers → Suas integrações →
+     Credenciais de produção). Com ele, anúncios, Clube, Mural e a caixinha confirmam sozinhos:
+     o site agradece e leva a pessoa para a página certa (anúncio → Meus anúncios; caixinha → início).
+   - SAC: e-mail coracaobr.oficial@gmail.com e WhatsApp (11) 98357-3266. Aparece no rodapé, na
+     página de contato, nas telas de pagamento, na Minha conta e na assinatura de todos os e-mails.
+
 ONDE FICAM OS DADOS
    - Banco: pasta dados/ (criada sozinha no primeiro acesso, bloqueada para a web).
    - Fotos enviadas por anunciantes: pasta uploads/ (criada sozinha).

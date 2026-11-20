@@ -30,15 +30,16 @@
     var q = window.qrcode(0, "M"); q.addData(texto); q.make();
     return q.createSvgTag({ cellSize: 5, margin: 2, scalable: true });
   }
+  function tipoChave(k) { k = String(k || ""); return /@/.test(k) ? "e-mail · Mercado Pago" : k.replace(/\D/g, "").length === 14 ? "CNPJ" : k.replace(/\D/g, "").length === 11 ? "CPF" : /^\+/.test(k) ? "telefone" : "chave aleatória"; }
   function dados() {
     var p = G.config().pagamentos || {};
-    return { chave: p.pix || "32.021.268/0001-04", nome: p.pixNome || "Danilo Araujo Santos Desenvolvedor", cidade: p.pixCidade || "BRASIL" };
+    return { chave: G.chavePix ? G.chavePix(p.pix) : "coracaobr.oficial@gmail.com", nome: p.pixNome || "Danilo Araujo Santos Desenvolvedor", cidade: p.pixCidade || "BRASIL" };
   }
   /* bloco pronto: QR + copia e cola + dados do favorecido */
   function bloco(valor, txid, descricao) {
     var d = dados(), code = payload({ chave: d.chave, nome: d.nome, cidade: d.cidade, valor: valor, txid: txid, descricao: descricao });
     return '<div class="pix"><div class="pix-qr" aria-label="QR Code Pix">' + qrSvg(code) + '</div><div class="pix-info"><p class="pix-v"><small>Valor</small><b>' + G.reais(valor) + "</b></p>" +
-      '<dl class="pix-dl"><dt>Chave Pix (CNPJ)</dt><dd>' + G.esc(d.chave) + "</dd><dt>Favorecido</dt><dd>" + G.esc(d.nome) + "</dd></dl>" +
+      '<dl class="pix-dl"><dt>Chave Pix (' + tipoChave(d.chave) + ')</dt><dd>' + G.esc(d.chave) + "</dd><dt>Favorecido</dt><dd>" + G.esc(d.nome) + "</dd></dl>" +
       '<label class="pix-l" for="pix-cc">Pix copia e cola</label><textarea id="pix-cc" class="pix-cc" readonly rows="3">' + G.esc(code) + '</textarea>' +
       '<div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + G.esc(code) + '">Copiar código Pix</button><button type="button" class="btn ghost sm" data-copiar="' + G.esc(d.chave) + '">Copiar chave</button></div>' +
       '<p class="small muted">Abra o app do seu banco, escolha Pix → Ler QR Code ou Pix copia e cola. ' + (Number(valor) > 0 ? "O valor já vem preenchido." : "Depois é só digitar o valor que quiser.") + '</p></div></div>';

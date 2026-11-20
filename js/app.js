@@ -70,6 +70,7 @@
     doc: '<path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/>',
     insta: '<rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="16.6" cy="7.4" r=".6"/>',
     chat: '<path d="M4 20l1.4-4.2A8 8 0 1 1 8.5 19z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7.5 8 6 8-6"/>',
     phone: '<path d="M6 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2L21 15v3a3 3 0 0 1-3 3A15 15 0 0 1 3 6a3 3 0 0 1 3-3z"/>',
     cal: '<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3"/>',
     send: '<path d="M21 4 3 11l7 2 2 7 9-16z"/><path d="M10 13l11-9"/>',
@@ -94,11 +95,28 @@
   function reais(n) { n = Number(n) || 0; return "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
   function usd(n) { n = Number(n) || 0; return "US$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
   /* configuração: padrões + o que a equipe salvou. Valores antigos em dólar (antes de moedaAnuncio "BRL") são trocados pelos novos em reais. */
-  var PIX_PADRAO = { pix: "32.021.268/0001-04", pixNome: "Danilo Araujo Santos Desenvolvedor", pixCidade: "BRASIL" };
+  var PIX_PADRAO = { pix: "coracaobr.oficial@gmail.com", pixNome: "Danilo Araujo Santos Desenvolvedor", pixCidade: "BRASIL" };
+  /* Todo recebimento cai no Pix do e-mail oficial (conta Mercado Pago). A chave CNPJ antiga, se ainda estiver salva, é trocada sozinha. */
+  function chavePix(k) { k = String(k || "").trim(); return !k || k.replace(/\D/g, "") === "32021268000104" ? PIX_PADRAO.pix : k; }
+  /* SAC: atendimento oficial por e-mail e WhatsApp */
+  var SAC_ZAP = "5511983573266";
+  function sac() {
+    var c = config(), em = String(c.emailOficial || "").trim(), zap = String(c.whatsappAviso || "").replace(/\D/g, "") || SAC_ZAP;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) em = "coracaobr.oficial@gmail.com";
+    var br = zap.indexOf("55") === 0 && zap.length >= 12 ? "(" + zap.slice(2, 4) + ") " + zap.slice(4, zap.length - 4) + "-" + zap.slice(-4) : "+" + zap;
+    return { email: em, zap: zap, zapTxt: br, wa: function (msg) { return "https://wa.me/" + zap + (msg ? "?text=" + encodeURIComponent(msg) : ""); } };
+  }
+  /* bloco do SAC para colocar em qualquer tela (pagamento, conta, ajuda) */
+  function sacHtml(assunto, curto) {
+    var s = sac(), msg = "Olá! Preciso de ajuda no CoraçãoBR" + (assunto ? " (" + assunto + ")" : "") + ".";
+    return '<div class="sac' + (curto ? " sac-c" : "") + '"><div class="sac-t"><b>SAC CoraçãoBR</b><small>' + (assunto ? "Dúvidas sobre " + esc(assunto) + "? " : "") + "Fale com a gente:</small></div>" +
+      '<div class="sac-a"><a class="sac-b sac-z" href="' + esc(s.wa(msg)) + '" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2a9.7 9.7 0 0 0-8.4 14.6L2.3 21.7l5-1.3A9.7 9.7 0 1 0 12 2.2zm0 17.7a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 19.9zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.7-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6a2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3z"/></svg>WhatsApp ' + esc(s.zapTxt) + "</a>" +
+      '<a class="sac-b" href="mailto:' + esc(s.email) + (assunto ? "?subject=" + encodeURIComponent("CoraçãoBR: " + assunto) : "") + '">' + ic("mail") + esc(s.email) + "</a></div></div>";
+  }
   function config() {
     var g = Store.obter("config", "geral") || {}, c = Object.assign({}, CONFIG_PADRAO, g);
     if (g.moedaAnuncio !== "BRL") { c.precoAnuncio = 50; c.anunciosPorPacote = 3; c.promo = Object.assign({}, c.promo || {}, { preco: 20, anuncios: 1, curadorias: 5 }); c.moedaAnuncio = "BRL"; c.pagamentos = Object.assign({}, c.pagamentos || {}, PIX_PADRAO); }
-    var pg = Object.assign({}, c.pagamentos || {}); Object.keys(PIX_PADRAO).forEach(function (k) { if (!pg[k]) pg[k] = PIX_PADRAO[k]; }); c.pagamentos = pg;
+    var pg = Object.assign({}, c.pagamentos || {}); Object.keys(PIX_PADRAO).forEach(function (k) { if (!pg[k]) pg[k] = PIX_PADRAO[k]; }); pg.pix = chavePix(pg.pix); c.pagamentos = pg;
     return c;
   }
   /* Valor aproximado em reais, destacado nas cores do Brasil. A cotação é de referência e se edita no Painel. */
@@ -845,7 +863,8 @@
     var c = config(), pr = (window.Pag ? Pag.preco() : (c.precoAnuncio || 50)).toLocaleString("pt-BR");
     var a = $("#f-preco"); if (a) a.textContent = pr;
     Array.from(document.querySelectorAll(".f-preco2")).forEach(function (x) { x.textContent = pr; });
-    (function () { var em = String(config().emailOficial || "coracaobr.oficial@gmail.com"); var fm = document.getElementById("f-mail"); if (fm) fm.href = "mailto:" + em; Array.from(document.querySelectorAll(".f-mailtx")).forEach(function (x) { x.href = "mailto:" + em; x.textContent = em; }); })();
+    (function () { var s = sac(), em = s.email; var fm = document.getElementById("f-mail"); if (fm) fm.href = "mailto:" + em; Array.from(document.querySelectorAll(".f-mailtx")).forEach(function (x) { x.href = "mailto:" + em; x.textContent = em; });
+      var fz = document.getElementById("f-zap"); if (fz) fz.href = s.wa("Olá! Preciso de ajuda no CoraçãoBR."); Array.from(document.querySelectorAll(".f-zaptx")).forEach(function (x) { x.href = s.wa("Olá! Preciso de ajuda no CoraçãoBR."); x.textContent = "SAC · WhatsApp " + s.zapTxt; }); })();
     var y = $("#f-ano"); if (y) y.textContent = new Date().getFullYear();
     var pr2 = $("#f-promo"), pl = $("#f-pl"), promo = window.Pag && Pag.promocional() ? Pag.chamada() : "";
     if (pr2) { pr2.hidden = !promo; pr2.innerHTML = promo ? '<a href="#promo" style="color:inherit">' + esc(promo) + " Ver a promoção →</a>" : ""; } if (pl) pl.textContent = "Pacote mensal · " + (c.anunciosPorPacote || 3) + " anúncios";
@@ -955,7 +974,7 @@
     if (rota() === "explorar") { pintada = null; render(false); }
   });
   window.addEventListener("hashchange", function () { render(false); });
-  window.Guia = { cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;
