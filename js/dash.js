@@ -23,7 +23,20 @@
     out: '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H3"/>',
     back: '<path d="M15 5l-7 7 7 7"/>',
     side: '<rect x="3.5" y="4" width="17" height="16" rx="3.5"/><path d="M9.5 4v16M14.5 10l-2 2 2 2"/>',
-    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+    link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+    lock: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/>',
+    check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+    arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    pin: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+    users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/>',
+    bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2.2 2.2 0 0 0 4 0"/>',
+    money: '<rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v5M18 9.5v5"/>',
+    gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.2 6.2l2.1 2.1M17.7 15.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 17.8l2.1-2.1M17.7 8.3l2.1-2.1"/>',
+    image: '<rect x="3" y="4.5" width="18" height="15" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 8.5"/>',
+    chat: '<path d="M4 5.5h16v10H9l-5 4z"/>',
+    list: '<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
+    shield: '<path d="M12 3 5 6v5.5c0 4.5 3 7.8 7 9.5 4-1.7 7-5 7-9.5V6z"/><path d="m9 12 2 2 4-4"/>',
+    pix: '<path d="m12 3 4 4-4 4-4-4zM12 13l4 4-4 4-4-4zM3 12l4-4 4 4-4 4zM13 12l4-4 4 4-4 4z"/>'
   };
   function ic(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + (IC[n] || IC.grid) + "</svg>"; }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -41,7 +54,7 @@
     var lado = '<aside class="dk-side" aria-label="Menu do painel"><div class="dk-top"><span class="dk-av">' + esc(o.avatar || "?") + '</span><span class="dk-who"><b>' + esc(o.titulo) + "</b><small>" + esc(o.marca) + '</small></span><button type="button" class="dk-min" data-dk-min aria-label="Recolher menu">' + ic("side") + "</button></div>" +
       '<nav class="dk-nav">' + grupos.map(function (g) { return (g ? '<p class="dk-g">' + esc(g) + "</p>" : "") + porGrupo[g].map(item).join(""); }).join("") + "</nav>" +
       '<div class="dk-pe">' + (o.pe || []).map(function (p) { return p.href ? '<a class="dk-it" href="' + esc(p.href) + '" title="' + esc(p.nome) + '">' + ic(p.ic) + "<span>" + esc(p.nome) + "</span></a>" : '<button type="button" class="dk-it" ' + p.acao + ' title="' + esc(p.nome) + '">' + ic(p.ic) + "<span>" + esc(p.nome) + "</span></button>"; }).join("") + "</div></aside>";
-    var pilulas = '<nav class="dk-pills" aria-label="Seções do painel">' + o.menu.map(function (m) { return '<button type="button" data-dk="' + esc(m.id) + '" aria-current="' + (m.id === at) + '">' + ic(m.ic) + esc(m.nome) + "</button>"; }).join("") + "</nav>";
+    var pilulas = '<nav class="dk-pills" aria-label="Seções do painel">' + grupos.map(function (g) { return (g && grupos.length > 1 ? '<p class="dk-pg">' + esc(g) + "</p>" : "") + porGrupo[g].map(function (m) { return '<button type="button" data-dk="' + esc(m.id) + '" aria-current="' + (m.id === at) + '">' + ic(m.ic) + esc(m.nome) + (m.n ? "<em>" + esc(m.n) + "</em>" : "") + "</button>"; }).join(""); }).join("") + "</nav>";
     var corpo = o.menu.map(function (m) { return '<div class="dk-sec" data-dk-sec="' + esc(m.id) + '"' + (m.id === at ? "" : " hidden") + '><header class="dk-h"><div><p class="dk-eb">' + esc(o.marca) + '</p><h1>' + esc(m.titulo || m.nome) + "</h1>" + (m.sub ? '<p class="dk-sub">' + m.sub + "</p>" : "") + "</div>" + (m.acao || "") + "</header>" + (o.secoes[m.id] || "") + "</div>"; }).join("");
     return '<section class="dk' + (compacto() ? " mini" : "") + '" data-dk-chave="' + esc(o.chave) + '">' + lado + '<div class="dk-main">' + (o.topo || "") + pilulas + corpo + "</div></section>";
   }
@@ -50,7 +63,8 @@
     Array.from(root.querySelectorAll("[data-dk]")).forEach(function (b) { b.setAttribute("aria-current", b.dataset.dk === id); });
     Array.from(root.querySelectorAll("[data-dk-sec]")).forEach(function (s) { s.hidden = s.dataset.dkSec !== id; });
     var pb = root.querySelector('.dk-pills [data-dk="' + id + '"]'); if (pb && pb.scrollIntoView) pb.scrollIntoView({ block: "nearest", inline: "center" });
-    if (root.getBoundingClientRect().top < 0) window.scrollTo({ top: root.getBoundingClientRect().top + window.scrollY - 90, behavior: "smooth" });
+    var sec = root.querySelector('[data-dk-sec="' + id + '"]'), alvo = window.innerWidth < 960 && sec ? sec : root, top = alvo.getBoundingClientRect().top;
+    if (top < 0 || (alvo === sec && top > window.innerHeight * 0.45)) window.scrollTo({ top: top + window.scrollY - 84, behavior: "smooth" });
     document.dispatchEvent(new CustomEvent("dash-secao", { detail: { chave: ch, id: id } }));
   }
   document.addEventListener("click", function (e) {

@@ -64,6 +64,8 @@ function banco(): PDO {
     CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);
     CREATE TABLE IF NOT EXISTS assinantes (email TEXT PRIMARY KEY COLLATE NOCASE, nome TEXT, token TEXT NOT NULL, ativo INTEGER NOT NULL DEFAULT 1, origem TEXT, uid TEXT, criado TEXT NOT NULL, saiu TEXT);
     CREATE TABLE IF NOT EXISTS envios (id INTEGER PRIMARY KEY AUTOINCREMENT, assunto TEXT, modo TEXT, enviados INTEGER, falhas INTEGER, em TEXT);');
+  $cols = array_column($pdo->query('PRAGMA table_info(usuarios)')->fetchAll(), 'name');
+  foreach (['zip' => 'TEXT', 'zip_lat' => 'REAL', 'zip_lng' => 'REAL', 'zip_cidade' => 'TEXT'] as $c => $t) if (!in_array($c, $cols, true)) $pdo->exec("ALTER TABLE usuarios ADD COLUMN $c $t");
   importaBase($pdo, $novo);
   return $pdo;
 }
@@ -146,7 +148,34 @@ function senhaOk(string $s): ?string {
   if (!preg_match('/[A-Za-z]/', $s) || !preg_match('/\d/', $s)) return 'Use letras e números na senha.';
   return null;
 }
-function publico(array $u): array { return ['uid' => $u['id'], 'nome' => $u['nome'], 'email' => $u['email'], 'papel' => $u['papel']]; }
+function publico(array $u): array {
+  if (!array_key_exists('zip', $u)) { $st = banco()->prepare('SELECT zip, zip_lat, zip_lng, zip_cidade FROM usuarios WHERE id = ?'); $st->execute([$u['id']]); $u += ($st->fetch() ?: []); }
+  return ['uid' => $u['id'], 'nome' => $u['nome'], 'email' => $u['email'], 'papel' => $u['papel'] === 'master' ? 'master' : 'usuario', 'zip' => (string)($u['zip'] ?? ''), 'zipCidade' => (string)($u['zip_cidade'] ?? ''),
+    'zipLat' => isset($u['zip_lat']) ? (float)$u['zip_lat'] : null, 'zipLng' => isset($u['zip_lng']) ? (float)$u['zip_lng'] : null];
+}
+/* CEP americano (ZIP code): 5 dígitos. Busca cidade e coordenadas para avisar do que fica perto. */
+function zipLimpo(string $z): string { $z = preg_replace('/\D/', '', $z); return strlen($z) >= 5 ? substr($z, 0, 5) : ''; }
+function zipInfo(string $zip): ?array {
+  $ctx = stream_context_create(['http' => ['timeout' => 8, 'ignore_errors' => true, 'header' => 'User-Agent: CoracaoBR/1.0']]);
+  $j = json_decode((string)@file_get_contents('https://api.zippopotam.us/us/' . $zip, false, $ctx), true);
+  $p = $j['places'][0] ?? null; if (!$p) return zipAprox($zip);
+  return ['lat' => round((float)$p['latitude'], 5), 'lng' => round((float)$p['longitude'], 5), 'cidade' => trim(($p['place name'] ?? '') . ', ' . ($p['state abbreviation'] ?? ''), ', ')];
+}
+/* Sem resposta do serviço de CEP: posição aproximada pelos 3 primeiros números (regiões do guia no Texas). */
+function zipAprox(string $zip): ?array {
+  $t = ['750' => [32.95, -96.75, 'Dallas'], '751' => [32.78, -96.8, 'Dallas'], '752' => [32.78, -96.8, 'Dallas'], '753' => [32.78, -96.8, 'Dallas'], '754' => [33.14, -96.11, 'Greenville'],
+    '760' => [32.74, -97.11, 'Arlington'], '761' => [32.75, -97.33, 'Fort Worth'], '762' => [33.21, -97.13, 'Denton'], '770' => [29.76, -95.37, 'Houston'], '772' => [29.76, -95.37, 'Houston'],
+    '773' => [30.17, -95.46, 'The Woodlands'], '774' => [29.62, -95.63, 'Sugar Land'], '775' => [29.59, -95.12, 'Pasadena'], '786' => [30.51, -97.68, 'Round Rock'], '787' => [30.27, -97.74, 'Austin'],
+    '780' => [29.55, -98.3, 'San Antonio'], '781' => [29.7, -98.12, 'New Braunfels'], '782' => [29.42, -98.49, 'San Antonio']];
+  $k = substr($zip, 0, 3); if (!isset($t[$k])) return null;
+  return ['lat' => $t[$k][0], 'lng' => $t[$k][1], 'cidade' => 'Região de ' . $t[$k][2] . ', TX'];
+}
+function gravaZip(string $uid, string $zip): void {
+  $i = zipInfo($zip);
+  banco()->prepare('UPDATE usuarios SET zip = ?, zip_lat = ?, zip_lng = ?, zip_cidade = ? WHERE id = ?')->execute([$zip, $i['lat'] ?? null, $i['lng'] ?? null, $i['cidade'] ?? '', $uid]);
+}
+/* Ferramentas de anúncio liberadas: pacote em vigor (ou cortesia) */
+function temPlano(string $uid): bool { return vagasDe(pagamentoDe($uid)) > 0; }
 function entra(array $u): void {
   session_regenerate_id(true);
   $_SESSION['uid'] = $u['id'];
@@ -341,8 +370,10 @@ case 'cadastrar': {
   if ($metodo !== 'POST') erro('Use POST.', 405);
   if (!limite('cad:' . ip(), 6, 3600)) erro('Muitos cadastros deste endereço. Tente de novo em uma hora.', 429);
   $nome = campo('nome', 60); $email = mb_strtolower(campo('email', 160)); $senha = (string)($corpo['senha'] ?? '');
-  $papel = ($corpo['tipo'] ?? '') === 'anunciante' ? 'anunciante' : 'usuario';
+  $papel = 'usuario';   // conta única: as ferramentas de anúncio são liberadas pelo pagamento
+  $zip = zipLimpo(campo('zip', 12));
   if ($nome === '') erro('Informe seu nome.');
+  if ($zip === '') erro('Informe o seu CEP americano (ZIP code, 5 números).');
   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) erro('Informe um e-mail válido.');
   if ($m = senhaOk($senha)) erro($m);
   if (empty($corpo['aceite'])) erro('Para criar a conta, aceite os termos de uso e a política de privacidade.');
@@ -352,11 +383,11 @@ case 'cadastrar': {
   if ($st->fetchColumn()) erro('Já existe uma conta com este e-mail. Entre ou use "Esqueci minha senha".', 409);
   $id = novoUid();
   $pdo->prepare('INSERT INTO usuarios (id, email, nome, hash, papel, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$id, $email, $nome, password_hash($senha, PASSWORD_DEFAULT), $papel, agora()]);
+  gravaZip($id, $zip);
   $u = ['id' => $id, 'email' => $email, 'nome' => $nome, 'papel' => $papel];
   entra($u);
   $ref = preg_replace('/[^A-Za-z0-9]/', '', (string)($corpo['ref'] ?? ''));
   if ($ref !== '' && $ref !== $id) { $q = $pdo->prepare('SELECT 1 FROM usuarios WHERE id = ?'); $q->execute([$ref]); if ($q->fetchColumn()) $pdo->prepare("INSERT OR IGNORE INTO docs (col, id, data, em) VALUES ('indicacoes', ?, ?, ?)")->execute([$id, json_encode(['por' => $ref, 'em' => gmdate('c'), 'nome' => $nome]), agora()]); }
-  if ($papel === 'anunciante') avisaEquipe('novo anunciante cadastrado', "Nova conta de anunciante:\n\nNome: $nome\nE-mail: $email\nData: " . date('d/m/Y H:i'));
   sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
 }
 case 'entrar': {
@@ -428,7 +459,8 @@ case 'perfil': {
   }
   if ($nova !== '') { if ($m = senhaOk($nova)) erro($m); $pdo->prepare('UPDATE usuarios SET hash = ? WHERE id = ?')->execute([password_hash($nova, PASSWORD_DEFAULT), $u['id']]); }
   $pdo->prepare('UPDATE usuarios SET nome = ? WHERE id = ?')->execute([$nome, $u['id']]);
-  $st = $pdo->prepare('SELECT id, email, nome, papel FROM usuarios WHERE id = ?'); $st->execute([$u['id']]);
+  if (isset($corpo['zip'])) { $zip = zipLimpo((string)$corpo['zip']); if ($zip === '') erro('Informe o seu CEP americano (ZIP code, 5 números).'); gravaZip($u['id'], $zip); }
+  $st = $pdo->prepare('SELECT id, email, nome, papel, zip, zip_lat, zip_lng, zip_cidade FROM usuarios WHERE id = ?'); $st->execute([$u['id']]);
   sai(['ok' => true, 'conta' => publico($st->fetch())]);
 }
 case 'virar_anunciante': {
@@ -451,7 +483,8 @@ case 'excluir_conta': {
 /* ===== master: usuários ===== */
 case 'usuarios': {
   exigeMaster();
-  $rows = banco()->query('SELECT id, email, nome, papel, bloqueado, criado, ultimo FROM usuarios ORDER BY criado DESC LIMIT 2000')->fetchAll();
+  $rows = banco()->query('SELECT id, email, nome, papel, bloqueado, criado, ultimo, zip, zip_cidade FROM usuarios ORDER BY criado DESC LIMIT 2000')->fetchAll();
+  foreach ($rows as &$r) { $r['plano'] = vagasDe(pagamentoDe($r['id'])); } unset($r);
   sai(['ok' => true, 'usuarios' => $rows]);
 }
 case 'usuario': {
@@ -821,13 +854,33 @@ case 'atualizar_diario': {
   }
   // relatório
   $robo = configDoc('robo'); $robo['servidor'] = $rel; $robo['ultimaExecucaoServidor'] = $rel['data']; $salva('config', 'robo', $robo);
+  // novos lugares e eventos publicados nas últimas 24 h: avisa no celular quem mora perto (pelo CEP)
+  if (($geral['pushPerto'] ?? true) !== false) {
+    $novos = [];
+    foreach ($pdo->query("SELECT id, data FROM docs WHERE col IN ('lugares', 'anunciantes')") as $r0) { $d0 = json_decode($r0['data'], true); $it = isset($d0['itens']) ? (array)$d0['itens'] : [$r0['id'] => $d0]; foreach ($it as $k0 => $l0) { if (!is_array($l0) || empty($l0['nome']) || !isset($l0['lat']) || ($l0['publicado'] ?? true) === false) continue; if (!empty($l0['criadoEm']) && strtotime($l0['criadoEm']) > time() - 86400) { $l0['id'] = isset($d0['itens']) ? $r0['id'] . '~' . $k0 : $r0['id']; $novos[] = $l0; } } }
+    if ($novos) { try { $r = enviaPush('Novidade perto de você', 'Tem lugar novo no CoraçãoBR perto de você.', './#explorar', '', function ($sub) use ($novos) {
+      $reg = !empty($sub['uid']) ? regiaoDoUsuario($sub['uid']) : null; if (!$reg) return null;
+      foreach ($novos as $l) if (kmEntre($reg['lat'], $reg['lng'], (float)$l['lat'], (float)$l['lng']) <= 30) return ['Novo perto de você: ' . mb_substr((string)$l['nome'], 0, 40), 'Acabou de entrar no CoraçãoBR, perto de ' . ($reg['cidade'] ?: 'você') . '. Toque para ver.', './#lugar-' . ($l['id'] ?? '')];
+      return null; }); $rel['feito'][] = 'Novidades perto do CEP: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push perto: ' . $e->getMessage(); } }
+  }
   // newsletter semanal (toda quinta, com eventos do fim de semana e cupons) e aviso no celular na sexta
   $dow = (int)$agoraD->format('N');
   if ($dow === 4) { try { $r = newsletterAuto(); $rel['feito'][] = 'Newsletter semanal: ' . ($r['msg'] ?? ($r['enviados'] . ' e-mails enviados')); } catch (Throwable $e) { $rel['erros'][] = 'Newsletter: ' . $e->getMessage(); } }
   if ($dow === 5 && ($geral['pushFds'] ?? true) !== false && (string)$pdo->query("SELECT v FROM meta WHERE k = 'push-fds'")->fetchColumn() !== $hoje) {
     $sab = date('Y-m-d', strtotime($hoje . ' +1 day')); $dom = date('Y-m-d', strtotime($hoje . ' +2 day')); $n = 0;
     foreach ($pdo->query("SELECT data FROM docs WHERE col = 'lugares'") as $r0) { $l0 = json_decode($r0['data'], true); if (!is_array($l0) || !in_array($l0['categoria'] ?? '', ['evento', 'show'], true) || ($l0['publicado'] ?? true) === false || !empty($l0['cancelado'])) continue; $ini = (string)($l0['dataInicio'] ?? ''); $fim = (string)($l0['dataFim'] ?? $ini); if ($ini !== '' && $ini <= $dom && $fim >= $hoje) $n++; }
-    if ($n > 0) { try { $r = enviaPush('Fim de semana brasileiro em DFW', $n . ($n === 1 ? ' evento' : ' eventos') . ' neste fim de semana. Veja a programação no CoraçãoBR.', './#explorar', 'eventos'); $rel['feito'][] = 'Aviso no celular: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push: ' . $e->getMessage(); } }
+    $evFds = [];
+    foreach ($pdo->query("SELECT data FROM docs WHERE col = 'lugares'") as $r0) { $l0 = json_decode($r0['data'], true); if (!is_array($l0) || !in_array($l0['categoria'] ?? '', ['evento', 'show'], true) || ($l0['publicado'] ?? true) === false || !empty($l0['cancelado'])) continue; $ini = (string)($l0['dataInicio'] ?? ''); $fim = (string)($l0['dataFim'] ?? $ini); if ($ini !== '' && $ini <= $dom && $fim >= $hoje && isset($l0['lat'])) $evFds[] = $l0; }
+    if ($n > 0) { try {
+      $r = enviaPush('Fim de semana brasileiro', $n . ' eventos neste fim de semana. Veja a programação no CoraçãoBR.', './#explorar', 'eventos', function ($sub) use ($evFds, $n) {
+        $reg = !empty($sub['uid']) ? regiaoDoUsuario($sub['uid']) : null;
+        if (!$reg) return ['Fim de semana brasileiro', $n . ' eventos neste fim de semana no CoraçãoBR. Veja a programação.', './#explorar'];
+        $perto = array_filter($evFds, fn($l) => kmEntre($reg['lat'], $reg['lng'], (float)$l['lat'], (float)$l['lng']) <= 60);
+        if (!$perto) return null;
+        $k = count($perto); $um = reset($perto);
+        return ['Perto de você neste fim de semana', $k . ($k === 1 ? ' evento' : ' eventos') . ' perto de ' . ($reg['cidade'] ?: 'você') . ', como ' . ($um['nome'] ?? '') . '.', './#explorar'];
+      });
+      $rel['feito'][] = 'Aviso no celular: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push: ' . $e->getMessage(); } }
     $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('push-fds', ?)")->execute([$hoje]);
   }
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
@@ -1028,6 +1081,8 @@ case 'push_sair': {
   banco()->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([hash('sha256', (string)($corpo['endpoint'] ?? ''))]); sai(['ok' => true]);
 }
 case 'push_ultima': {
+  $ep = (string)($_GET['ep'] ?? '');
+  if ($ep !== '') { $st = banco()->prepare("SELECT data FROM docs WHERE col = 'push' AND id = ?"); $st->execute([hash('sha256', $ep)]); $sd = json_decode((string)$st->fetchColumn(), true); if (!empty($sd['ult']['em']) && time() - strtotime($sd['ult']['em']) < 6 * 3600) sai(['ok' => true, 'msg' => $sd['ult']]); }
   $j = json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'push-ultima'")->fetchColumn(), true);
   sai(['ok' => true, 'msg' => is_array($j) ? $j : ['titulo' => 'CoraçãoBR', 'texto' => 'Novidades no guia para você.', 'url' => './']]);
 }
@@ -1074,7 +1129,7 @@ function podeGravar(string $col, string $id): bool {
   $u = eu();
   if (!$u) return $col === 'metricas' && $id === $_SESSION['visitante'];   // visitante sem conta só conta visualizações
   if (!in_array($col, POR_PESSOA, true) || $id !== $u['id']) return false;  // cada pessoa grava só o próprio documento
-  if (in_array($col, ['anunciantes', 'posts', 'classificados'], true) && $u['papel'] !== 'anunciante') return false;   // só quem paga publica
+  if (in_array($col, ['posts', 'classificados'], true) && !temPlano($u['id'])) return false;   // feed e mural: só com pacote em vigor (rascunho de anúncio qualquer conta pode montar)
   return true;
 }
 function listaDocs(string $col, ?array $u): array {
@@ -1228,12 +1283,17 @@ function jwtVapid(string $aud, $key): string {
   $r = str_pad(ltrim($r, "\0"), 32, "\0", STR_PAD_LEFT); $s = str_pad(ltrim($s, "\0"), 32, "\0", STR_PAD_LEFT);
   return "$h.$p." . b64u($r . $s);
 }
-function enviaPush(string $titulo, string $texto, string $url, string $tema = ''): array {
+function enviaPush(string $titulo, string $texto, string $url, string $tema = '', ?callable $porSub = null): array {
   $pdo = banco(); $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('push-ultima', ?)")->execute([json_encode(['titulo' => $titulo, 'texto' => $texto, 'url' => $url, 'em' => gmdate('c')], JSON_UNESCAPED_UNICODE)]);
   $v = vapid(); $env = 0; $fal = 0; $jwts = [];
   foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'push' LIMIT 5000")->fetchAll() as $row) {
     $s = json_decode($row['data'], true); $ep = (string)($s['endpoint'] ?? ''); if ($ep === '') continue;
     if ($tema !== '' && !empty($s['temas']) && !in_array($tema, (array)$s['temas'], true)) continue;
+    if ($porSub) {   // mensagem própria de cada aparelho (ex.: o que fica perto do CEP da pessoa); null = não envia para este
+      $m = $porSub($s); if (!$m) continue;
+      $s['ult'] = ['titulo' => $m[0], 'texto' => $m[1], 'url' => $m[2], 'em' => gmdate('c')];
+      $pdo->prepare("UPDATE docs SET data = ? WHERE col = 'push' AND id = ?")->execute([json_encode($s, JSON_UNESCAPED_UNICODE), $row['id']]);
+    }
     $pu = parse_url($ep); $aud = $pu['scheme'] . '://' . $pu['host'] . (isset($pu['port']) ? ':' . $pu['port'] : '');
     $jwts[$aud] = $jwts[$aud] ?? jwtVapid($aud, $v['key']);
     $ctx = stream_context_create(['http' => ['method' => 'POST', 'header' => "Authorization: vapid t={$jwts[$aud]}, k={$v['pub']}\r\nTTL: 86400\r\nUrgency: normal\r\nContent-Length: 0", 'content' => '', 'timeout' => 10, 'ignore_errors' => true]]);
@@ -1242,6 +1302,10 @@ function enviaPush(string $titulo, string $texto, string $url, string $tema = ''
   }
   return ['enviados' => $env, 'falhas' => $fal];
 }
+
+/* ---------- região do usuário (CEP) ---------- */
+function kmEntre(float $a1, float $o1, float $a2, float $o2): float { $r = M_PI / 180; $h = sin(($a2 - $a1) * $r / 2) ** 2 + cos($a1 * $r) * cos($a2 * $r) * sin(($o2 - $o1) * $r / 2) ** 2; return 12742 * asin(min(1, sqrt($h))); }
+function regiaoDoUsuario(string $uid): ?array { static $c = []; if (array_key_exists($uid, $c)) return $c[$uid]; $st = banco()->prepare('SELECT zip_lat, zip_lng, zip_cidade FROM usuarios WHERE id = ?'); $st->execute([$uid]); $r = $st->fetch(); return $c[$uid] = ($r && $r['zip_lat'] !== null) ? ['lat' => (float)$r['zip_lat'], 'lng' => (float)$r['zip_lng'], 'cidade' => (string)$r['zip_cidade']] : null; }
 
 /* ---------- newsletter semanal automática (usada pelo cron da newsletter e pela rotina diária) ---------- */
 function newsletterAuto(bool $forcarLigada = false): array {

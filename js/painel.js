@@ -15,24 +15,63 @@
   function num(id) { var x = v(id).replace(",", "."); return x === "" || isNaN(Number(x)) ? null : Number(x); }
   function falha(e) { ocupado = false; G.toast(e && e.message && !e.code ? e.message : "Não foi possível salvar. Confira se você tem permissão de edição."); }
 
-  /* ---------- abas ---------- */
+  /* ---------- painel master: menu lateral em grupos, cada seção em cards ---------- */
+  function aviso(t) { return Store.lista("avisos").filter(function (a) { return a.tipo === t && !a.confirmado && !a.recusado && !a.lido; }).length; }
+  function pixPend() { return window.Pag && Pag.informados ? Pag.informados().length : 0; }
+  function menuMaster() {
+    var srv = Store.servidor && Store.servidor(), R = window.PainelRecursos ? PainelRecursos.abas.map(function (a) { return a[0]; }) : [];
+    var m = [
+      { id: "resumo", nome: "Visão geral", ic: "home", titulo: "Painel master", sub: "Tudo do CoraçãoBR num lugar só: dinheiro, pessoas, conteúdo e aparência do site." },
+      { id: "pagamentos", nome: "Pagamentos e Pix", ic: "pix", grupo: "Dinheiro", n: pixPend() || "", sub: "Confirme Pix, dê cortesia, suspenda e acompanhe o plano de cada conta." },
+      { id: "receita", nome: "Receita", ic: "chart", grupo: "Dinheiro", sub: "Quanto entrou, de onde veio e a evolução mês a mês." },
+      { id: "financas", nome: "Valores e preços", ic: "money", grupo: "Dinheiro", sub: "Preço do pacote, anúncios por pacote, Clube, Mural e chave Pix." },
+      { id: "usuarios", nome: "Contas", ic: "users", grupo: "Pessoas", sub: "Todas as contas, com CEP, região e plano. Abra a área de qualquer conta com acesso total." },
+      { id: "anunciantes", nome: "Anunciantes", ic: "store", grupo: "Pessoas", sub: "Empresas com anúncio, métricas e acesso ao painel de cada uma." },
+      { id: "avisos", nome: "Avisos", ic: "bell", grupo: "Pessoas", n: naoLidos() || "", sub: "Cadastros, pagamentos e denúncias, na hora em que acontecem." },
+      { id: "comunidade", nome: "Comunidade", ic: "chat", grupo: "Pessoas" },
+      { id: "lugares", nome: "Lugares", ic: "pin", grupo: "Conteúdo", n: Store.lista("lugares").length, sub: "Lugares e eventos das 4 cidades: fotos, notas, cardápio e status." },
+      { id: "avaliacoes", nome: "Avaliações", ic: "star", grupo: "Conteúdo" },
+      { id: "publicacoes", nome: "Publicações do feed", ic: "mega", grupo: "Conteúdo" },
+      { id: "banners", nome: "Banners", ic: "image", grupo: "Conteúdo" },
+      { id: "anuncios", nome: "Anúncios do site", ic: "grid", grupo: "Conteúdo", sub: "Faixas, cards e popup que aparecem no guia." },
+      { id: "parceiros", nome: "Parceiros", ic: "heart", grupo: "Conteúdo" },
+      { id: "novidades", nome: "Novidades e IA", ic: "spark", grupo: "Crescimento", sub: "Assistente com IA, push, patrocínio de seções e arte para Instagram." },
+      { id: "newsletter", nome: "Newsletter", ic: "list", grupo: "Crescimento" },
+      { id: "pesquisa", nome: "Pesquisa", ic: "chart", grupo: "Crescimento" },
+      { id: "recursos", nome: "Recursos", ic: "grid", grupo: "Crescimento" },
+      { id: "aparencia", nome: "Aparência", ic: "image", grupo: "Site", sub: "Cores, banner do topo, ordem e títulos das seções." },
+      { id: "config", nome: "Configurações", ic: "gear", grupo: "Site", sub: "Contato, avisos, integrações e chaves do servidor." }
+    ];
+    return m.filter(function (x) { if (x.id === "usuarios") return !!srv; if (R.length && ["recursos", "banners", "publicacoes", "parceiros", "newsletter", "pesquisa"].indexOf(x.id) >= 0) return R.indexOf(x.id) >= 0; if (!R.length && ["recursos", "parceiros", "newsletter", "pesquisa"].indexOf(x.id) >= 0) return false; return true; });
+  }
   function abrir(el) {
     raiz = el;
     if (!Store.admin()) {
-      el.innerHTML = '<section class="block"><div class="wrap narrow"><p class="eyebrow">Área restrita</p><h1 class="page-h">Painel administrativo</h1><p class="muted">Só a conta master da CoraçãoBR abre este painel. Se você tem um anúncio, use o <a href="#anunciante">painel do anunciante</a>.</p></div></section>';
+      el.innerHTML = '<section class="block"><div class="wrap narrow"><p class="eyebrow">Área restrita</p><h1 class="page-h">Painel master</h1><p class="muted">Só a conta master da CoraçãoBR abre este painel. Para o seu negócio, use <a href="#conta">Minha conta → Meu negócio</a>.</p></div></section>';
       return;
     }
-    raiz.innerHTML = '<section class="block"><div class="wrap"><div class="head"><div><p class="eyebrow">Área do dono do guia</p><h2>Painel</h2></div>' +
-      '<p class="muted small">' + (Store.estado.modo === "nuvem" ? "Tudo o que você salva aqui aparece para quem abrir o guia." : "Modo local: as alterações ficam só neste navegador.") + "</p></div>" +
-      '<div class="tabs" role="tablist">' + [["resumo", "Resumo"], ["avisos", "Avisos" + (naoLidos() ? " (" + naoLidos() + ")" : "")], ["receita", "Receita"], ["financas", "Finanças"], ["comunidade", "Comunidade"], ["aparencia", "Aparência"], ["anunciantes", "Anunciantes"], ["pagamentos", "Pagamentos"]].concat(Store.servidor && Store.servidor() ? [["usuarios", "Contas"]] : [], window.PainelRecursos ? PainelRecursos.abas : [], [["novidades", "Novidades"], ["lugares", "Lugares"], ["anuncios", "Anúncios"], ["avaliacoes", "Avaliações"], ["config", "Configurações"]]).map(function (t) { return '<button role="tab" data-aba="' + t[0] + '" aria-selected="' + (aba === t[0]) + '">' + t[1] + "</button>"; }).join("") + '</div><div id="aba"></div></div></section>';
-    $(".tabs", raiz).addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; aba = b.dataset.aba; Array.from(this.children).forEach(function (c) { c.setAttribute("aria-selected", c === b); }); corpo(); });
+    var menu = menuMaster(), ids = menu.map(function (m) { return m.id; });
+    try { var salvo = sessionStorage.getItem("dash-master"); if (salvo && ids.indexOf(salvo) >= 0) aba = salvo; } catch (e) { /* ok */ }
+    if (ids.indexOf(aba) < 0) aba = "resumo";
+    try { sessionStorage.setItem("dash-master", aba); } catch (e) { /* ok */ }
+    var secoes = {}; ids.forEach(function (id) { secoes[id] = '<div class="pm-aba" data-pm="' + id + '"' + (id === aba ? ' id="aba"' : "") + "></div>"; });
+    var c = (Store.conta && Store.conta()) || {}, nome = c.nome || "Equipe CoraçãoBR";
+    el.innerHTML = Dash.montar({ chave: "master", marca: "Painel master", titulo: nome, avatar: nome.charAt(0).toUpperCase(), menu: menu, secoes: secoes,
+      pe: [{ nome: "Minha conta", ic: "user", href: "#conta" }, { nome: "Ver o site", ic: "eye", href: "#inicio" }].concat(Store.servidor && Store.servidor() ? [{ nome: "Sair", ic: "out", acao: "data-sair" }] : []) });
     corpo();
   }
+  document.addEventListener("dash-secao", function (e) {
+    if (!e.detail || e.detail.chave !== "master" || !raiz) return;
+    var velho = $("#aba", raiz); if (velho) velho.removeAttribute("id");
+    aba = e.detail.id; var novo = raiz.querySelector('[data-pm="' + aba + '"]'); if (novo) { novo.id = "aba"; corpo(); }
+  });
+  /* links de outras telas que abrem o painel numa seção (ex.: "Abrir Pagamentos") */
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-painel-aba]"); if (b) { aba = b.dataset.painelAba; try { sessionStorage.setItem("dash-master", aba); } catch (er) { /* ok */ } } }, true);
   function atualizar() {
     if (["newsletter", "pesquisa", "recursos", "usuarios", "banners", "novidades"].indexOf(aba) >= 0) return true;
     if (!raiz || !$("#aba", raiz)) return false;
     var a = document.activeElement;
-    if (a && $("#aba", raiz).contains(a) && /INPUT|TEXTAREA/.test(a.tagName)) return true;
+    if (a && $("#aba", raiz).contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) return true;
     corpo(); return true;
   }
   function corpo() {
@@ -99,16 +138,28 @@
     el.onclick = function (e) { var b = e.target.closest("[data-perfil]"); if (b && window.Anunciante) Anunciante.abrirPerfil(b.dataset.perfil); };
   }
   function abaResumo(el) {
-    var ls = Store.lista("lugares"), atr = ls.filter(function (l) { return l.tipo !== "estabelecimento"; }), ads = Store.lista("anuncios"), av = Store.lista("avaliacoes");
+    var ls = Store.lista("lugares"), atr = ls.filter(function (l) { return l.tipo !== "estabelecimento"; }), av = Store.lista("avaliacoes");
     var semFoto = ls.filter(function (l) { return !(l.fotos || []).length; }).length, prov = ls.filter(function (l) { return l.notaProvisoria; }).length;
     var semPreco = atr.filter(function (l) { return !l.gratuito && l.precoConfirmado === false; }).length;
     var semMenu = ls.filter(function (l) { return l.tipo === "estabelecimento" && /restaurante|churrascaria|padaria|acai|bbq|tex-mex|steakhouse|hamburguer|brunch/.test(l.categoria) && !(l.menu || []).length; }).length;
-    var receita = ads.filter(function (a) { return a.ativo !== false; }).reduce(function (s, a) { return s + (Number(a.valorMensal) || 0); }, 0);
-    function k(n, t) { return '<div class="kpi"><b class="num">' + n + "</b><span>" + t + "</span></div>"; }
-    el.innerHTML = '<div class="stack in"><div class="kpis">' + k(atr.length, "pontos turísticos") + k(atr.filter(function (l) { return l.gratuito; }).length, "gratuitos") + k(ls.length - atr.length, "estabelecimentos") + k(av.length, "avaliações de visitantes") + k(ads.filter(function (a) { return a.ativo !== false; }).length, "anúncios ativos") + k(Store.lista("lugares").filter(function (l) { return l.assinatura && !l.demo && l.assinatura.status === "ativa"; }).length, "assinaturas ativas") + k(G.usd(receita + Store.lista("lugares").filter(function (l) { return l.assinatura && !l.demo && l.assinatura.status === "ativa"; }).reduce(function (s, l) { return s + (Number(l.assinatura.valor) || 0); }, 0)), "receita mensal") + "</div>" +
-      '<div class="panel"><h3>Pendências do conteúdo</h3><div class="menu" style="margin-top:10px">' +
-      [["Notas de curadoria provisórias para você confirmar", prov], ["Lugares sem nenhuma foto", semFoto], ["Atrações pagas com preço a confirmar", semPreco], ["Lugares de comida sem cardápio", semMenu]].map(function (r) { return '<div class="mi"><b>' + r[0] + '</b><span class="dots2"></span><span class="p">' + r[1] + "</span></div>"; }).join("") +
-      '</div><p class="small muted" style="margin-top:12px">Abra a aba Lugares e use o filtro de busca para resolver uma por uma.</p></div></div>';
+    var mes = G.hojeISO().slice(0, 7), pags = Store.lista("pagamentos"), ativos = pags.filter(function (d) { return window.Pag && Pag.vagas(d.id) > 0; }).length, receitaMes = 0, vendas = 0;
+    pags.forEach(function (d) { (d.pacotes || []).forEach(function (pk) { if (String(pk.pagoEm || "").slice(0, 7) === mes && Number(pk.valor) > 0) { receitaMes += Number(pk.valor); vendas++; } }); });
+    var pix = pixPend(), nl = naoLidos(), den = aviso("denuncia");
+    var D = Dash.ic, card = function (n, t, icn, ir) { return '<button type="button" class="dk-card" data-dk-ir="' + ir + '"><small>' + t + '</small><b class="dk-big"' + (ir === "usuarios" ? " data-pm-contas" : "") + ">" + n + "</b>" + D(icn) + "</button>"; };
+    var pend = [[pix, "Pix informados para confirmar", "pagamentos", "pix"], [nl, "Avisos não lidos", "avisos", "bell"], [den, "Denúncias no Mural", "avisos", "shield"], [prov, "Notas de curadoria provisórias", "lugares", "star"], [semFoto, "Lugares sem foto", "lugares", "image"], [semPreco, "Atrações com preço a confirmar", "lugares", "money"], [semMenu, "Comida sem cardápio", "lugares", "list"]];
+    var abertas = pend.filter(function (r) { return r[0] > 0; });
+    var REG = window.Guia.CIDADES_GUIA || {}, porReg = {};
+    ls.forEach(function (l) { var r = G.regiaoGuia ? G.regiaoGuia(l) : "dfw"; porReg[r] = (porReg[r] || 0) + 1; });
+    el.innerHTML = '<div class="pm-res">' +
+      '<div class="dk-card dk-dark pm-hero"><div><small>Receita do mês</small><b class="dk-big">' + G.reais(receitaMes) + "</b><p>" + vendas + (vendas === 1 ? " pacote vendido" : " pacotes vendidos") + " · " + ativos + (ativos === 1 ? " anunciante ativo" : " anunciantes ativos") + '</p></div><div class="ad-pl-a"><button type="button" class="btn" data-dk-ir="pagamentos">' + (pix ? "Confirmar " + pix + " Pix" : "Pagamentos") + '</button><button type="button" class="btn ghost" data-dk-ir="receita">Ver receita</button></div></div>' +
+      '<div class="dk-grid dk-g4">' + (Store.servidor && Store.servidor() ? card("…", "Contas", "users", "usuarios") : card(ls.length, "Lugares no guia", "pin", "lugares")) + card(ativos, "Anunciantes ativos", "store", "anunciantes") + card(pix, "Pix a confirmar", "pix", "pagamentos") + card(av.length, "Avaliações", "star", "avaliacoes") + "</div>" +
+      '<div class="dk-grid dk-g2"><div class="dk-card dk-flat"><div class="dk-ch"><h3>Pendências</h3><span class="pill ' + (abertas.length ? "warn" : "ok") + '">' + (abertas.length ? abertas.length + " para resolver" : "tudo em dia") + "</span></div>" +
+      (abertas.length ? '<div class="pm-pend">' + abertas.map(function (r) { return '<button type="button" class="pm-pi" data-dk-ir="' + r[2] + '">' + D(r[3]) + "<span>" + r[1] + "</span><b>" + r[0] + "</b></button>"; }).join("") + "</div>" : '<p class="muted small">Nenhuma pendência agora.</p>') + "</div>" +
+      '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Lugares por cidade</h3><button type="button" class="more" data-dk-ir="lugares">abrir</button></div><div class="pm-cid">' + Object.keys(REG).map(function (k) { return '<div><b>' + (porReg[k] || 0) + "</b><small>" + esc(REG[k].nome) + "</small></div>"; }).join("") + "</div>" +
+      '<p class="small muted" style="margin:10px 0 0">' + atr.length + " atrações (" + atr.filter(function (l) { return l.gratuito; }).length + " grátis) · " + (ls.length - atr.length) + " estabelecimentos</p></div></div>" +
+      '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Acesso rápido</h3></div><div class="dk-ats dk-ats4">' +
+      [["usuarios", "Abrir uma conta", "área de qualquer pessoa", "users"], ["financas", "Valores e Pix", "preços e chave Pix", "money"], ["aparencia", "Aparência", "cores e banner do topo", "image"], ["novidades", "Assistente e push", "IA e notificações", "spark"]].filter(function (a) { return a[0] !== "usuarios" || (Store.servidor && Store.servidor()); }).map(function (a) { return '<button type="button" class="dk-at" data-dk-ir="' + a[0] + '">' + D(a[3]) + "<b>" + a[1] + "</b><small>" + a[2] + "</small></button>"; }).join("") + "</div></div></div>";
+    if (Store.servidor && Store.servidor()) Store.api("usuarios").then(function (j) { var b = el.querySelector("[data-pm-contas]"); if (b) b.textContent = (j.usuarios || []).length; }).catch(function () { var b = el.querySelector("[data-pm-contas]"); if (b) b.textContent = "—"; });
   }
 
   var filtroP = "";

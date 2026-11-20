@@ -816,7 +816,7 @@
     if (sess("popup-visto")) return;
     clearTimeout(agendaPopup.t);
     agendaPopup.t = setTimeout(function () {
-      if (rota() !== "inicio" || aberto || sess("popup-visto") || !cidadeEscolhida || document.querySelector("dialog[open]")) { if (!sess("popup-visto") && rota() === "inicio") agendaPopup(); return; }
+      if (rota() !== "inicio" || aberto || sess("popup-visto") || !cidadeEscolhida || document.querySelector("dialog[open]") || document.getElementById("intro")) { if (!sess("popup-visto") && rota() === "inicio") agendaPopup(); return; }
       var a = anuncios("popup")[0], g = lugares().filter(GRUPOS.gratis.f).length;
       var pats = lugares().filter(function (l) { return l.anunciante; }), pl = pats[Math.floor(Math.random() * pats.length)];
       if (!a && pl) a = { titulo: pl.nome, texto: pl.cupom || (CATS[pl.categoria] || "") + " · " + regiao(pl), botao: "Ver no guia", imagem: (pl.fotos || [])[0] ? pl.fotos[0].src : "", lugar: pl.id };
@@ -905,9 +905,13 @@
 
 
   /* ---------- tema ---------- */
-  function temaAtual() { return document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); }
-  try { var t0 = localStorage.getItem("tema"); if (t0) document.documentElement.dataset.theme = t0; } catch (e) { /* sem armazenamento */ }
-  document.addEventListener("click", function (e) { if (!e.target.closest("[data-cor]")) return; var n = temaAtual() === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; try { localStorage.setItem("tema", n); } catch (er) { /* ok */ } var mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = n === "dark" ? "#0B110E" : "#04341A"; });
+  function temaAtual() { return document.documentElement.dataset.theme === "dark" ? "dark" : "light"; }
+  /* O tema só muda pelo botão claro/escuro do topo. Sem escolha salva, começa no claro (não segue o aparelho sozinho). */
+  var t0 = "light"; try { t0 = localStorage.getItem("tema") === "dark" ? "dark" : "light"; } catch (e) { /* sem armazenamento */ }
+  document.documentElement.dataset.theme = t0;
+  function marcaBotaoTema() { var d = document.documentElement.dataset.theme === "dark"; Array.from(document.querySelectorAll(".tema-bt")).forEach(function (b) { b.setAttribute("aria-pressed", d); b.setAttribute("aria-label", d ? "Mudar para o tema claro" : "Mudar para o tema escuro"); }); }
+  marcaBotaoTema();
+  document.addEventListener("click", function (e) { if (!e.target.closest("[data-cor]")) return; var n = temaAtual() === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; try { localStorage.setItem("tema", n); } catch (er) { /* ok */ } var mc = document.querySelector('meta[name="theme-color"]'); if (mc) mc.content = n === "dark" ? "#0B110E" : "#04341A"; marcaBotaoTema(); });
 
   /* ---------- roteador ---------- */
   var views = { inicio: viewInicio, explorar: viewExplorar, guia: viewExplorar, ranking: viewRanking, anuncie: viewAnuncie, entrar: viewEntrar };
@@ -951,9 +955,9 @@
     if (rota() === "explorar") { pintada = null; render(false); }
   });
   window.addEventListener("hashchange", function () { render(false); });
-  window.Guia = { cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
-  function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function () { if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
+  function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ligar); else setTimeout(ligar, 0);
 })();

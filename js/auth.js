@@ -8,10 +8,12 @@
   function srv() { return !!(Store.servidor && Store.servidor()); }
   function conta() { return Store.conta ? Store.conta() : null; }
   function papel() { return Store.papel ? Store.papel() : ""; }
-  var NOMES = { usuario: "Usuário", anunciante: "Anunciante", master: "Master" };
+  var NOMES = { usuario: "Usuário", anunciante: "Usuário", master: "Master" };
+  /* Conta única: todo mundo é usuário; as ferramentas de anúncio liberam com o pagamento. */
+  function rotulo(c) { if (!c) return ""; if (c.papel === "master") return "Master"; return window.Anunciante && Anunciante.temPlano && Anunciante.temPlano() ? "Anunciante ativo" : "Usuário"; }
 
   /* Dois acessos: "interagir" (curtir, comentar, avaliar, checklist) e "anunciar" (tudo isso + painel de anúncios). */
-  function acesso() { var a = ""; try { a = sessionStorage.getItem("acesso") || (sessionStorage.getItem("tipo-cadastro") === "anunciante" ? "anunciar" : ""); } catch (e) { /* ok */ } return a === "anunciar" ? "anunciar" : "interagir"; }
+  function acesso() { return "interagir"; }   /* um só acesso: a conta do usuário (as ferramentas de anúncio liberam com o pagamento) */
   function defineAcesso(a) { try { sessionStorage.setItem("acesso", a); sessionStorage.setItem("tipo-cadastro", a === "anunciar" ? "anunciante" : "usuario"); } catch (e) { /* ok */ } }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-acesso]"); if (!b) return;
@@ -20,16 +22,14 @@
   });
   function seletorAcesso(tela) {
     var a = acesso(), op = function (k, icn, t, d) { return '<button type="button" class="acs-b" role="tab" data-acesso="' + k + '" aria-selected="' + (a === k) + '"><span class="acs-i">' + icn + "</span><span><b>" + t + "</b><small>" + d + "</small></span></button>"; };
-    return '<div class="acs" role="tablist" aria-label="Tipo de acesso">' + op("interagir", "❤", "Quero interagir", "Curtir, comentar, avaliar e checklist") + op("anunciar", "📣", "Quero anunciar", "Tudo isso + painel de anúncios") + "</div>" +
-      '<div class="acs-tabs"><a href="#entrar" aria-current="' + (tela === "entrar") + '">Entrar</a><a href="#cadastro" aria-current="' + (tela === "cadastro") + '">Criar conta</a></div>';
+    void op; return '<div class="acs-tabs"><a href="#entrar" aria-current="' + (tela === "entrar") + '">Entrar</a><a href="#cadastro" aria-current="' + (tela === "cadastro") + '">Criar conta</a></div>';
   }
   /* Para onde voltar depois de entrar. */
   function lembra(h) { try { sessionStorage.setItem("depois-login", h); } catch (e) { /* ok */ } }
   function destino(c) {
     var h = null; try { h = sessionStorage.getItem("depois-login"); sessionStorage.removeItem("depois-login"); } catch (e) { /* ok */ }
     if (h && !/^#(entrar|cadastro|esqueci|redefinir)/.test(h)) return h;
-    if (acesso() === "anunciar" && c && c.papel !== "master") return "#anunciante";
-    return c && c.papel === "master" ? "#painel" : c && c.papel === "anunciante" ? "#anunciante" : "#conta";
+    return c && c.papel === "master" ? "#painel" : "#conta";
   }
   /* Recarrega para o guia inteiro reler os dados com a nova sessão. */
   function vaiPara(h) { if (location.hash === h) location.reload(); else { location.hash = h; setTimeout(function () { location.reload(); }, 30); } }
@@ -40,9 +40,11 @@
       (ajuda ? '<small class="muted">' + ajuda + "</small>" : "") + "</div>";
   }
   function moldura(titulo, sub, corpo, lado, tela) {
-    G.app.innerHTML = '<section class="block"><div class="wrap auth' + (tela ? " auth-" + acesso() : "") + '">' +
+    var cd = G.cid ? G.cid() : null, capa = cd && cd.capa ? cd.capa : "", logo = (document.querySelector(".top .brand svg") || {}).outerHTML || "";
+    G.app.innerHTML = '<section class="block"><div class="wrap auth' + (tela ? " auth-" + acesso() : "") + '"' + (capa ? ' style="--capa:url(\'' + esc(capa) + '\')"' : "") + ">" +
+      '<div class="auth-capa" aria-hidden="true"><span class="auth-cl">' + logo + '</span><b>Coração<span>BR</span></b><small>O guia dos brasileiros' + (cd ? " em " + esc(cd.nome) : " no Texas") + "</small></div>" +
       '<div class="auth-lado">' + (lado || ladoPadrao()) + "</div>" +
-      '<div class="auth-card panel stack">' + (tela ? seletorAcesso(tela) : "") + '<div><p class="eyebrow">' + (tela ? (acesso() === "anunciar" ? "Área do anunciante" : "Área do usuário") : "CoraçãoBR") + '</p><h1 class="page-h" style="margin-top:4px">' + titulo + "</h1>" + (sub ? '<p class="muted" style="margin-top:6px">' + sub + "</p>" : "") + "</div>" + corpo + botaoApp() + "</div></div></section>";
+      '<div class="auth-card panel stack">' + (tela ? seletorAcesso(tela) : "") + '<div><p class="eyebrow">' + (tela ? "Sua conta CoraçãoBR" : "CoraçãoBR") + '</p><h1 class="page-h" style="margin-top:4px">' + titulo + "</h1>" + (sub ? '<p class="muted" style="margin-top:6px">' + sub + "</p>" : "") + "</div>" + corpo + botaoApp() + "</div></div></section>";
     var f = $("form", G.app), i = f && f.querySelector("input"); if (i && matchMedia("(min-width:760px)").matches) i.focus();
   }
   /* já instalado (aberto como app)? então não mostra o botão */
@@ -55,21 +57,13 @@
   }
   function ladoPadrao() {
     var it = function (t, d) { return '<li><span class="auth-ok" aria-hidden="true">✓</span><span><b>' + t + "</b><small>" + d + "</small></span></li>"; };
-    if (acesso() === "anunciar") {
-      var pr = G.reais(window.Pag ? Pag.preco() : 50), n = window.Pag ? Pag.porPacote() : 3;
-      return '<div class="auth-hero auth-hero-an"><p class="auth-kick">Quero anunciar</p><h2>Sua empresa na frente de quem fala português.</h2>' +
-        '<p class="auth-sub">Faz tudo do "Quero interagir" e ainda tem um painel de anúncios.</p><ul class="auth-lista">' +
-        it("Painel com seus anúncios", "Veja o que está no ar, visualizações, cliques e contrate mais quando quiser.") +
-        it("Anúncio completo", "Até 20 fotos, banner, endereço, WhatsApp, Instagram, Facebook, Telegram, X, LinkedIn, site, cardápio ou catálogo.") +
-        it(pr + " = " + n + " anúncios por mês", "Pacotes somam: " + G.reais(2 * (window.Pag ? Pag.preco() : 50)) + " = " + 2 * n + " anúncios, " + G.reais(3 * (window.Pag ? Pag.preco() : 50)) + " = " + 3 * n + " anúncios…") +
-        it("Pix na hora e avisos por e-mail", "QR Code com o valor certo. Lembrete 3, 2 e 1 dia antes de terminar.") + "</ul></div>";
-    }
-    return '<div class="auth-hero"><p class="auth-kick">Quero interagir</p><h2>O guia dos brasileiros fora do Brasil.</h2>' +
-      '<p class="auth-sub">Uma conta grátis para participar da comunidade.</p><ul class="auth-lista">' +
-      it("Curtidas e comentários", "Curta lugares e publicações, comente e siga quem você gosta.") +
-      it("Avaliações e depoimentos", "Dê estrelas e conte como foi para ajudar outros brasileiros.") +
-      it("Checklist de passeios", "Monte seu roteiro, marque o que visitou e guarde tudo na conta.") +
-      it("Em qualquer aparelho", "Entre com e-mail e senha no celular ou no computador.") + "</ul></div>";
+    var pr = G.reais(window.Pag ? Pag.preco() : 50), n = window.Pag ? Pag.porPacote() : 3;
+    return '<div class="auth-hero"><p class="auth-kick">Uma conta para tudo</p><h2>O guia dos brasileiros no Texas.</h2>' +
+      '<p class="auth-sub">Grátis para participar da comunidade. Quando quiser anunciar, é na mesma conta.</p><ul class="auth-lista">' +
+      it("Curta, comente e avalie", "Dê estrelas, conte como foi e siga quem você gosta.") +
+      it("Avisos do que está perto de você", "Pelo seu CEP, avisamos de eventos e lugares novos na sua região.") +
+      it("Roteiros e checklist", "Monte seu roteiro, marque o que visitou e guarde tudo na conta.") +
+      it("Tem um negócio? Anuncie aqui", "Monte o anúncio na sua conta e libere as ferramentas com o pagamento: " + pr + " = " + n + " anúncios por mês.") + "</ul></div>";
   }
   function msg(el, texto, ok) { el.textContent = texto || ""; el.className = "auth-msg" + (ok ? " ok" : ""); el.hidden = !texto; }
   function ocupa(f, sim) { Array.from(f.querySelectorAll("button, input")).forEach(function (x) { x.disabled = sim; }); }
@@ -81,9 +75,8 @@
 
   /* ---------- entrar ---------- */
   function telaEntrar(aviso, tipo) {
-    if (tipo) defineAcesso(tipo === "anunciante" ? "anunciar" : "interagir");
-    var an = acesso() === "anunciar";
-    moldura(an ? "Entrar no painel" : "Entrar", aviso || (an ? "Use o e-mail e a senha da sua conta de anunciante." : "Use o e-mail e a senha da sua conta."),
+    void tipo;
+    moldura("Entrar", aviso || "Use o e-mail e a senha da sua conta.",
       '<form id="f-entrar" class="stack" style="gap:14px" novalidate>' +
       campo("a-email", "E-mail", "email", 'autocomplete="username" required maxlength="160" inputmode="email"') +
       campo("a-senha", "Senha", "password", 'autocomplete="current-password" required maxlength="200"') +
@@ -101,11 +94,11 @@
 
   /* ---------- criar conta ---------- */
   function telaCadastro() {
-    var an = acesso() === "anunciar";
-    moldura(an ? "Criar conta de anunciante" : "Criar conta", an ? "Primeiro acesso. Depois você monta seus anúncios no painel." : "Primeiro acesso. Leva menos de um minuto.",
-      '<form id="f-cad" class="stack" style="gap:14px" novalidate><input type="hidden" name="a-tipo" value="' + (an ? "anunciante" : "usuario") + '">' +
-      campo("c-nome", an ? "Seu nome ou nome da empresa" : "Nome", "text", 'autocomplete="name" required maxlength="60"') +
+    moldura("Criar conta", "Primeiro acesso. Leva menos de um minuto.",
+      '<form id="f-cad" class="stack" style="gap:14px" novalidate>' +
+      campo("c-nome", "Nome", "text", 'autocomplete="name" required maxlength="60"') +
       campo("c-email", "E-mail", "email", 'autocomplete="email" required maxlength="160" inputmode="email"') +
+      campo("c-zip", "CEP nos EUA (ZIP code)", "text", 'autocomplete="postal-code" required inputmode="numeric" maxlength="10" pattern="[0-9]{5}(-[0-9]{4})?" placeholder="Ex.: 75201"', "Obrigatório. Com ele avisamos de eventos e lugares perto de você. Ainda não mora nos EUA? Use o ZIP de onde vai ficar.") +
       campo("c-senha", "Senha", "password", 'autocomplete="new-password" required minlength="8" maxlength="200"', "Pelo menos 8 caracteres, com letras e números.") +
       campo("c-senha2", "Repita a senha", "password", 'autocomplete="new-password" required maxlength="200"') +
       '<label class="check"><input type="checkbox" id="c-aceite"><span>Li e aceito os <a href="#termos" target="_blank">termos de uso</a> e a <a href="#privacidade" target="_blank">política de privacidade</a>.</span></label>' +
@@ -114,15 +107,19 @@
       '<p class="small muted">Já tem conta? <a href="#entrar">Entrar</a></p></form>', null, "cadastro");
     $("#f-cad").onsubmit = function (e) {
       e.preventDefault(); var f = this, m = $("#c-msg");
-      var d = { nome: $("#c-nome").value.trim(), email: $("#c-email").value.trim(), senha: $("#c-senha").value, tipo: (f.querySelector('input[name="a-tipo"]') || {}).value, ref: window.Diferenciais ? Diferenciais.refIndicacao() : "", aceite: $("#c-aceite").checked };
+      var d = { nome: $("#c-nome").value.trim(), email: $("#c-email").value.trim(), zip: $("#c-zip").value.trim(), senha: $("#c-senha").value, ref: window.Diferenciais ? Diferenciais.refIndicacao() : "", aceite: $("#c-aceite").checked };
       if (!d.nome) return msg(m, "Informe seu nome.");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return msg(m, "Informe um e-mail válido.");
+      if (!/^\d{5}(-?\d{4})?$/.test(d.zip)) return msg(m, "Informe o seu CEP americano (ZIP code com 5 números, ex.: 75201).");
       if (d.senha.length < 8 || !/[A-Za-z]/.test(d.senha) || !/\d/.test(d.senha)) return msg(m, "A senha precisa ter pelo menos 8 caracteres, com letras e números.");
       if (d.senha !== $("#c-senha2").value) return msg(m, "As duas senhas não são iguais.");
       if (!d.aceite) return msg(m, "Para criar a conta, aceite os termos de uso e a política de privacidade.");
       ocupa(f, true); msg(m, "");
       Store.api("cadastrar", d).then(function (j) {
         try { sessionStorage.removeItem("tipo-cadastro"); localStorage.setItem("meu-nome", JSON.stringify(j.conta.nome)); } catch (er) { /* ok */ }
+        /* sem cidade escolhida ainda: o guia abre na região do CEP */
+        var c = j.conta || {}, perto = c.zipLat && G.cidadeMaisPerto && !(G.escolheuCidade && G.escolheuCidade()) ? G.cidadeMaisPerto({ lat: c.zipLat, lng: c.zipLng }) : null;
+        if (perto) try { localStorage.setItem("cidade", perto.id); } catch (er) { /* ok */ }
         vaiPara(destino(j.conta));
       }).catch(function (er) { ocupa(f, false); msg(m, er.message); });
     };
@@ -187,14 +184,15 @@
   /* ---------- bloco "Sua conta" dentro de Minha conta ---------- */
   function blocoConta() {
     var c = conta(); if (!srv() || !c) return "";
-    var atalhos = (c.papel === "master" ? '<a class="btn sm" href="#painel">Painel master</a><a class="btn ghost sm" href="#anunciante">Anúncios</a>' : c.papel === "anunciante" ? '<a class="btn sm" href="#anunciante">Painel do anunciante</a><a class="btn ghost sm" href="#anunciar" data-novo-anuncio>Novo anúncio</a>' : '<a class="btn ghost sm" href="#anunciar">Quero anunciar</a>');
-    return '<div class="panel stack conta-box" style="gap:12px"><div class="row" style="justify-content:space-between;align-items:flex-start"><div><h3 style="margin:0">Sua conta</h3><p class="small muted" style="margin-top:4px">' + esc(c.email) + ' · <span class="pill ok">' + esc(NOMES[c.papel] || c.papel) + "</span></p></div>" +
+    var atalhos = (c.papel === "master" ? '<a class="btn sm" href="#painel">Painel master</a>' : "") + '<button type="button" class="btn ' + (c.papel === "master" ? "ghost " : "") + 'sm" data-dk-ir="negocio">Meu negócio</button>';
+    return '<div class="panel stack conta-box" style="gap:12px"><div class="row" style="justify-content:space-between;align-items:flex-start"><div><h3 style="margin:0">Sua conta</h3><p class="small muted" style="margin-top:4px">' + esc(c.email) + ' · <span class="pill ok">' + esc(rotulo(c) || NOMES[c.papel] || c.papel) + "</span></p></div>" +
       '<button type="button" class="btn ghost sm" data-sair>Sair</button></div>' +
       '<div class="row" style="gap:8px">' + atalhos + '<button type="button" class="btn ghost sm" data-dados>Dados e senha</button>' + (window.Recursos && Recursos.on("paraVoce") ? '<button type="button" class="btn ghost sm" data-abre-int>Meus interesses</button>' : "") + '</div>' +
       (window.Recursos && Recursos.on("newsletter") ? '<label class="check" style="font-size:.92rem"><input type="checkbox" id="c-news" data-news-conta> Receber a newsletter semanal por e-mail</label>' : "") +
       '<form id="f-dados" class="stack" style="gap:12px" hidden novalidate>' +
       campo("d-nome", "Nome", "text", 'maxlength="60" value="' + esc(c.nome) + '"') +
       campo("d-email", "E-mail", "email", 'maxlength="160" value="' + esc(c.email) + '"') +
+      campo("d-zip", "CEP nos EUA (ZIP code)", "text", 'maxlength="10" inputmode="numeric" autocomplete="postal-code" value="' + esc(c.zip || "") + '"', c.zipCidade ? "Sua região: " + esc(c.zipCidade) : "Usamos para avisar do que está perto de você.") +
       campo("d-nova", "Nova senha (deixe em branco para manter)", "password", 'autocomplete="new-password" maxlength="200"') +
       campo("d-atual", "Senha atual (obrigatória para trocar e-mail ou senha)", "password", 'autocomplete="current-password" maxlength="200"') +
       '<p class="auth-msg" id="d-msg" role="alert" hidden></p><div class="row" style="gap:8px"><button class="btn sm" type="submit">Salvar</button>' +
@@ -222,7 +220,8 @@
     var f = $("#f-dados"); if (!f || f.dataset.ligado) return; f.dataset.ligado = "1";
     f.onsubmit = function (e) {
       e.preventDefault(); var m = $("#d-msg");
-      var d = { nome: $("#d-nome").value.trim(), email: $("#d-email").value.trim(), senhaNova: $("#d-nova").value, senhaAtual: $("#d-atual").value };
+      var d = { nome: $("#d-nome").value.trim(), email: $("#d-email").value.trim(), zip: $("#d-zip").value.trim(), senhaNova: $("#d-nova").value, senhaAtual: $("#d-atual").value };
+      if (!/^\d{5}(-?\d{4})?$/.test(d.zip)) return msg(m, "Informe o seu CEP americano (ZIP code com 5 números).");
       if (d.senhaNova && (d.senhaNova.length < 8 || !/[A-Za-z]/.test(d.senhaNova) || !/\d/.test(d.senhaNova))) return msg(m, "A nova senha precisa ter pelo menos 8 caracteres, com letras e números.");
       ocupa(f, true);
       Store.api("perfil", d).then(function (j) { ocupa(f, false); msg(m, "Dados salvos.", true); if (Store.estado.sessao) Store.estado.sessao.conta = j.conta; Store.estado.nome = j.conta.nome; $("#d-nova").value = ""; $("#d-atual").value = ""; })
@@ -238,25 +237,31 @@
   }
   function dataBR(iso) { if (!iso) return "—"; var d = new Date(iso); return isNaN(d) ? "—" : d.toLocaleDateString("pt-BR") + " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); }
   function desenhaContas(el) {
-    var eu = conta() || {}, n = { usuario: 0, anunciante: 0, master: 0 };
-    listaContas.forEach(function (u) { n[u.papel] = (n[u.papel] || 0) + 1; });
-    var q = filtro.toLowerCase(), vis = listaContas.filter(function (u) { return (!filtroPapel || u.papel === filtroPapel) && (!q || (u.nome + " " + u.email).toLowerCase().indexOf(q) >= 0); });
-    el.innerHTML = '<div class="stack">' +
-      '<div class="kpis"><div class="kpi"><b class="num">' + listaContas.length + '</b><span>contas</span></div><div class="kpi"><b class="num">' + n.usuario + '</b><span>usuários</span></div><div class="kpi"><b class="num">' + n.anunciante + '</b><span>anunciantes</span></div><div class="kpi"><b class="num">' + n.master + "</b><span>master</span></div></div>" +
-      '<div class="row" style="gap:8px"><label class="sr" for="u-q">Buscar conta</label><input id="u-q" placeholder="Buscar por nome ou e-mail" value="' + esc(filtro) + '" style="flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit">' +
-      '<label class="sr" for="u-p">Filtrar por papel</label><select id="u-p" style="padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit"><option value="">Todos</option><option value="usuario"' + (filtroPapel === "usuario" ? " selected" : "") + '>Usuários</option><option value="anunciante"' + (filtroPapel === "anunciante" ? " selected" : "") + '>Anunciantes</option><option value="master"' + (filtroPapel === "master" ? " selected" : "") + ">Master</option></select></div>" +
-      '<div class="list">' + (vis.length ? vis.map(function (u) {
-        var proprio = u.id === eu.uid, bloq = +u.bloqueado;
-        return '<div class="lrow conta-row" style="cursor:default" data-uid="' + esc(u.id) + '"><span><b>' + esc(u.nome) + (proprio ? " (você)" : "") + (bloq ? ' <span class="pill warn">Suspensa</span>' : "") + "</b><small>" + esc(u.email) + " · criada em " + esc(dataBR(u.criado)) + " · último acesso " + esc(dataBR(u.ultimo)) + "</small></span>" +
-          '<span class="row" style="gap:6px;justify-content:flex-end">' +
-          (proprio ? '<span class="pill ok">' + esc(NOMES[u.papel]) + "</span>" :
-            '<label class="sr" for="pp-' + esc(u.id) + '">Papel de ' + esc(u.nome) + '</label><select id="pp-' + esc(u.id) + '" data-papel>' + ["usuario", "anunciante", "master"].map(function (p) { return '<option value="' + p + '"' + (u.papel === p ? " selected" : "") + ">" + NOMES[p] + "</option>"; }).join("") + "</select>" +
+    var eu = conta() || {}, D = Dash.ic;
+    var F = { "": ["Todas", function () { return true; }], plano: ["Com plano ativo", function (u) { return +u.plano > 0; }], semplano: ["Sem plano", function (u) { return !(+u.plano > 0) && u.papel !== "master"; }],
+      semzip: ["Sem CEP", function (u) { return !u.zip; }], master: ["Master", function (u) { return u.papel === "master"; }], suspensas: ["Suspensas", function (u) { return +u.bloqueado; }] };
+    if (!F[filtroPapel]) filtroPapel = "";
+    var nPlano = listaContas.filter(F.plano[1]).length, nZip = listaContas.filter(F.semzip[1]).length;
+    var q = filtro.toLowerCase(), vis = listaContas.filter(function (u) { return F[filtroPapel][1](u) && (!q || (u.nome + " " + u.email + " " + (u.zip || "") + " " + (u.zip_cidade || "")).toLowerCase().indexOf(q) >= 0); });
+    var kc = function (n, t, icn, f) { return '<button type="button" class="dk-card' + (filtroPapel === f ? " on" : "") + '" data-ct-f="' + f + '"><small>' + t + '</small><b class="dk-big">' + n + "</b>" + D(icn) + "</button>"; };
+    el.innerHTML = '<div class="stack ct">' +
+      '<div class="dk-grid dk-g4">' + kc(listaContas.length, "Contas", "users", "") + kc(nPlano, "Com plano ativo", "store", "plano") + kc(nZip, "Sem CEP", "pin", "semzip") + kc(listaContas.filter(F.master[1]).length, "Master", "shield", "master") + "</div>" +
+      '<div class="ct-bar"><label class="sr" for="u-q">Buscar conta</label><input id="u-q" placeholder="Buscar por nome, e-mail, CEP ou cidade" value="' + esc(filtro) + '">' +
+      '<label class="sr" for="u-p">Filtrar contas</label><select id="u-p">' + Object.keys(F).map(function (k) { return '<option value="' + k + '"' + (filtroPapel === k ? " selected" : "") + ">" + F[k][0] + "</option>"; }).join("") + "</select></div>" +
+      '<div class="ct-cards">' + (vis.length ? vis.map(function (u) {
+        var proprio = u.id === eu.uid, bloq = +u.bloqueado, plano = +u.plano > 0, mst = u.papel === "master";
+        return '<div class="ct-c' + (bloq ? " off" : "") + '" data-uid="' + esc(u.id) + '"><div class="ct-h"><span class="ct-av">' + esc((u.nome || "?").charAt(0).toUpperCase()) + '</span><div><b>' + esc(u.nome) + (proprio ? " (você)" : "") + "</b><small>" + esc(u.email) + "</small></div></div>" +
+          '<div class="ct-tags"><em class="' + (mst ? "m" : plano ? "ok" : "") + '">' + (mst ? "Master" : plano ? "Anunciante · " + u.plano + " anúncios" : "Usuário") + "</em>" + (u.zip ? "<em>" + D("pin") + esc(u.zip) + (u.zip_cidade ? " · " + esc(u.zip_cidade) : "") + "</em>" : '<em class="w">sem CEP</em>') + (bloq ? '<em class="w">Suspensa</em>' : "") + "</div>" +
+          '<small class="ct-d">Criada em ' + esc(dataBR(u.criado)) + " · último acesso " + esc(dataBR(u.ultimo)) + "</small>" +
+          '<div class="ct-a"><button type="button" class="btn sm" data-op="abrir">' + D("store") + "Abrir área</button>" +
+          (proprio ? "" : '<label class="sr" for="pp-' + esc(u.id) + '">Papel de ' + esc(u.nome) + '</label><select id="pp-' + esc(u.id) + '" data-papel><option value="usuario"' + (mst ? "" : " selected") + '>Usuário</option><option value="master"' + (mst ? " selected" : "") + ">Master</option></select>" +
             '<button type="button" class="btn ghost sm" data-op="' + (bloq ? "liberar" : "bloquear") + '">' + (bloq ? "Reativar" : "Suspender") + "</button>") +
-          '<button type="button" class="btn ghost sm" data-op="link">Link de nova senha</button>' +
-          (proprio || u.papel === "master" ? "" : '<button type="button" class="btn ghost sm" data-op="excluir">Excluir</button>') + "</span></div>";
+          '<button type="button" class="btn ghost sm" data-op="link">Nova senha</button>' +
+          (proprio || mst ? "" : '<button type="button" class="btn ghost sm ct-x" data-op="excluir">Excluir</button>') + "</div></div>";
       }).join("") : '<p class="muted" style="padding:16px">Nenhuma conta encontrada.</p>') + "</div>" +
-      '<div id="u-link" class="panel stack" style="gap:8px" hidden></div>' +
-      '<p class="small muted">O link de nova senha vale por 24 horas. Envie para a pessoa pelo WhatsApp ou e-mail. A equipe nunca vê nem guarda senhas: elas ficam criptografadas no servidor.</p></div>';
+      '<div id="u-link" class="dk-card dk-flat stack" style="gap:8px" hidden></div>' +
+      '<p class="small muted">"Abrir área" mostra tudo o que a pessoa vê em Meu negócio, com acesso total. O link de nova senha vale por 24 horas: envie pelo WhatsApp ou e-mail. A equipe nunca vê nem guarda senhas: elas ficam criptografadas no servidor.</p></div>';
+    Array.from(el.querySelectorAll("[data-ct-f]")).forEach(function (b) { b.onclick = function () { filtroPapel = b.dataset.ctF; desenhaContas(el); }; });
     var qi = $("#u-q", el); qi.oninput = function () { filtro = qi.value; var pos = qi.selectionStart; desenhaContas(el); var n2 = $("#u-q", el); n2.focus(); try { n2.setSelectionRange(pos, pos); } catch (e) { /* ok */ } };
     $("#u-p", el).onchange = function () { filtroPapel = this.value; desenhaContas(el); };
     el.onchange = function (e) {
@@ -267,6 +272,7 @@
     el.onclick = function (e) {
       var b = e.target.closest("[data-op]"); if (!b) return;
       var id = b.closest("[data-uid]").dataset.uid, op = b.dataset.op;
+      if (op === "abrir") { var u = listaContas.filter(function (x) { return x.id === id; })[0]; if (u && window.Anunciante) Anunciante.abrirConta(u); return; }
       if (op === "excluir" && !b.dataset.confirma) { b.dataset.confirma = "1"; b.textContent = "Confirmar exclusão"; return; }
       Store.api("usuario", { id: id, op: op }).then(function (j) {
         if (op === "link") {
@@ -307,8 +313,7 @@
   function exigeAnunciante(h, fn) {
     return function (r) {
       if (srv()) {
-        if (!conta()) { lembra(h); return telaEntrar("Para anunciar, entre na sua conta ou crie uma conta de anunciante.", "anunciante"); }
-        if (papel() === "usuario") return telaVirarAnunciante(h);
+        if (!conta()) { lembra(h); return telaEntrar("Para anunciar, entre na sua conta ou crie a sua, grátis. As ferramentas de anúncio liberam com o pagamento.", ""); }
       }
       fn(r);
     };
@@ -341,9 +346,9 @@
     var c = conta(); if (!c) { location.hash = "#entrar"; return; }
     var DI = window.Dash && Dash.ic ? Dash.ic : ic, p = c.papel, it = function (h, i, t) { return '<a role="menuitem" href="' + h + '">' + DI(i) + "<span>" + t + "</span></a>"; };
     var m = document.createElement("div"); m.id = "conta-menu"; m.className = "conta-menu"; m.setAttribute("role", "menu");
-    m.innerHTML = '<div class="cm-who"><span class="ini">' + esc((c.nome || "?").trim().charAt(0).toUpperCase()) + "</span><div><b>" + esc(c.nome || "") + "</b><small>" + esc(c.email || "") + '</small><em class="cm-papel">' + esc(NOMES[p] || p) + "</em></div></div>" +
+    m.innerHTML = '<div class="cm-who"><span class="ini">' + esc((c.nome || "?").trim().charAt(0).toUpperCase()) + "</span><div><b>" + esc(c.nome || "") + "</b><small>" + esc(c.email || "") + '</small><em class="cm-papel">' + esc(rotulo(c)) + "</em></div></div>" +
       it("#conta", "user", "Minha conta") + it("#lista", "route", "Meu roteiro") +
-      (p === "anunciante" || p === "master" ? it("#anunciante", "store", "Painel do anunciante") : "") +
+      it("#anunciante", "store", "Meu negócio") +
       (p === "master" ? it("#painel", "chart", "Painel master") : "") +
       '<button type="button" role="menuitem" class="cm-sair" data-sair>' + DI("out") + "<span>Sair da conta</span></button>";
     document.body.appendChild(m);
@@ -353,5 +358,5 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") fechaMenu(); });
   Store.assinar(function () { if (Store.estado.pronto) topo(); });
 
-  window.Auth = { blocoConta: blocoConta, abaUsuarios: abaUsuarios, telaEntrar: telaEntrar };
+  window.Auth = { blocoConta: blocoConta, abaUsuarios: abaUsuarios, telaEntrar: telaEntrar, rotulo: rotulo };
 })();
