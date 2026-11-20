@@ -10,7 +10,7 @@ self.addEventListener("fetch", e => {
 });
 /* Notificações no celular: o aviso chega sem conteúdo; o aparelho busca a mensagem mais recente no servidor */
 self.addEventListener("push", e => {
-  e.waitUntil(self.registration.pushManager.getSubscription().then(sub => fetch(new URL("api/?acao=push_ultima" + (sub ? "&ep=" + encodeURIComponent(sub.endpoint) : ""), self.registration.scope), { credentials: "omit", cache: "no-store" })).then(r => r.json()).catch(() => null).then(j => {
+  e.waitUntil(self.registration.pushManager.getSubscription().then(sub => fetch(new URL("api/index.php?acao=push_ultima" + (sub ? "&ep=" + encodeURIComponent(sub.endpoint) : ""), self.registration.scope), { credentials: "omit", cache: "no-store" })).then(r => r.json()).catch(() => null).then(j => {
     const m = (j && j.msg) || { titulo: "CoraçãoBR", texto: "Novidades no guia para você.", url: "./" };
     return self.registration.showNotification(m.titulo || "CoraçãoBR", { body: m.texto || "", icon: "icon-192.png", badge: "icon-192.png", data: { url: m.url || "./" }, tag: "coracaobr" });
   }));
