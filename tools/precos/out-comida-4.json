@@ -1,0 +1,695 @@
+[
+ {
+  "id": "rahr-and-sons-brewing",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site oficial lista cervejas sem preços e sem cardápio de comida"
+ },
+ {
+  "id": "goldees-barbecue",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site fora do ar (503) e sem preços acessíveis"
+ },
+ {
+  "id": "panther-city-bbq",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio do site é uma imagem, sem texto com preços"
+ },
+ {
+  "id": "heim-barbecue-magnolia",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site oficial não lista mais a unidade Magnolia (só River, Weatherford, Mockingbird) e sem preços; possível fechamento, não confirmado"
+ },
+ {
+  "id": "angelos-bbq-fort-worth",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site diz \"para preços, ligue\""
+ },
+ {
+  "id": "railhead-smokehouse",
+  "precoMin": 9.0,
+  "precoMedio": 13,
+  "precoMax": 19.0,
+  "base": "sanduíche (carne, frango, salsicha etc.)",
+  "itens": [
+   {
+    "item": "Sliced beef sandwich",
+    "preco": 9.75
+   },
+   {
+    "item": "Sausage sandwich",
+    "preco": 9.0
+   },
+   {
+    "item": "Ribs sandwich",
+    "preco": 9.9
+   },
+   {
+    "item": "Sliced beef sandwich plate",
+    "preco": 12.0
+   },
+   {
+    "item": "Sliced beef dinner plate",
+    "preco": 16.5
+   },
+   {
+    "item": "Combination plate",
+    "preco": 19.0
+   }
+  ],
+  "fonte": "https://www.railheadsmokehouse.com/fort-worth-railhead-smokehouse-bbq-food-menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "sanduíche avulso; prato com 2 acompanhamentos a partir de $11.25"
+ },
+ {
+  "id": "texas-de-brazil-fort-worth",
+  "precoMin": 35.99,
+  "precoMedio": 54,
+  "precoMax": 62.99,
+  "base": "rodízio completo no almoço (qui-sex)",
+  "itens": [
+   {
+    "item": "Lunch full churrasco",
+    "preco": 35.99
+   },
+   {
+    "item": "Dinner full churrasco",
+    "preco": 62.99
+   },
+   {
+    "item": "Weekend lunch",
+    "preco": 62.99
+   }
+  ],
+  "fonte": "https://texasdebrazil.com/locations/fort-worth/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "almoço em dias úteis (página cita qui-sex 11h-14h); só salada: $23.99"
+ },
+ {
+  "id": "kincaids-hamburgers-camp-bowie",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio do site sem preços"
+ },
+ {
+  "id": "delucca-gaucho-pizza-fort-worth",
+  "precoMin": 25.95,
+  "precoMedio": 26,
+  "precoMax": 25.95,
+  "base": "rodízio de pizza no jantar (adulto)",
+  "itens": [
+   {
+    "item": "Dinner rodízio (salad, meatballs, bisque, pizzas)",
+    "preco": 25.95
+   }
+  ],
+  "fonte": "https://www.delucca.com/menus/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "preço único de jantar para Fort Worth/Hulen; crianças $12.95"
+ },
+ {
+  "id": "cattlemens-steak-house",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços; só fontes de terceiros sem data e inconsistentes"
+ },
+ {
+  "id": "lonesome-dove-fort-worth",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site inacessível; terceiros sem data/inconsistentes"
+ },
+ {
+  "id": "h3-ranch",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site indica \"returning soon\" (temporariamente fechado, em reforma); sem cardápio"
+ },
+ {
+  "id": "joe-t-garcias",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site fora do ar (503) na consulta"
+ },
+ {
+  "id": "hutchins-bbq-frisco",
+  "precoMin": 15.49,
+  "precoMedio": 18,
+  "precoMax": 20.49,
+  "base": "sanduíche",
+  "itens": [
+   {
+    "item": "Sandwich (pulled pork/turkey/sausage)",
+    "preco": 15.49
+   },
+   {
+    "item": "Brisket sandwich",
+    "preco": 19.49
+   },
+   {
+    "item": "2 meat sandwich",
+    "preco": 19.99
+   },
+   {
+    "item": "Stuffed potato w/ 1 meat",
+    "preco": 15.49
+   },
+   {
+    "item": "Brisket potato",
+    "preco": 20.49
+   }
+  ],
+  "fonte": "https://hutchinsbbq.com/frisco-menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "demais itens são vendidos por libra (brisket $41.99/lb)"
+ },
+ {
+  "id": "eg-steak-frisco",
+  "precoMin": 42.95,
+  "precoMedio": 43,
+  "precoMax": 42.95,
+  "base": "rodízio completo (tasting menu de duas etapas)",
+  "itens": [
+   {
+    "item": "Two course tasting menu (rodízio + Harvest Table)",
+    "preco": 42.95
+   }
+  ],
+  "fonte": "https://www.egsteak.com/menus",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "página de menus lista um único preço de rodízio; almoço/jantar podem diferir; só salada $29.95"
+ },
+ {
+  "id": "hurts-donut-frisco",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site oficial sem preços (cada franquia define)"
+ },
+ {
+  "id": "hou-acai-brasil-fulshear",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio oficial sem preços; pedido via Perdiem não acessível"
+ },
+ {
+  "id": "hou-gaidos",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio no site sem preços; Toast bloqueado"
+ },
+ {
+  "id": "vila-brazil-garland",
+  "precoMin": 27,
+  "precoMedio": 38,
+  "precoMax": 44,
+  "base": "rodízio completo no almoço (dias úteis)",
+  "itens": [
+   {
+    "item": "Weekday lunch rodízio",
+    "preco": 27
+   },
+   {
+    "item": "Weekday dinner rodízio",
+    "preco": 44
+   },
+   {
+    "item": "Weekend lunch rodízio",
+    "preco": 35
+   },
+   {
+    "item": "Weekend dinner rodízio",
+    "preco": 44
+   }
+  ],
+  "fonte": "https://vilabrazil.com/restaurant-data.json",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "dados de preços usados pelo site oficial; bebidas e taxas à parte"
+ },
+ {
+  "id": "aus-monument-cafe",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site oficial acessível; terceiros desatualizados (hambúrguer $8.99)"
+ },
+ {
+  "id": "zavalas-barbecue",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem cardápio/preços"
+ },
+ {
+  "id": "harvest-hall-grapevine",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site e Toast bloqueados (403)"
+ },
+ {
+  "id": "meat-u-anywhere-grapevine",
+  "precoMin": 19,
+  "precoMedio": 22,
+  "precoMax": 24,
+  "base": "sanduíche Meat 'N' Bun",
+  "itens": [
+   {
+    "item": "Meat 'N' Bun sandwich",
+    "preco": 19
+   },
+   {
+    "item": "MUA Combo Sandwich (c/ side e bebida)",
+    "preco": 24
+   },
+   {
+    "item": "Rib Combo",
+    "preco": 24
+   },
+   {
+    "item": "Pounder with meat (batata)",
+    "preco": 22
+   }
+  ],
+  "fonte": "https://www.meatuanywhere.com/menu-text/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "versão texto do menu; menu em imagem de out/2026 não pôde ser lido; demais carnes por libra"
+ },
+ {
+  "id": "chama-gaucha-grapevine",
+  "precoMin": 64.95,
+  "precoMedio": 65,
+  "precoMax": 64.95,
+  "base": "rodízio completo no jantar",
+  "itens": [
+   {
+    "item": "Dinner full experience",
+    "preco": 64.95
+   }
+  ],
+  "fonte": "https://chamagaucha.com/grapevine",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "página não lista preço de almoço; em dezembro sobe para $69.95; só salada $42.95"
+ },
+ {
+  "id": "hou-crawfish-noodles",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site oficial; não verificado"
+ },
+ {
+  "id": "hou-mala-sichuan",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio sem preços acessíveis"
+ },
+ {
+  "id": "hou-anvil-bar",
+  "precoMin": 9,
+  "precoMedio": 12,
+  "precoMax": 15,
+  "base": "comida de bar mais barata (nozes)",
+  "itens": [
+   {
+    "item": "House roasted nuts",
+    "preco": 9
+   },
+   {
+    "item": "Kettle chips",
+    "preco": 9
+   },
+   {
+    "item": "Olives",
+    "preco": 10
+   },
+   {
+    "item": "Pastrami sandwich",
+    "preco": 15
+   },
+   {
+    "item": "Turkey sandwich",
+    "preco": 15
+   },
+   {
+    "item": "Mushroom sandwich",
+    "preco": 15
+   }
+  ],
+  "fonte": "https://www.anvilhouston.com/_files/ugd/7c113c_0cfbd3db392949babeae1a85c157f1f7.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "cervejas $7-8; coquetéis Anvil originals $15; tábua de queijos $45 excluída"
+ },
+ {
+  "id": "hou-julep",
+  "precoMin": 8,
+  "precoMedio": 18,
+  "precoMax": 24,
+  "base": "petisco (comida mais barata)",
+  "itens": [
+   {
+    "item": "Cheddar popcorn",
+    "preco": 8
+   },
+   {
+    "item": "French onion dip",
+    "preco": 16
+   },
+   {
+    "item": "Margherita flatbread",
+    "preco": 18
+   },
+   {
+    "item": "Truffle cheeseburger sliders",
+    "preco": 18
+   },
+   {
+    "item": "Confit flatbread",
+    "preco": 22
+   },
+   {
+    "item": "Lobster dip",
+    "preco": 24
+   }
+  ],
+  "fonte": "https://www.julephouston.com/menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "cocktails $15-16; tábua de frios $45 excluída"
+ },
+ {
+  "id": "hou-saint-arnold-brewing",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site bloqueado (403)"
+ },
+ {
+  "id": "hou-axelrad",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem comida própria; página de drinks sem preços"
+ },
+ {
+  "id": "hou-eight-row-flint",
+  "precoMin": 5,
+  "precoMedio": 11,
+  "precoMax": 14,
+  "base": "taco (item de comida mais barato)",
+  "itens": [
+   {
+    "item": "Crispy chicken sandwich",
+    "preco": 10
+   },
+   {
+    "item": "Cheeseburger",
+    "preco": 9
+   },
+   {
+    "item": "Smoked lechon burger",
+    "preco": 14
+   },
+   {
+    "item": "Wings (6)",
+    "preco": 9
+   },
+   {
+    "item": "Poblano quesadilla",
+    "preco": 10
+   },
+   {
+    "item": "Crispy chicken fingers",
+    "preco": 14
+   }
+  ],
+  "fonte": "https://www.eightrowflint.com/s/111526-ERF-H-menu.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "menor item: taco de frango $5; happy hour cervejas $6 excluído"
+ },
+ {
+  "id": "hou-la-carafe",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site oficial; não verificado"
+ },
+ {
+  "id": "hou-cowboys-red-river",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site inacessível"
+ },
+ {
+  "id": "hou-truth-bbq",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Toast bloqueado (403); preços só vistos em resumo de busca, não confirmados"
+ },
+ {
+  "id": "hou-pinkertons-barbecue",
+  "precoMin": 13.0,
+  "precoMedio": 14,
+  "precoMax": 15.0,
+  "base": "sanduíche",
+  "itens": [
+   {
+    "item": "Brisket sandwich",
+    "preco": 15.0
+   },
+   {
+    "item": "Man Bear Pig sandwich",
+    "preco": 13.5
+   },
+   {
+    "item": "Chopped pork sandwich",
+    "preco": 13.0
+   },
+   {
+    "item": "Sausage sandwich",
+    "preco": 13.0
+   },
+   {
+    "item": "Sliced turkey sandwich",
+    "preco": 13.0
+   }
+  ],
+  "fonte": "https://www.pinkertonsbbq.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "unidade Heights (Airline Dr); carnes por libra: $21-38/lb"
+ },
+ {
+  "id": "hou-goode-company-bbq",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "página do cardápio oficial sem preços no HTML"
+ },
+ {
+  "id": "hou-koffeteria",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Toast bloqueado; sem preços confirmados"
+ },
+ {
+  "id": "hou-breakfast-klub",
+  "precoMin": 13.5,
+  "precoMedio": 17,
+  "precoMax": 19.75,
+  "base": "prato de café da manhã (biskits & gravy)",
+  "itens": [
+   {
+    "item": "Biskits & Gravy",
+    "preco": 13.5
+   },
+   {
+    "item": "The Breakfast Special",
+    "preco": 14.85
+   },
+   {
+    "item": "Kountry Sausage & Eggs",
+    "preco": 17.65
+   },
+   {
+    "item": "Klub's Benedict",
+    "preco": 18.7
+   },
+   {
+    "item": "Pork Chops & Eggs",
+    "preco": 19.75
+   }
+  ],
+  "fonte": "https://thebreakfastklub.com/wp-content/uploads/2026/06/tbk-menu-061226.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "cardápio PDF de jun/2026; early bird $11.95 excluído"
+ },
+ {
+  "id": "hou-tiny-boxwoods",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site bloqueado (403)"
+ }
+]

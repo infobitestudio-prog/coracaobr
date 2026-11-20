@@ -1,0 +1,899 @@
+[
+ {
+  "id": "fogo-de-chao-addison",
+  "precoMin": 52,
+  "precoMedio": 61,
+  "precoMax": 70,
+  "base": "churrasco completo no almoço",
+  "itens": [
+   {
+    "item": "Full Churrasco (almoço)",
+    "preco": 52
+   },
+   {
+    "item": "Full Churrasco (jantar)",
+    "preco": 70
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=114&type=menu-lunch&id=4559",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "jantar em https://fogodechao.com/menu-detail/?location=114&type=menu-dinner&id=4532; média das duas opções"
+ },
+ {
+  "id": "texas-de-brazil-addison",
+  "precoMin": 35.99,
+  "precoMedio": 54,
+  "precoMax": 62.99,
+  "base": "churrasco completo no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Full churrasco almoço seg-sex",
+    "preco": 35.99
+   },
+   {
+    "item": "Full churrasco jantar",
+    "preco": 62.99
+   },
+   {
+    "item": "Full churrasco almoço fim de semana",
+    "preco": 62.99
+   }
+  ],
+  "fonte": "https://texasdebrazil.com/locations/addison/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média das 3 opções de churrasco completo"
+ },
+ {
+  "id": "smoke-n-ash-bbq",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site retornou 503"
+ },
+ {
+  "id": "hurtado-barbecue-arlington",
+  "precoMin": 17.25,
+  "precoMedio": 23,
+  "precoMax": 30.99,
+  "base": "sanduíche",
+  "itens": [
+   {
+    "item": "Chopped Sandwich Combo",
+    "preco": 17.25
+   },
+   {
+    "item": "Big Mike Burger w/ Fries",
+    "preco": 17.25
+   },
+   {
+    "item": "BBQ Plate 1 carne",
+    "preco": 20.99
+   },
+   {
+    "item": "BBQ Plate 2 carnes",
+    "preco": 26.99
+   },
+   {
+    "item": "BBQ Plate 3 carnes",
+    "preco": 30.99
+   }
+  ],
+  "fonte": "https://hurtadobbq.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": ""
+ },
+ {
+  "id": "vb-steakhouse-arlington",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços apenas em fontes conflitantes de terceiros"
+ },
+ {
+  "id": "aus-uchi-austin",
+  "precoMin": 15.5,
+  "precoMedio": 25,
+  "precoMax": 35,
+  "base": "hot tasting (prato quente) mais barato",
+  "itens": [
+   {
+    "item": "Mapo dofu",
+    "preco": 15.5
+   },
+   {
+    "item": "Sasami yaki",
+    "preco": 17.5
+   },
+   {
+    "item": "Walu walu",
+    "preco": 22
+   },
+   {
+    "item": "Pork belly",
+    "preco": 25
+   },
+   {
+    "item": "Wagyu",
+    "preco": 34.5
+   },
+   {
+    "item": "Lobster",
+    "preco": 35
+   }
+  ],
+  "fonte": "https://uchi.uchirestaurants.com/location/sushi-austin/menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "porções pequenas para compartilhar; maki a partir de $14.50; média dos 8 hot tastings"
+ },
+ {
+  "id": "aus-ramen-tatsu-ya-south-lamar",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu do site sem preços"
+ },
+ {
+  "id": "aus-scholz-garten",
+  "precoMin": 12,
+  "precoMedio": 16,
+  "precoMax": 19,
+  "base": "tenders de frango / sanduíche",
+  "itens": [
+   {
+    "item": "Fried Chicken Tenders",
+    "preco": 12
+   },
+   {
+    "item": "Chopped Beef Sammy",
+    "preco": 13
+   },
+   {
+    "item": "Scholz Haus Burger",
+    "preco": 15
+   },
+   {
+    "item": "Reuben Sandwich",
+    "preco": 17
+   },
+   {
+    "item": "Wienerschnitzel",
+    "preco": 19
+   }
+  ],
+  "fonte": "https://www.scholzgarten.com/ScholzMenu.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 10 pratos/sanduíches do PDF"
+ },
+ {
+  "id": "aus-the-white-horse",
+  "precoMin": 3,
+  "precoMedio": 8,
+  "precoMax": 9,
+  "base": "taco",
+  "itens": [
+   {
+    "item": "Tacos (maioria)",
+    "preco": 3
+   },
+   {
+    "item": "Perro Caliente",
+    "preco": 6
+   },
+   {
+    "item": "Chili Burger",
+    "preco": 8
+   },
+   {
+    "item": "Cubana",
+    "preco": 8
+   },
+   {
+    "item": "Bomb Burrito",
+    "preco": 9
+   }
+  ],
+  "fonte": "https://www.thewhitehorseaustin.com/menus",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média calculada sobre burgers/sanduíches ($6-$9)"
+ },
+ {
+  "id": "aus-the-roosevelt-room",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu sem preços"
+ },
+ {
+  "id": "aus-whislers",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu sem preços"
+ },
+ {
+  "id": "aus-bangers-sausage-house",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu em imagem, sem texto"
+ },
+ {
+  "id": "aus-jester-king-brewery",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu em imagem"
+ },
+ {
+  "id": "aus-little-longhorn-saloon",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem menu com preços"
+ },
+ {
+  "id": "aus-the-driskill-bar",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu em PDF não acessível"
+ },
+ {
+  "id": "aus-franklin-barbecue",
+  "precoMin": 9,
+  "precoMedio": 16,
+  "precoMax": 21,
+  "base": "sanduíche (chopped beef)",
+  "itens": [
+   {
+    "item": "Chopped Beef Sandwich",
+    "preco": 9
+   },
+   {
+    "item": "Pulled Pork Sandwich",
+    "preco": 16
+   },
+   {
+    "item": "Turkey Sandwich",
+    "preco": 16
+   },
+   {
+    "item": "Tipsy Texan Sandwich",
+    "preco": 18
+   },
+   {
+    "item": "Brisket Sandwich",
+    "preco": 21
+   }
+  ],
+  "fonte": "https://franklinbbq.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "sem pratos; por libra a partir de $26 (linguiça)"
+ },
+ {
+  "id": "aus-la-barbecue",
+  "precoMin": 11.95,
+  "precoMedio": 14,
+  "precoMax": 18.5,
+  "base": "sanduíche",
+  "itens": [
+   {
+    "item": "Housemade Sausage Sandwich",
+    "preco": 11.95
+   },
+   {
+    "item": "Chopped Brisket Sandwich",
+    "preco": 14
+   },
+   {
+    "item": "Turkey Sandwich",
+    "preco": 14
+   },
+   {
+    "item": "Pulled Pork Sandwich",
+    "preco": 14
+   },
+   {
+    "item": "Sliced Brisket Sandwich",
+    "preco": 16.5
+   },
+   {
+    "item": "La Frito Loco",
+    "preco": 18.5
+   }
+  ],
+  "fonte": "https://labarbecue.com/austin-la-barbecue-food-menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "sem pratos; média dos 5 sanduíches básicos"
+ },
+ {
+  "id": "aus-terry-blacks-barbecue",
+  "precoMin": 17,
+  "precoMedio": 18,
+  "precoMax": 20,
+  "base": "sanduíche",
+  "itens": [
+   {
+    "item": "Sliced Brisket Sandwich",
+    "preco": 20
+   },
+   {
+    "item": "Chopped Beef Sandwich",
+    "preco": 17
+   },
+   {
+    "item": "Turkey Sandwich",
+    "preco": 17
+   },
+   {
+    "item": "Sausage Sandwich",
+    "preco": 17
+   }
+  ],
+  "fonte": "https://terryblacksbbq.com/austin",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "sem pratos listados; combo com batata e bebida a partir de $21.25"
+ },
+ {
+  "id": "aus-interstellar-bbq",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu oficial sem preços"
+ },
+ {
+  "id": "aus-kerbey-lane-cafe",
+  "precoMin": 13.49,
+  "precoMedio": 15,
+  "precoMax": 21.99,
+  "base": "prato de café da manhã",
+  "itens": [
+   {
+    "item": "Breakfast Platter",
+    "preco": 13.49
+   },
+   {
+    "item": "Migas",
+    "preco": 13.49
+   },
+   {
+    "item": "Chilaquiles",
+    "preco": 14.49
+   },
+   {
+    "item": "Chicken & Pancakes",
+    "preco": 14.99
+   },
+   {
+    "item": "Classic Benedict",
+    "preco": 15.49
+   },
+   {
+    "item": "Steak & Eggs",
+    "preco": 21.99
+   }
+  ],
+  "fonte": "https://www.kerbeylanecafe.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "tacos de café da manhã $5.49; panquecas simples a partir de $6.49; média de 8 pratos"
+ },
+ {
+  "id": "aus-magnolia-cafe",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu só em Toast bloqueado"
+ },
+ {
+  "id": "aus-jos-coffee-south-congress",
+  "precoMin": 4,
+  "precoMedio": 5,
+  "precoMax": 8,
+  "base": "taco de café da manhã (feijão e queijo)",
+  "itens": [
+   {
+    "item": "Bean & Cheese Taco",
+    "preco": 4
+   },
+   {
+    "item": "Migas Taco",
+    "preco": 4.5
+   },
+   {
+    "item": "Oatmeal",
+    "preco": 6
+   },
+   {
+    "item": "Yogurt Parfait",
+    "preco": 7
+   },
+   {
+    "item": "Breakfast Sandwich",
+    "preco": 8
+   }
+  ],
+  "fonte": "https://www.joscoffee.com/s/JoSC_Menu_Wall_020624.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "PDF do cardápio South Congress (arquivo com data 2024, pode estar desatualizado)"
+ },
+ {
+  "id": "aus-fogo-de-chao-austin",
+  "precoMin": 50,
+  "precoMedio": 58,
+  "precoMax": 67,
+  "base": "churrasco completo no almoço",
+  "itens": [
+   {
+    "item": "Full Churrasco almoço",
+    "preco": 50
+   },
+   {
+    "item": "Full Churrasco brunch",
+    "preco": 56
+   },
+   {
+    "item": "Full Churrasco jantar",
+    "preco": 67
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=120&type=menu-lunch&id=4567",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "jantar em https://fogodechao.com/menu-detail/?location=120&type=menu-dinner&id=4566; média das 3 opções"
+ },
+ {
+  "id": "aus-casa-do-brasil",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site oficial indisponível (503), sem preços"
+ },
+ {
+  "id": "aus-estancia-brazilian-steakhouse",
+  "precoMin": 43,
+  "precoMedio": 54,
+  "precoMax": 65,
+  "base": "churrasco completo no almoço (seg-qui)",
+  "itens": [
+   {
+    "item": "Full Churrasco almoço",
+    "preco": 43
+   },
+   {
+    "item": "Full Churrasco jantar",
+    "preco": 65
+   }
+  ],
+  "fonte": "https://estancia.com/wp-content/uploads/2026/09/LUNCH-March.24.26.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "jantar em https://estancia.com/wp-content/uploads/2026/09/DINNER-March.24.26.pdf; média das duas opções"
+ },
+ {
+  "id": "aus-moonshine-patio-bar-grill",
+  "precoMin": 21,
+  "precoMedio": 30,
+  "precoMax": 58,
+  "base": "frango com waffles",
+  "itens": [
+   {
+    "item": "Chicken & Waffles",
+    "preco": 21
+   },
+   {
+    "item": "Chicken Fried Steak",
+    "preco": 25
+   },
+   {
+    "item": "Creole Shrimp & Grits",
+    "preco": 28
+   },
+   {
+    "item": "Miso Bourbon Salmon",
+    "preco": 28
+   },
+   {
+    "item": "Hanger Steak Frites",
+    "preco": 36
+   },
+   {
+    "item": "Bone-In Ribeye",
+    "preco": 58
+   }
+  ],
+  "fonte": "https://www.moonshinegrill.com/s/MoonshineDT_Dinner_10-21-2026.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "cardápio de jantar do Downtown; média de 12 entrées; handhelds a partir de $17"
+ },
+ {
+  "id": "aus-lucys-fried-chicken",
+  "precoMin": 12,
+  "precoMedio": 15,
+  "precoMax": 17.5,
+  "base": "sanduíche de salada de frango",
+  "itens": [
+   {
+    "item": "Chicken Salad Sandwich",
+    "preco": 12
+   },
+   {
+    "item": "Chicken & Waffles",
+    "preco": 12.75
+   },
+   {
+    "item": "Fried Chicken Basket",
+    "preco": 13.5
+   },
+   {
+    "item": "Tender Lovin' Chicken Tenders",
+    "preco": 14
+   },
+   {
+    "item": "Lone Star Grilled Chicken",
+    "preco": 16.25
+   },
+   {
+    "item": "Chicken Fried Steak",
+    "preco": 17.5
+   }
+  ],
+  "fonte": "https://www.lucysfriedchicken.com/wp-content/uploads/2025/04/88199_LFC_Menu-R.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "PDF de abril/2025"
+ },
+ {
+  "id": "aus-dirty-martins-place",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu em imagem"
+ },
+ {
+  "id": "aus-hopdoddy-anderson-lane",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu oficial sem preços"
+ },
+ {
+  "id": "aus-home-slice-pizza",
+  "precoMin": 4.5,
+  "precoMedio": 15,
+  "precoMax": 23.25,
+  "base": "fatia de queijo",
+  "itens": [
+   {
+    "item": "Cheese slice",
+    "preco": 4.5
+   },
+   {
+    "item": "Pepperoni slice",
+    "preco": 4.75
+   },
+   {
+    "item": "Calzone",
+    "preco": 14.5
+   },
+   {
+    "item": "Medium pizza 16\"",
+    "preco": 19.75
+   },
+   {
+    "item": "Large pizza 18\"",
+    "preco": 23.25
+   },
+   {
+    "item": "Meatball sub",
+    "preco": 23
+   }
+  ],
+  "fonte": "https://homeslicepizza.com/wp-content/uploads/2026/09/HSlice_DineInMenu_091626.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "cardápio South Congress; pizza inteira rende mais de uma pessoa; média sobre os 6 itens"
+ },
+ {
+  "id": "aus-jeffreys",
+  "precoMin": 38,
+  "precoMedio": 65,
+  "precoMax": 90,
+  "base": "prato principal mais barato (especialidades)",
+  "itens": [
+   {
+    "item": "Braised savoy cabbage",
+    "preco": 38
+   },
+   {
+    "item": "Roast guinea fowl",
+    "preco": 56
+   },
+   {
+    "item": "Redfish bouillabaisse",
+    "preco": 58
+   },
+   {
+    "item": "Long Island duck breast",
+    "preco": 64
+   },
+   {
+    "item": "Tenderloin filet 8oz",
+    "preco": 75
+   },
+   {
+    "item": "Ribeye 16oz",
+    "preco": 90
+   }
+  ],
+  "fonte": "https://jeffreysofaustin.com/wp-content/uploads/2022/06/Jeffreys_Dinner.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "PDF de 2022, pode estar desatualizado; máximo exclui wagyu, dry-aged e cortes grandes ($120-$225)"
+ },
+ {
+  "id": "aus-iii-forks-austin",
+  "precoMin": 22,
+  "precoMedio": 54,
+  "precoMax": 89,
+  "base": "hambúrguer vegetariano",
+  "itens": [
+   {
+    "item": "Crispy Veggie Burger",
+    "preco": 22
+   },
+   {
+    "item": "Roasted Chicken",
+    "preco": 34
+   },
+   {
+    "item": "Steak Frites",
+    "preco": 36
+   },
+   {
+    "item": "Atlantic Salmon",
+    "preco": 43
+   },
+   {
+    "item": "Filet Mignon 8oz",
+    "preco": 59
+   },
+   {
+    "item": "USDA Prime Bone-In Ribeye 24oz",
+    "preco": 89
+   }
+  ],
+  "fonte": "https://www.3forks.com/menu/austin/?menutype=dinnermenu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "máximo exclui wagyu, A5, dry-aged e tomahawk; média de 8 pratos"
+ },
+ {
+  "id": "aus-matts-el-rancho",
+  "precoMin": 14,
+  "precoMedio": 20,
+  "precoMax": 56,
+  "base": "enchiladas de carne ou queijo",
+  "itens": [
+   {
+    "item": "Cheese Enchiladas",
+    "preco": 14
+   },
+   {
+    "item": "Chicken-Fried Steak",
+    "preco": 18
+   },
+   {
+    "item": "No. 1 Dinner",
+    "preco": 19
+   },
+   {
+    "item": "Deluxe Dinner",
+    "preco": 21
+   },
+   {
+    "item": "Fajitas Angus 1/2 lb",
+    "preco": 32
+   },
+   {
+    "item": "Bone-In Ribeye",
+    "preco": 56
+   }
+  ],
+  "fonte": "https://mattselrancho.com/menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 8 pratos típicos"
+ },
+ {
+  "id": "aus-mi-madres",
+  "precoMin": 13,
+  "precoMedio": 15,
+  "precoMax": 17,
+  "base": "burrito de frango/vegetariano",
+  "itens": [
+   {
+    "item": "Chicken Rito",
+    "preco": 13
+   },
+   {
+    "item": "Fajita Rito",
+    "preco": 14
+   },
+   {
+    "item": "Ranchero (café da manhã)",
+    "preco": 14.5
+   },
+   {
+    "item": "Enchiladas de la Casa",
+    "preco": 16
+   },
+   {
+    "item": "Chile Relleno",
+    "preco": 17
+   },
+   {
+    "item": "Carne Guisada",
+    "preco": 17
+   }
+  ],
+  "fonte": "https://www.mimadresrestaurant.com/breakfast-menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "máximo exclui fajitas para compartilhar ($30-$45); tacos avulsos $4-$5.95"
+ },
+ {
+  "id": "aus-veracruz-all-natural",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu PDF não legível/sem preços extraídos"
+ },
+ {
+  "id": "aus-joes-bakery",
+  "precoMin": 12,
+  "precoMedio": 15,
+  "precoMax": 16.5,
+  "base": "prato miga (ovos mexidos com tortilla chips)",
+  "itens": [
+   {
+    "item": "Miga Plate",
+    "preco": 12
+   },
+   {
+    "item": "Enchilada Plate",
+    "preco": 13.5
+   },
+   {
+    "item": "Beef Taco Plate",
+    "preco": 14.25
+   },
+   {
+    "item": "Joey Rocha Plate",
+    "preco": 15.25
+   },
+   {
+    "item": "Chicken Taco Plate",
+    "preco": 15.5
+   },
+   {
+    "item": "Chicken Quesadilla Plate",
+    "preco": 16.5
+   }
+  ],
+  "fonte": "https://joesbakery.com/wp-content/uploads/2025/06/Joes_Menu_2025.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "PDF de 2025; média de 8 pratos; prato do dia $11.75 excluído"
+ },
+ {
+  "id": "fazenda-gaucha-bedford",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site oficial sem preços"
+ },
+ {
+  "id": "hou-blood-bros-bbq",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu em Toast não acessível; cardápio muda diariamente"
+ }
+]

@@ -1,0 +1,681 @@
+[
+ {
+  "id": "sat-dienger-trading",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site sem preços acessíveis",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "sat-peggys-on-the-green",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site informa que encerrou operações no Kendall Inn (30/11)",
+  "fechado": true,
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "h-mart-carrollton",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "supermercado/praça de alimentação; sem menu de preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "cafe-brazil-carrollton",
+  "precoMin": 9.99,
+  "precoMedio": 14,
+  "precoMax": 17.99,
+  "base": "prato de café da manhã (mais barato: oatmeal)",
+  "itens": [
+   {
+    "item": "Oatmeal Breakfast",
+    "preco": 9.99
+   },
+   {
+    "item": "Classic Breakfast",
+    "preco": 14.99
+   },
+   {
+    "item": "Chilaquiles",
+    "preco": 13.99
+   },
+   {
+    "item": "Pancakes",
+    "preco": 11.29
+   },
+   {
+    "item": "Chicken, Bacon & Waffles",
+    "preco": 17.99
+   }
+  ],
+  "fonte": "https://cafebrazil.com/menu/",
+  "fonteTipo": "oficial",
+  "obs": "menu geral da rede; pode variar por unidade",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "aus-bitelo-brazilian-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem menu oficial com preços; só relato de terceiros ($60 jantar) não confirmável",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "hard-eight-bbq-coppell",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site bloqueado (403); sem preço confiável do Coppell",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "acai-brasil-victory-park",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "menu sem preços no site",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "bom-acai-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "Toast bloqueado (403)",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "uchi-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "menu oficial não acessível/sem preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "tei-an",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "menu oficial sem preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "royal-china-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "ChowNow 403; site sem preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "the-exchange-hall-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "food hall; sem menu com preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "truck-yard-dallas",
+  "precoMin": 9.99,
+  "precoMedio": 14,
+  "precoMax": 14.99,
+  "base": "cachorro-quente (Yard Dog)",
+  "itens": [
+   {
+    "item": "Yard Dog",
+    "preco": 9.99
+   },
+   {
+    "item": "Smash Burger",
+    "preco": 12.99
+   },
+   {
+    "item": "Ground Beef Nachos",
+    "preco": 13.99
+   },
+   {
+    "item": "Reuben",
+    "preco": 14.99
+   },
+   {
+    "item": "The Bear",
+    "preco": 14.99
+   },
+   {
+    "item": "Philly Cheesesteak",
+    "preco": 14.99
+   }
+  ],
+  "fonte": "https://truckyard.com/wp-content/uploads/2026/09/D-2.pdf",
+  "fonteTipo": "oficial",
+  "obs": "menu de comida do Truck Yard Dallas (PDF)",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "katy-trail-ice-house",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site 503",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "happiest-hour-dallas",
+  "precoMin": 16,
+  "precoMedio": 18,
+  "precoMax": 24,
+  "base": "prato principal (flatbread/sanduíche)",
+  "itens": [
+   {
+    "item": "Tomato & Basil Flatbread",
+    "preco": 16
+   },
+   {
+    "item": "Classic Cheeseburger",
+    "preco": 16
+   },
+   {
+    "item": "Blackened Chicken Pasta",
+    "preco": 18
+   },
+   {
+    "item": "Happy Burger",
+    "preco": 18
+   },
+   {
+    "item": "Grilled Salmon",
+    "preco": 24
+   }
+  ],
+  "fonte": "https://www.happiesthourdallas.com/menus/",
+  "fonteTipo": "oficial",
+  "obs": "item de comida mais barato é Tomato Basil Soup $8; média de Main Events + Sandwiches",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "waterproof-statler-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem menu com preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "community-beer-co",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem preços acessíveis",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "pecan-lodge",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "PDF do menu sem preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "terry-blacks-barbecue-dallas",
+  "precoMin": 17,
+  "precoMedio": 18,
+  "precoMax": 20,
+  "base": "sanduíche (sem combo)",
+  "itens": [
+   {
+    "item": "Chopped Beef Sandwich",
+    "preco": 17
+   },
+   {
+    "item": "Turkey Sandwich",
+    "preco": 17
+   },
+   {
+    "item": "Sausage Sandwich",
+    "preco": 17
+   },
+   {
+    "item": "Sliced Brisket Sandwich",
+    "preco": 20
+   }
+  ],
+  "fonte": "https://www.terryblacksbbq.com/dallas",
+  "fonteTipo": "oficial",
+  "obs": "sem pratos; combos com batata e bebida $21.25-24.25; carne por libra $31-41",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "lockhart-smokehouse-bishop-arts",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site 403",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "slow-bone-bbq",
+  "precoMin": 14,
+  "precoMedio": 18,
+  "precoMax": 23.5,
+  "base": "sanduíche",
+  "itens": [
+   {
+    "item": "The Pit",
+    "preco": 14
+   },
+   {
+    "item": "Sausage",
+    "preco": 16
+   },
+   {
+    "item": "Turkey Breast",
+    "preco": 16
+   },
+   {
+    "item": "Pulled Pork",
+    "preco": 17.5
+   },
+   {
+    "item": "Pork Rib",
+    "preco": 18.5
+   },
+   {
+    "item": "Brisket",
+    "preco": 23.5
+   }
+  ],
+  "fonte": "https://www.slowbone.com/menu",
+  "fonteTipo": "oficial",
+  "obs": "posicionamento de alguns preços ambíguo na extração",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "sonny-bryans-smokehouse-inwood",
+  "precoMin": 14.49,
+  "precoMedio": 18,
+  "precoMax": 20.99,
+  "base": "sandwich plate (pulled pork)",
+  "itens": [
+   {
+    "item": "Pulled Pork Sandwich Plate",
+    "preco": 14.49
+   },
+   {
+    "item": "Sausage Sandwich Plate",
+    "preco": 14.99
+   },
+   {
+    "item": "Brisket Sandwich Plate",
+    "preco": 17.49
+   },
+   {
+    "item": "One Meat Plate Pulled Pork",
+    "preco": 17.49
+   },
+   {
+    "item": "One Meat Plate Brisket",
+    "preco": 20.99
+   },
+   {
+    "item": "Combo Plate",
+    "preco": 19.99
+   }
+  ],
+  "fonte": "https://sonnybryans.com/our-menu/",
+  "fonteTipo": "oficial",
+  "obs": "pratos large chegam a $24.99; menu geral, pode variar por unidade",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "cafe-brazil-deep-ellum",
+  "precoMin": 9.99,
+  "precoMedio": 14,
+  "precoMax": 17.99,
+  "base": "prato de café da manhã (mais barato: oatmeal)",
+  "itens": [
+   {
+    "item": "Oatmeal Breakfast",
+    "preco": 9.99
+   },
+   {
+    "item": "Classic Breakfast",
+    "preco": 14.99
+   },
+   {
+    "item": "Chilaquiles",
+    "preco": 13.99
+   },
+   {
+    "item": "Pancakes",
+    "preco": 11.29
+   },
+   {
+    "item": "Chicken, Bacon & Waffles",
+    "preco": 17.99
+   }
+  ],
+  "fonte": "https://cafebrazil.com/menu/",
+  "fonteTipo": "oficial",
+  "obs": "menu geral da rede; pode variar por unidade",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "bread-winners-uptown",
+  "precoMin": 11,
+  "precoMedio": 18,
+  "precoMax": 27,
+  "base": "biscuits and sausage gravy (prato de café da manhã)",
+  "itens": [
+   {
+    "item": "Biscuits and Sausage Gravy",
+    "preco": 11
+   },
+   {
+    "item": "Basic Breakfast",
+    "preco": 13
+   },
+   {
+    "item": "Breakfast Tacos",
+    "preco": 16
+   },
+   {
+    "item": "Fried Chicken and Waffles",
+    "preco": 21
+   },
+   {
+    "item": "Steak and Eggs",
+    "preco": 27
+   }
+  ],
+  "fonte": "https://www.breadwinnerscafe.com/restaurant-menus",
+  "fonteTipo": "oficial",
+  "obs": "média das 16 'Specialties'",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "oddfellows",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "menu é imagem, sem texto",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "snooze-am-eatery-oak-lawn",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site 403; sem menu confiável",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "ascension-coffee-design-district",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem menu com preços no site",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "la-la-land-kind-cafe-lower-greenville",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem menu com preços no site",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "merit-coffee-deep-ellum",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem menu com preços de comida",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "fogo-de-chao-uptown-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "páginas de menu sem preços acessíveis",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "texas-de-brazil-dallas",
+  "precoMin": 35.99,
+  "precoMedio": 49,
+  "precoMax": 62.99,
+  "base": "rodízio completo no almoço (sexta)",
+  "itens": [
+   {
+    "item": "Churrasco almoço (sex 11h-14h)",
+    "preco": 35.99
+   },
+   {
+    "item": "Churrasco jantar",
+    "preco": 62.99
+   }
+  ],
+  "fonte": "https://texasdebrazil.com/locations/dallas/",
+  "fonteTipo": "oficial",
+  "obs": "almoço só sexta; média das duas tarifas; salad area only $23.99/$33.99; sem bebidas/taxas",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "12-cuts-brazilian-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site 503",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "bubbas-cooks-country",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site sem menu",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "ellens-west-end",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "domínio não acessível",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "normas-cafe-oak-cliff",
+  "precoMin": 12.24,
+  "precoMedio": 15,
+  "precoMax": 21.99,
+  "base": "Blue Plate (veggie plate)",
+  "itens": [
+   {
+    "item": "Veggie Plate",
+    "preco": 12.24
+   },
+   {
+    "item": "Chicken Fried Steak",
+    "preco": 13.9
+   },
+   {
+    "item": "Meat Loaf",
+    "preco": 13.9
+   },
+   {
+    "item": "Pot Roast",
+    "preco": 15.24
+   },
+   {
+    "item": "Sirloin Chopped Steak",
+    "preco": 15.43
+   },
+   {
+    "item": "Ribeye Steak Dinner",
+    "preco": 21.99
+   }
+  ],
+  "fonte": "https://normascafe.com/menu/",
+  "fonteTipo": "oficial",
+  "obs": "média de Blue Plate + Favorites",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "kellers-drive-in",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "sem menu oficial com preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "rodeo-goat-design-district",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "menu é imagem, sem preços",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "whataburger-lemmon-avenue",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site sem preços acessíveis",
+  "conferidoEm": "2026-11"
+ },
+ {
+  "id": "in-n-out-burger-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "obs": "site sem preços acessíveis",
+  "conferidoEm": "2026-11"
+ }
+]

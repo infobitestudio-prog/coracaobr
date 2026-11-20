@@ -1,0 +1,823 @@
+[
+ {
+  "id": "aus-round-rock-donuts",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site oficial não mostra preços"
+ },
+ {
+  "id": "aus-torresbee-brazilian-cafe",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio do site carrega por JS sem preços acessíveis"
+ },
+ {
+  "id": "sat-sichuan-house",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços de terceiros divergem entre fontes (SinglePlatform vs Toast); sem fonte oficial acessível"
+ },
+ {
+  "id": "sat-esquire-tavern",
+  "precoMin": 17,
+  "precoMedio": 20,
+  "precoMax": 42,
+  "base": "hambúrguer/sanduíche",
+  "itens": [
+   {
+    "item": "The Esquire Cheeseburger",
+    "preco": 17
+   },
+   {
+    "item": "Fried Oyster Po'Boy",
+    "preco": 17
+   },
+   {
+    "item": "Tavern Bean Burger",
+    "preco": 19
+   },
+   {
+    "item": "Lamb Burger",
+    "preco": 21
+   },
+   {
+    "item": "French Dip",
+    "preco": 23
+   },
+   {
+    "item": "Bison Burger",
+    "preco": 24
+   }
+  ],
+  "fonte": "https://esquiretavern-sa.com/wp-content/uploads/Esquire-Food-Menu.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média calculada sobre a seção Burgers & Sandwiches; máximo é o prime rib (disponibilidade limitada); entradas custam a partir de US$7"
+ },
+ {
+  "id": "sat-menger-bar",
+  "precoMin": 5.5,
+  "precoMedio": 17,
+  "precoMax": 20,
+  "base": "taco Mencerita (unidade)",
+  "itens": [
+   {
+    "item": "Taco The Merry Mencer",
+    "preco": 5.5
+   },
+   {
+    "item": "Nachos",
+    "preco": 9
+   },
+   {
+    "item": "Buffalo Hot Wings",
+    "preco": 17
+   },
+   {
+    "item": "Cobb Salad",
+    "preco": 19
+   },
+   {
+    "item": "Angus Beef Burger",
+    "preco": 20
+   },
+   {
+    "item": "Traditional Rueben",
+    "preco": 20
+   }
+  ],
+  "fonte": "https://mengerhotel-cdn.zambezimarketing.io/assets/files/1/bar-menu.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "mínimo é um taco individual; média sobre nachos, wings, salada, burger e reuben"
+ },
+ {
+  "id": "sat-friendly-spot",
+  "precoMin": 10,
+  "precoMedio": 12,
+  "precoMax": 15,
+  "base": "hambúrguer simples / sanduíche de frango",
+  "itens": [
+   {
+    "item": "Plain Single burger",
+    "preco": 10
+   },
+   {
+    "item": "Friendly Chicken'wich",
+    "preco": 10
+   },
+   {
+    "item": "Single Cheeseburger",
+    "preco": 11
+   },
+   {
+    "item": "Plain Double",
+    "preco": 13
+   },
+   {
+    "item": "Double Cheeseburger",
+    "preco": 15
+   },
+   {
+    "item": "Steak Nachos",
+    "preco": 12
+   }
+  ],
+  "fonte": "https://thefriendlyspot.com/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média da seção Burgers & Sandwiches"
+ },
+ {
+  "id": "sat-paramour",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site Tock bloqueado, sem preços verificados"
+ },
+ {
+  "id": "sat-southerleigh",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "só menu de terceiros desatualizado; site oficial e Toast inacessíveis"
+ },
+ {
+  "id": "sat-bang-bang-bar",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem cardápio com preços"
+ },
+ {
+  "id": "sat-moons-daughters",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu do site sem preços acessíveis"
+ },
+ {
+  "id": "sat-novo-brazil",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu do site mostra só unidades da Califórnia; sem cardápio de San Antonio"
+ },
+ {
+  "id": "sat-2m-smokehouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "só menu de terceiros desatualizado (SinglePlatform), sem confirmação"
+ },
+ {
+  "id": "sat-reese-bros",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio do site é só foto, sem preços"
+ },
+ {
+  "id": "sat-pinkertons",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site mostra SA como 'Ordering Soon' e o menu publicado é o de Houston; sem preços confiáveis para SA"
+ },
+ {
+  "id": "sat-guenther-house",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site bloqueado; só preços de terceiros desatualizados"
+ },
+ {
+  "id": "sat-magnolia-pancake-haus",
+  "precoMin": 8.5,
+  "precoMedio": 11,
+  "precoMax": 14.5,
+  "base": "panquecas (Silver Dollar Cakes)",
+  "itens": [
+   {
+    "item": "Silver Dollar Cakes",
+    "preco": 8.5
+   },
+   {
+    "item": "Magnolia's Old World Buttermilk Pancakes",
+    "preco": 9.75
+   },
+   {
+    "item": "Blueberry Pancakes",
+    "preco": 10.5
+   },
+   {
+    "item": "Chocolate Chip Pancakes",
+    "preco": 11.5
+   },
+   {
+    "item": "Banana's Foster Pancakes",
+    "preco": 12.4
+   },
+   {
+    "item": "Apfel Pfannekuchen",
+    "preco": 14.5
+   }
+  ],
+  "fonte": "https://www.magnoliapancakehaus.com/menus/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média sobre as 10 opções de panqueca (sem o Apfel Pfannekuchen); menu comum às unidades"
+ },
+ {
+  "id": "sat-bakery-lorraine",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "loja Square carrega por JS sem preços acessíveis"
+ },
+ {
+  "id": "sat-fogo-de-chao-downtown",
+  "precoMin": 50,
+  "precoMedio": 61,
+  "precoMax": 72,
+  "base": "rodízio completo (Full Churrasco)",
+  "itens": [
+   {
+    "item": "Full Churrasco",
+    "preco": 50
+   },
+   {
+    "item": "Indulgent Churrasco",
+    "preco": 72
+   },
+   {
+    "item": "Pan-Seared Salmon",
+    "preco": 29.5
+   },
+   {
+    "item": "Market Table & Feijoada Bar (avulso)",
+    "preco": 19
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=96&type=menu-lunch&id=4670",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "médio = média entre Full e Indulgent Churrasco; páginas de almoço e jantar mostram os mesmos preços"
+ },
+ {
+  "id": "sat-texas-de-brazil",
+  "precoMin": 60.99,
+  "precoMedio": 61,
+  "precoMax": 60.99,
+  "base": "rodízio completo (jantar, vale o dia todo)",
+  "itens": [
+   {
+    "item": "Dinner full experience",
+    "preco": 60.99
+   },
+   {
+    "item": "Salad bar only",
+    "preco": 33.99
+   }
+  ],
+  "fonte": "https://texasdebrazil.com/locations/san-antonio",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "preço único exibido para jantar; salad bar sozinho US$33.99 excluído"
+ },
+ {
+  "id": "sat-chama-gaucha",
+  "precoMin": 51.95,
+  "precoMedio": 60,
+  "precoMax": 67.95,
+  "base": "rodízio completo no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Lunch full experience",
+    "preco": 51.95
+   },
+   {
+    "item": "Dinner full experience",
+    "preco": 67.95
+   },
+   {
+    "item": "Salad bar only lunch",
+    "preco": 34.95
+   }
+  ],
+  "fonte": "https://www.chamagaucha.com/sanantonio",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "fim de semana almoço no preço do jantar; salad bar sozinho excluído"
+ },
+ {
+  "id": "sat-brasao",
+  "precoMin": 54.95,
+  "precoMedio": 62,
+  "precoMax": 69.95,
+  "base": "rodízio completo no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Full Experience almoço (17 cortes)",
+    "preco": 54.95
+   },
+   {
+    "item": "Full Experience jantar (17 cortes)",
+    "preco": 69.95
+   },
+   {
+    "item": "Executive Lunch (8 cortes)",
+    "preco": 36.95
+   }
+  ],
+  "fonte": "https://brasaousa.com/pricing",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "Executive Lunch de 8 cortes custa US$36.95; tabela de preços do site cobre todas as unidades"
+ },
+ {
+  "id": "sat-galpao-gaucho",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site oficial; preços não confirmados"
+ },
+ {
+  "id": "sat-avenida-brazil",
+  "precoMin": 39.95,
+  "precoMedio": 50,
+  "precoMax": 59.95,
+  "base": "rodízio completo no almoço (qua-sex)",
+  "itens": [
+   {
+    "item": "Almoço qua-sex",
+    "preco": 39.95
+   },
+   {
+    "item": "Almoço sábado",
+    "preco": 42.95
+   },
+   {
+    "item": "Jantar seg-qui",
+    "preco": 49.95
+   },
+   {
+    "item": "Domingo o dia todo",
+    "preco": 54.95
+   },
+   {
+    "item": "Jantar sex-sáb",
+    "preco": 59.95
+   }
+  ],
+  "fonte": "https://www.avebrazil.com/locations/san-antonio-area",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "preços de feriado em dezembro serão maiores"
+ },
+ {
+  "id": "sat-tip-top-cafe",
+  "precoMin": 13.99,
+  "precoMedio": 16,
+  "precoMax": 22.99,
+  "base": "prato (Chef's Favorites, com 2 acompanhamentos)",
+  "itens": [
+   {
+    "item": "Chicken Fried Chicken",
+    "preco": 13.99
+   },
+   {
+    "item": "Hot Steak",
+    "preco": 14.99
+   },
+   {
+    "item": "Chicken Fried Steak",
+    "preco": 15.99
+   },
+   {
+    "item": "Hamburger Steak",
+    "preco": 15.99
+   },
+   {
+    "item": "Two Grilled Pork Chops",
+    "preco": 16.99
+   },
+   {
+    "item": "Ribeye Steak",
+    "preco": 22.99
+   }
+  ],
+  "fonte": "https://tiptopcafesa.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média sobre os 9 pratos da seção Entrees; hambúrgueres a partir de US$7.49 e prato do dia no almoço US$11.49"
+ },
+ {
+  "id": "sat-chris-madrids",
+  "precoMin": 8.25,
+  "precoMedio": 11,
+  "precoMax": 16.95,
+  "base": "hambúrguer regular (1/4 lb)",
+  "itens": [
+   {
+    "item": "Old Fashioned (regular)",
+    "preco": 8.25
+   },
+   {
+    "item": "Cheese Burger (regular)",
+    "preco": 8.95
+   },
+   {
+    "item": "Cheddar Cheezy (regular)",
+    "preco": 10.95
+   },
+   {
+    "item": "Tostada Burger (regular)",
+    "preco": 10.95
+   },
+   {
+    "item": "Flaming Jalapeño Cheddar (regular)",
+    "preco": 11.95
+   },
+   {
+    "item": "Porky's Delight (Macho 1/2 lb)",
+    "preco": 16.95
+   }
+  ],
+  "fonte": "https://www.chrismadrids.com/main-menu-0326/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média sobre os 7 hambúrgueres/sanduíche no tamanho regular; preços incluem imposto; máximo é o tamanho Macho"
+ },
+ {
+  "id": "sat-pingo-de-mel",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site; sem cardápio com preços encontrado"
+ },
+ {
+  "id": "sat-dough-pizzeria",
+  "precoMin": 17,
+  "precoMedio": 24,
+  "precoMax": 32,
+  "base": "pizza napoletana 12 pol (Cosacca)",
+  "itens": [
+   {
+    "item": "Cosacca",
+    "preco": 17
+   },
+   {
+    "item": "Margherita",
+    "preco": 20
+   },
+   {
+    "item": "Americana",
+    "preco": 25
+   },
+   {
+    "item": "Fontina e Salsiccia",
+    "preco": 27
+   },
+   {
+    "item": "Prosciutto Crudo",
+    "preco": 28
+   },
+   {
+    "item": "Slow Braised Short Rib",
+    "preco": 32
+   }
+  ],
+  "fonte": "https://www.doughpizzeria.com/castle-hills-menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "menu Castle Hills (outono 2026); média sobre 9 pizzas 12 pol; máximo é o prato Short Rib"
+ },
+ {
+  "id": "sat-picanha-na-brasa",
+  "precoMin": 16.95,
+  "precoMedio": 22,
+  "precoMax": 29.95,
+  "base": "frango com bacon (prato com 2 acompanhamentos)",
+  "itens": [
+   {
+    "item": "Chicken wrapped with bacon",
+    "preco": 16.95
+   },
+   {
+    "item": "Baby back ribs",
+    "preco": 17.95
+   },
+   {
+    "item": "Picanha tacos",
+    "preco": 17.95
+   },
+   {
+    "item": "Traditional picanha",
+    "preco": 21.95
+   },
+   {
+    "item": "Lamb chops",
+    "preco": 29.95
+   },
+   {
+    "item": "Ribeye",
+    "preco": 29.95
+   }
+  ],
+  "fonte": "https://www.picanhanabrasa.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "excluído Family na Brasa plate (US$47.95, compartilhável)"
+ },
+ {
+  "id": "sat-bohanans",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu do site sem preços visíveis"
+ },
+ {
+  "id": "sat-mi-tierra",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu no Otter sem preços acessíveis"
+ },
+ {
+  "id": "sat-rosarios",
+  "precoMin": 14.95,
+  "precoMedio": 18,
+  "precoMax": 26.95,
+  "base": "prato principal (jantar)",
+  "itens": [
+   {
+    "item": "Mexican Hamburger",
+    "preco": 14.95
+   },
+   {
+    "item": "Tacos a la Rosario's (3)",
+    "preco": 15.95
+   },
+   {
+    "item": "Enchiladas Suizas",
+    "preco": 16.95
+   },
+   {
+    "item": "Pollo a la María",
+    "preco": 16.95
+   },
+   {
+    "item": "Chicken Chipotle",
+    "preco": 17.95
+   },
+   {
+    "item": "Carne Asada",
+    "preco": 26.95
+   }
+  ],
+  "fonte": "https://www.rosariossa.com/menu/dinner/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "menu de jantar; almoço (ter-sex) a partir de US$9.95"
+ },
+ {
+  "id": "sat-garcias",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site; sem cardápio com preços encontrado"
+ },
+ {
+  "id": "sat-rays-drive-inn",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "só menu de terceiros aparentemente desatualizado"
+ },
+ {
+  "id": "sat-henrys-puffy-tacos",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site bloqueado; fontes de terceiros divergem (ex. US$11.85 vs US$14.99 o prato)"
+ },
+ {
+  "id": "sat-purple-pig-bbq",
+  "precoMin": 8.99,
+  "precoMedio": 17,
+  "precoMax": 22.99,
+  "base": "sanduíche (pulled pork)",
+  "itens": [
+   {
+    "item": "Pulled Pork sandwich",
+    "preco": 8.99
+   },
+   {
+    "item": "Chopped Brisket sandwich",
+    "preco": 9.99
+   },
+   {
+    "item": "Pulled Pork Plate",
+    "preco": 14.25
+   },
+   {
+    "item": "Purple Pig Rib Plate",
+    "preco": 16.25
+   },
+   {
+    "item": "Chopped Brisket Plate",
+    "preco": 17.25
+   },
+   {
+    "item": "Beef Rib Plate",
+    "preco": 22.99
+   }
+  ],
+  "fonte": "https://thepurplepigbbq.com/schertz-purple-pig-bbq-food-menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média sobre os 7 pratos (BBQ Plates com 2 acompanhamentos); sanduíches de 8.99 a 9.99"
+ },
+ {
+  "id": "sat-burnt-bean-co",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "menu do site lista itens sem preços"
+ },
+ {
+  "id": "hou-sal-e-brasa",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não encontrados; possível troca de marca para Avenida Brazil Shenandoah"
+ },
+ {
+  "id": "delucca-gaucho-pizza-southlake",
+  "precoMin": 18.95,
+  "precoMedio": 23,
+  "precoMax": 25.95,
+  "base": "rodízio de pizza 3 etapas",
+  "itens": [
+   {
+    "item": "Endless 3-courses",
+    "preco": 18.95
+   },
+   {
+    "item": "Endless 4-courses",
+    "preco": 22.95
+   },
+   {
+    "item": "Endless 5-courses",
+    "preco": 25.95
+   }
+  ],
+  "fonte": "https://www.delucca.com/menus/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "preços do menu jantar Southlake & Alliance; média das 3 opções"
+ },
+ {
+  "id": "hou-avenida-brazil",
+  "precoMin": 42.95,
+  "precoMedio": 53,
+  "precoMax": 62.95,
+  "base": "rodízio completo no almoço (sex-sáb)",
+  "itens": [
+   {
+    "item": "Almoço sex-sáb",
+    "preco": 42.95
+   },
+   {
+    "item": "Jantar seg-qui",
+    "preco": 49.95
+   },
+   {
+    "item": "Brunch domingo",
+    "preco": 54.95
+   },
+   {
+    "item": "Jantar fim de semana",
+    "preco": 62.95
+   }
+  ],
+  "fonte": "https://www.avebrazil.com/locations/houston-area",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "preços de feriado em dezembro serão maiores"
+ }
+]

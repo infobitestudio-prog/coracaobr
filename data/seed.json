@@ -1,5 +1,5 @@
 {
- "versao": "2026-11-coracaobr-1795196198",
+ "versao": "2026-11-coracaobr-1795196575",
  "lugares": [
   {
    "id": "sixth-floor-museum",
@@ -2463,7 +2463,14 @@
     "src": "https://fogodechao.com/wp-content/uploads/2016/09/Fogo_Website_Location__0014_DallasUptown_1368x921.jpg",
     "pagina": "https://fogodechao.com/location/uptown-dallas/",
     "em": "2026-11-19"
-   }
+   },
+   "precoMin": 52.0,
+   "precoMedio": 61,
+   "precoMax": 70.0,
+   "precoBase": "rodízio completo (Full Churrasco) no almoço",
+   "fontePreco": "https://fogodechao.com/menu-detail/?location=412&type=menu-lunch&id=4589",
+   "fontePrecoTipo": "oficial",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "texas-de-brazil-dallas",
@@ -22106,7 +22113,7 @@
    "dica": "Os horários variam ao longo da semana (segunda costuma fechar mais cedo); ligue antes, principalmente se for atrás da feijoada.",
    "gratuito": false,
    "preco": "",
-   "precoMin": 0,
+   "precoMin": 16.99,
    "faixaPreco": "$$",
    "tempoVisita": "",
    "notaCuradoria": 4.0,
@@ -22122,7 +22129,13 @@
     }
    ],
    "atualizadoEm": "2026-11",
-   "publicado": true
+   "publicado": true,
+   "precoMedio": 21,
+   "precoMax": 29.99,
+   "precoBase": "prato principal",
+   "fontePreco": "https://menupages.com/emporio-brazilian-grill/12288-westheimer-rd-ste-210a-houston",
+   "fontePrecoTipo": "terceiros",
+   "precoConferidoEm": "2026-11"
   },
   {
    "id": "hou-acai-brasil-fulshear",

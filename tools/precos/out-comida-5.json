@@ -1,0 +1,717 @@
+[
+ {
+  "id": "hou-chama-gaucha",
+  "precoMin": 52.95,
+  "precoMedio": null,
+  "precoMax": 69.95,
+  "base": "rodízio completo no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Full Experience almoço",
+    "preco": 52.95
+   },
+   {
+    "item": "Full Experience jantar seg-qui (promo)",
+    "preco": 63.95
+   },
+   {
+    "item": "Full Experience jantar",
+    "preco": 69.95
+   }
+  ],
+  "fonte": "https://chamagaucha.com/houston",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "precoMedio omitido: poucos itens distintos"
+ },
+ {
+  "id": "hou-fogo-de-chao",
+  "precoMin": 50,
+  "precoMedio": null,
+  "precoMax": 67,
+  "base": "rodízio completo (Full Churrasco) no almoço",
+  "itens": [
+   {
+    "item": "Full Churrasco almoço",
+    "preco": 50
+   },
+   {
+    "item": "Full Churrasco jantar",
+    "preco": 67
+   },
+   {
+    "item": "Indulgent almoço",
+    "preco": 72
+   },
+   {
+    "item": "Indulgent jantar",
+    "preco": 89
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=116&type=menu-lunch&id=4600",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "máx = Full Churrasco jantar; Indulgent é upgrade"
+ },
+ {
+  "id": "hou-casa-do-brasil",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços só em imagens do menu"
+ },
+ {
+  "id": "hou-texas-de-brazil",
+  "precoMin": 48.99,
+  "precoMedio": null,
+  "precoMax": 62.99,
+  "base": "rodízio completo no almoço (sex)",
+  "itens": [
+   {
+    "item": "Churrasco almoço",
+    "preco": 48.99
+   },
+   {
+    "item": "Churrasco jantar",
+    "preco": 62.99
+   }
+  ],
+  "fonte": "https://texasdebrazil.com/?p=401",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "almoço só às sextas; outra fonte mostrava preços diferentes, conferir"
+ },
+ {
+  "id": "hou-tourao",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": ""
+ },
+ {
+  "id": "hou-gauchos-do-sul",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços"
+ },
+ {
+  "id": "hou-brasas-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": ""
+ },
+ {
+  "id": "hou-lucilles",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "só entradas visíveis; pratos principais não carregaram"
+ },
+ {
+  "id": "hou-frenchys-chicken",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços; delivery bloqueado"
+ },
+ {
+  "id": "hou-brennans",
+  "precoMin": 24,
+  "precoMedio": 44,
+  "precoMax": 59,
+  "base": "prato principal (jantar)",
+  "itens": [
+   {
+    "item": "Seasonal Vegetable Pasta",
+    "preco": 24
+   },
+   {
+    "item": "Pastalaya",
+    "preco": 32
+   },
+   {
+    "item": "Shrimp Chippewa",
+    "preco": 38
+   },
+   {
+    "item": "Hickory Smoked Pork Chop",
+    "preco": 41
+   },
+   {
+    "item": "Gulf Fish Pontchartrain",
+    "preco": 53
+   },
+   {
+    "item": "Grilled Filet Mignon 8oz",
+    "preco": 59
+   }
+  ],
+  "fonte": "https://www.brennanshouston.com/menus/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "entradas do jantar; média de 8 pratos (24 a 59)"
+ },
+ {
+  "id": "hou-lankford-grocery",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": ""
+ },
+ {
+  "id": "hou-the-burger-joint",
+  "precoMin": 9.99,
+  "precoMedio": 13,
+  "precoMax": 14.99,
+  "base": "hambúrguer",
+  "itens": [
+   {
+    "item": "Classic",
+    "preco": 9.99
+   },
+   {
+    "item": "Chili Cheese",
+    "preco": 11.99
+   },
+   {
+    "item": "BBQ",
+    "preco": 12.99
+   },
+   {
+    "item": "Opa!",
+    "preco": 13.99
+   },
+   {
+    "item": "Smoke Stack",
+    "preco": 14.99
+   }
+  ],
+  "fonte": "https://burgerjointhtx.com/restaurant-menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média dos 12 hambúrgueres; sanduíches de frango a partir de 9.99"
+ },
+ {
+  "id": "hou-pizaros-pizza",
+  "precoMin": 18,
+  "precoMedio": 24,
+  "precoMax": 26,
+  "base": "pizza napoletana 12\" (1-2 pessoas)",
+  "itens": [
+   {
+    "item": "Margherita",
+    "preco": 18
+   },
+   {
+    "item": "Calabrese",
+    "preco": 23
+   },
+   {
+    "item": "Fino",
+    "preco": 24
+   },
+   {
+    "item": "Campania",
+    "preco": 25
+   },
+   {
+    "item": "Cornicione",
+    "preco": 26
+   }
+  ],
+  "fonte": "https://pizarospizza.com/wp-content/uploads/2026/09/pizaro_menu_dev_911.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "exclui Iberico Bellota $50; pizzas NY 16\" vão de 29 a 38"
+ },
+ {
+  "id": "hou-coltivare",
+  "precoMin": 17,
+  "precoMedio": 22,
+  "precoMax": 26,
+  "base": "pizza",
+  "itens": [
+   {
+    "item": "Tomato, basil, mozzarella",
+    "preco": 17
+   },
+   {
+    "item": "Mozzarella, ricotta, blue",
+    "preco": 20
+   },
+   {
+    "item": "Charred broccoli pancetta",
+    "preco": 21
+   },
+   {
+    "item": "Shrimp pizza",
+    "preco": 22
+   },
+   {
+    "item": "Pepperoni",
+    "preco": 24
+   },
+   {
+    "item": "Mushroom cauliflower",
+    "preco": 26
+   }
+  ],
+  "fonte": "https://static1.squarespace.com/static/585aa18c725e25091af5efc3/t/6afe124e4193ac218e54c639/1795035726482/DINNER+MENU+11.18.2026.pdf",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "cardápio de jantar de 18/11/2026; pastas 19-26 também"
+ },
+ {
+  "id": "hou-emporio-brazilian-cafe",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "só listagens de terceiros desatualizadas"
+ },
+ {
+  "id": "hou-pappas-bros-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços; só terceiros desatualizados"
+ },
+ {
+  "id": "hou-taste-of-texas",
+  "precoMin": 35,
+  "precoMedio": 58,
+  "precoMax": 95,
+  "base": "prato principal (menor: prato de legumes grelhados)",
+  "itens": [
+   {
+    "item": "Grilled Vegetable Plate",
+    "preco": 35
+   },
+   {
+    "item": "Marinated Steak Skewer",
+    "preco": 39
+   },
+   {
+    "item": "Grilled Texas Redfish",
+    "preco": 49
+   },
+   {
+    "item": "Center Cut Filet 6 oz",
+    "preco": 51
+   },
+   {
+    "item": "Double Bone Pork Chop",
+    "preco": 59
+   },
+   {
+    "item": "Cowboy Ribeye 24 oz",
+    "preco": 95
+   }
+  ],
+  "fonte": "https://www.tasteoftexas.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "exclui tomahawk 145, porterhouse 115, ribeye por onça; carne mais barata é o filé 6 oz por 51"
+ },
+ {
+  "id": "hou-bb-butchers",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site bloqueado; só menus antigos"
+ },
+ {
+  "id": "hou-original-ninfas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "cardápio sem preços na página; Toast bloqueado"
+ },
+ {
+  "id": "hou-molinas-cantina",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "unidade da Washington Ave fechou em 2017 segundo Wikipedia/Gayot",
+  "fechado": true
+ },
+ {
+  "id": "vila-brazil-irving",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços"
+ },
+ {
+  "id": "fogo-de-chao-north-irving",
+  "precoMin": 52,
+  "precoMedio": null,
+  "precoMax": 70,
+  "base": "rodízio completo (Full Churrasco) no almoço",
+  "itens": [
+   {
+    "item": "Full Churrasco almoço",
+    "preco": 52
+   },
+   {
+    "item": "Full Churrasco jantar",
+    "preco": 70
+   },
+   {
+    "item": "Indulgent almoço",
+    "preco": 74
+   },
+   {
+    "item": "Indulgent jantar",
+    "preco": 92
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=7520&type=menu-lunch&id=7942",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "máx = Full Churrasco jantar"
+ },
+ {
+  "id": "aus-sp-brazilian-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "OpenTable 503; sem preços"
+ },
+ {
+  "id": "aus-blacks-barbecue-lockhart",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços; só preço por libra em fontes conflitantes"
+ },
+ {
+  "id": "aus-kreuz-market",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "oficial vende só por libra (brisket 32.90/lb, pork chop 22.90/lb, linguiça 3.70 cada); sem preço de 1/2 lb ou prato"
+ },
+ {
+  "id": "sat-gristmill",
+  "precoMin": 15.99,
+  "precoMedio": 26,
+  "precoMax": 45.99,
+  "base": "prato principal (frango grelhado)",
+  "itens": [
+   {
+    "item": "Grilled Chicken",
+    "preco": 15.99
+   },
+   {
+    "item": "Chicken Fried Steak",
+    "preco": 17.99
+   },
+   {
+    "item": "Bronze Catfish",
+    "preco": 18.99
+   },
+   {
+    "item": "Baby Back Ribs half rack",
+    "preco": 22.99
+   },
+   {
+    "item": "Top Sirloin 10 oz",
+    "preco": 33.99
+   },
+   {
+    "item": "Ribeye 12 oz",
+    "preco": 45.99
+   }
+  ],
+  "fonte": "https://gristmillrestaurant.com/menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 18 pratos; hambúrgueres/sanduíches não incluídos; sem separação almoço/jantar"
+ },
+ {
+  "id": "sat-naegelins-bakery",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site lista itens sem preços"
+ },
+ {
+  "id": "sat-myrons",
+  "precoMin": 34.95,
+  "precoMedio": 61,
+  "precoMax": 85.95,
+  "base": "prato principal (The Bird, frango)",
+  "itens": [
+   {
+    "item": "The Bird",
+    "preco": 34.95
+   },
+   {
+    "item": "Filet 6 oz",
+    "preco": 48.95
+   },
+   {
+    "item": "Ribeye 16 oz",
+    "preco": 72.95
+   },
+   {
+    "item": "Rack of Lamb",
+    "preco": 59.95
+   },
+   {
+    "item": "Mixed Grill",
+    "preco": 64.95
+   },
+   {
+    "item": "Surf & Turf",
+    "preco": 85.95
+   }
+  ],
+  "fonte": "https://myronsprime.com/menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "exclui chateaubriand para dois (139.95) e preços de mercado; média de 16 pratos"
+ },
+ {
+  "id": "hou-killens-barbecue",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "apenas listagem de terceiros possivelmente desatualizada"
+ },
+ {
+  "id": "99-ranch-market-plano",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem cardápio/preços"
+ },
+ {
+  "id": "mitsuwa-marketplace-plano",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "página do site indisponível"
+ },
+ {
+  "id": "legacy-hall-plano",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "food hall com vários vendedores; site sem preços"
+ },
+ {
+  "id": "brasao-brazilian-steakhouse-plano",
+  "precoMin": 54.95,
+  "precoMedio": null,
+  "precoMax": 69.95,
+  "base": "rodízio completo no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Full Experience almoço",
+    "preco": 54.95
+   },
+   {
+    "item": "Full Experience jantar",
+    "preco": 69.95
+   }
+  ],
+  "fonte": "https://brasaousa.com/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": ""
+ },
+ {
+  "id": "fogo-de-chao-plano",
+  "precoMin": 52,
+  "precoMedio": null,
+  "precoMax": 70,
+  "base": "rodízio completo (Full Churrasco) no almoço",
+  "itens": [
+   {
+    "item": "Full Churrasco almoço",
+    "preco": 52
+   },
+   {
+    "item": "Full Churrasco jantar",
+    "preco": 70
+   },
+   {
+    "item": "Indulgent almoço",
+    "preco": 74
+   },
+   {
+    "item": "Indulgent jantar",
+    "preco": 92
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=422&type=menu-lunch&id=4660",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "máx = Full Churrasco jantar"
+ },
+ {
+  "id": "delucca-gaucho-pizza-plano",
+  "precoMin": 16,
+  "precoMedio": null,
+  "precoMax": 25.95,
+  "base": "rodízio de pizza no almoço (adulto)",
+  "itens": [
+   {
+    "item": "Rodízio Pizza Experience almoço",
+    "preco": 16
+   },
+   {
+    "item": "Rodízio jantar Dallas/Plano",
+    "preco": 25.95
+   }
+  ],
+  "fonte": "https://www.delucca.com/menus/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "só dois preços fixos; sem média; almoço conforme seção de lunch do site (conferir se vale para Plano)"
+ },
+ {
+  "id": "jeng-chi-richardson",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços; Toast bloqueado"
+ },
+ {
+  "id": "hou-pattys-bakery",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "sem site; sem preços encontrados"
+ },
+ {
+  "id": "babes-chicken-dinner-house-roanoke",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "site sem preços"
+ }
+]

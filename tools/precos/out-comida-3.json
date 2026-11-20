@@ -1,0 +1,656 @@
+[
+ {
+  "id": "maple-and-motor",
+  "precoMin": 8.45,
+  "precoMedio": 10,
+  "precoMax": 12.0,
+  "base": "sanduíche (fried baloney)",
+  "itens": [
+   {
+    "item": "Fried Baloney Sandwich",
+    "preco": 8.45
+   },
+   {
+    "item": "Burger",
+    "preco": 11.5
+   },
+   {
+    "item": "Cheeseburger",
+    "preco": 12.0
+   },
+   {
+    "item": "Flat-top Brisket Sandwich",
+    "preco": 11.95
+   },
+   {
+    "item": "BLT",
+    "preco": 9.75
+   },
+   {
+    "item": "Yardbird Sandwich",
+    "preco": 9.95
+   }
+  ],
+  "fonte": "https://www.mapleandmotor.com/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "Grilled cheese a $6 excluído do mínimo"
+ },
+ {
+  "id": "hopdoddy-burger-bar-preston-center",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "shake-shack-uptown-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "twisted-root-burger-deep-ellum",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "CultureMap (13/08/2026): unidade Deep Ellum fechou permanentemente",
+  "fechado": true
+ },
+ {
+  "id": "burger-house-hillcrest",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "krispy-kreme-greenville-avenue",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "emporium-pies-bishop-arts",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "cane-rosso-deep-ellum",
+  "precoMin": 17,
+  "precoMedio": 19,
+  "precoMax": 21,
+  "base": "pizza 14\" (Margherita)",
+  "itens": [
+   {
+    "item": "Margherita",
+    "preco": 17
+   },
+   {
+    "item": "Emma",
+    "preco": 18
+   },
+   {
+    "item": "Cane Rosso",
+    "preco": 19
+   },
+   {
+    "item": "Roni One",
+    "preco": 20
+   },
+   {
+    "item": "PBR",
+    "preco": 21
+   }
+  ],
+  "fonte": "https://www.canerosso.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 17 pizzas 14\""
+ },
+ {
+  "id": "zalat-pizza-fitzhugh",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "partenope-ristorante-downtown",
+  "precoMin": 16,
+  "precoMedio": 22,
+  "precoMax": 28,
+  "base": "pizza Marinara",
+  "itens": [
+   {
+    "item": "Marinara",
+    "preco": 16
+   },
+   {
+    "item": "Margherita",
+    "preco": 19
+   },
+   {
+    "item": "Spaghetti alla Carbonara",
+    "preco": 23
+   },
+   {
+    "item": "Fettuccine alla Bolognese",
+    "preco": 25
+   },
+   {
+    "item": "Scarpariello di Mare",
+    "preco": 28
+   }
+  ],
+  "fonte": "https://partenopedallas.com/dinner_menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de pizzas+massas; especiais (branzino $35) excluídos do máximo"
+ },
+ {
+  "id": "brazil-latino-food-music",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "casa-pollastro",
+  "precoMin": 25,
+  "precoMedio": 35,
+  "precoMax": 45,
+  "base": "rodízio completo no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Rodízio almoço adulto",
+    "preco": 25
+   },
+   {
+    "item": "Rodízio jantar adulto",
+    "preco": 45
+   }
+  ],
+  "fonte": "https://www.casapollastro.com/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média simples entre almoço e jantar; preços à la carte não vistos"
+ },
+ {
+  "id": "delucca-gaucho-pizza-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "pappas-bros-steakhouse-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "al-biernats-oak-lawn",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "nick-and-sams-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "bobs-steak-chop-house-lemmon",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "perrys-steakhouse-uptown",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "del-friscos-double-eagle-uptown",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "town-hearth",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "yo-ranch-steakhouse",
+  "precoMin": 32,
+  "precoMedio": 52,
+  "precoMax": 95,
+  "base": "prato principal mais barato (codorna/frango/truta)",
+  "itens": [
+   {
+    "item": "Chicken Fried Quail",
+    "preco": 32
+   },
+   {
+    "item": "Flat Iron 10oz",
+    "preco": 38
+   },
+   {
+    "item": "Filet Mignon 6oz",
+    "preco": 45
+   },
+   {
+    "item": "Prime Ribeye 14oz",
+    "preco": 62
+   },
+   {
+    "item": "Mishima Wagyu Ribeye 14oz",
+    "preco": 95
+   }
+  ],
+  "fonte": "https://www.yoranchsteakhouse.com/dinner-menu/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 21 itens (steaks, caça, especialidades); tomahawk e market price excluídos"
+ },
+ {
+  "id": "el-fenix-downtown",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "mi-cocina-highland-park-village",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "meso-maya-downtown",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "javiers-gourmet-mexicano",
+  "precoMin": 27.95,
+  "precoMedio": 36,
+  "precoMax": 48.95,
+  "base": "prato principal (Pollo Al Ajillo)",
+  "itens": [
+   {
+    "item": "Pollo Al Ajillo",
+    "preco": 27.95
+   },
+   {
+    "item": "Fajitas de frango",
+    "preco": 29.95
+   },
+   {
+    "item": "Mole Poblano",
+    "preco": 29.95
+   },
+   {
+    "item": "Red Snapper A La Javier's",
+    "preco": 36.95
+   },
+   {
+    "item": "Carne Asada A La Tampiqueña",
+    "preco": 43.95
+   },
+   {
+    "item": "Filete Pimienta",
+    "preco": 48.95
+   }
+  ],
+  "fonte": "https://www.javiers.net/",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 28 itens; site sem símbolo de moeda"
+ },
+ {
+  "id": "mias-tex-mex",
+  "precoMin": 11.95,
+  "precoMedio": 18,
+  "precoMax": 32.95,
+  "base": "prato combinado (Ama's Plate)",
+  "itens": [
+   {
+    "item": "Ama's Plate",
+    "preco": 11.95
+   },
+   {
+    "item": "Beef Enchilada Dinner",
+    "preco": 12.95
+   },
+   {
+    "item": "Mexican Dinner",
+    "preco": 16.95
+   },
+   {
+    "item": "Fajitas (beef/chicken)",
+    "preco": 20.95
+   },
+   {
+    "item": "Ribeye Fajitas",
+    "preco": 29.95
+   },
+   {
+    "item": "Cowboy Platter",
+    "preco": 32.95
+   }
+  ],
+  "fonte": "https://www.miastexmex.com/dallas-mia-s-tex-mex-food-menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 23 itens"
+ },
+ {
+  "id": "e-bar-tex-mex",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "uncle-julios-lemmon",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "fuel-city-tacos-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "velvet-taco-henderson",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "torchys-tacos-smu",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "mi-cocina-west-village",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "marianos-hacienda",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "revolver-taco-lounge",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "tacos-la-banqueta",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "aus-salt-lick-bbq-driftwood",
+  "precoMin": 13.95,
+  "precoMedio": 21,
+  "precoMax": 29.95,
+  "base": "sanduíche de linguiça",
+  "itens": [
+   {
+    "item": "Sausage sandwich",
+    "preco": 13.95
+   },
+   {
+    "item": "Pulled Pork plate",
+    "preco": 17.95
+   },
+   {
+    "item": "Pork Ribs plate",
+    "preco": 18.95
+   },
+   {
+    "item": "Turkey plate",
+    "preco": 19.95
+   },
+   {
+    "item": "Brisket plate",
+    "preco": 24.95
+   },
+   {
+    "item": "Brisket & Beef Ribs plate",
+    "preco": 29.95
+   }
+  ],
+  "fonte": "https://www.saltlickbbq.com/driftwood-menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "média de 26 pratos e sanduíches de carne; all-you-can-eat ($32.95-34.95), prato vegetariano ($11.95) e preços por 1/2 lb excluídos"
+ },
+ {
+  "id": "cattleack-barbeque",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "preços não disponíveis/confiáveis no site oficial (sem preços, imagem, 403 ou menu não carregado)"
+ },
+ {
+  "id": "roots-southern-table",
+  "precoMin": 28,
+  "precoMedio": 41,
+  "precoMax": 78,
+  "base": "prato principal (Supper)",
+  "itens": [
+   {
+    "item": "Chicken & Dumplings",
+    "preco": 28
+   },
+   {
+    "item": "Kurobuta Pork Chop",
+    "preco": 32
+   },
+   {
+    "item": "Braised Wagyu Beef Cheeks",
+    "preco": 34
+   },
+   {
+    "item": "Texas Red Fish",
+    "preco": 38
+   },
+   {
+    "item": "Jerk Spiced Lamb Chops",
+    "preco": 46
+   },
+   {
+    "item": "Wagyu Coulotte",
+    "preco": 78
+   }
+  ],
+  "fonte": "https://www.rootssoutherntable.com/menu",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "site mostra preços sem símbolo de moeda; Family Style ($56) excluído"
+ }
+]

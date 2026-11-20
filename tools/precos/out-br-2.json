@@ -1,0 +1,415 @@
+[
+ {
+  "id": "brazil-latino-food-music",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "delucca-gaucho-pizza-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "vila-brazil-irving",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "fogo-de-chao-uptown-dallas",
+  "precoMin": 52,
+  "precoMedio": 61,
+  "precoMax": 70,
+  "base": "rodízio completo (Full Churrasco) no almoço",
+  "itens": [
+   {
+    "item": "Full Churrasco almoço",
+    "preco": 52
+   },
+   {
+    "item": "Full Churrasco brunch",
+    "preco": 56
+   },
+   {
+    "item": "Full Churrasco jantar",
+    "preco": 70
+   },
+   {
+    "item": "Indulgent Churrasco almoço",
+    "preco": 74
+   },
+   {
+    "item": "Indulgent Churrasco brunch",
+    "preco": 78
+   },
+   {
+    "item": "Indulgent Churrasco jantar",
+    "preco": 92
+   }
+  ],
+  "fonte": "https://fogodechao.com/menu-detail/?location=412&type=menu-lunch&id=4589",
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "Média e máximo incluem as 6 opções de rodízio (Full e Indulgent; almoço, brunch, jantar). Mercado de saladas avulso: US$19 no almoço."
+ },
+ {
+  "id": "12-cuts-brazilian-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "fazenda-gaucha-bedford",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "rodízio no almoço (seg-sex)",
+  "itens": [
+   {
+    "item": "Rodízio almoço seg-sex 11:30-15:00",
+    "preco": 29.95
+   },
+   {
+    "item": "Rodízio jantar",
+    "preco": 46.95
+   }
+  ],
+  "fonte": null,
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "Página inicial mostra também um pop-up com valores diferentes (almoço US$24,95, jantar US$44,95, domingo US$39,95); incerteza sobre qual está vigente. Confirmar por telefone."
+ },
+ {
+  "id": "acai-brasil-victory-park",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "bom-acai-dallas",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "vb-steakhouse-arlington",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hurts-donut-frisco",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "emporium-pies-bishop-arts",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-casa-do-brasil",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-tourao",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-gauchos-do-sul",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-brasas-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-sal-e-brasa",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-emporio-brazilian-cafe",
+  "precoMin": 16.99,
+  "precoMedio": 21,
+  "precoMax": 29.99,
+  "base": "prato principal",
+  "itens": [
+   {
+    "item": "Strogonoff brasileiro",
+    "preco": 16.99
+   },
+   {
+    "item": "Parmegiana de frango/carne",
+    "preco": 17.99
+   },
+   {
+    "item": "Feijoada",
+    "preco": 19.99
+   },
+   {
+    "item": "Picanha tradicional",
+    "preco": 20.99
+   },
+   {
+    "item": "Churrasco gaúcho",
+    "preco": 21.99
+   },
+   {
+    "item": "Picanha na chapa",
+    "preco": 29.99
+   }
+  ],
+  "fonte": "https://menupages.com/emporio-brazilian-grill/12288-westheimer-rd-ste-210a-houston",
+  "fonteTipo": "terceiros",
+  "conferidoEm": "2026-11",
+  "obs": "Menu do Grubhub/MenuPages (listado como Emporio Brazilian Grill, mesmo endereço); preços de delivery podem ser maiores que no salão e a página indicava 'Restaurant closed' no momento da consulta (não é fechamento permanente). Alguns preços com '+'."
+ },
+ {
+  "id": "hou-acai-brasil-fulshear",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "hou-pattys-bakery",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "aus-casa-do-brasil",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "promoção de almoço: salada à vontade US$15 + carnes à vontade US$15",
+  "itens": [
+   {
+    "item": "Salad bar à vontade (almoço ter-sex)",
+    "preco": 15
+   },
+   {
+    "item": "Adicional carnes à vontade",
+    "preco": 15
+   }
+  ],
+  "fonte": null,
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "Apenas promoção de almoço (ter-sex); preço de rodízio regular não legível (menus em imagem). Soma 15+15=30 é a combinação anunciada."
+ },
+ {
+  "id": "aus-bitelo-brazilian-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "aus-sp-brazilian-steakhouse",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "aus-torresbee-brazilian-cafe",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "aus-round-rock-donuts",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "donut glaceado (unidade)",
+  "itens": [
+   {
+    "item": "Round Rock Glazed Donut",
+    "preco": 1.19
+   },
+   {
+    "item": "Kolache de salsicha",
+    "preco": 1.59
+   },
+   {
+    "item": "Cinnamon roll assado",
+    "preco": 2.49
+   },
+   {
+    "item": "Kolache grande de queijo",
+    "preco": 3.59
+   },
+   {
+    "item": "Texas Sized Donut",
+    "preco": 11.98
+   }
+  ],
+  "fonte": null,
+  "fonteTipo": "oficial",
+  "conferidoEm": "2026-11",
+  "obs": "Página de menu do site oficial, sem data clara (rodapé © 2020, mas lista itens sazonais); confirmar na loja."
+ },
+ {
+  "id": "sat-galpao-gaucho",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "sat-pingo-de-mel",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ },
+ {
+  "id": "sat-naegelins-bakery",
+  "precoMin": null,
+  "precoMedio": null,
+  "precoMax": null,
+  "base": "",
+  "itens": [],
+  "fonte": null,
+  "fonteTipo": null,
+  "conferidoEm": "2026-11",
+  "obs": "Sem preços legíveis em fontes oficiais ou de terceiros acessíveis"
+ }
+]
