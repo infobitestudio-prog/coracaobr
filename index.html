@@ -1329,6 +1329,30 @@ button.mt-sel { cursor: pointer } button.mt-sel.on { background: var(--c); color
 .mt-prox li::before { content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 4px; background: var(--line) } .mt-prox li > i:first-child { position: absolute; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 3px solid var(--muted) }
 .mt-prox li.pass { color: var(--muted) } .mt-prox li.now { font-weight: 700 } .mt-prox li.now > i:first-child { border-color: #2F7DD3; background: #2F7DD3; box-shadow: 0 0 0 5px rgba(47,125,211,.2) } .mt-prox li.alvo span:first-of-type::after { content: " · destino"; color: var(--accent-mid); font-weight: 600 }
 .mt-sel2 { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit }
+.ofp-ig { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; background: var(--surface); padding: 14px 16px; color: var(--ink); text-decoration: none }
+.ofp-ig svg.i { width: 30px; height: 30px; padding: 6px; border-radius: 9px; color: #fff; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%) }
+.ofp-ig span { display: grid } .ofp-ig b { font: 600 1.05rem var(--mono) } .ofp-ig small { color: var(--muted) } .ofp-ig:hover b { text-decoration: underline }
+.ofc-ig { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 6px; font: 500 .78rem var(--mono); color: #C13584 } .ofc-ig svg.i { width: 15px; height: 15px }
+@media (min-width: 860px) { .ofc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
+
+/* ===== promoção ===== */
+.an-promo { text-decoration: none }
+.pr-hero { display: grid; gap: 22px; margin: 6px 0 40px } .pr-hero .page-h { font-size: clamp(2.1rem, 5vw, 3.4rem); max-width: 16ch; margin-top: 12px }
+@media (min-width: 900px) { .pr-hero { grid-template-columns: minmax(0, 1.3fr) minmax(320px, .8fr); gap: 44px; align-items: center } }
+.pr-cd { display: flex; align-items: baseline; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(255,194,14,.14) } .pr-cd b { font: 700 2rem var(--mono); color: var(--sponsor) } .pr-cd span { font-size: .86rem; color: rgba(255,255,255,.8) }
+.pr-saldo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden }
+.pr-saldo div { background: var(--surface); padding: 14px 16px; display: grid; gap: 2px } .pr-saldo small { font: 500 .68rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted) } .pr-saldo b { font: 600 1.6rem var(--mono) } .pr-saldo span { font-size: .78rem; color: var(--muted) }
+@media (max-width: 560px) { .pr-saldo { grid-template-columns: 1fr } }
+.pr-filtros { display: grid; gap: 10px; margin-bottom: 14px } .pr-filtros .menubar { margin: 0 }
+.pr-lista { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) }
+.pr-it { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px 10px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow) }
+.pr-it.on { grid-column: 1 / -1; border-color: var(--accent) } .pr-it.feito { opacity: .75 }
+.pr-f { width: 64px; height: 64px; border-radius: 12px; overflow: hidden; background: var(--surface-2); display: block } .pr-f img { width: 100%; height: 100%; object-fit: cover }
+.pr-t { display: grid; gap: 2px; min-width: 0 } .pr-t b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis } .pr-t small { color: var(--muted); font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.pr-form { grid-column: 1 / -1; display: grid; gap: 12px; padding-top: 12px; border-top: 1px dashed var(--line); animation: up .35s both }
+.pr-form textarea { min-height: 110px }
+.pr-bn { background: radial-gradient(500px 260px at 100% 0, rgba(255,194,14,.35), transparent 70%), var(--band) !important } .pr-bn small { color: var(--sponsor) !important }
+.pr-cur .pill.xp { background: var(--sponsor); color: var(--sponsor-ink) } .pr-m { font-family: var(--mono); font-size: .86rem } .pr-m b { font-size: 1.05rem }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>
@@ -1356,7 +1380,7 @@ button.mt-sel { cursor: pointer } button.mt-sel.on { background: var(--c); color
 </header>
 <div id="aviso" class="banner" hidden><div class="wrap" id="aviso-txt"></div></div>
 <main id="app"><div class="wrap" style="padding-block:60px"><p class="muted">Carregando o guia…</p></div></main>
-<footer class="fcom"><div class="wrap"><section class="fcta" aria-label="Anuncie no CoraçãoBR"><div><span class="fk">Para empresas e profissionais</span><h2>Seu negócio na frente de quem fala português.</h2><ul class="fcl"><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Até 3 anúncios com banner</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Publicações no feed e no Mural</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Pin verde no mapa</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Cancele quando quiser</li></ul></div><div class="fpr"><small id="f-pl">Plano único</small><b>US$<span id="f-preco">10</span><i>/mês</i></b><span class="fpromo" id="f-promo" hidden></span><a class="btn" href="#anuncie">Anunciar agora <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="fsec" href="#entrar">Já tenho conta</a></div></section></div><div class="wrap foot"><div class="fb"><b class="brand-f"><svg class="bsym" viewBox="0 0 270 200" aria-hidden="true"><defs>
+<footer class="fcom"><div class="wrap"><section class="fcta" aria-label="Anuncie no CoraçãoBR"><div><span class="fk">Para empresas e profissionais</span><h2>Seu negócio na frente de quem fala português.</h2><ul class="fcl"><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>3 anúncios + 1 banner</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Publicações no feed e no Mural</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Pin verde no mapa</li><li><svg class="i" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Cancele quando quiser</li></ul></div><div class="fpr"><small id="f-pl">Plano único</small><b>US$<span id="f-preco">10</span><i>/mês</i></b><span class="fpromo" id="f-promo" hidden></span><a class="btn" href="#anuncie">Anunciar agora <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="fsec" href="#entrar">Já tenho conta</a></div></section></div><div class="wrap foot"><div class="fb"><b class="brand-f"><svg class="bsym" viewBox="0 0 270 200" aria-hidden="true"><defs>
 <linearGradient id="fgL" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#0AA23C"/><stop offset=".6" stop-color="#088F36"/><stop offset="1" stop-color="#05692A"/></linearGradient>
 <linearGradient id="fgF" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#05501F"/><stop offset="1" stop-color="#0B7A32" stop-opacity="0"/></linearGradient>
 <linearGradient id="fgY" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7B500"/><stop offset="1" stop-color="#FFC20E"/></linearGradient>
@@ -1386,6 +1410,7 @@ button.mt-sel { cursor: pointer } button.mt-sel.on { background: var(--c); color
 <script src="js/app.js"></script>
 <script src="js/cardapio.js"></script>
 <script src="js/pagamento.js"></script>
+<script src="js/promo.js"></script>
 <script src="js/oficiais.js"></script>
 <script src="js/metro.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>

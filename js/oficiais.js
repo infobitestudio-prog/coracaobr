@@ -38,8 +38,42 @@
       cta: ["Seguir @alexandrenotexas", "https://www.instagram.com/alexandrenotexas"],
       links: [["YouTube", "https://www.youtube.com/@AlexandrenoTexas", "share"], ["Instagram", "https://www.instagram.com/alexandrenotexas", "insta"], ["TikTok", "https://www.tiktok.com/@alexandrenotexas", "share"]],
       contato: "alexandrenotexas@gmail.com"
+    },
+    {
+      id: "infobite-studio", nome: "Infobite Studio", tipo: "Tecnologia, sites e conteúdo", cor: "#F0821A",
+      banner: "img/patrocinadores/infobite-studio.jpg", avatar: "img/patrocinadores/infobite-studio-avatar.jpg",
+      resumo: "Sites, automações com inteligência artificial, social media e estúdio próprio de podcast e vídeo.",
+      texto: "O Grupo Infobite cria plataformas, sites e automações com inteligência artificial, como atendimento no WhatsApp, CRM e painéis. Mantém produtos digitais próprios, como o Infobite Card e o QR-DOG, e tem o Infobite Studio, com sala de podcast, produção de vídeo e social media.",
+      como: ["Contato pelo WhatsApp, com diagnóstico em até um dia útil.", "Social media e audiovisual: planos mensais de R$ 1.100 a R$ 1.500, sem contrato.", "Criação de sites: landing page R$ 600, institucional R$ 700, e-commerce R$ 1.500, em até 12x."],
+      numeros: [["6", "produtos digitais próprios"], ["1 dia útil", "para o diagnóstico"]],
+      cta: ["Falar no WhatsApp", "https://wa.me/5511983573266"],
+      links: [["Site", "https://infobitestudio.com.br", "globe"], ["Instagram", "https://instagram.com/infobite.studio", "insta"], ["WhatsApp", "https://wa.me/5511983573266", "chat"]],
+      contato: "infobitestudio@gmail.com"
+    },
+    {
+      id: "infobite-card", nome: "Infobite Card", tipo: "Cartão de visita digital", cor: "#FF5A1F",
+      banner: "img/patrocinadores/infobite-card.jpg", avatar: "img/patrocinadores/infobite-card-avatar.jpg",
+      resumo: "Seu cartão em um toque: WhatsApp, agenda, rotas e redes num link só, com QR Code e NFC.",
+      texto: "O Infobite Card é um cartão de visita digital para profissionais. Junta WhatsApp com mensagem pronta, ligação, agenda, rotas (Maps, Waze, Uber) e redes sociais num link só, com QR Code, cartão NFC e métricas de visitas e cliques. Mostra o registro profissional com selo depois da conferência da equipe.",
+      como: ["Crie a conta e monte o cartão no painel, com prévia ao vivo: profissão, cores e botões.", "Compartilhe por link, QR Code ou cartão NFC; quem recebe abre no navegador, sem app.", "Plano mensal de R$ 19,90 ou anual de R$ 199,90, com os mesmos recursos."],
+      numeros: [["130+", "profissões reconhecidas"], ["R$ 19,90", "por mês"]],
+      cta: ["Criar meu cartão", "https://infobitecard.com.br/"],
+      links: [["Site", "https://infobitecard.com.br/", "globe"], ["Entrar", "https://infobitecard.com.br/login.html", "users"], ["WhatsApp", "https://wa.me/5511983573266", "chat"]],
+      contato: ""
+    },
+    {
+      id: "qr-dog", nome: "QR-DOG", tipo: "Medalha com QR Code para pets", cor: "#9DBB1F",
+      banner: "img/patrocinadores/qr-dog.jpg", avatar: "img/patrocinadores/qr-dog-avatar.jpg",
+      resumo: "Seu pet se perdeu? Um scan na medalha da coleira traz ele de volta.",
+      texto: "O QR-DOG é uma medalha com QR Code para a coleira de cães e gatos. Quem encontra o animal aponta a câmera, vê o perfil do pet com o aviso de animal perdido e fala com o tutor na hora pelo WhatsApp. Não precisa de aplicativo nem de bateria.",
+      como: ["O tutor compra a medalha e monta o perfil do pet no painel.", "Quem acha o animal escaneia o QR e vê nome, raça, porte e temperamento.", "O tutor é chamado pelo WhatsApp. Pagamento único de R$ 39,90."],
+      numeros: [["130+", "raças de cães e gatos"], ["R$ 39,90", "pagamento único"]],
+      cta: ["Quero a medalha", "https://www.qrdogdados.com.br/"],
+      links: [["Site", "https://www.qrdogdados.com.br/", "globe"], ["WhatsApp", "https://wa.me/5511983573266", "chat"]],
+      contato: ""
     }
   ];
+  function ig(o) { var l = o.links.filter(function (x) { return /instagram\.com/.test(x[1]); })[0]; return l ? l[1].replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/.*$/, "") : ""; }
   function ativos() { var off = (G.config().oficiaisOcultos || []); return LISTA.filter(function (o) { return off.indexOf(o.id) < 0; }); }
   function obter(id) { return LISTA.filter(function (o) { return o.id === id; })[0]; }
 
@@ -52,7 +86,7 @@
     var ls = ativos(); if (!ls.length) return "";
     return '<section class="block reveal ofc-sec"><div class="head"><div><p class="eyebrow">Patrocinadores oficiais</p><h2>Quem faz o CoraçãoBR acontecer</h2></div></div><div class="ofc-grid">' +
       ls.map(function (o) {
-        return '<a class="ofc" href="#oficial-' + esc(o.id) + '" style="--ofc:' + o.cor + '"><span class="ofc-av"><img src="' + esc(o.avatar) + '" alt="" loading="lazy"></span><span class="ofc-t"><small>' + esc(o.tipo) + "</small><b>" + esc(o.nome) + "</b><span>" + esc(o.resumo) + '</span></span><span class="ofc-n">' + o.numeros.slice(0, 1).map(function (n) { return "<b>" + esc(n[0]) + "</b><small>" + esc(n[1]) + "</small>"; }).join("") + "</span>" + ic("arrow") + "</a>";
+        return '<a class="ofc" href="#oficial-' + esc(o.id) + '" style="--ofc:' + o.cor + '"><span class="ofc-av"><img src="' + esc(o.avatar) + '" alt="" loading="lazy"></span><span class="ofc-t"><small>' + esc(o.tipo) + "</small><b>" + esc(o.nome) + "</b><span>" + esc(o.resumo) + '</span></span><span class="ofc-n">' + o.numeros.slice(0, 1).map(function (n) { return "<b>" + esc(n[0]) + "</b><small>" + esc(n[1]) + "</small>"; }).join("") + "</span>" + (ig(o) ? '<span class="ofc-ig">' + ic("insta") + "@" + esc(ig(o)) + "</span>" : "") + ic("arrow") + "</a>";
       }).join("") + "</div></section>";
   }
 
@@ -67,7 +101,7 @@
       '<div class="ofp-h"><span class="ofc-av big"><img src="' + esc(o.avatar) + '" alt=""></span><div><p class="eyebrow">Patrocinador oficial · ' + esc(o.tipo) + "</p><h1 class=\"page-h\">" + esc(o.nome) + "</h1></div></div>" +
       '<p class="ofp-txt">' + esc(o.texto) + "</p>" +
       '<div class="xp-box"><p class="xp-t">Como funciona</p><ul class="ofp-como">' + o.como.map(function (c) { return "<li>" + ic("star") + "<span>" + esc(c) + "</span></li>"; }).join("") + "</ul></div>" +
-      '<div class="ofp-num">' + o.numeros.map(function (n) { return "<div><b>" + esc(n[0]) + "</b><small>" + esc(n[1]) + "</small></div>"; }).join("") + '</div><p class="small muted">Números públicos consultados em ' + DATA + ".</p></div>" +
+      '<div class="ofp-num">' + o.numeros.map(function (n) { return "<div><b>" + esc(n[0]) + "</b><small>" + esc(n[1]) + "</small></div>"; }).join("") + (ig(o) ? '<a class="ofp-ig" href="https://www.instagram.com/' + esc(ig(o)) + '" target="_blank" rel="noopener">' + ic("insta") + "<span><b>@" + esc(ig(o)) + "</b><small>Seguir no Instagram</small></span></a>" : "") + '</div><p class="small muted">Números públicos consultados em ' + DATA + ".</p></div>" +
       '<aside class="ofp-side"><a class="btn ofp-cta" href="' + esc(o.cta[1]) + '" target="_blank" rel="noopener">' + esc(o.cta[0]) + " " + ic("arrow") + "</a>" +
       '<div class="xp-box"><p class="xp-t">Onde acompanhar</p>' + o.links.map(function (l) { return '<a class="ofp-lk" href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + ic(l[2]) + "<span>" + esc(l[0]) + "</span>" + ic("arrow") + "</a>"; }).join("") + (o.contato ? '<p class="small muted">Contato: <a href="mailto:' + esc(o.contato) + '">' + esc(o.contato) + "</a></p>" : "") + "</div>" +
       '<div class="xp-box"><p class="xp-t">Outros patrocinadores oficiais</p>' + ativos().filter(function (x) { return x.id !== o.id; }).map(function (x) { return '<a class="pg-prev" href="#oficial-' + esc(x.id) + '"><img src="' + esc(x.avatar) + '" alt=""><b>' + esc(x.nome) + "</b>" + ic("arrow") + "</a>"; }).join("") + "</div></aside></div></div></section>";

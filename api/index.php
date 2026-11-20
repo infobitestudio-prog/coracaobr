@@ -153,10 +153,12 @@ function novoUid(): string { return 'u' . bin2hex(random_bytes(8)); }
    Sem ela, ninguém cria a conta master, mesmo que abra o site antes do dono. */
 function chaveInstalacao(): string {
   global $CFG;
+  if (!empty($CFG['chave_instalacao'])) return strtoupper(trim((string)$CFG['chave_instalacao']));   // definida em api/config.php (fora do repositório)
   $f = dirname($CFG['db']) . '/CHAVE-INSTALACAO.txt';
   if (!is_file($f)) @file_put_contents($f, strtoupper(bin2hex(random_bytes(5))) . "\n");
   return trim((string)@file_get_contents($f));
 }
+function pagamentoDe(string $uid): array { $s = banco()->prepare("SELECT data FROM docs WHERE col = 'pagamentos' AND id = ?"); $s->execute([$uid]); $j = $s->fetchColumn(); return $j ? (json_decode($j, true) ?: []) : []; }
 function temMaster(): bool { return (bool)banco()->query("SELECT 1 FROM usuarios WHERE papel = 'master' LIMIT 1")->fetchColumn(); }
 function baseUrl(): string {
   global $https, $caminho;
@@ -377,9 +379,15 @@ case 'apagar': {
     if (!is_array($data)) erro('Conteúdo inválido.');
     $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if (strlen($json) > (master() ? 1_000_000 : 300_000)) erro('Conteúdo grande demais.');
-    if (!master() && $col === 'anunciantes') {   // plano do anunciante: até 3 anúncios por conta
+    if (!master() && $col === 'anunciantes') {   // plano normal: até 3 anúncios; promoção: 1 por crédito ativo
       $n = 0; foreach ((array)($data['itens'] ?? []) as $it) if (is_array($it) && !empty($it['nome'])) $n++;
-      if ($n > 3) erro('O plano do anunciante permite até 3 anúncios.');
+      $pg = pagamentoDe($id); $lim = 3;
+      if (($pg['plano'] ?? '') === 'promo') { $lim = 0; foreach ((array)($pg['creditos'] ?? []) as $c) if (($c['ate'] ?? '') >= date('Y-m-d')) $lim++; $lim = max(1, $lim); }
+      if ($n > $lim) erro($lim === 3 ? 'O plano do anunciante permite até 3 anúncios.' : 'Seus créditos liberam ' . $lim . ' anúncio(s). Compre mais um crédito para cadastrar outro.');
+    }
+    if (!master() && $col === 'avaliacoes') {   // curadorias de parceiro: limitadas às compradas
+      $n = 0; foreach ((array)($data['itens'] ?? []) as $it) if (is_array($it) && ($it['tipo'] ?? '') === 'parceiro') $n++;
+      if ($n > 0 && $n > (int)(pagamentoDe($id)['curadorias'] ?? 0)) erro('Você não tem curadorias disponíveis. Compre um crédito na promoção.');
     }
     if (!master() && $col === 'posts' && count((array)($data['itens'] ?? [])) > 60) erro('Limite de 60 publicações por conta. Apague as mais antigas.');
     $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, $json, agora()]);

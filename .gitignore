@@ -8,3 +8,4 @@ api/dados/
 __pycache__/
 *.sqlite
 .DS_Store
+api/config.php
