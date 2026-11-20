@@ -1386,7 +1386,6 @@ button.mt-sel { cursor: pointer } button.mt-sel.on { background: var(--c); color
 .hof-in > img { width: 100%; height: 100%; object-fit: cover; display: block; position: static !important; filter: none !important }
 .hof-in .qda { position: absolute; inset: 0; width: 100%; height: 100% }
 .hof-tag { position: absolute; right: 12px; top: 12px; z-index: 6; font: 600 .66rem var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 99px; background: rgba(0,0,0,.55); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px) }
-.ph .slide.of .qda-selo { display: none }
 @media (max-width: 859px) { .hof-box { bottom: 200px; top: 84px; left: 12px; right: 12px } .hof-in { border-radius: 14px } }
 @media (max-width: 559px) { .ph .slide .cap { bottom: 228px !important } .hsub { display: none } .hcta { margin-top: 14px; padding: 10px 16px; font-size: .9rem } .ph h1, .ph .h1 { font-size: clamp(1.8rem, 8.4vw, 2.4rem) !important } .hof-box { bottom: 160px } .hof-tag { font-size: .56rem; padding: 3px 7px; right: 8px; top: 8px } }
 
@@ -1448,66 +1447,32 @@ button.mt-sel { cursor: pointer } button.mt-sel.on { background: var(--c); color
 @media (max-width: 640px) { .gal-arr { display: none } .gal-z { display: none } }
 @media (hover: hover) { .gal-dica { display: none } }
 
-/* ===== Banner animado QR-DOG (baseado nas animações do site QR-DOG) ===== */
-.qda { container-type: inline-size; position: relative; display: block; width: 100%; aspect-ratio: 5 / 2; overflow: hidden; background: #1b2745; color: #fff; text-decoration: none; font-family: inherit }
-.ofp-ban .qda { border-radius: 0 }
+/* ===== Banner do QR-DOG: medalha 3D do site qrdogdados.com.br (vídeo em loop) ===== */
+.qda { container-type: inline-size; position: relative; display: block; width: 100%; aspect-ratio: 5 / 2; overflow: hidden; background: #0a1234; color: #fff; text-decoration: none; font-family: inherit }
 .qda * { box-sizing: border-box }
-.qda-bg { position: absolute; inset: 0; background: radial-gradient(60% 90% at 78% 50%, rgba(184,211,53,.22), transparent 60%), radial-gradient(50% 70% at 0% 100%, rgba(215,77,99,.18), transparent 60%), linear-gradient(120deg, #1b2745, #14203b 60%, #1b2745); background-size: 140% 140%; animation: qdaBg 14s ease-in-out infinite alternate }
-.qda-big { position: absolute; left: -1cqw; bottom: -9cqw; font: 800 30cqw/1 inherit; letter-spacing: -.06em; color: rgba(255,255,255,.035); pointer-events: none }
-.qda-l { position: absolute; left: 5cqw; top: 0; bottom: 0; width: 50cqw; display: flex; flex-direction: column; justify-content: center; gap: 1.3cqw; z-index: 3 }
-.qda-selo { align-self: flex-start; font: 600 1cqw/1 "Geist Mono", ui-monospace, monospace; letter-spacing: .12em; padding: .7cqw 1.1cqw; border-radius: 99px; background: #b8d335; color: #1b2745 }
-.qda-brand { display: flex; align-items: center; gap: .9cqw; font-weight: 800; font-size: 2cqw; letter-spacing: .02em }
-.qda-brand img { width: 3cqw; height: 3cqw; border-radius: 50% }
-.qda-h { position: relative; display: block; height: 9.5cqw }
-.qda-h b { position: absolute; inset: 0; font-size: 4.1cqw; line-height: 1.08; font-weight: 800; letter-spacing: -.02em; opacity: 0; transform: translateY(1.5cqw); animation: qdaTxt 9s infinite }
-.qda-h .f2 { animation-delay: 3s; color: #b8d335 } .qda-h .f3 { animation-delay: 6s }
-.qda-p { font-size: 1.45cqw; line-height: 1.45; color: rgba(255,255,255,.75); max-width: 40cqw }
-.qda-cta { align-self: flex-start; margin-top: .6cqw; font-weight: 700; font-size: 1.5cqw; padding: 1.1cqw 2cqw; border-radius: 99px; background: #b8d335; color: #1b2745; animation: qdaPulse 2.4s ease-in-out infinite }
-.qda-r { position: absolute; right: 0; top: 0; bottom: 0; width: 46cqw; z-index: 2 }
-.qda-halo { position: absolute; left: 50%; top: 50%; width: 34cqw; height: 34cqw; margin: -17cqw 0 0 -17cqw; border-radius: 50%; background: radial-gradient(circle, rgba(184,211,53,.35), transparent 65%); animation: qdaHalo 5s ease-in-out infinite }
-.qda-ring { position: absolute; left: 50%; top: 50%; width: 30cqw; height: 30cqw; margin: -15cqw 0 0 -15cqw; border-radius: 50%; border: .18cqw dashed rgba(184,211,53,.5); animation: qdaSpin 40s linear infinite }
-.qda-ph { position: absolute; left: 21cqw; top: 3.4cqw; width: 15.5cqw; height: 33cqw; border-radius: 2.4cqw; background: #0d1426; border: .45cqw solid #0d1426; box-shadow: 0 2cqw 4cqw rgba(0,0,0,.45), 0 0 0 .15cqw rgba(255,255,255,.12); overflow: hidden; animation: qdaFloat 7s ease-in-out infinite }
-.qda-notch { position: absolute; top: .5cqw; left: 50%; width: 4.5cqw; height: 1cqw; margin-left: -2.25cqw; background: #0d1426; border-radius: 99px; z-index: 3 }
-.qda-sc { position: absolute; inset: 0; border-radius: 2cqw; overflow: hidden; background: #f4f6f1 }
-.qda-feed { position: absolute; left: 0; right: 0; top: 0; animation: qdaScroll 16s ease-in-out infinite }
-.qda-top { display: block; height: 17cqw; background: url(img/patrocinadores/qrdog-pet.webp) center 30% / cover; position: relative }
-.qda-top i { position: absolute; left: 1cqw; top: 2.4cqw; font: normal 700 .95cqw/1 inherit; padding: .55cqw .9cqw; border-radius: 99px; background: #d74d63; color: #fff; animation: qdaPulse 1.6s ease-in-out infinite }
-.qda-body { display: flex; flex-direction: column; gap: .9cqw; padding: 1.3cqw 1.2cqw 3cqw; color: #1b2745 }
-.qda-body b { font-size: 1.75cqw; line-height: 1.1; font-weight: 800 }
-.qda-body > span { font-size: .95cqw; line-height: 1.4; color: #4b5568 }
-.qda-body em { font-style: normal; font-weight: 700; font-size: 1cqw; text-align: center; padding: .9cqw; border-radius: 99px; background: #25d366; color: #fff }
-.qda-chips { display: flex; flex-wrap: wrap; gap: .5cqw } .qda-chips i { font: normal 600 .8cqw/1 inherit; padding: .5cqw .7cqw; border-radius: 99px; background: #e6ecd0; color: #1b2745 }
-.qda-md { position: absolute; left: 4.5cqw; top: 9cqw; width: 18cqw; height: 18cqw; animation: qdaFloat 7s ease-in-out infinite reverse; z-index: 4 }
-.qda-md img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 1.5cqw 2.5cqw rgba(0,0,0,.45)); animation: qdaGlow 3.2s ease-in-out infinite }
-.qda-scan { position: absolute; left: 24%; right: 24%; top: 26%; height: .3cqw; border-radius: 99px; background: #b8d335; box-shadow: 0 0 1.2cqw .3cqw rgba(184,211,53,.8); animation: qdaScan 2.6s ease-in-out infinite }
-.qda-pulse { position: absolute; inset: 12%; border-radius: 50%; border: .25cqw solid rgba(184,211,53,.7); animation: qdaRing 2.6s ease-out infinite }
-.qda-card { position: absolute; left: 2cqw; bottom: 3cqw; display: flex; flex-direction: column; gap: .3cqw; padding: 1cqw 1.4cqw; border-radius: 1.2cqw; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 5; animation: qdaIn 9s ease-in-out infinite }
-.qda-card small { font-size: .85cqw; color: rgba(255,255,255,.7) } .qda-card small em { font-style: normal; color: #b8d335 }
-.qda-card b { font: 700 2.1cqw/1 "Geist Mono", ui-monospace, monospace; letter-spacing: .14em; color: #b8d335 }
-.qda-zap { position: absolute; right: 2.4cqw; top: 5cqw; display: flex; align-items: center; gap: .9cqw; padding: .9cqw 1.3cqw .9cqw .9cqw; border-radius: 1.2cqw; background: #fff; color: #1b2745; box-shadow: 0 1.2cqw 2.4cqw rgba(0,0,0,.35); z-index: 5; animation: qdaIn 9s ease-in-out 4.5s infinite both }
-.qda-zap i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: #25d366 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center / 60% no-repeat }
-.qda-zap b { display: block; font-size: 1.1cqw } .qda-zap small { display: block; font-size: .85cqw; color: #5b6475 }
-@keyframes qdaBg { to { background-position: 100% 100% } }
-@keyframes qdaTxt { 0% { opacity: 0; transform: translateY(1.5cqw) } 6%, 30% { opacity: 1; transform: none } 36%, 100% { opacity: 0; transform: translateY(-1.5cqw) } }
-@keyframes qdaFloat { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-1.2cqw) } }
-@keyframes qdaGlow { 0%, 100% { filter: drop-shadow(0 1.5cqw 2.5cqw rgba(0,0,0,.45)) } 50% { filter: drop-shadow(0 0 2.4cqw rgba(184,211,53,.75)) } }
-@keyframes qdaSpin { to { transform: rotate(360deg) } }
-@keyframes qdaHalo { 0%, 100% { transform: scale(.9); opacity: .7 } 50% { transform: scale(1.08); opacity: 1 } }
-@keyframes qdaScroll { 0%, 12% { transform: translateY(0) } 45%, 60% { transform: translateY(-11cqw) } 92%, 100% { transform: translateY(0) } }
-@keyframes qdaScan { 0%, 100% { top: 28%; opacity: 0 } 10% { opacity: 1 } 50% { top: 68%; opacity: 1 } 60% { opacity: 0 } }
-@keyframes qdaRing { 0% { transform: scale(.7); opacity: .9 } 100% { transform: scale(1.35); opacity: 0 } }
-@keyframes qdaPulse { 0%, 100% { transform: scale(1) } 50% { transform: scale(1.05) } }
-@keyframes qdaIn { 0% { opacity: 0; transform: translateY(1cqw) scale(.95) } 8%, 45% { opacity: 1; transform: none } 53%, 100% { opacity: 0; transform: translateY(-1cqw) scale(.95) } }
+.qdv-bg { position: absolute; inset: 0; background: radial-gradient(45% 80% at 72% 50%, #16286a 0, #0d1a4a 45%, transparent 75%), linear-gradient(180deg, #0b1438, #0a1234 60%, #080f2c) }
+.qdv-st { position: absolute; inset: 0; opacity: .8; background-image: radial-gradient(1.5px 1.5px at 8% 20%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 22% 70%, #cfe 50%, transparent 51%), radial-gradient(1.5px 1.5px at 38% 12%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 47% 88%, #fff 50%, transparent 51%), radial-gradient(2px 2px at 55% 30%, rgba(120,160,255,.9) 50%, transparent 51%), radial-gradient(1px 1px at 92% 18%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 96% 76%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 30% 45%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 4% 90%, #fff 50%, transparent 51%); animation: qdvTw 4s ease-in-out infinite alternate }
+.qdv-l { position: absolute; left: 6cqw; top: 0; bottom: 0; width: 46cqw; display: flex; flex-direction: column; justify-content: center; gap: 1.5cqw; z-index: 3 }
+.qdv-eb { display: flex; align-items: center; gap: .8cqw; font: 600 1.05cqw/1 var(--mono, monospace); letter-spacing: .2em; color: rgba(255,255,255,.85) }
+.qdv-eb i { width: .9cqw; height: .9cqw; border-radius: 50%; background: #b8d335; box-shadow: 0 0 0 .3cqw rgba(184,211,53,.25); animation: qdvPulse 2s ease-in-out infinite }
+.qdv-h { display: block; font: 800 5.6cqw/.98 var(--display); letter-spacing: -.035em; text-transform: uppercase }
+.qdv-h b { display: block; font-weight: 800; opacity: 0; transform: translateY(1.6cqw); animation: qdvIn .8s cubic-bezier(.2,.7,.2,1) forwards } .qdv-h b:nth-child(2) { animation-delay: .12s } .qdv-h b:nth-child(3) { animation-delay: .24s }
+.qdv-h em { font-style: normal; color: #b8d335 }
+.qdv-p { font-size: 1.5cqw; line-height: 1.45; color: rgba(214,224,255,.78); max-width: 38cqw }
+.qdv-cta { align-self: flex-start; display: inline-flex; align-items: center; gap: 1.2cqw; margin-top: .6cqw; padding: .55cqw .6cqw .55cqw 2cqw; border-radius: 99px; background: #b8d335; color: #10183a; font-weight: 700; font-size: 1.45cqw; box-shadow: 0 0 2.4cqw rgba(184,211,53,.45) }
+.qdv-cta i { width: 2.8cqw; height: 2.8cqw; border-radius: 50%; display: grid; place-items: center; font-style: normal; background: rgba(16,24,58,.14) }
+.qdv-r { position: absolute; right: 3cqw; top: 50%; width: 39cqw; aspect-ratio: 560 / 576; transform: translateY(-50%); z-index: 2 }
+.qdv-v { width: 100%; height: 100%; object-fit: cover; display: block; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%) }
+.qdv-selo { position: absolute; right: 1.6cqw; top: 1.6cqw; z-index: 4; font: 600 .9cqw/1 var(--mono, monospace); letter-spacing: .12em; text-transform: uppercase; padding: .7cqw 1.1cqw; border-radius: 99px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18) }
+.ph .slide.of .qdv-selo { display: none }
+@keyframes qdvTw { to { opacity: .35 } }
+@keyframes qdvPulse { 50% { box-shadow: 0 0 0 .6cqw rgba(184,211,53,0) } }
+@keyframes qdvIn { to { opacity: 1; transform: none } }
 @container (max-width: 560px) {
-  .qda-l { width: 58cqw; gap: 1.6cqw } .qda-p { display: none } .qda-h { height: 13cqw } .qda-h b { font-size: 5.4cqw }
-  .qda-selo { font-size: 1.7cqw } .qda-brand { font-size: 3cqw } .qda-cta { font-size: 2.6cqw; padding: 1.6cqw 3cqw }
-  .qda-card, .qda-zap { display: none } .qda-r { width: 44cqw }
+  .qdv-l { width: 56cqw; gap: 2cqw } .qdv-p { display: none } .qdv-h { font-size: 7.4cqw } .qdv-eb { font-size: 1.9cqw } .qdv-cta { font-size: 2.7cqw; padding: 1cqw 1cqw 1cqw 3cqw } .qdv-cta i { width: 4.6cqw; height: 4.6cqw }
+  .qdv-r { width: 44cqw; right: 0 } .qdv-selo { font-size: 1.6cqw }
 }
-@media (prefers-reduced-motion: reduce) {
-  .qda *, .qda-bg { animation: none !important }
-  .qda-h b { opacity: 0 } .qda-h .f2 { opacity: 1; transform: none }
-  .qda-card, .qda-zap { opacity: 1 }
-}
+@media (prefers-reduced-motion: reduce) { .qdv-st, .qdv-eb i { animation: none } .qdv-h b { animation: none; opacity: 1; transform: none } }
 </style>
 
 <div class="strip" id="strip" hidden><div class="wrap"><span id="strip-txt"></span><button type="button" id="strip-x" aria-label="Fechar aviso"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>

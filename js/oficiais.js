@@ -81,18 +81,17 @@
 
   /* slides do carrossel: os oficiais entram sempre, antes dos anunciantes da rodada */
   function slides() { return ativos().map(function (o) { return { tipo: "oficial", o: o }; }); }
-  /* banner animado do QR-DOG (mesmas animações do site do QR-DOG: celular com o perfil rolando, medalha flutuando com brilho, leitura do QR e aviso no WhatsApp) */
+  /* banner do QR-DOG: a medalha 3D do próprio site qrdogdados.com.br (gravada da animação do site, em loop) com o texto do site */
   function qrdogAnim(tag, extra) {
-    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: seu pet se perdeu? Um scan traz ele de volta.">' +
-      '<span class="qda-bg"></span><span class="qda-big">QR</span>' +
-      '<span class="qda-l"><span class="qda-selo">PATROCINADOR OFICIAL</span><span class="qda-brand"><img src="img/patrocinadores/qrdog-logo.webp" alt="">QR-DOG</span>' +
-      '<span class="qda-h"><b class="f1">Seu pet se perdeu?</b><b class="f2">Um scan traz ele de volta.</b><b class="f3">O tutor recebe no WhatsApp.</b></span>' +
-      '<span class="qda-p">Medalha com QR Code para a coleira de cães e gatos. Sem app e sem bateria.</span><span class="qda-cta">Quero a medalha →</span></span>' +
-      '<span class="qda-r"><span class="qda-halo"></span><span class="qda-ring"></span>' +
-      '<span class="qda-ph"><span class="qda-notch"></span><span class="qda-sc"><span class="qda-feed"><span class="qda-top"><i>Animal perdido!</i></span><span class="qda-body"><b>Oi, eu sou<br>o Nick</b><span>Estou perdido do meu tutor. Fale com ele para dizer onde estou.</span><em>Chamar no WhatsApp</em><span class="qda-chips"><i>Border Collie</i><i>Dócil</i><i>Porte médio</i></span></span></span></span></span>' +
-      '<span class="qda-md"><img src="img/patrocinadores/qrdog-medalha.webp" alt=""><span class="qda-scan"></span><span class="qda-pulse"></span></span>' +
-      '<span class="qda-card"><small>Medalha <em>lida agora</em></small><b>E610007</b><small>escaneada pela câmera</small></span>' +
-      '<span class="qda-zap"><i></i><span><b>Tutor avisado</b><small>localização enviada no WhatsApp</small></span></span></span>' +
+    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: não é só uma medalha. Um único QR Code na coleira reúne o perfil, o contato, a saúde e os avisos do seu pet.">' +
+      '<span class="qdv-bg"></span><span class="qdv-st"></span>' +
+      '<span class="qdv-l"><span class="qdv-eb"><i></i>MEDALHA QR-DOG</span>' +
+      '<span class="qdv-h"><b>NÃO É</b><b>SÓ <em>UMA</em></b><b><em>MEDALHA.</em></b></span>' +
+      '<span class="qdv-p">Um único QR Code na coleira reúne o perfil, o contato, a saúde e os avisos do seu pet.</span>' +
+      '<span class="qdv-cta">Quero minha medalha <i>→</i></span></span>' +
+      '<span class="qdv-r"><video class="qdv-v" autoplay muted loop playsinline preload="metadata" poster="img/patrocinadores/qrdog-medalha-poster.webp" aria-hidden="true">' +
+      '<source src="img/patrocinadores/qrdog-medalha.webm" type="video/webm"><source src="img/patrocinadores/qrdog-medalha.mp4" type="video/mp4"></video></span>' +
+      '<span class="qdv-selo">Patrocinador oficial</span>' +
       "</" + tag + ">";
   }
   /* slide do banner principal da home: banner inteiro sobre um fundo desfocado do próprio banner */
