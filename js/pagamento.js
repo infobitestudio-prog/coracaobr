@@ -1,8 +1,9 @@
-/* Pagamento mensal do anunciante.
-   - Preço: promocional (config.precoAnuncio, US$ 10) até config.precoFuturoEm; depois config.precoFuturo (US$ 20).
-   - Formas: cartão de crédito/débito e PayPal (link de assinatura configurado no painel), Pix e Zelle (dados no painel; o anunciante informa o pagamento e anexa o comprovante).
-   - O anúncio só aparece ao público depois da confirmação, 1 hora após ela. Vence todo mês; há 2 dias de tolerância; depois disso sai do ar até novo pagamento.
-   - O master confirma pagamentos e pode aprovar sem pagamento até uma data escolhida (cortesia).
+/* Planos do anunciante, em reais.
+   - Pacote: R$ 50 = 3 anúncios por 1 mês (valores no Painel master → Pagamentos). Pacotes somam: 2 pacotes = 6 anúncios por R$ 100, 3 = 9 por R$ 150…
+   - Cada compra vira um pacote com data de pagamento, início e fim. Dá para comprar "agora" (mais vagas já) ou "depois do plano atual" (renovação).
+   - Promoção de curadoria: R$ 20 = 1 anúncio por 1 mês + 5 depoimentos de empresas que a pessoa conhece.
+   - Formas: cartão/débito e PayPal (link), Pix e Zelle (o anunciante informa o pagamento). O master confirma e o pacote entra no ar 1 hora depois.
+   - 2 dias de tolerância depois do fim. O master pode aprovar sem pagamento até uma data (cortesia) e suspender.
    A situação de cada conta fica em pagamentos/<uid>, que só a equipe grava. */
 (function () {
   "use strict";
@@ -14,165 +15,225 @@
   function maisUmMes(iso) { var d = new Date((iso || hoje()) + "T12:00:00"), dia = d.getDate(); d.setDate(1); d.setMonth(d.getMonth() + 1); d.setDate(Math.min(dia, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate())); return d.toISOString().slice(0, 10); }
   function br(iso) { return iso ? String(iso).slice(0, 10).split("-").reverse().join("/") : "—"; }
   function hora(iso) { try { return new Date(iso).toLocaleString("pt-BR", { timeZone: "America/Chicago", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }); } catch (e) { return iso; } }
+  function reais(n) { return G.reais(n); }
+  function diaLocal(iso) { try { return new Date(iso).toLocaleDateString("pt-BR", { timeZone: "America/Chicago" }); } catch (e) { return br(iso); } }
 
   /* ---------- preço ---------- */
-  function precoFuturoEm() { return cfg().precoFuturoEm || "9999-12-31"; }
-  function preco(dia) { var c = cfg(), d = dia || hoje(); return d >= precoFuturoEm() && Number(c.precoFuturo) > 0 ? Number(c.precoFuturo) : Number(c.precoAnuncio) || 10; }
+  function preco() { return Number(cfg().precoAnuncio) || 50; }              /* valor de 1 pacote */
+  function porPacote() { return Math.max(1, Number(cfg().anunciosPorPacote) || 3); }
+  function promoCfg() { return window.Promo ? Promo.cfg() : { preco: 20, anuncios: 1, curadorias: 5 }; }
   function promocional() { return !!(window.Promo && Promo.ativa()); }
-  function chamada() {
-    return window.Promo ? Promo.chamada() : "";
+  function chamada() { return window.Promo ? Promo.chamada() : ""; }
+
+  /* ---------- pacotes ---------- */
+  function doc(uid) { return uid ? Store.obter("pagamentos", uid) : null; }
+  /* lista de pacotes (inclui os registros antigos, de antes dos pacotes) */
+  function pacotes(uid) {
+    var p = doc(uid) || {}, out = (Array.isArray(p.pacotes) ? p.pacotes : []).filter(function (x) { return x && x.inicio && x.fim; }).slice();
+    if (!Array.isArray(p.pacotes)) {
+      if (p.pagoAte) out.push({ id: "antigo", tipo: "pacote", qtd: 1, anuncios: 3, inicio: somaDias(p.pagoAte, -30), fim: p.pagoAte, ativaEm: p.ativaEm || "", pagoEm: "", valor: 0, antigo: true });
+      (p.creditos || []).forEach(function (c, i) { if (c && c.ate) out.push({ id: "cred" + i, tipo: "promo", qtd: 1, anuncios: 1, inicio: String(c.em || "").slice(0, 10) || somaDias(c.ate, -30), fim: c.ate, ativaEm: c.em || "", pagoEm: c.em || "", valor: 0, antigo: true }); });
+    }
+    return out.sort(function (a, b) { return a.inicio < b.inicio ? -1 : a.inicio > b.inicio ? 1 : 0; });
   }
+  function situacao(pk, dia) {
+    dia = dia || hoje();
+    if (dia < pk.inicio || (pk.ativaEm && Date.now() < new Date(pk.ativaEm).getTime())) return dia > pk.fim ? "encerrado" : "agendado";
+    if (dia <= pk.fim) return "ativo";
+    if (dia <= somaDias(pk.fim, TOLERANCIA)) return "tolerancia";
+    return "encerrado";
+  }
+  function emVigor(uid, dia) { return pacotes(uid).filter(function (pk) { var s = situacao(pk, dia); return s === "ativo" || s === "tolerancia"; }); }
+  function vagas(uid, dia) {
+    var p = doc(uid) || {};
+    if (p.status === "suspenso") return 0;
+    var n = emVigor(uid, dia).reduce(function (s, pk) { return s + (Number(pk.anuncios) || 0); }, 0);
+    if (p.status === "cortesia" && p.cortesiaAte && (dia || hoje()) <= p.cortesiaAte) n = Math.max(n, Number(p.cortesiaVagas) || porPacote());
+    return n;
+  }
+  function banners(uid) { return Math.max(vagas(uid) > 0 ? 1 : 0, emVigor(uid).filter(function (pk) { return pk.tipo !== "promo"; }).reduce(function (s, pk) { return s + (Number(pk.qtd) || 1); }, 0)); }
+  function fimAtual(uid) { var v = emVigor(uid); return v.length ? v.reduce(function (m, pk) { return pk.fim > m ? pk.fim : m; }, "") : ""; }
+  function proximoFim(uid) { var v = emVigor(uid); return v.length ? v.reduce(function (m, pk) { return !m || pk.fim < m ? pk.fim : m; }, "") : ""; }
+  function agendados(uid) { return pacotes(uid).filter(function (pk) { return situacao(pk) === "agendado"; }); }
 
   /* ---------- situação da conta ---------- */
-  function doc(uid) { return uid ? Store.obter("pagamentos", uid) : null; }
   function estado(uid) {
-    var p = doc(uid), h = hoje();
-    if (!p) return { fase: "pendente", txt: "Aguardando o primeiro pagamento" };
-    if (p.status === "suspenso") return { fase: "suspenso", txt: "Suspenso pela equipe" };
-    if (p.status === "cortesia") {
-      if (p.cortesiaAte && h <= p.cortesiaAte) return { fase: "cortesia", ate: p.cortesiaAte, txt: "Aprovado pela equipe até " + br(p.cortesiaAte) };
-      return { fase: "vencido", ate: p.cortesiaAte, txt: "Aprovação da equipe terminou em " + br(p.cortesiaAte) };
+    var p = doc(uid) || {}, h = hoje(), n = vagas(uid), vig = emVigor(uid), ag = agendados(uid);
+    if (p.status === "suspenso") return { fase: "suspenso", vagas: 0, txt: "Conta suspensa pela equipe" };
+    if (p.status === "cortesia" && p.cortesiaAte && h <= p.cortesiaAte && !vig.length) return { fase: "cortesia", vagas: n, ate: p.cortesiaAte, txt: "Aprovado pela equipe até " + br(p.cortesiaAte) + " · " + n + " anúncios" };
+    if (vig.length) {
+      var tol = vig.every(function (pk) { return situacao(pk) === "tolerancia"; }), fim = fimAtual(uid);
+      return tol ? { fase: "tolerancia", vagas: n, ate: fim, txt: "Plano venceu em " + br(fim) + " · sai do ar em " + br(somaDias(fim, TOLERANCIA + 1)) + " sem renovação" }
+        : { fase: "ativo", vagas: n, ate: fim, txt: n + (n === 1 ? " anúncio liberado" : " anúncios liberados") + " · próximo término em " + br(proximoFim(uid)) };
     }
-    if (!p.pagoAte) return { fase: "pendente", txt: "Aguardando o primeiro pagamento" };
-    if (p.ativaEm && Date.now() < new Date(p.ativaEm).getTime()) return { fase: "ativando", ate: p.pagoAte, txt: "Pagamento confirmado · entra no ar às " + hora(p.ativaEm) };
-    if (h <= p.pagoAte) return { fase: "ativo", ate: p.pagoAte, txt: "Ativo · próximo vencimento em " + br(p.pagoAte) };
-    if (h <= somaDias(p.pagoAte, TOLERANCIA)) return { fase: "tolerancia", ate: p.pagoAte, txt: "Venceu em " + br(p.pagoAte) + " · sai do ar em " + br(somaDias(p.pagoAte, TOLERANCIA + 1)) + " sem pagamento" };
-    return { fase: "vencido", ate: p.pagoAte, txt: "Fora do ar desde " + br(somaDias(p.pagoAte, TOLERANCIA + 1)) + " · pagamento pendente" };
+    if (ag.length) { var a = ag[0]; return { fase: "ativando", vagas: 0, ate: a.fim, txt: a.inicio > h ? "Pacote agendado · começa em " + br(a.inicio) : "Pagamento confirmado · entra no ar às " + hora(a.ativaEm) }; }
+    if (pacotes(uid).length) return { fase: "vencido", vagas: 0, txt: "Plano encerrado · contrate um pacote para voltar ao ar" };
+    return { fase: "pendente", vagas: 0, txt: "Nenhum pacote contratado ainda" };
   }
   function noAr(fase) { return fase === "ativo" || fase === "tolerancia" || fase === "cortesia"; }
+  /* anúncios do dono, do mais antigo para o mais novo: os N primeiros (N = vagas) aparecem ao público */
+  function anunciosDe(uid) { return Store.lista("lugares").filter(function (x) { return x._dono === uid; }).sort(function (a, b) { return String(a.criadoEm || a.id) < String(b.criadoEm || b.id) ? -1 : 1; }); }
   function visivel(l) {
-    if (!l._dono) return true; if (!noAr(estado(l._dono).fase)) return false;
-    var d = doc(l._dono); if (!d || d.plano !== "promo" || !window.Promo) return true;
-    var n = Math.max(1, Promo.creditosAtivos(l._dono).length), meus = Store.lista("lugares").filter(function (x) { return x._dono === l._dono; }).sort(function (a, b) { return String(a.criadoEm || a.id) < String(b.criadoEm || b.id) ? -1 : 1; });
-    return meus.indexOf(l) < n;
+    if (!l._dono) return true;
+    var n = vagas(l._dono); if (!n) return false;
+    return anunciosDe(l._dono).indexOf(l) < n;
   }
   function informados(uid) { return Store.lista("avisos").filter(function (a) { return a.tipo === "pagamento-informado" && !a.confirmado && !a.recusado && (!uid || a.uid === uid); }); }
 
   /* ---------- formas de pagamento ---------- */
+  /* todo pagamento é por Pix, para a chave oficial (QR Code e copia e cola gerados com o valor) */
   function formas() {
-    var p = cfg().pagamentos || {}, out = [];
-    var cartao = G.url(p.cartao || p.anuncio || p.basico), paypal = G.url(p.paypal);
-    if (cartao) out.push({ k: "cartao", nome: "Cartão de crédito ou débito", ic: "ticket", desc: "Pagamento seguro com renovação mensal automática.", link: cartao });
-    if (paypal) out.push({ k: "paypal", nome: "PayPal", ic: "globe", desc: "Assinatura mensal pela sua conta PayPal (aceita cartão também).", link: paypal });
-    if (p.pix) out.push({ k: "pix", nome: "Pix", ic: "bulb", desc: "Do Brasil, em reais, pela cotação do dia.", chave: p.pix, titular: p.pixNome || "" });
-    if (p.zelle) out.push({ k: "zelle", nome: "Zelle", ic: "phone", desc: "De conta bancária americana, em dólar.", chave: p.zelle, titular: p.zelleNome || "" });
-    return out;
+    var d = window.Pix ? Pix.dados() : { chave: (cfg().pagamentos || {}).pix || "32.021.268/0001-04", nome: (cfg().pagamentos || {}).pixNome || "Danilo Araujo Santos Desenvolvedor" };
+    return [{ k: "pix", nome: "Pix", ic: "bulb", desc: "Na hora, em reais. QR Code e copia e cola com o valor certo.", chave: d.chave, titular: d.nome }];
   }
 
-  /* ---------- página de pagamento do anunciante (#pagar) ---------- */
+  /* ---------- calculadora (página de contratar e painel do anunciante) ---------- */
+  var Q = { qtd: 1, comeca: "agora" };
+  function previsao(uid, qtd, comeca) {
+    var ini = comeca === "renovar" && fimAtual(uid) ? somaDias(fimAtual(uid), 1) : hoje();
+    return { inicio: ini, fim: maisUmMes(ini), anuncios: qtd * porPacote(), valor: qtd * preco() };
+  }
+  function calculadora(uid, compacta) {
+    var pr = previsao(uid, Q.qtd, Q.comeca), temAtual = !!fimAtual(uid);
+    var opc = [1, 2, 3, 4, 5, 10].map(function (n) { return '<button type="button" class="pk-q" data-pk-q="' + n + '" aria-pressed="' + (Q.qtd === n) + '"><b>' + n * porPacote() + "</b><small>anúncios</small><em>" + reais(n * preco()) + "</em></button>"; }).join("");
+    return '<div class="pk-calc" data-pk-calc><div class="pk-hd"><div><p class="pk-k">Monte seu plano</p><h3>' + reais(preco()) + " = " + porPacote() + ' anúncios por 1 mês</h3><p class="pk-s">Cada pacote soma mais ' + porPacote() + " anúncios. Compre quantos quiser.</p></div></div>" +
+      '<div class="pk-qs">' + opc + "</div>" +
+      '<div class="pk-step"><span>Pacotes</span><button type="button" data-pk-mais="-1" aria-label="Menos um pacote">−</button><b data-pk-n>' + Q.qtd + '</b><button type="button" data-pk-mais="1" aria-label="Mais um pacote">+</button></div>' +
+      (temAtual ? '<div class="pk-quando" role="radiogroup" aria-label="Quando começa"><label class="pk-op"><input type="radio" name="pk-comeca" value="agora"' + (Q.comeca === "agora" ? " checked" : "") + '><span><b>Somar agora</b><small>Mais anúncios no ar assim que o pagamento for confirmado.</small></span></label><label class="pk-op"><input type="radio" name="pk-comeca" value="renovar"' + (Q.comeca === "renovar" ? " checked" : "") + '><span><b>Renovar depois do plano atual</b><small>Começa em ' + br(somaDias(fimAtual(uid), 1)) + ", sem perder nenhum dia.</small></span></label></div>" : "") +
+      '<div class="pk-res"><div><small>Anúncios</small><b>' + pr.anuncios + '</b></div><div><small>Início</small><b>' + br(pr.inicio) + '</b></div><div><small>Término</small><b>' + br(pr.fim) + '</b></div><div class="pk-tot"><small>Total</small><b>' + reais(pr.valor) + "</b></div></div>" +
+      (compacta ? '<a class="btn pk-go" href="#pagar">Contratar ' + pr.anuncios + " anúncios por " + reais(pr.valor) + " " + ic("arrow") + "</a>" : "") + "</div>";
+  }
+  function redesenhaCalc() { var el = document.querySelector("[data-pk-calc]"); if (!el) return; var compacta = !!el.querySelector(".pk-go"); el.outerHTML = calculadora(Store.uid(), compacta); if (document.querySelector(".pg")) viewPagar(document.querySelector(".pg").dataset.promo === "1"); }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pk-q]"); if (b) { Q.qtd = Number(b.dataset.pkQ); redesenhaCalc(); return; }
+    b = e.target.closest("[data-pk-mais]"); if (b) { Q.qtd = Math.max(1, Math.min(30, Q.qtd + Number(b.dataset.pkMais))); redesenhaCalc(); }
+  });
+  document.addEventListener("change", function (e) { if (e.target.name === "pk-comeca") { Q.comeca = e.target.value; redesenhaCalc(); } });
+
+  /* ---------- linha do tempo dos pacotes ---------- */
+  var NOME_SIT = { ativo: ["No ar", "ok"], tolerancia: ["Tolerância", "warn"], agendado: ["Agendado", "xp"], encerrado: ["Encerrado", ""] };
+  function linhaDoTempo(uid) {
+    var ps = pacotes(uid).slice().reverse(), pend = informados(uid);
+    if (!ps.length && !pend.length) return '<p class="small muted">Nenhum pacote ainda. Quando você contratar, cada compra aparece aqui com a data do pagamento, o início e o término.</p>';
+    return '<div class="pk-tl">' + pend.map(function (a) { return '<div class="pk-it pend"><span class="pk-dot"></span><div><b>' + (a.plano === "promo" ? "Promoção de curadoria" : (a.qtd || 1) + (Number(a.qtd) > 1 ? " pacotes" : " pacote") + " · " + (Number(a.qtd || 1) * porPacote()) + " anúncios") + '</b><small>Pagamento informado em ' + diaLocal(a.criadoEm) + " · " + esc((a.metodo || "").toUpperCase()) + ' · aguardando confirmação</small></div><span class="pk-v">' + reais(a.valor || 0) + '</span><span class="pill warn">Aguardando</span></div>'; }).join("") +
+      ps.map(function (pk) { var s = situacao(pk), ns = NOME_SIT[s] || [s, ""]; return '<div class="pk-it ' + s + '"><span class="pk-dot"></span><div><b>' + (pk.tipo === "promo" ? "Promoção de curadoria · 1 anúncio + " + (pk.curadorias || 5) + " depoimentos" : (pk.qtd || 1) + (Number(pk.qtd) > 1 ? " pacotes" : " pacote") + " · " + (pk.anuncios || 3) + " anúncios") + (pk.cortesia ? " · cortesia" : "") + "</b><small>" + (pk.pagoEm ? "Pago em " + diaLocal(pk.pagoEm) + " · " : "") + "Início " + br(pk.inicio) + " · Término " + br(pk.fim) + (s === "tolerancia" ? " · sai do ar em " + br(somaDias(pk.fim, TOLERANCIA + 1)) : "") + '</small></div><span class="pk-v">' + (pk.valor ? reais(pk.valor) : "—") + '</span><span class="pill ' + ns[1] + '">' + ns[0] + "</span></div>"; }).join("") + "</div>";
+  }
+
+  /* ---------- página de contratar / pagar (#pagar e #pagar-promo) ---------- */
   function viewPagar(promo) {
     promo = promo === true && window.Promo && (Promo.ativa() || Store.admin());
-    var uid = Store.uid(), e = estado(uid), fs = formas(), valor = promo ? Number(Promo.cfg().preco) : preco(), cot = Number(cfg().cotacao) || 0, pend = informados(uid);
-    if (!uid) { G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:40px"><h1 class="page-h">Entre na sua conta</h1><p class="muted">Para pagar o anúncio, entre com o e-mail e a senha da sua conta de anunciante.</p><a class="btn" href="#entrar">Entrar</a></div></section>'; return; }
-    var meus = G.lugares ? Store.lista("lugares").filter(function (l) { return l._dono === uid; }) : [];
+    var uid = Store.uid(), e = estado(uid), fs = formas(), pend = informados(uid), cot = Number(cfg().cotacao) || 0;
+    if (!uid) { G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:40px"><h1 class="page-h">Entre na sua conta</h1><p class="muted">Para contratar anúncios, entre com o e-mail e a senha da sua conta de anunciante.</p><a class="btn" href="#entrar" data-acesso="anunciar">Entrar como anunciante</a></div></section>'; return; }
+    var pc = promoCfg(), pr = previsao(uid, Q.qtd, Q.comeca), valor = promo ? Number(pc.preco) : pr.valor;
+    var resumo = promo ? '<div class="an-plan"><p class="an-pl">Promoção de curadoria</p><div class="an-pv">' + reais(pc.preco) + '</div><ul class="an-ck"><li>' + ic("star") + pc.anuncios + " anúncio no ar por 1 mês</li><li>" + ic("star") + pc.curadorias + " depoimentos de empresas que você conhece</li><li>" + ic("bell") + "Entra no ar 1 hora após a confirmação</li></ul></div>"
+      : '<div class="an-plan"><p class="an-pl">Resumo da compra</p><div class="an-pv">' + reais(pr.valor) + '</div><ul class="an-ck"><li>' + ic("star") + Q.qtd + (Q.qtd === 1 ? " pacote" : " pacotes") + " · " + pr.anuncios + " anúncios</li><li>" + ic("clock") + "De " + br(pr.inicio) + " a " + br(pr.fim) + "</li><li>" + ic("bell") + "Entra no ar 1 hora após a confirmação</li><li>" + ic("leaf") + TOLERANCIA + " dias de tolerância no fim</li></ul></div>";
     G.app.innerHTML = '<section class="block pg"' + (promo ? ' data-promo="1"' : "") + '><div class="wrap">' +
-      '<header class="xp-h"><div><p class="eyebrow">' + (promo ? "Promoção de dezembro" : "Pagamento do anúncio") + '</p><h1 class="page-h">' + (promo ? "Comprar crédito promocional" : "Ative seu anúncio") + "</h1></div></header>" + (promo ? '<div class="pg-st pg-cortesia" style="margin-bottom:14px"><b>1 crédito = ' + Promo.cfg().anuncios + " anúncio por 1 mês + " + Promo.cfg().curadorias + " curadorias</b><span>Pague " + G.usd(valor) + " e avise abaixo. A equipe confirma e o saldo aparece na página da promoção.</span></div>" : "") +
+      '<header class="xp-h"><div><a class="more" href="#anunciante">← Painel do anunciante</a><p class="eyebrow" style="margin-top:8px">' + (promo ? "Promoção de curadoria" : "Contratar anúncios") + '</p><h1 class="page-h">' + (promo ? "1 anúncio + " + pc.curadorias + " depoimentos por " + reais(pc.preco) : "Quantos anúncios você quer?") + "</h1></div></header>" +
       '<div class="pg-grid"><div class="pg-main">' +
-      '<div class="pg-st pg-' + e.fase + '"><b>' + esc(e.txt) + "</b>" + (pend.length ? "<span>Você informou um pagamento em " + br(pend[0].criadoEm) + ". A equipe confere e confirma; o anúncio entra no ar 1 hora depois da confirmação.</span>" : noAr(e.fase) ? "<span>Seu anúncio está visível para o público.</span>" : "<span>Até a confirmação, só você vê o anúncio, em modo prévia.</span>") + "</div>" +
-      (fs.length ? '<h2 class="pg-h">Escolha como pagar</h2><div class="pg-fs">' + fs.map(function (f, i) {
-        var corpo = f.link ? '<a class="btn" href="' + esc(f.link) + '" target="_blank" rel="noopener" data-pg-link="' + f.k + '">Pagar ' + G.usd(valor) + (promo ? "" : "/mês") + " " + ic("arrow") + "</a>"
-          : '<div class="pg-chave"><small>' + (f.k === "pix" ? "Chave Pix" : "Zelle (e-mail ou telefone)") + "</small><b>" + esc(f.chave) + "</b>" + (f.titular ? "<small>Em nome de " + esc(f.titular) + "</small>" : "") + '<button type="button" class="btn ghost sm" data-copiar="' + esc(f.chave) + '">Copiar</button></div>' +
-            '<p class="pg-val">Valor: <b>' + (f.k === "pix" && cot ? "R$ " + (valor * cot).toFixed(2).replace(".", ",") + "</b> <small>(" + G.usd(valor) + " pela cotação de R$ " + cot.toFixed(2).replace(".", ",") + ")</small>" : G.usd(valor) + "</b>") + "</p>";
+      '<div class="pg-st pg-' + e.fase + '"><b>' + esc(e.txt) + "</b>" + (pend.length ? "<span>Você informou um pagamento em " + br(pend[0].criadoEm) + ". A equipe confere e confirma; o pacote entra no ar 1 hora depois da confirmação.</span>" : noAr(e.fase) ? "<span>Seus anúncios liberados estão visíveis para o público.</span>" : "<span>Até a confirmação do pagamento, só você vê seus anúncios, em modo prévia.</span>") + "</div>" +
+      (promo ? "" : calculadora(uid, false)) +
+      (fs.length ? '<h2 class="pg-h">Pague ' + reais(valor) + ' por Pix</h2><div class="pg-fs">' + fs.map(function (f, i) {
+        var txid = "CBR" + String(uid || "").replace(/[^A-Za-z0-9]/g, "").slice(-8).toUpperCase() + (promo ? "P" : "Q" + Q.qtd) + new Date().toISOString().slice(5, 10).replace("-", "");
+        var corpo = window.Pix ? Pix.bloco(valor, txid, promo ? "CoracaoBR promocao" : "CoracaoBR " + (Q.qtd * porPacote()) + " anuncios") : '<div class="pg-chave"><small>Chave Pix</small><b>' + esc(f.chave) + "</b><small>Em nome de " + esc(f.titular) + '</small><button type="button" class="btn ghost sm" data-copiar="' + esc(f.chave) + '">Copiar</button></div><p class="pg-val">Valor: <b>' + reais(valor) + "</b></p>";
         return '<details class="pg-f"' + (i === 0 ? " open" : "") + '><summary><span class="pg-ic">' + ic(f.ic) + "</span><span><b>" + f.nome + "</b><small>" + f.desc + "</small></span></summary><div class=\"pg-fc\">" + corpo +
           '<form class="pg-inf" data-pg-form="' + f.k + '"><p class="small muted">Depois de pagar, avise aqui para a equipe confirmar.</p><div class="field"><label>Código, nome do pagador ou referência</label><input name="ref" maxlength="120" required placeholder="Ex.: ID da transação ou nome de quem pagou"></div>' +
-          (f.link ? "" : '<div class="field"><label>Comprovante (foto ou print, opcional)</label><input type="file" name="comp" accept="image/*"></div>') + '<button class="btn ghost sm" type="submit">Já paguei</button></form></div></details>';
-      }).join("") + "</div>" : '<div class="note">As formas de pagamento ainda estão sendo configuradas pela equipe. Fale com o CoraçãoBR pelo WhatsApp para ativar seu anúncio.</div>') +
-      "</div>" +
-      '<aside class="pg-side"><div class="an-plan"><p class="an-pl">' + (promocional() ? "Preço promocional" : "Plano único") + '</p><div class="an-pv">' + G.usd(valor) + "<small>/mês</small></div>" + (promocional() ? '<p class="pg-promo">' + esc(chamada()) + "</p>" : "") +
-      '<ul class="an-ck"><li>' + ic("clock") + "Pagamento mensal, sem fidelidade</li><li>" + ic("star") + "Até 3 anúncios com banner</li><li>" + ic("bell") + "Entra no ar 1 hora após a confirmação</li><li>" + ic("leaf") + "2 dias de tolerância após o vencimento</li></ul></div>" +
-      (meus.length ? '<div class="xp-box"><p class="xp-t">Seus anúncios (prévia)</p>' + meus.map(function (l) { return '<a class="pg-prev" href="#lugar-' + esc(l.id) + '">' + (G.foto(l) ? '<img src="' + esc(G.foto(l)) + '" alt="">' : "<span></span>") + "<b>" + esc(l.nome) + "</b>" + ic("arrow") + "</a>"; }).join("") + "</div>" : "") + "</aside></div></div></section>";
+          (f.link ? "" : '<div class="field"><label>Comprovante (foto ou print, opcional)</label><input type="file" name="comp" accept="image/*"></div>') + '<button class="btn ghost sm" type="submit">Já paguei ' + reais(valor) + "</button></form></div></details>";
+      }).join("") + "</div>" : '<div class="note">As formas de pagamento ainda estão sendo configuradas pela equipe. Escreva para <a href="mailto:' + esc(cfg().emailOficial || "coracaobr.oficial@gmail.com") + '">' + esc(cfg().emailOficial || "coracaobr.oficial@gmail.com") + "</a> para ativar seus anúncios.</div>") +
+      '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Seus pacotes</h3></div>' + linhaDoTempo(uid) + "</div>" +
+      "</div>" + '<aside class="pg-side">' + resumo + "</aside></div></div></section>";
   }
   document.addEventListener("submit", async function (ev) {
     var f = ev.target.closest("[data-pg-form]"); if (!f) return; ev.preventDefault();
-    var uid = Store.uid(), b = f.querySelector("button"), arq = f.comp && f.comp.files && f.comp.files[0], comp = "";
+    var uid = Store.uid(), b = f.querySelector("button"), arq = f.comp && f.comp.files && f.comp.files[0], comp = "", promo = !!f.closest(".pg").dataset.promo;
     b.disabled = true;
     try {
       if (arq) comp = await Store.salvarFoto(arq);
-      var meus = Store.lista("lugares").filter(function (l) { return l._dono === uid; }), l = meus[0] || {};
-      await Store.gravar("avisos", Store.novoId("pg"), { tipo: "pagamento-informado", plano: f.closest(".pg").dataset.promo ? "promo" : "anuncio", uid: uid, metodo: f.dataset.pgForm, ref: f.ref.value.trim().slice(0, 120), comprovante: comp, valor: f.closest(".pg").dataset.promo ? Number(Promo.cfg().preco) : preco(), lugarId: l.id || "", nome: l.nome || "", categoria: l.categoria || "", criadoEm: new Date().toISOString(), lido: false });
-      G.toast("Pagamento informado. A equipe confirma e o anúncio entra no ar 1 hora depois.");
-      if (f.closest(".pg").dataset.promo) location.hash = "promo"; else viewPagar();
+      var meus = anunciosDe(uid), l = meus[0] || {}, pr = previsao(uid, Q.qtd, Q.comeca), pc = promoCfg();
+      await Store.gravar("avisos", Store.novoId("pg"), { tipo: "pagamento-informado", plano: promo ? "promo" : "pacote", qtd: promo ? 1 : Q.qtd, comeca: promo ? "agora" : Q.comeca, uid: uid, metodo: f.dataset.pgForm, ref: f.ref.value.trim().slice(0, 120), comprovante: comp, valor: promo ? Number(pc.preco) : pr.valor, moeda: "BRL", lugarId: l.id || "", nome: l.nome || (Store.conta && Store.conta() ? Store.conta().nome : ""), categoria: l.categoria || "", criadoEm: new Date().toISOString(), lido: false });
+      G.toast("Pagamento informado. A equipe confirma e o pacote entra no ar 1 hora depois.");
+      if (promo) location.hash = "promo"; else viewPagar();
     } catch (er) { b.disabled = false; G.toast(er.message || "Não foi possível enviar agora."); }
   });
 
-  /* ---------- bloco no painel do anunciante ---------- */
+  /* ---------- bloco resumido (painel do anunciante) ---------- */
   function blocoPainel(uid) {
-    var e = estado(uid), pend = informados(uid);
-    return '<div class="dk-card dk-flat pg-mini pg-' + e.fase + '"><div class="dk-ch"><h3>Pagamento</h3><span class="pill ' + (noAr(e.fase) ? "ok" : "warn") + '">' + (noAr(e.fase) ? "No ar" : e.fase === "ativando" ? "Ativando" : "Fora do ar") + "</span></div>" +
+    var e = estado(uid), pend = informados(uid), usados = anunciosDe(uid).length;
+    return '<div class="dk-card dk-flat pg-mini pg-' + e.fase + '"><div class="dk-ch"><h3>Seu plano</h3><span class="pill ' + (noAr(e.fase) ? "ok" : "warn") + '">' + (noAr(e.fase) ? "No ar" : e.fase === "ativando" ? "Ativando" : "Fora do ar") + "</span></div>" +
       "<p>" + esc(e.txt) + "</p>" + (pend.length ? '<p class="small muted">Pagamento informado em ' + br(pend[0].criadoEm) + ", aguardando confirmação da equipe.</p>" : "") +
-      '<dl class="kv"><dt>Valor</dt><dd>' + G.usd(preco()) + "/mês" + (promocional() ? " (promocional)" : "") + "</dd></dl>" + (promocional() ? '<p class="small muted">' + esc(chamada()) + "</p>" : "") +
-      (noAr(e.fase) && e.fase !== "tolerancia" ? '<a class="btn ghost sm" href="#pagar">Formas de pagamento</a>' : '<a class="btn" href="#pagar">Pagar agora</a>') + "</div>";
+      '<dl class="kv"><dt>Anúncios</dt><dd>' + usados + " criados · " + e.vagas + " liberados</dd><dt>Valor</dt><dd>" + reais(preco()) + " a cada " + porPacote() + " anúncios por mês</dd></dl>" +
+      '<a class="btn' + (noAr(e.fase) ? " ghost" : "") + ' sm" href="#pagar">' + (noAr(e.fase) ? "Contratar mais anúncios" : "Contratar agora") + "</a></div>";
   }
   /* aviso de prévia na página do anúncio para o dono */
   function avisoPrevia(l) {
     if (!l._dono || visivel(l)) return "";
     var dono = Store.uid() === l._dono || Store.admin(); if (!dono) return "";
-    return '<div class="pg-pv">' + ic("bell") + "<div><b>Prévia do seu anúncio</b><span>" + esc(estado(l._dono).txt) + ". O público só vê este anúncio depois da confirmação do pagamento.</span></div>" + (Store.uid() === l._dono ? '<a class="btn sm" href="#pagar">Pagar</a>' : "") + "</div>";
+    var n = vagas(l._dono);
+    return '<div class="pg-pv">' + ic("bell") + "<div><b>Prévia do seu anúncio</b><span>" + (n ? "Seu plano libera " + n + (n === 1 ? " anúncio" : " anúncios") + " e este passou do limite. Contrate mais um pacote para ele aparecer." : esc(estado(l._dono).txt) + ". O público só vê este anúncio depois da confirmação do pagamento.") + "</span></div>" + (Store.uid() === l._dono ? '<a class="btn sm" href="#pagar">Contratar</a>' : "") + "</div>";
   }
 
   /* ---------- aba do master ---------- */
   function abaMaster(el) {
     var contas = {}, c = cfg(), p = c.pagamentos || {};
     Store.lista("lugares").forEach(function (l) { if (l._dono) (contas[l._dono] = contas[l._dono] || []).push(l); });
+    Store.lista("pagamentos").forEach(function (d) { if (d && d.id && !contas[d.id]) contas[d.id] = []; });
     var pend = informados();
     var linhaConta = function (uid) {
       var ls = contas[uid] || [], e = estado(uid), d = doc(uid) || {};
-      return '<div class="pgm-c" data-uid="' + esc(uid) + '"><div class="pgm-t"><b>' + esc(ls.map(function (l) { return l.nome; }).join(" · ") || uid) + '</b><small>' + esc(e.txt) + "</small></div>" +
-        '<span class="pill ' + (noAr(e.fase) ? "ok" : "warn") + '">' + (noAr(e.fase) ? "No ar" : e.fase === "ativando" ? "Ativando" : "Fora do ar") + "</span>" +
-        '<div class="pgm-a"><button type="button" class="btn sm" data-pgm-conf>Confirmar pagamento</button>' + (window.Promo ? '<button type="button" class="btn ghost sm" data-pgm-promo>+1 crédito promocional</button>' : "") + '<button type="button" class="btn ghost sm" data-pgm-cort>Aprovar sem pagamento</button>' + (d.status !== "suspenso" ? '<button type="button" class="btn danger sm" data-pgm-susp>Suspender</button>' : "") + "</div>" +
-        '<div class="pgm-cort" hidden><label class="small">Aprovado até <input type="date" data-pgm-ate value="' + somaDias(hoje(), 30) + '" min="' + hoje() + '"></label><input data-pgm-nota maxlength="120" placeholder="Motivo (opcional)"><button type="button" class="btn sm" data-pgm-cort-ok>Aprovar</button></div></div>';
+      return '<div class="pgm-c" data-uid="' + esc(uid) + '"><div class="pgm-t"><b>' + esc(ls.map(function (l) { return l.nome; }).join(" · ") || uid) + '</b><small>' + esc(e.txt) + " · " + ls.length + " criados</small></div>" +
+        '<span class="pill ' + (noAr(e.fase) ? "ok" : "warn") + '">' + (noAr(e.fase) ? e.vagas + " no ar" : e.fase === "ativando" ? "Ativando" : "Fora do ar") + "</span>" +
+        '<div class="pgm-a"><span class="pgm-qtd">Pacotes <input type="number" min="1" max="30" value="1" data-pgm-n></span><button type="button" class="btn sm" data-pgm-conf>+ Pacote pago</button>' + (window.Promo ? '<button type="button" class="btn ghost sm" data-pgm-promo>+ Promoção de curadoria</button>' : "") + '<button type="button" class="btn ghost sm" data-pgm-cort>Aprovar sem pagamento</button>' + (d.status !== "suspenso" ? '<button type="button" class="btn danger sm" data-pgm-susp>Suspender</button>' : '<button type="button" class="btn ghost sm" data-pgm-reat>Reativar</button>') + "</div>" +
+        '<div class="pgm-cort" hidden><label class="small">Aprovado até <input type="date" data-pgm-ate value="' + somaDias(hoje(), 30) + '" min="' + hoje() + '"></label><label class="small">Anúncios <input type="number" min="1" max="60" value="' + porPacote() + '" data-pgm-vagas></label><input data-pgm-nota maxlength="120" placeholder="Motivo (opcional)"><button type="button" class="btn sm" data-pgm-cort-ok>Aprovar</button></div>' +
+        '<details class="pgm-hist"><summary>Pacotes desta conta</summary>' + linhaDoTempo(uid) + "</details></div>";
     };
     el.innerHTML = '<div class="stack">' +
       '<div class="panel stack" style="gap:12px"><h3>Pagamentos informados' + (pend.length ? " (" + pend.length + ")" : "") + "</h3>" +
-      (pend.length ? pend.map(function (a) { return '<div class="pgm-c"><div class="pgm-t"><b>' + esc(a.nome || a.uid) + " · " + esc((a.metodo || "").toUpperCase()) + " · " + G.usd(a.valor || 0) + (a.plano === "promo" ? " · crédito promocional" : "") + "</b><small>" + br(a.criadoEm) + " · ref.: " + esc(a.ref || "—") + "</small>" + (a.comprovante ? '<a class="small" href="' + esc(Store.urlFoto(a.comprovante)) + '" target="_blank" rel="noopener">ver comprovante</a>' : "") + '</div><div class="pgm-a"><button type="button" class="btn sm" data-pgm-ok="' + esc(a.id) + '" data-uid="' + esc(a.uid) + '">Confirmar</button><button type="button" class="btn ghost sm" data-pgm-no="' + esc(a.id) + '">Recusar</button></div></div>'; }).join("") : '<p class="muted small">Nenhum pagamento aguardando confirmação.</p>') + "</div>" +
-      '<div class="panel stack" style="gap:12px"><h3>Contas de anunciantes</h3><p class="small muted">Confirmar soma 1 mês a partir do vencimento atual (ou de hoje, se já venceu) e o anúncio entra no ar 1 hora depois. Tolerância de ' + TOLERANCIA + " dias após o vencimento.</p>" +
+      (pend.length ? pend.map(function (a) { return '<div class="pgm-c"><div class="pgm-t"><b>' + esc(a.nome || a.uid) + " · " + esc((a.metodo || "").toUpperCase()) + " · " + reais(a.valor || 0) + " · " + (a.plano === "promo" ? "promoção de curadoria" : (a.qtd || 1) + (Number(a.qtd) > 1 ? " pacotes" : " pacote") + " (" + (Number(a.qtd || 1) * porPacote()) + " anúncios)" + (a.comeca === "renovar" ? " · renovação" : "")) + "</b><small>" + br(a.criadoEm) + " · ref.: " + esc(a.ref || "—") + "</small>" + (a.comprovante ? '<a class="small" href="' + esc(Store.urlFoto(a.comprovante)) + '" target="_blank" rel="noopener">ver comprovante</a>' : "") + '</div><div class="pgm-a"><button type="button" class="btn sm" data-pgm-ok="' + esc(a.id) + '" data-uid="' + esc(a.uid) + '">Confirmar</button><button type="button" class="btn ghost sm" data-pgm-no="' + esc(a.id) + '">Recusar</button></div></div>'; }).join("") : '<p class="muted small">Nenhum pagamento aguardando confirmação.</p>') + "</div>" +
+      '<div class="panel stack" style="gap:12px"><h3>Contas de anunciantes</h3><p class="small muted">Cada pacote pago libera ' + porPacote() + " anúncios por 1 mês e entra no ar 1 hora depois da confirmação. Pacotes somam. Tolerância de " + TOLERANCIA + " dias depois do término.</p>" +
       (Object.keys(contas).length ? Object.keys(contas).map(linhaConta).join("") : '<p class="muted small">Nenhuma conta de anunciante ainda.</p>') + "</div>" +
-      '<form class="panel stack" style="gap:12px" id="pgm-cfg"><h3>Preço e formas de pagamento</h3><div class="form2">' +
-      campo("pc-p", "Preço atual (US$/mês)", c.precoAnuncio || 10, 'type="number" min="0" step="0.01"') + campo("pc-pi", "Promoção · início", (c.promo || {}).inicio || "2026-12-01", 'type="date"') + campo("pc-pf", "Promoção · fim", (c.promo || {}).fim || "2026-12-31", 'type="date"') + campo("pc-pv", "Promoção · preço do crédito (US$)", (c.promo || {}).preco || 3, 'type="number" min="0" step="0.01"') + "</div>" +
-      '<div class="form2">' + campo("pc-card", "Link de assinatura · cartão de crédito/débito (Stripe, Square…)", p.cartao || p.anuncio || "", 'placeholder="https://"') + campo("pc-pp", "Link de assinatura · PayPal", p.paypal || "", 'placeholder="https://"') +
-      campo("pc-pix", "Chave Pix", p.pix || "") + campo("pc-pixn", "Titular do Pix", p.pixNome || "") + campo("pc-ze", "Zelle (e-mail ou telefone)", p.zelle || "") + campo("pc-zen", "Titular do Zelle", p.zelleNome || "") + "</div>" +
+      '<form class="panel stack" style="gap:12px" id="pgm-cfg"><h3>Preços (em reais) e formas de pagamento</h3><div class="form2">' +
+      campo("pc-p", "Valor do pacote (R$)", preco(), 'type="number" min="0" step="0.01"') + campo("pc-n", "Anúncios por pacote", porPacote(), 'type="number" min="1" max="20"') +
+      campo("pc-pv", "Promoção de curadoria · valor (R$)", promoCfg().preco, 'type="number" min="0" step="0.01"') + campo("pc-pc", "Promoção · depoimentos incluídos", promoCfg().curadorias, 'type="number" min="1" max="20"') +
+      campo("pc-pi", "Promoção · início", (c.promo || {}).inicio || promoCfg().inicio, 'type="date"') + campo("pc-pf", "Promoção · fim", (c.promo || {}).fim || promoCfg().fim, 'type="date"') + "</div>" +
+      '<p class="small muted">Todos os pagamentos são por Pix. O site gera o QR Code e o Pix copia e cola com o valor de cada compra.</p><div class="form2">' + campo("pc-pix", "Chave Pix (CNPJ)", p.pix || "32.021.268/0001-04") + campo("pc-pixn", "Favorecido (como aparece no banco)", p.pixNome || "Danilo Araujo Santos Desenvolvedor") + campo("pc-pixc", "Cidade do favorecido (no QR Code)", p.pixCidade || "BRASIL") + "</div>" +
       '<button class="btn" type="submit" style="justify-self:start">Salvar</button></form></div>';
     el.onclick = function (ev) {
       var b, box = ev.target.closest(".pgm-c"), uid = box && box.dataset.uid;
-      if ((b = ev.target.closest("[data-pgm-ok]"))) { var av = Store.obter("avisos", b.dataset.pgmOk); if (av && av.plano === "promo") confirmaPromo(b.dataset.uid, b.dataset.pgmOk); else confirma(b.dataset.uid, "", b.dataset.pgmOk); return; }
+      if ((b = ev.target.closest("[data-pgm-ok]"))) { var av = Store.obter("avisos", b.dataset.pgmOk); if (!av) return; if (av.plano === "promo") novoPacote(av.uid, { tipo: "promo" }, av); else novoPacote(av.uid, { qtd: Number(av.qtd) || 1, comeca: av.comeca }, av); return; }
       if ((b = ev.target.closest("[data-pgm-no]"))) { var a = Store.obter("avisos", b.dataset.pgmNo); if (a) Store.gravar("avisos", a.id, Object.assign({}, a, { recusado: true, lido: true })).then(function () { abaMaster(el); }); return; }
       if (!uid) return;
-      if (ev.target.closest("[data-pgm-conf]")) { confirma(uid, ""); return; }
-      if (ev.target.closest("[data-pgm-promo]")) { confirmaPromo(uid, ""); return; }
+      if (ev.target.closest("[data-pgm-conf]")) { novoPacote(uid, { qtd: Math.max(1, Number(box.querySelector("[data-pgm-n]").value) || 1), comeca: "agora" }, null); return; }
+      if (ev.target.closest("[data-pgm-promo]")) { novoPacote(uid, { tipo: "promo" }, null); return; }
       if (ev.target.closest("[data-pgm-cort]")) { box.querySelector(".pgm-cort").hidden = false; return; }
-      if (ev.target.closest("[data-pgm-cort-ok]")) { var ate = box.querySelector("[data-pgm-ate]").value; if (!ate) { G.toast("Escolha a data de expiração."); return; } grava(uid, { status: "cortesia", cortesiaAte: ate, nota: box.querySelector("[data-pgm-nota]").value.trim() }, "Aprovado até " + br(ate) + "."); return; }
+      if (ev.target.closest("[data-pgm-cort-ok]")) { var ate = box.querySelector("[data-pgm-ate]").value; if (!ate) { G.toast("Escolha a data de expiração."); return; } grava(uid, { status: "cortesia", cortesiaAte: ate, cortesiaVagas: Math.max(1, Number(box.querySelector("[data-pgm-vagas]").value) || porPacote()), nota: box.querySelector("[data-pgm-nota]").value.trim() }, "Aprovado até " + br(ate) + "."); return; }
+      if (ev.target.closest("[data-pgm-reat]")) { grava(uid, { status: "ativo" }, "Conta reativada."); return; }
       if ((b = ev.target.closest("[data-pgm-susp]"))) { if (!b.dataset.ok) { b.dataset.ok = 1; b.textContent = "Confirmar suspensão"; return; } grava(uid, { status: "suspenso" }, "Conta suspensa."); }
     };
     $("#pgm-cfg", el).onsubmit = function (ev) {
       ev.preventDefault(); var v = function (id) { return $("#" + id, el).value.trim(); }, pg = Object.assign({}, cfg().pagamentos || {});
-      pg.cartao = v("pc-card"); pg.paypal = v("pc-pp"); pg.pix = v("pc-pix"); pg.pixNome = v("pc-pixn"); pg.zelle = v("pc-ze"); pg.zelleNome = v("pc-zen"); pg.anuncio = pg.cartao;
-      var novo = Object.assign({}, cfg(), { precoAnuncio: Number(v("pc-p")) || 10, precoFuturo: 0, precoFuturoEm: "", promo: Object.assign({}, cfg().promo || {}, { inicio: v("pc-pi"), fim: v("pc-pf"), preco: Number(v("pc-pv")) || 3, anuncios: 1, curadorias: 5 }), pagamentos: pg });
-      delete novo.id; Store.gravar("config", "geral", novo).then(function () { G.toast("Preço e formas de pagamento salvos."); }).catch(function (er) { G.toast(er.message || "Não foi possível salvar."); });
+      pg.pix = v("pc-pix") || "32.021.268/0001-04"; pg.pixNome = v("pc-pixn") || "Danilo Araujo Santos Desenvolvedor"; pg.pixCidade = v("pc-pixc") || "BRASIL";
+      var novo = Object.assign({}, cfg(), { moedaAnuncio: "BRL", precoAnuncio: Number(v("pc-p")) || 50, anunciosPorPacote: Math.max(1, Number(v("pc-n")) || 3), precoFuturo: 0, precoFuturoEm: "", promo: Object.assign({}, cfg().promo || {}, { inicio: v("pc-pi"), fim: v("pc-pf"), preco: Number(v("pc-pv")) || 20, anuncios: 1, curadorias: Math.max(1, Number(v("pc-pc")) || 5) }), pagamentos: pg });
+      delete novo.id; Store.gravar("config", "geral", novo).then(function () { G.toast("Preços e formas de pagamento salvos."); }).catch(function (er) { G.toast(er.message || "Não foi possível salvar."); });
     };
     function grava(uid, extra, msg) {
       var d = Object.assign({}, doc(uid) || {}, extra, { atualizadoEm: new Date().toISOString() }); delete d.id; delete d._dono;
       return Store.gravar("pagamentos", uid, d).then(function () { G.toast(msg); abaMaster(el); }).catch(function (er) { G.toast(er.message || "Não foi possível salvar."); });
     }
-    function confirma(uid, metodo, avisoId) {
-      var d = doc(uid) || {}, base = d.pagoAte && d.pagoAte >= hoje() ? d.pagoAte : hoje(), ate = maisUmMes(base);
-      var hist = (d.historico || []).slice(-23); hist.push({ em: new Date().toISOString(), valor: preco(), ate: ate, aviso: avisoId || "" });
-      var ativa = d.pagoAte && d.pagoAte >= somaDias(hoje(), -TOLERANCIA) && d.status !== "suspenso" ? new Date().toISOString() : new Date(Date.now() + ATIVA_EM_MIN * 60000).toISOString();
-      grava(uid, { status: "ativo", pagoAte: ate, ativaEm: ativa, historico: hist }, "Pagamento confirmado. Ativo até " + br(ate) + (ativa > new Date().toISOString() ? "; entra no ar em 1 hora." : "."));
-      if (avisoId) { var a = Store.obter("avisos", avisoId); if (a) Store.gravar("avisos", a.id, Object.assign({}, a, { confirmado: true, lido: true })); }
-    }
-    /* crédito promocional: +1 anúncio por 1 mês e +5 curadorias */
-    function confirmaPromo(uid, avisoId) {
-      var d = doc(uid) || {}, pc = window.Promo ? Promo.cfg() : { anuncios: 1, curadorias: 5, preco: 3 }, ate = maisUmMes(hoje());
-      var cr = (d.creditos || []).slice(-50); cr.push({ em: new Date().toISOString(), ate: ate, aviso: avisoId || "" });
-      var hist = (d.historico || []).slice(-23); hist.push({ em: new Date().toISOString(), valor: pc.preco, ate: ate, aviso: avisoId || "", promo: true });
-      var ativa = d.pagoAte && d.pagoAte >= hoje() && d.status === "ativo" ? new Date().toISOString() : new Date(Date.now() + ATIVA_EM_MIN * 60000).toISOString();
-      grava(uid, { status: "ativo", plano: d.plano === "anuncio" && d.pagoAte >= hoje() ? "anuncio" : "promo", creditos: cr, curadorias: (Number(d.curadorias) || 0) + Number(pc.curadorias || 5), pagoAte: !d.pagoAte || d.pagoAte < ate ? ate : d.pagoAte, ativaEm: ativa, historico: hist }, "Crédito promocional confirmado: +1 anúncio por 1 mês e +" + (pc.curadorias || 5) + " curadorias.");
-      if (avisoId) { var a = Store.obter("avisos", avisoId); if (a) Store.gravar("avisos", a.id, Object.assign({}, a, { confirmado: true, lido: true })); }
+    /* cria o pacote confirmado: agora (soma vagas) ou depois do plano atual (renovação) */
+    function novoPacote(uid, o, aviso) {
+      var d = doc(uid) || {}, lista = pacotes(uid).filter(function (x) { return !x.antigo; }), agora = new Date(), pc = promoCfg();
+      if (!Array.isArray(d.pacotes)) lista = pacotes(uid).map(function (x) { return Object.assign({}, x, { antigo: undefined }); });
+      var promo = o.tipo === "promo", qtd = promo ? 1 : Math.max(1, Number(o.qtd) || 1);
+      var ini = o.comeca === "renovar" && fimAtual(uid) ? somaDias(fimAtual(uid), 1) : hoje();
+      var pk = { id: "pk" + Date.now().toString(36), tipo: promo ? "promo" : "pacote", qtd: qtd, anuncios: promo ? Number(pc.anuncios) || 1 : qtd * porPacote(), curadorias: promo ? Number(pc.curadorias) || 5 : 0, valor: promo ? Number(pc.preco) : qtd * preco(), moeda: "BRL", pagoEm: agora.toISOString(), inicio: ini, fim: maisUmMes(ini), ativaEm: ini === hoje() ? new Date(agora.getTime() + ATIVA_EM_MIN * 60000).toISOString() : ini + "T00:00:00", aviso: aviso ? aviso.id : "", metodo: aviso ? aviso.metodo || "" : "equipe" };
+      lista.push(pk);
+      var extra = { pacotes: lista.slice(-120), status: d.status === "suspenso" ? "suspenso" : "ativo" };
+      if (promo) extra.curadorias = (Number(d.curadorias) || 0) + pk.curadorias;
+      grava(uid, extra, (promo ? "Promoção confirmada: 1 anúncio + " + pk.curadorias + " depoimentos" : qtd + (qtd === 1 ? " pacote confirmado" : " pacotes confirmados") + ": " + pk.anuncios + " anúncios") + " de " + br(pk.inicio) + " a " + br(pk.fim) + (ini === hoje() ? "; entra no ar em 1 hora." : "."));
+      if (aviso) Store.gravar("avisos", aviso.id, Object.assign({}, aviso, { confirmado: true, lido: true }));
     }
   }
-  function confirmaPromoGlobal() {}
   function campo(id, rot, val, extra) { return '<div class="field"><label for="' + id + '">' + rot + '</label><input id="' + id + '" value="' + esc(val == null ? "" : val) + '" ' + (extra || "") + "></div>"; }
 
   G.views.pagar = function () { viewPagar(false); }; G.views["pagar-promo"] = function () { viewPagar(true); };
-  window.Pag = { preco: preco, promocional: promocional, chamada: chamada, estado: estado, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas };
+  window.Pag = { preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
 })();

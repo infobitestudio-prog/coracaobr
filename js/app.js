@@ -58,6 +58,10 @@
     insta: '<rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="16.6" cy="7.4" r=".6"/>',
     chat: '<path d="M4 20l1.4-4.2A8 8 0 1 1 8.5 19z"/>',
     phone: '<path d="M6 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2L21 15v3a3 3 0 0 1-3 3A15 15 0 0 1 3 6a3 3 0 0 1 3-3z"/>',
+    send: '<path d="M21 4 3 11l7 2 2 7 9-16z"/><path d="M10 13l11-9"/>',
+    xlogo: '<path d="M4 4l16 16M20 4L4 20"/>',
+    linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/>',
+    book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 7h6"/>',
     fb: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/>',
     share: '<path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
     bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.3 1 2.1h5c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
@@ -69,12 +73,20 @@
     globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.500 0 18M12 3c-3 3.500-3 14.500 0 18"/>'
   };
   function ic(n) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + (IC[n] || "") + "</svg>"; }
-  var CONFIG_PADRAO = { acessoPago: false, precoAcesso: 2, contato: "", precoAnuncio: 10, precoDestaque: 25, precoClassificado: 3, diasClassificado: 30, pagamentos: {}, whatsappAviso: "", cotacao: 5.40, faixaTexto: "" };
+  var CONFIG_PADRAO = { acessoPago: false, precoAcesso: 2, contato: "", emailOficial: "coracaobr.oficial@gmail.com", moedaAnuncio: "BRL", precoAnuncio: 50, anunciosPorPacote: 3, precoDestaque: 25, precoClassificado: 3, diasClassificado: 30, pagamentos: {}, whatsappAviso: "", cotacao: 5.40, faixaTexto: "" };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function url(u) { return /^https?:\/\//i.test(u || "") ? u : ""; }
+  function reais(n) { n = Number(n) || 0; return "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
   function usd(n) { n = Number(n) || 0; return "US$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
-  function config() { return Object.assign({}, CONFIG_PADRAO, Store.obter("config", "geral") || {}); }
+  /* configuração: padrões + o que a equipe salvou. Valores antigos em dólar (antes de moedaAnuncio "BRL") são trocados pelos novos em reais. */
+  var PIX_PADRAO = { pix: "32.021.268/0001-04", pixNome: "Danilo Araujo Santos Desenvolvedor", pixCidade: "BRASIL" };
+  function config() {
+    var g = Store.obter("config", "geral") || {}, c = Object.assign({}, CONFIG_PADRAO, g);
+    if (g.moedaAnuncio !== "BRL") { c.precoAnuncio = 50; c.anunciosPorPacote = 3; c.promo = Object.assign({}, c.promo || {}, { preco: 20, anuncios: 1, curadorias: 5 }); c.moedaAnuncio = "BRL"; c.pagamentos = Object.assign({}, c.pagamentos || {}, PIX_PADRAO); }
+    var pg = Object.assign({}, c.pagamentos || {}); Object.keys(PIX_PADRAO).forEach(function (k) { if (!pg[k]) pg[k] = PIX_PADRAO[k]; }); c.pagamentos = pg;
+    return c;
+  }
   /* Valor aproximado em reais, destacado nas cores do Brasil. A cotação é de referência e se edita no Painel. */
   function brl(n) { var c = Number(config().cotacao) || CONFIG_PADRAO.cotacao; n = Number(n); return c > 0 && n > 0 ? ' <span class="brl" title="Cotação de referência: R$ ' + c.toFixed(2).replace(".", ",") + ' por dólar">≈ R$ ' + (n * c).toFixed(2).replace(".", ",") + "</span>" : ""; }
   function toast(msg) { var t = $("#toast"), dl = document.querySelector("dialog[open]"); (dl || document.body).appendChild(t); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 3200); }
@@ -307,7 +319,7 @@
       promo: window.Promo && Promo.ativa() ? '<section class="block reveal"><a class="bn pr-bn" href="#promo"><i></i><small>Promoção de lançamento · até ' + esc(String(Promo.cfg().fim).slice(8, 10) + "/" + String(Promo.cfg().fim).slice(5, 7)) + '</small><b>Anuncie por US$ ' + esc(Promo.cfg().preco) + ' e ajude a construir o guia</b><span>1 anúncio por 1 mês + ' + Promo.cfg().curadorias + ' curadorias por crédito ' + ic("arrow") + "</span></a></section>" : "",
       patrocinados: '<section class="block reveal pats"><div class="head"><div><p class="eyebrow">Patrocinadores</p><h2>' + esc(tx("patrocinados", "Negócios que apoiam o guia")) + '</h2></div><a class="more" href="#anuncie">anunciar aqui</a></div><div class="spg">' + pats.slice(0, 7).map(function (l) {
         return '<a class="spc" href="#lugar-' + esc(l.id) + '"><span class="spc-f">' + (foto(l) ? '<img src="' + esc(foto(l)) + '" alt="" loading="lazy" decoding="async">' : "") + '<em>Patrocinado</em></span><span class="spc-t"><b>' + esc(l.nome) + "</b><small>" + esc(CATS[l.categoria] || "") + (l.cidade ? " · " + esc(l.cidade) : "") + "</small></span>" + ic("arrow") + "</a>";
-      }).join("") + '<a class="spc spc-cta" href="#anuncie"><span class="spc-t"><small>Plano único</small><b>Seu negócio aqui</b><span>US$ ' + esc(String(window.Pag ? Pag.preco() : (cfg.precoAnuncio || 10))) + '/mês · 3 anúncios + 1 banner</span></span>' + ic("arrow") + "</a></div></section>",
+      }).join("") + '<a class="spc spc-cta" href="#anuncie"><span class="spc-t"><small>Pacote mensal</small><b>Seu negócio aqui</b><span>' + reais(window.Pag ? Pag.preco() : (cfg.precoAnuncio || 50)) + ' = ' + (cfg.anunciosPorPacote || 3) + ' anúncios por mês · pacotes somam</span></span>' + ic("arrow") + "</a></div></section>",
       avaliados: fileira(esc(tx("avaliados", "Mais bem avaliados")), by("passeios"), "passeios", true),
       gratisBanner: gratis.length ? '<section class="block reveal"><a class="bn" href="#explorar" data-grupo="gratis"><i></i><small>Sem pagar entrada</small><b>' + gratis.length + " passeios de graça em Dallas</b><span>Ver a lista " + ic("arrow") + "</span></a></section>" : "",
       perto: perto.length ? '<section class="block reveal"><div class="head"><h2>' + esc(Geo.gps ? "Perto de você" : tx("perto", "Mais perto")) + '</h2><button type="button" class="more" data-partida>' + (Geo.gps ? "sua localização" : "saindo de " + esc(Geo.nome)) + '</button></div><div class="list two">' + perto.map(linha).join("") + "</div></section>" : "",
@@ -498,7 +510,13 @@
     if (tel) out.push(qa("tel:" + tel.replace(/[^\d+]/g, ""), "phone", "Ligar", " "));
     if (ig) out.push(qa("https://instagram.com/" + encodeURIComponent(ig), "insta", "Instagram"));
     if (url(l.facebook)) out.push(qa(l.facebook, "fb", "Facebook"));
+    var tg = String(l.telegram || "").trim().replace(/^https?:\/\/(t\.me|telegram\.me)\//i, "").replace(/^@/, "");
+    if (tg) out.push(qa(/^https?:/.test(tg) ? tg : "https://t.me/" + encodeURIComponent(tg), "send", "Telegram"));
+    var xx = String(l.x || "").trim().replace(/^https?:\/\/(www\.)?(x|twitter)\.com\//i, "").replace(/^@/, "").replace(/\/.*$/, "");
+    if (xx) out.push(qa("https://x.com/" + encodeURIComponent(xx), "xlogo", "X"));
+    if (url(l.linkedin)) out.push(qa(l.linkedin, "linkedin", "LinkedIn"));
     if (url(l.site)) out.push(qa(l.site, "globe", "Site"));
+    if (url(l.catalogo)) out.push(qa(l.catalogo, "book", l.catalogoNome || "Catálogo"));
     out.push('<button type="button" class="qa" data-partilhar><span>' + ic("share") + "</span>Enviar</button>");
     return '<div class="qas">' + out.join("") + "</div>";
   }
@@ -581,7 +599,7 @@
     if (!l) { fechar(); toast("Este lugar não está mais no guia."); return; }
     if (L.id !== id) L = { id: id, foto: 0, estrelas: 0, nome: L.nome || meuNome(), texto: "", tab: "sobre", lermais: false, avaliando: false };
     var sc = $(".sheet-scroll", sheetCard), topo = manterScroll && sc ? sc.scrollTop : 0;
-    var fs = (l.fotos || []).slice(0, 10); if (L.foto >= fs.length) L.foto = 0;
+    var fs = (l.fotos || []).slice(0, 20); if (L.foto >= fs.length) L.foto = 0;
     var f = fs[L.foto], n = notas(l), av = avaliacoesDe(id), est = l.tipo === "estabelecimento", mi = milhas(l);
     var destino = encodeURIComponent([l.nome, l.endereco].filter(Boolean).join(", "));
     var perto = lugares().filter(function (o) { return o.id !== id && dist(l, o) != null; }).sort(function (a, b) { return dist(l, a) - dist(l, b); }).slice(0, 12); perto = primeiro(perto).slice(0, 6);
@@ -669,7 +687,7 @@
   sheet.addEventListener("click", function (e) {
     if (e.target === sheet || e.target.closest("[data-fechar]")) { fechar(); return; }
     var p = e.target.closest("[data-foto]"), d = e.target.closest("[data-ir]"), s = e.target.closest("#pick button");
-    var n = ((Store.obter("lugares", L.id) || {}).fotos || []).slice(0, 10).length;
+    var n = ((Store.obter("lugares", L.id) || {}).fotos || []).slice(0, 20).length;
     if (p && n) { L.foto = (L.foto + Number(p.dataset.foto) + n) % n; folha(L.id, true); }
     if (d) { L.foto = Number(d.dataset.ir); folha(L.id, true); }
     var lk = e.target.closest("a[href]");
@@ -722,12 +740,13 @@
   $("#strip-x").addEventListener("click", function () { sess("faixa-fechada", "1"); faixa(); });
   function rodape() {
     if (window.Oficiais) Oficiais.rodape();
-    var c = config(), pr = String(window.Pag ? Pag.preco() : (c.precoAnuncio || 10)).replace(/\.0+$/, "");
+    var c = config(), pr = (window.Pag ? Pag.preco() : (c.precoAnuncio || 50)).toLocaleString("pt-BR");
     var a = $("#f-preco"); if (a) a.textContent = pr;
     Array.from(document.querySelectorAll(".f-preco2")).forEach(function (x) { x.textContent = pr; });
+    (function () { var em = String(config().emailOficial || "coracaobr.oficial@gmail.com"); var fm = document.getElementById("f-mail"); if (fm) fm.href = "mailto:" + em; Array.from(document.querySelectorAll(".f-mailtx")).forEach(function (x) { x.href = "mailto:" + em; x.textContent = em; }); })();
     var y = $("#f-ano"); if (y) y.textContent = new Date().getFullYear();
     var pr2 = $("#f-promo"), pl = $("#f-pl"), promo = window.Pag && Pag.promocional() ? Pag.chamada() : "";
-    if (pr2) { pr2.hidden = !promo; pr2.innerHTML = promo ? '<a href="#promo" style="color:inherit">' + esc(promo) + " Ver a promoção →</a>" : ""; } if (pl) pl.textContent = "Plano mensal";
+    if (pr2) { pr2.hidden = !promo; pr2.innerHTML = promo ? '<a href="#promo" style="color:inherit">' + esc(promo) + " Ver a promoção →</a>" : ""; } if (pl) pl.textContent = "Pacote mensal · " + (c.anunciosPorPacote || 3) + " anúncios";
   }
   document.addEventListener("click", function (e) {
     if (!e.target.closest("[data-ir-news]")) return; e.preventDefault();
@@ -756,24 +775,25 @@
 
   /* ---------- anuncie ---------- */
   function viewAnuncie() {
-    var c = config(), ls = lugares(), preco = usd(window.Pag ? Pag.preco() : c.precoAnuncio), promo = window.Pag && Pag.promocional() ? Pag.chamada() : "", cks = function (a) { return a.map(function (t) { return '<li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' + t + "</li>"; }).join(""); };
+    var c = config(), ls = lugares(), preco = reais(window.Pag ? Pag.preco() : c.precoAnuncio), npk = c.anunciosPorPacote || 3, promo = window.Pag && Pag.promocional() ? Pag.chamada() : "", cks = function (a) { return a.map(function (t) { return '<li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>' + t + "</li>"; }).join(""); };
     var cidades = Array.from(new Set(ls.map(function (l) { return l.cidade; }).filter(Boolean))).length;
     var onde = [["sparkle", "Carrossel da página inicial", "Seu banner (1600 × 640) entra na rodada de 30 minutos, até 10 anunciantes por vez, sem repetir."], ["pin", "Pin verde no mapa", "No mapa, seu negócio aparece em verde, destacado dos lugares comuns."], ["chart", "Topo das buscas", "Em Explorar e no Ranking, patrocinados aparecem primeiro, com moldura amarela."], ["megaphone", "Feed e Mural", "Publique novidades, ofertas, vagas e classificados para toda a comunidade."]];
-    var faq = [["Posso cancelar quando quiser?", "Sim. Não há fidelidade nem multa. O anúncio fica no ar até o fim do mês já pago."], ["Quantos anúncios posso ter?", "Até 3 anúncios na mesma conta, cada um com seu banner, pelo mesmo valor de " + preco + " por mês."], ["Precisa de aprovação?", "Não. Você monta o anúncio e ele entra no ar na hora. A equipe pode remover conteúdo que viole os termos de uso."], ["Como é feito o pagamento?", (c.pagamentos && (c.pagamentos.anuncio || c.pagamentos.basico)) ? "Por cartão, em página segura de pagamento, com renovação mensal automática." : "A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX)."], ["Quem vê meu anúncio?", "Brasileiros e falantes de português que usam o guia para decidir onde comer, comprar e contratar serviços."]];
+    var faq = [["Como funciona o preço?", "Cada pacote custa " + preco + " e libera " + npk + " anúncios por 1 mês. Os pacotes somam: 2 pacotes = " + (2 * npk) + " anúncios, 3 pacotes = " + (3 * npk) + " anúncios, e assim por diante."], ["Como eu pago?", "Por Pix, em reais. O painel gera o QR Code e o Pix copia e cola com o valor certo. A equipe confirma e os anúncios entram no ar 1 hora depois."], ["E quando o plano termina?", "Você recebe e-mail 3, 2 e 1 dia antes do fim. Dá para renovar antes, sem perder nenhum dia. Depois do fim há 2 dias de tolerância."], ["Posso cancelar quando quiser?", "Sim. Não há fidelidade nem renovação automática: é só não renovar."], ["Precisa de aprovação?", "Não. Você monta o anúncio e ele entra no ar na hora. A equipe pode remover conteúdo que viole os termos de uso."], ["Como é feito o pagamento?", (c.pagamentos && (c.pagamentos.anuncio || c.pagamentos.basico)) ? "Por cartão, em página segura de pagamento, com renovação mensal automática." : "A equipe CoraçãoBR envia a cobrança mensal pelo WhatsApp informado (cartão, Zelle ou PIX)."], ["Quem vê meu anúncio?", "Brasileiros e falantes de português que usam o guia para decidir onde comer, comprar e contratar serviços."]];
     app.innerHTML = '<section class="block an"><div class="wrap">' +
       '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p>' + (promo ? '<a class="an-promo" href="#promo">' + ic("sparkle") + esc(promo) + " Ver a promoção →</a>" : "") + '<h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
-      '<div class="row an-cta"><a class="btn" href="#anunciar" data-plano="anuncio">Anunciar agora ' + ic("arrow") + '</a></div>' +
+      '<div class="row an-cta"><a class="btn" href="#anunciante" data-acesso="anunciar">Anunciar agora ' + ic("arrow") + '</a>' + (window.Promo && Promo.ativa() ? '<a class="btn ghost" href="#promo">Promoção: ' + reais(Promo.cfg().preco) + " = 1 anúncio + " + Promo.cfg().curadorias + " depoimentos</a>" : "") + '</div>' +
       '<dl class="an-st"><div><dt>Lugares no guia</dt><dd>' + ls.length + '</dd></div><div><dt>Cidades</dt><dd>' + cidades + '</dd></div><div><dt>Idiomas</dt><dd>3</dd></div></dl></div>' +
-      '<aside class="an-plan"><p class="an-pl">Plano mensal</p><div class="an-pv">' + preco + '<small>/mês</small></div>' + brl(c.precoAnuncio) +
-      '<ul class="an-ck">' + cks(["3 anúncios", "1 banner no carrossel da página inicial", "Pin verde no mapa e topo das buscas", "Publicações no feed e no Mural", "Página com fotos, cardápio, horário e contatos", "Cupom com QR Code e painel de métricas"]) + '</ul>' +
-      '<a class="btn an-go" href="#anunciar" data-plano="anuncio">Começar por ' + preco + '/mês</a><p class="an-fine">' + (promo ? esc(promo) + " · " : "") + 'Pagamento mensal: cartão de crédito ou débito, PayPal, Pix ou Zelle · sem fidelidade</p></aside></div>' +
+      '<aside class="an-plan"><p class="an-pl">Pacote mensal</p><div class="an-pv">' + preco + '<small>/' + npk + ' anúncios</small></div>' +
+      '<ul class="an-ck">' + cks([npk + " anúncios por 1 mês · pacotes somam", "Até 20 fotos, banner, WhatsApp, redes sociais e site", "1 banner no carrossel por pacote", "Pin verde no mapa e topo das buscas", "Publicações no feed e no Mural", "Página com fotos, cardápio, horário e contatos", "Cupom com QR Code e painel de métricas"]) + '</ul>' +
+      '<a class="btn an-go" href="#anunciante" data-acesso="anunciar">Começar por ' + preco + '</a><p class="an-fine">' + (promo ? esc(promo) + " · " : "") + 'Pagamento por Pix, em reais · sem fidelidade</p></aside></div>' +
+      (window.Pag ? '<section class="an-sec"><p class="eyebrow">Quanto custa</p><h2>Some quantos pacotes quiser</h2>' + Pag.calculadora(Store.uid(), true) + "</section>" : "") +
       '<section class="an-sec"><p class="eyebrow">Onde você aparece</p><h2>Visibilidade em todo o guia</h2><div class="an-grid">' + onde.map(function (o) { return '<div class="an-tile"><span>' + ic(o[0]) + "</span><b>" + o[1] + "</b><p>" + o[2] + "</p></div>"; }).join("") + "</div></section>" +
       '<section class="an-sec"><p class="eyebrow">Como funciona</p><h2>No ar em três passos</h2><ol class="an-steps"><li><b>Crie sua conta</b><p>E-mail e senha, em menos de um minuto.</p></li><li><b>Monte o anúncio</b><p>Fotos, descrição, horário, WhatsApp e o banner do carrossel.</p></li><li><b>Pronto, está no ar</b><p>Acompanhe visualizações, cliques e rotas no seu painel.</p></li></ol></section>' +
       '<section class="an-sec an-two"><div><p class="eyebrow">Dúvidas frequentes</p><h2>Perguntas</h2><div class="an-faq">' + faq.map(function (f) { return "<details><summary>" + f[0] + "</summary><p>" + f[1] + "</p></details>"; }).join("") + '</div></div>' +
       '<div class="an-side"><div class="xp-box"><p class="xp-t">Lugares públicos e eventos</p><p class="small muted">Parques, museus, eventos e órgãos públicos são cadastrados pela equipe, sem custo.</p></div>' +
       '<div class="xp-box"><p class="xp-t">Mural de vagas e classificados</p><p class="small muted">Emprego, aluguel, carona ou venda: publicado por anunciantes, incluído no plano.</p><a class="btn ghost sm" href="#mural">Abrir o mural</a></div>' +
-      (c.contato ? '<div class="xp-box"><p class="xp-t">Fale com a equipe</p><p class="small"><b>' + esc(c.contato) + "</b></p></div>" : "") + "</div></section>" +
-      '<div class="an-final"><div><b>Pronto para aparecer?</b><span>' + preco + ' por mês: 3 anúncios + 1 banner.</span></div><a class="btn an-go" href="#anunciar" data-plano="anuncio">Anunciar agora</a></div></div></section>';
+      '<div class="xp-box"><p class="xp-t">Fale com a equipe</p><p class="small">Dúvidas sobre planos, pagamento ou patrocínio:</p><a class="ct-link" href="mailto:' + esc(c.emailOficial || "coracaobr.oficial@gmail.com") + "?subject=" + encodeURIComponent("CoraçãoBR: anúncios e pagamentos") + '">' + esc(c.emailOficial || "coracaobr.oficial@gmail.com") + "</a>" + (c.contato && c.contato !== c.emailOficial ? '<p class="small muted" style="margin-top:6px">' + esc(c.contato) + "</p>" : "") + "</div></div></section>" +
+      '<div class="an-final"><div><b>Pronto para aparecer?</b><span>' + preco + ' = ' + npk + ' anúncios por mês. Pacotes somam.</span></div><a class="btn an-go" href="#anunciante" data-acesso="anunciar">Anunciar agora</a></div></div></section>';
   }
 
   /* ---------- entrar ---------- */
@@ -828,7 +848,7 @@
     if (rota() === "explorar") { pintada = null; render(false); }
   });
   window.addEventListener("hashchange", function () { render(false); });
-  window.Guia = { chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; Store.assinar(function (col) { render(true, col); }); Store.iniciar(); pedirLocal(false); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ligar); else setTimeout(ligar, 0);

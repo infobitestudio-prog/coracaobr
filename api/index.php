@@ -11,6 +11,7 @@ $CFG = [
   'seed' => __DIR__ . '/../data/seed.json',
   'config_inicial' => __DIR__ . '/../data/config-inicial.json',
   'email_remetente' => '',          // ex.: nao-responda@seudominio.com.br (vazio = nao-responda@<domínio do site>)
+  'email_oficial' => 'coracaobr.oficial@gmail.com',   // contato oficial: recebe avisos importantes (pagamentos, novos anunciantes, denúncias) e as respostas dos e-mails do site
   'sessao_dias' => 30,
 ];
 if (is_file(__DIR__ . '/config.php')) { $extra = require __DIR__ . '/config.php'; if (is_array($extra)) $CFG = array_merge($CFG, $extra); }
@@ -159,6 +160,22 @@ function chaveInstalacao(): string {
   return trim((string)@file_get_contents($f));
 }
 function pagamentoDe(string $uid): array { $s = banco()->prepare("SELECT data FROM docs WHERE col = 'pagamentos' AND id = ?"); $s->execute([$uid]); $j = $s->fetchColumn(); return $j ? (json_decode($j, true) ?: []) : []; }
+/* Pacotes do anunciante (R$ 50 = 3 anúncios por 1 mês; somam). Inclui os registros antigos (pagoAte/creditos). */
+function pacotesDe(array $pg): array {
+  if (isset($pg['pacotes']) && is_array($pg['pacotes'])) return array_values(array_filter($pg['pacotes'], fn($x) => is_array($x) && !empty($x['inicio']) && !empty($x['fim'])));
+  $out = [];
+  if (!empty($pg['pagoAte'])) $out[] = ['id' => 'antigo', 'tipo' => 'pacote', 'anuncios' => 3, 'inicio' => date('Y-m-d', strtotime($pg['pagoAte'] . ' -30 day')), 'fim' => $pg['pagoAte']];
+  foreach ((array)($pg['creditos'] ?? []) as $i => $c) if (is_array($c) && !empty($c['ate'])) $out[] = ['id' => "cred$i", 'tipo' => 'promo', 'anuncios' => 1, 'inicio' => substr((string)($c['em'] ?? $c['ate']), 0, 10), 'fim' => $c['ate']];
+  return $out;
+}
+/* Quantos anúncios a conta pode ter no ar hoje (pacotes em vigor + 2 dias de tolerância, ou cortesia da equipe). */
+function vagasDe(array $pg, ?string $hoje = null): int {
+  $hoje = $hoje ?: date('Y-m-d'); if (($pg['status'] ?? '') === 'suspenso') return 0;
+  $n = 0; $tol = date('Y-m-d', strtotime($hoje . ' -2 day'));
+  foreach (pacotesDe($pg) as $pk) if ($pk['inicio'] <= $hoje && $pk['fim'] >= $tol) $n += (int)($pk['anuncios'] ?? 0);
+  if (($pg['status'] ?? '') === 'cortesia' && !empty($pg['cortesiaAte']) && $hoje <= $pg['cortesiaAte']) $n = max($n, (int)($pg['cortesiaVagas'] ?? 3));
+  return $n;
+}
 function temMaster(): bool { return (bool)banco()->query("SELECT 1 FROM usuarios WHERE papel = 'master' LIMIT 1")->fetchColumn(); }
 function baseUrl(): string {
   global $https, $caminho;
@@ -222,6 +239,7 @@ case 'cadastrar': {
   $pdo->prepare('INSERT INTO usuarios (id, email, nome, hash, papel, criado) VALUES (?, ?, ?, ?, ?, ?)')->execute([$id, $email, $nome, password_hash($senha, PASSWORD_DEFAULT), $papel, agora()]);
   $u = ['id' => $id, 'email' => $email, 'nome' => $nome, 'papel' => $papel];
   entra($u);
+  if ($papel === 'anunciante') avisaEquipe('novo anunciante cadastrado', "Nova conta de anunciante:\n\nNome: $nome\nE-mail: $email\nData: " . date('d/m/Y H:i'));
   sai(['ok' => true, 'conta' => publico($u), 'csrf' => $_SESSION['csrf']]);
 }
 case 'entrar': {
@@ -255,7 +273,7 @@ case 'esqueci': {
     $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
     $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
     $txt = "Olá, {$u['nome']}.\n\nRecebemos um pedido para criar uma nova senha na CoraçãoBR.\nAbra o link abaixo em até 24 horas:\n\n$link\n\nSe não foi você, ignore este e-mail; sua senha atual continua valendo.\n\nEquipe CoraçãoBR";
-    @mail($email, '=?UTF-8?B?' . base64_encode('CoraçãoBR: crie uma nova senha') . '?=', $txt, "From: CoraçãoBR <$de>\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+    @mail($email, '=?UTF-8?B?' . base64_encode('CoraçãoBR: crie uma nova senha') . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   }
   sai(['ok' => true, 'msg' => $msg]);
 }
@@ -381,16 +399,28 @@ case 'apagar': {
     if (strlen($json) > (master() ? 1_000_000 : 300_000)) erro('Conteúdo grande demais.');
     if (!master() && $col === 'anunciantes') {   // plano normal: até 3 anúncios; promoção: 1 por crédito ativo
       $n = 0; foreach ((array)($data['itens'] ?? []) as $it) if (is_array($it) && !empty($it['nome'])) $n++;
-      $pg = pagamentoDe($id); $lim = 3;
-      if (($pg['plano'] ?? '') === 'promo') { $lim = 0; foreach ((array)($pg['creditos'] ?? []) as $c) if (($c['ate'] ?? '') >= date('Y-m-d')) $lim++; $lim = max(1, $lim); }
-      if ($n > $lim) erro($lim === 3 ? 'O plano do anunciante permite até 3 anúncios.' : 'Seus créditos liberam ' . $lim . ' anúncio(s). Compre mais um crédito para cadastrar outro.');
+      $lim = max(3, vagasDe(pagamentoDe($id)));   // até 3 em prévia sem pagar; acima disso, conforme os pacotes contratados
+      if ($n > $lim) erro('Seu plano libera ' . $lim . ' anúncios. Contrate mais um pacote (3 anúncios) para cadastrar outro.');
     }
     if (!master() && $col === 'avaliacoes') {   // curadorias de parceiro: limitadas às compradas
       $n = 0; foreach ((array)($data['itens'] ?? []) as $it) if (is_array($it) && ($it['tipo'] ?? '') === 'parceiro') $n++;
       if ($n > 0 && $n > (int)(pagamentoDe($id)['curadorias'] ?? 0)) erro('Você não tem curadorias disponíveis. Compre um crédito na promoção.');
     }
     if (!master() && $col === 'posts' && count((array)($data['itens'] ?? [])) > 60) erro('Limite de 60 publicações por conta. Apague as mais antigas.');
+    $antes = null;
+    if (!master() && $col === 'avisos') { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antes = json_decode((string)$st->fetchColumn(), true) ?: []; }
     $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, $json, agora()]);
+    if ($antes !== null) {   // aviso novo de visitante/anunciante: manda para o e-mail oficial
+      $novos = isset($data['itens']) && is_array($data['itens']) ? array_diff_key($data['itens'], (array)($antes['itens'] ?? [])) : (empty($antes) ? [$data] : []);
+      $NOMES = ['pagamento-informado' => 'pagamento informado', 'denuncia' => 'denúncia', 'classificado' => 'novo classificado no mural', 'novo-anuncio' => 'novo anúncio', 'anuncio' => 'anúncio', 'contato' => 'mensagem de contato'];
+      foreach (array_slice($novos, 0, 5) as $a) {
+        if (!is_array($a)) continue;
+        $t = (string)($a['tipo'] ?? 'aviso'); $nm = $NOMES[$t] ?? $t;
+        $linhas = ["Tipo: $nm"]; foreach (['nome' => 'Nome', 'metodo' => 'Forma', 'valor' => 'Valor (US$)', 'ref' => 'Referência', 'plano' => 'Plano', 'lugarId' => 'Lugar', 'texto' => 'Mensagem'] as $k => $r) if (isset($a[$k]) && $a[$k] !== '' && !is_array($a[$k])) $linhas[] = "$r: " . mb_substr((string)$a[$k], 0, 500);
+        if (eu()) $linhas[] = 'Conta: ' . eu()['nome'] . ' <' . eu()['email'] . '>';
+        avisaEquipe($nm, implode("\n", $linhas));
+      }
+    }
   }
   versao($col);
   sai(['ok' => true]);
@@ -615,6 +645,30 @@ case 'atualizar_diario': {
     }
     $rel['feito'][] = "Google: $ok lugares com nota, avaliações e horário atualizados";
   } else $rel['erros'][] = 'Sem chave da Google Places API: avaliações e horários do Google não foram atualizados.';
+  // 5) lembretes por e-mail: 3, 2 e 1 dia antes do fim do pacote (se não houver renovação já paga emendando)
+  $env = 0; $pix = (array)($geral['pagamentos'] ?? []);
+  foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'pagamentos'")->fetchAll() as $row) {
+    $pg = json_decode($row['data'], true); if (!is_array($pg) || ($pg['status'] ?? '') === 'suspenso') continue;
+    $pks = pacotesDe($pg); if (!$pks) continue;
+    $feitos = (array)($pg['lembretes'] ?? []); $mudou = false;
+    foreach ($pks as $pk) {
+      $dias = (int)round((strtotime($pk['fim']) - strtotime($hoje)) / 86400);
+      if ($dias < 1 || $dias > 3) continue;
+      $emenda = false; foreach ($pks as $o) if ($o !== $pk && $o['fim'] > $pk['fim'] && $o['inicio'] <= date('Y-m-d', strtotime($pk['fim'] . ' +1 day'))) $emenda = true;
+      $marca = ($pk['id'] ?? $pk['fim']) . ':' . $dias;
+      if ($emenda || in_array($marca, $feitos, true)) continue;
+      $u = $pdo->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $u->execute([$row['id']]); $u = $u->fetch();
+      if (!$u || !filter_var($u['email'], FILTER_VALIDATE_EMAIL)) continue;
+      $q = (int)($pk['anuncios'] ?? 3); $fim = date('d/m/Y', strtotime($pk['fim']));
+      $txt = "Olá, {$u['nome']}.\n\nSeu plano no CoraçãoBR (" . $q . ($q === 1 ? ' anúncio' : ' anúncios') . ") termina em $dias " . ($dias === 1 ? 'dia' : 'dias') . ", no dia $fim.\n\nPara seus anúncios continuarem no ar sem interrupção, renove pelo painel do anunciante:\n" . baseUrl() . "#pagar\n\n"
+        . "Pagamento por Pix:\nChave (CNPJ): " . ($pix['pix'] ?? '32.021.268/0001-04') . "\nFavorecido: " . ($pix['pixNome'] ?? 'Danilo Araujo Santos Desenvolvedor') . "\nNo painel você encontra o QR Code e o Pix copia e cola com o valor certo.\n\nDepois do fim, há 2 dias de tolerância; em seguida os anúncios saem do ar até a renovação.\n\nEquipe CoraçãoBR\n" . emailOficial();
+      $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+      if (@mail($u['email'], '=?UTF-8?B?' . base64_encode("CoraçãoBR: seu anúncio termina em $dias " . ($dias === 1 ? 'dia' : 'dias')) . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n")) { $env++; }
+      $feitos[] = $marca; $mudou = true;
+    }
+    if ($mudou) { $pg['lembretes'] = array_slice($feitos, -60); $salva('pagamentos', $row['id'], $pg); }
+  }
+  $rel['feito'][] = "Lembretes de vencimento enviados por e-mail: $env";
   // relatório
   $robo = configDoc('robo'); $robo['servidor'] = $rel; $robo['ultimaExecucaoServidor'] = $rel['data']; $salva('config', 'robo', $robo);
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
@@ -726,6 +780,20 @@ function moldura(string $miolo, string $token): string {
     '<div style="background:#fff;border-radius:16px;padding:20px 22px;margin-top:14px">' . $miolo . '<p style="margin-top:22px"><a href="' . htmlspecialchars($base) . '" style="background:#024E25;color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:700">Abrir o guia</a></p></div>' .
     '<p style="font-size:12px;color:#5F6B64;margin-top:16px">Você recebe este e-mail porque se inscreveu na CoraçãoBR. <a href="' . htmlspecialchars($sair) . '" style="color:#5F6B64">Sair da lista</a>.</p></div></body></html>';
 }
+/* E-mail oficial da CoraçãoBR (config.php ou o padrão acima). */
+function emailOficial(): string {
+  global $CFG; $e = trim((string)($CFG['email_oficial'] ?? ''));
+  return filter_var($e, FILTER_VALIDATE_EMAIL) ? $e : 'coracaobr.oficial@gmail.com';
+}
+/* Avisa a equipe por e-mail sobre algo importante (no máximo 60 por hora, para não lotar a caixa). */
+function avisaEquipe(string $assunto, string $texto): void {
+  global $CFG;
+  if (!limite('mail-equipe', 60, 3600)) return; marca('mail-equipe');
+  $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
+  $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+  $txt = $texto . "\n\n— Aviso automático do site " . baseUrl() . "\nAbra o painel master para ver e responder: " . baseUrl() . "#painel";
+  @mail(emailOficial(), '=?UTF-8?B?' . base64_encode('CoraçãoBR: ' . $assunto) . '?=', $txt, "From: CoraçãoBR <$de>\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+}
 function envia(string $para, string $assunto, string $miolo, string $token): bool {
   global $CFG;
   $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
@@ -733,7 +801,7 @@ function envia(string $para, string $assunto, string $miolo, string $token): boo
   $html = moldura($miolo, $token);
   $txt = trim(html_entity_decode(strip_tags(str_replace(['<br>', '</tr>', '</p>', '</h2>'], "\n", $miolo)), ENT_QUOTES, 'UTF-8')) . "\n\nSair da lista: " . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token;
   $b = 'cbr' . bin2hex(random_bytes(8));
-  $h = "From: CoraçãoBR <$de>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\nList-Unsubscribe: <" . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token . ">\r\n";
+  $h = "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\nList-Unsubscribe: <" . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token . ">\r\n";
   $corpo = "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n$txt\r\n--$b\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n$html\r\n--$b--";
   return @mail($para, '=?UTF-8?B?' . base64_encode($assunto) . '?=', $corpo, $h);
 }

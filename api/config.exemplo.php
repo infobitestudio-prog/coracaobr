@@ -5,6 +5,8 @@ return [
   'db' => __DIR__ . '/../dados/coracaobr.sqlite',
   // Remetente dos e-mails de "Esqueci minha senha". Crie esta caixa no hPanel → E-mails para não cair no spam.
   'email_remetente' => 'nao-responda@infobitestudio.com.br',
+  // E-mail oficial da CoraçãoBR: recebe avisos importantes (pagamentos informados, novos anunciantes, denúncias) e as respostas dos e-mails do site
+  'email_oficial' => 'coracaobr.oficial@gmail.com',
   // Quantos dias a pessoa fica conectada sem precisar entrar de novo
   'sessao_dias' => 30,
 ];

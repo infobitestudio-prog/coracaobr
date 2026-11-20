@@ -83,12 +83,12 @@
   function slides() { return ativos().map(function (o) { return { tipo: "oficial", o: o }; }); }
   /* banner do QR-DOG: a medalha 3D do próprio site qrdogdados.com.br (gravada da animação do site, em loop) com o texto do site */
   function qrdogAnim(tag, extra) {
-    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: simples por fora, completa por dentro. Sem bateria e sem aplicativo. É só prender na coleira.">' +
+    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: um QR Code, tudo dentro. Cada medalha tem um código só dela. Qualquer celular lê pela câmera.">' +
       '<span class="qdv-bg"></span><span class="qdv-st"></span>' +
-      '<span class="qdv-l"><span class="qdv-eb"><i></i>QR-DOG · A MEDALHA</span>' +
-      '<span class="qdv-h"><b>SIMPLES POR</b><b>FORA. <em>COMPLETA</em></b><b><em>POR DENTRO.</em></b></span>' +
-      '<span class="qdv-p">Sem bateria e sem aplicativo. É só prender na coleira.</span>' +
-      '<span class="qdv-nums"><span><b>1</b>QR CODE</span><span><b>0</b>APLICATIVOS</span><span><b>0</b>BATERIAS</span><span><b>4</b>CORES</span></span>' +
+      '<span class="qdv-l"><span class="qdv-eb"><i></i>QR-DOG · O QR CODE</span>' +
+      '<span class="qdv-h"><b>UM QR CODE.</b><b><em>TUDO DENTRO.</em></b></span>' +
+      '<span class="qdv-p">Cada medalha tem um código só dela. Qualquer celular lê pela câmera.</span>' +
+      '<span class="qdv-cam"><i>📷</i><span><b>Abre na câmera</b><small>Sem aplicativo e sem cadastro.</small></span></span>' +
       '<span class="qdv-cta">Quero minha medalha <i>→</i></span></span>' +
       '<span class="qdv-r"><video class="qdv-v" autoplay muted loop playsinline preload="metadata" poster="img/patrocinadores/qrdog-medalha-poster.webp" aria-hidden="true">' +
       '<source src="img/patrocinadores/qrdog-medalha.webm" type="video/webm"><source src="img/patrocinadores/qrdog-medalha.mp4" type="video/mp4"></video></span>' +
@@ -108,10 +108,11 @@
   /* seção da página inicial */
   function secao() {
     var ls = ativos(); if (!ls.length) return "";
-    return '<section class="block reveal ofc-sec"><div class="head"><div><p class="eyebrow">Patrocinadores oficiais</p><h2>Quem faz o CoraçãoBR acontecer</h2></div></div><div class="ofc-grid">' +
+    /* destaques no estilo do Instagram: círculo com a foto, anel nas cores do Brasil e o nome embaixo */
+    return '<section class="block reveal ofc-sec"><div class="head"><div><p class="eyebrow">Patrocinadores oficiais</p><h2>Quem faz o CoraçãoBR bater</h2></div></div><nav class="dst" aria-label="Patrocinadores oficiais">' +
       ls.map(function (o) {
-        return '<a class="ofc" href="#oficial-' + esc(o.id) + '" style="--ofc:' + o.cor + '"><span class="ofc-av"><img src="' + esc(o.avatar) + '" alt="" loading="lazy"></span><span class="ofc-t"><small>' + esc(o.tipo) + "</small><b>" + esc(o.nome) + "</b><span>" + esc(o.resumo) + '</span></span><span class="ofc-n">' + o.numeros.slice(0, 1).map(function (n) { return "<b>" + esc(n[0]) + "</b><small>" + esc(n[1]) + "</small>"; }).join("") + "</span>" + (ig(o) ? '<span class="ofc-ig">' + ic("insta") + "@" + esc(ig(o)) + "</span>" : "") + ic("arrow") + "</a>";
-      }).join("") + "</div></section>";
+        return '<a class="dst-it" href="#oficial-' + esc(o.id) + '" title="' + esc(o.nome + " · " + o.tipo) + '"><span class="dst-ring"><span class="dst-av"><img src="' + esc(o.avatar) + '" alt="" loading="lazy"></span></span><b>' + esc(o.nome) + "</b><small>" + esc(o.tipo) + "</small></a>";
+      }).join("") + "</nav></section>";
   }
 
   /* página do patrocinador */

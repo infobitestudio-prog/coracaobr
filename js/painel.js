@@ -278,12 +278,12 @@
   function abaConfig(el) {
     var c = G.config();
     el.innerHTML = '<form id="f-cfg" class="stack" style="max-width:760px">' +
-      '<fieldset><legend>Contato e avisos</legend><div class="form2">' + fld("c-wa", "WhatsApp que recebe os avisos (com código do país)", c.whatsappAviso, { attr: 'inputmode="tel"' }) + fld("c-contato", "Contato comercial (e-mail ou WhatsApp)", c.contato) + "</div></fieldset>" +
+      '<fieldset><legend>Contato e avisos</legend><div class="form2">' + fld("c-wa", "WhatsApp que recebe os avisos (com código do país)", c.whatsappAviso, { attr: 'inputmode="tel"' }) + fld("c-email", "E-mail oficial (contato do site e avisos importantes)", c.emailOficial || "coracaobr.oficial@gmail.com", { attr: 'type="email" inputmode="email"' }) + fld("c-contato", "Contato comercial extra (opcional)", c.contato) + "</div><p class=\"small muted\">O e-mail oficial aparece no rodapé, em Sobre e contato, Termos, Privacidade e Anuncie. No servidor da Hostinger, os avisos importantes (pagamento informado, novo anunciante, denúncia) chegam no e-mail definido em api/config.php.</p></fieldset>" +
       '<fieldset><legend>Faixa de aviso no topo</legend><div class="form2">' + fld("c-faixa", "Texto da faixa (vazio esconde)", c.faixaAtiva ? c.faixaTexto : "", { cls: "full", attr: "maxlength=120" }) + "</div></fieldset>" +
       '<p class="note">Preços, planos, caixinha e cotação do dólar ficam na aba Finanças.</p><div><button class="btn" type="submit">Salvar configurações</button></div></form>';
     $("#f-cfg", el).addEventListener("submit", function (e) {
       e.preventDefault();
-      salvaCfg({ whatsappAviso: v("c-wa").replace(/\D/g, ""), contato: v("c-contato"), faixaTexto: v("c-faixa"), faixaAtiva: !!v("c-faixa") }, "Configurações salvas.");
+      salvaCfg({ whatsappAviso: v("c-wa").replace(/\D/g, ""), contato: v("c-contato"), emailOficial: (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v("c-email").trim()) ? v("c-email").trim() : "coracaobr.oficial@gmail.com"), faixaTexto: v("c-faixa"), faixaAtiva: !!v("c-faixa") }, "Configurações salvas.");
     });
   }
 
