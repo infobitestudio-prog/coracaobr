@@ -45,3 +45,19 @@ NEWSLETTER POR E-MAIL
      e marque "Enviar sozinho toda semana" no painel.
    - A Hostinger limita quantos e-mails a conta envia por dia (veja o seu plano no hPanel → E-mails).
      Com muitos inscritos, use um serviço de envio de e-mail; fale com a equipe técnica.
+   - A rotina diária (cron das 5h) já envia a newsletter sozinha toda quinta, com os eventos do fim de semana
+     e os cupons. Para desligar, desmarque "Enviar sozinho" em Painel → Newsletter.
+
+NOVIDADES (Painel master → Receita e Novidades)
+   - Receita: vendas por mês, anunciantes no ar, planos vencendo em 7 dias e membros do Clube.
+   - Clube CoraçãoBR: assinatura mensal por Pix (preço em Painel → Novidades). A carteirinha tem QR que o
+     comerciante confere na hora. Anunciantes oferecem o desconto no campo "Desconto para membros do Clube".
+   - Destaque no Mural: o dono da publicação paga por Pix e ela fica em primeiro por 30 dias.
+   - Patrocínio de seção: escolha o patrocinador de cada seção do Explorar (banner "Seção oferecida por").
+   - Assistente "Pergunte ao CoraçãoBR": cole a chave da API da Anthropic (console.anthropic.com) em
+     Painel → Novidades. A chave fica só no servidor. Sem a chave, ele responde com a busca do guia.
+     A biblioteca oficial já vem na pasta api/vendor (precisa de PHP 8.1 ou mais novo).
+   - Notificações no celular: funcionam sozinhas (o site cria a chave na primeira vez). As pessoas ligam na
+     página Alertas; você envia avisos em Painel → Novidades. Toda sexta sai o aviso do fim de semana.
+   - Google: o site já tem /sitemap.xml e /robots.txt e as páginas /guia/ por categoria e cidade.
+     No Google Search Console, adicione o site e envie o endereço https://SEU-DOMINIO/sitemap.xml

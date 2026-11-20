@@ -4,6 +4,14 @@ AddCharset UTF-8 .html .js .css .json .txt .webmanifest
 Options -Indexes
 # O banco de dados nunca é servido pela web
 RedirectMatch 404 /dados(/|$)
+RedirectMatch 404 /api/vendor(/|$)
+
+# Mapa do site e robots.txt com o endereço real do site (gerados pela API)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^sitemap\.xml$ api/index.php?acao=sitemap [L,QSA]
+  RewriteRule ^robots\.txt$ api/index.php?acao=robots [L,QSA]
+</IfModule>
 <FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|log)$">
   Require all denied
 </FilesMatch>

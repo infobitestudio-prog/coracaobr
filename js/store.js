@@ -6,10 +6,10 @@
    Trocar por um backend próprio (Supabase, Firebase, API) significa reescrever só este arquivo. */
 (function () {
   "use strict";
-  var COLS = ["lugares", "avaliacoes", "anuncios", "config", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "alertas", "cupons", "interesse", "perfis", "parceiros", "respostas", "posts", "curtidas", "seguindo", "pagamentos"];
+  var COLS = ["lugares", "avaliacoes", "anuncios", "config", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "alertas", "cupons", "interesse", "perfis", "parceiros", "respostas", "posts", "curtidas", "seguindo", "pagamentos", "pets", "perguntas"];
   /* Coleções "por pessoa": na nuvem cada pessoa grava só o próprio documento (id = seu id de usuário), com os itens dentro de "itens".
      As regras do banco impedem escrever no documento de outra pessoa. Aqui cada item vira um registro com id "<dono>~<chave>". */
-  var POR_PESSOA = ["avaliacoes", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "cupons", "interesse", "perfis", "respostas", "posts", "curtidas", "seguindo"];
+  var POR_PESSOA = ["avaliacoes", "fluxos", "avisos", "metricas", "anunciantes", "classificados", "cupons", "interesse", "perfis", "respostas", "posts", "curtidas", "seguindo", "pets", "perguntas"];
   var brutos = {}; POR_PESSOA.forEach(function (c) { brutos[c] = new Map(); });
   var ID_OK = /^[\w-]{1,120}(~[\w.|-]{1,160})?$/;
   function txt(v) { return v == null ? "" : typeof v === "string" ? v : typeof v === "number" ? String(v) : ""; }
@@ -18,7 +18,7 @@
   function normaliza(col, o) {
     if (!o || typeof o !== "object") return null;
     if (col === "lugares" || col === "anunciantes") {
-      ["nome", "categoria", "tipo", "endereco", "cidade", "bairro", "regiao", "descricao", "historia", "dica", "horario", "quando", "dataInicio", "dataFim", "preco", "telefone", "whatsapp", "instagram", "facebook", "site", "telegram", "x", "linkedin", "catalogo", "catalogoNome"].forEach(function (k) { if (o[k] != null && typeof o[k] !== "string") o[k] = txt(o[k]); });
+      ["nome", "categoria", "tipo", "endereco", "cidade", "bairro", "regiao", "descricao", "historia", "dica", "horario", "quando", "dataInicio", "dataFim", "preco", "telefone", "whatsapp", "instagram", "facebook", "site", "telegram", "x", "linkedin", "catalogo", "catalogoNome", "descontoClube"].forEach(function (k) { if (o[k] != null && typeof o[k] !== "string") o[k] = txt(o[k]); });
       if (!o.nome) return null;
       o.lat = num(o.lat); o.lng = num(o.lng);
       ["precoMin", "precoMax", "notaCuradoria"].forEach(function (k) { if (o[k] != null) o[k] = num(o[k]); });

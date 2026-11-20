@@ -49,6 +49,7 @@
         '<div class="field"><label for="n-cat">Categoria</label><select id="n-cat">' + CATEG.map(function (k) { return '<option value="' + k + '"' + (k === D.categoria ? " selected" : "") + ">" + esc(G.CATS[k] || k) + "</option>"; }).join("") + "</select></div></div>" +
         '<div class="field"><label for="n-desc">O que você faz</label><textarea id="n-desc" maxlength="900" rows="5" required placeholder="Conte o que você oferece, há quanto tempo, para quem e o diferencial.">' + esc(D.historia || "") + '</textarea><small class="muted"><span id="n-dc">' + String(D.historia || "").length + "</span>/900</small></div>" +
         fld("n-cupom", "Oferta para quem vem pelo CoraçãoBR (opcional)", D.cupom, 'maxlength="90" placeholder="Ex.: 10% de desconto na primeira visita"') +
+        fld("n-clube", "Desconto para membros do Clube CoraçãoBR (opcional)", D.descontoClube, 'maxlength="90" placeholder="Ex.: 15% para membros do Clube"') +
         '<div class="ae-chk"><label class="check"><input type="checkbox" id="n-br"' + (D.brasileiro !== false ? " checked" : "") + '> Negócio de brasileiro</label><label class="check"><input type="checkbox" id="n-pt"' + (D.falaPortugues !== false ? " checked" : "") + "> Atendemos em português (selo Fala português)</label></div>" +
         (window.Recursos && Recursos.on("etiquetas") ? '<fieldset class="ae-etq"><legend>Marque o que vale para o seu negócio</legend><div class="pv-op">' + Recursos.etiquetas().map(function (e) { return '<label class="check"><input type="checkbox" data-an-etq="' + esc(e.id) + '"' + ((D.etiquetas || []).indexOf(e.id) >= 0 ? " checked" : "") + "> " + esc(e.nome) + "</label>"; }).join("") + "</div></fieldset>" : "")) +
       sec(prox(), "fotos", "Fotos", "Até " + MAX_FOTOS + " fotos. A primeira é a capa; toque na estrela para trocar.",
@@ -106,7 +107,7 @@
       e.preventDefault(); if (ocupado) return;
       if (!v("n-nome") || !v("n-desc")) { G.toast("Preencha o nome da empresa e o que você faz."); var s = $("#ae-empresa"); if (s) s.scrollIntoView({ behavior: "smooth" }); return; }
       var reg = CIDADES.filter(function (p) { return p[0] === v("n-reg"); })[0] || CIDADES[0];
-      D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
+      D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom"); D.descontoClube = v("n-clube"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
       if (window.Cardapio) Cardapio.ler(document, D); D.menuVerificadoEm = (D.menu || []).length ? G.hojeISO().slice(0, 7) : "";
       D.whatsapp = v("n-wa"); D.telefone = v("n-tel"); D.instagram = v("n-ig"); D.facebook = v("n-fb"); D.telegram = v("n-tg"); D.x = v("n-x"); D.linkedin = v("n-li"); D.site = v("n-site");
       var cl = v("n-cat-link"); D.catalogo = /^https?:\/\//i.test(cl) ? cl.slice(0, 400) : ""; D.catalogoNome = v("n-cat-nome").slice(0, 24);
@@ -192,7 +193,7 @@
     var pe = master ? [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] : [{ nome: "Minha conta", ic: "user", href: "#conta" }, { nome: "Tema claro/escuro", ic: "moon", acao: "data-tema" }, { nome: "Sair", ic: "out", acao: "data-sair" }];
     var nomeConta = (Store.conta && Store.conta() && Store.conta().nome) || (l && l.nome) || "Anunciante";
     G.app.innerHTML = Dash.montar({ chave: "anunciante", marca: master ? "Visão do administrador" : "Painel do anunciante", titulo: master && l ? l.nome : nomeConta, avatar: (nomeConta || "?").charAt(0).toUpperCase(), menu: menu, pe: pe,
-      secoes: { geral: geral, anuncios: anuncios, contratar: contratar, turbinar: window.Diferenciais && !master ? Diferenciais.blocoTurbinar(uid, ls) : "", depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? qrAvalie(l) + divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });
+      secoes: { geral: geral, anuncios: anuncios, contratar: contratar, turbinar: window.Diferenciais && !master ? Diferenciais.blocoTurbinar(uid, ls) : "", depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? qrAvalie(l) + (window.Novidades ? Novidades.botaoArte(l) : "") + divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });
     if (l && l.cupom && window.Comunidade) Comunidade.validadorInit(l);
     if (l && window.Extras) Extras.kitInit(l);
     G.app.querySelector("section").onclick = function (ev) {

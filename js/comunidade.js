@@ -60,10 +60,11 @@
   /* ---------- mural ---------- */
   function classificadosAtivos() {
     var h = hoje();
-    return Store.lista("classificados").filter(function (c) { return c.publicado !== false && (!c.expira || c.expira >= h); }).sort(function (a, b) { return (b.criadoEm || "").localeCompare(a.criadoEm || ""); });
+    return Store.lista("classificados").filter(function (c) { return c.publicado !== false && (!c.expira || c.expira >= h); }).sort(function (a, b) { var da = dst(a), db = dst(b); return da !== db ? (db ? 1 : -1) : (b.criadoEm || "").localeCompare(a.criadoEm || ""); });
   }
+  function dst(c) { return !!(window.Novidades && Novidades.muralDestaque(c)); }
   function cardClass(c) {
-    return '<a class="clcard" href="#mural-' + esc(c.id) + '"><small>' + esc(TIPOS_CL[c.tipo] || "Classificado") + (c.cidade ? " · " + esc(c.cidade) : "") + "</small><b>" + esc(c.titulo) + "</b><span>" + esc(String(c.texto || "").slice(0, 90)) + "</span>" + (c.preco ? '<em class="num">' + G.usd(c.preco) + "</em>" : "") + "</a>";
+    return '<a class="clcard' + (dst(c) ? " cl-dst" : "") + '" href="#mural-' + esc(c.id) + '"><small>' + (dst(c) ? '<span class="pill cl-dst-p">Destaque</span> ' : "") + esc(TIPOS_CL[c.tipo] || "Classificado") + (c.cidade ? " · " + esc(c.cidade) : "") + "</small><b>" + esc(c.titulo) + "</b><span>" + esc(String(c.texto || "").slice(0, 90)) + "</span>" + (c.preco ? '<em class="num">' + G.usd(c.preco) + "</em>" : "") + "</a>";
   }
   var filtroCl = "", filtroCid = "";
   function meusCl() { try { return JSON.parse(localStorage.getItem("meus-classificados") || "[]"); } catch (e) { return []; } }
@@ -77,8 +78,8 @@
       (cids.length > 1 ? '<div class="chips cl-cid"><span class="small muted" style="align-self:center">Bairro/cidade:</span><button type="button" class="chip" data-ccl="" aria-pressed="' + !filtroCid + '">Todas</button>' + cids.map(function (c) { return '<button type="button" class="chip" data-ccl="' + esc(c) + '" aria-pressed="' + (filtroCid === c) + '">' + esc(c) + '</button>'; }).join('') + '</div>' : '') +
       (ls.length ? '<div class="clgrid">' + ls.map(function (x) {
         var meu = (uid && String(x.id).indexOf(uid + "~") === 0) || meusCl().indexOf(x.id) >= 0, w = zap(x.whatsapp);
-        return '<article class="panel clitem" id="cl-' + esc(x.id) + '"' + (abrir === x.id ? ' data-foco="1"' : "") + '><small class="eyebrow">' + esc(TIPOS_CL[x.tipo] || "Classificado") + (x.cidade ? " · " + esc(x.cidade) : "") + " · " + dataBR(x.criadoEm) + "</small><h3>" + esc(x.titulo) + "</h3><p>" + esc(x.texto) + "</p>" + (x.preco ? '<p class="num"><b>' + G.usd(x.preco) + "</b>" + G.brl(x.preco) + "</p>" : "") +
-          '<div class="row">' + (w ? '<a class="btn sm" href="' + w + "?text=" + encodeURIComponent("Olá! Vi seu anúncio no CoraçãoBR: " + x.titulo) + '" target="_blank" rel="noopener">' + ic("chat") + " WhatsApp</a>" : "") + (meu ? '<button type="button" class="btn sm danger" data-apaga-cl="' + esc(x.id) + '">Remover</button>' : '<button type="button" class="btn sm ghost" data-denuncia="' + esc(x.id) + '">Denunciar</button>') + "</div></article>";
+        return '<article class="panel clitem' + (dst(x) ? " cl-dst" : "") + '" id="cl-' + esc(x.id) + '"' + (abrir === x.id ? ' data-foco="1"' : "") + '>' + (dst(x) ? '<span class="pill cl-dst-p">Destaque</span>' : "") + '<small class="eyebrow">' + esc(TIPOS_CL[x.tipo] || "Classificado") + (x.cidade ? " · " + esc(x.cidade) : "") + " · " + dataBR(x.criadoEm) + "</small><h3>" + esc(x.titulo) + "</h3><p>" + esc(x.texto) + "</p>" + (x.preco ? '<p class="num"><b>' + G.usd(x.preco) + "</b>" + G.brl(x.preco) + "</p>" : "") +
+          '<div class="row">' + (w ? '<a class="btn sm" href="' + w + "?text=" + encodeURIComponent("Olá! Vi seu anúncio no CoraçãoBR: " + x.titulo) + '" target="_blank" rel="noopener">' + ic("chat") + " WhatsApp</a>" : "") + (meu && !dst(x) && Store.uid() ? '<a class="btn sm ghost" href="#extra-mural-' + encodeURIComponent(x.id) + '">' + ic("star") + " Destacar · " + G.reais(Number(G.config().precoMural) || 10) + "</a>" : "") + (meu ? '<button type="button" class="btn sm danger" data-apaga-cl="' + esc(x.id) + '">Remover</button>' : '<button type="button" class="btn sm ghost" data-denuncia="' + esc(x.id) + '">Denunciar</button>') + "</div></article>";
       }).join("") + "</div>" : '<div class="panel"><h3>Nenhum anúncio ainda</h3><p class="muted">Publique o primeiro.</p></div>') +
       '<p class="note">O guia não intermedeia negócios. Desconfie de quem pede pagamento adiantado.</p></div></section>';
     var foco = $("[data-foco]"); if (foco) foco.scrollIntoView({ block: "center" });
@@ -94,7 +95,7 @@
   function podePublicar() { if (Store.admin()) return true; if (Store.servidor && Store.servidor()) return Store.papel() === "anunciante" && !!(window.Anunciante && Anunciante.temPlano()); return !!(window.Anunciante && Anunciante.temPlano()); }
   function soAnunciante() {
     var dlg = $("#dlg"), c = G.config();
-    dlg.innerHTML = '<div class="dlg stack" style="gap:12px"><h3>Publicar é para anunciantes</h3><p class="muted">Vagas, quartos, vendas e novidades são publicados por quem anuncia no CoraçãoBR. O plano custa ' + G.usd(c.precoAnuncio || 20) + ' por mês e inclui até 3 anúncios, banner no carrossel, publicações no feed e no Mural.</p><div class="row"><a class="btn" href="#anuncie" data-fecha>Ver o plano</a><button class="btn ghost" type="button" data-fecha>Agora não</button></div></div>';
+    dlg.innerHTML = '<div class="dlg stack" style="gap:12px"><h3>Publicar é para anunciantes</h3><p class="muted">Vagas, quartos, vendas e novidades são publicados por quem anuncia no CoraçãoBR. O pacote custa ' + G.reais(Number(c.precoAnuncio) || 50) + ' por mês e inclui ' + (Number(c.anunciosPorPacote) || 3) + ' anúncios, banner no carrossel, publicações no feed e no Mural.</p><div class="row"><a class="btn" href="#anuncie" data-fecha>Ver o plano</a><button class="btn ghost" type="button" data-fecha>Agora não</button></div></div>';
     dlg.showModal(); Array.from(dlg.querySelectorAll("[data-fecha]")).forEach(function (b) { b.onclick = function () { dlg.close(); }; });
   }
   function formClass() {

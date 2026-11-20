@@ -24,12 +24,12 @@
     }
     raiz.innerHTML = '<section class="block"><div class="wrap"><div class="head"><div><p class="eyebrow">Área do dono do guia</p><h2>Painel</h2></div>' +
       '<p class="muted small">' + (Store.estado.modo === "nuvem" ? "Tudo o que você salva aqui aparece para quem abrir o guia." : "Modo local: as alterações ficam só neste navegador.") + "</p></div>" +
-      '<div class="tabs" role="tablist">' + [["resumo", "Resumo"], ["avisos", "Avisos" + (naoLidos() ? " (" + naoLidos() + ")" : "")], ["financas", "Finanças"], ["comunidade", "Comunidade"], ["aparencia", "Aparência"], ["anunciantes", "Anunciantes"], ["pagamentos", "Pagamentos"]].concat(Store.servidor && Store.servidor() ? [["usuarios", "Contas"]] : [], window.PainelRecursos ? PainelRecursos.abas : [], [["lugares", "Lugares"], ["anuncios", "Anúncios"], ["avaliacoes", "Avaliações"], ["config", "Configurações"]]).map(function (t) { return '<button role="tab" data-aba="' + t[0] + '" aria-selected="' + (aba === t[0]) + '">' + t[1] + "</button>"; }).join("") + '</div><div id="aba"></div></div></section>';
+      '<div class="tabs" role="tablist">' + [["resumo", "Resumo"], ["avisos", "Avisos" + (naoLidos() ? " (" + naoLidos() + ")" : "")], ["receita", "Receita"], ["financas", "Finanças"], ["comunidade", "Comunidade"], ["aparencia", "Aparência"], ["anunciantes", "Anunciantes"], ["pagamentos", "Pagamentos"]].concat(Store.servidor && Store.servidor() ? [["usuarios", "Contas"]] : [], window.PainelRecursos ? PainelRecursos.abas : [], [["novidades", "Novidades"], ["lugares", "Lugares"], ["anuncios", "Anúncios"], ["avaliacoes", "Avaliações"], ["config", "Configurações"]]).map(function (t) { return '<button role="tab" data-aba="' + t[0] + '" aria-selected="' + (aba === t[0]) + '">' + t[1] + "</button>"; }).join("") + '</div><div id="aba"></div></div></section>';
     $(".tabs", raiz).addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; aba = b.dataset.aba; Array.from(this.children).forEach(function (c) { c.setAttribute("aria-selected", c === b); }); corpo(); });
     corpo();
   }
   function atualizar() {
-    if (["newsletter", "pesquisa", "recursos", "usuarios", "banners"].indexOf(aba) >= 0) return true;
+    if (["newsletter", "pesquisa", "recursos", "usuarios", "banners", "novidades"].indexOf(aba) >= 0) return true;
     if (!raiz || !$("#aba", raiz)) return false;
     var a = document.activeElement;
     if (a && $("#aba", raiz).contains(a) && /INPUT|TEXTAREA/.test(a.tagName)) return true;
@@ -37,7 +37,7 @@
   }
   function corpo() {
     var el = $("#aba", raiz); if (!el) return;
-    ({ resumo: abaResumo, avisos: abaAvisos, aparencia: abaAparencia, financas: abaFinancas, comunidade: abaComunidade, anunciantes: abaAnunciantes, pagamentos: function (x) { if (window.Pag) Pag.abaMaster(x); }, lugares: abaLugares, anuncios: abaAnuncios, avaliacoes: abaAvaliacoes, config: abaConfig, usuarios: function (x) { if (window.Auth) Auth.abaUsuarios(x); }, recursos: function (x) { PainelRecursos.recursos(x); }, banners: function (x) { if (window.Social) Social.abaBanners(x); }, publicacoes: function (x) { if (window.Social) Social.abaPosts(x); }, parceiros: function (x) { PainelRecursos.parceiros(x); }, newsletter: function (x) { PainelRecursos.newsletter(x); }, pesquisa: function (x) { PainelRecursos.pesquisa(x); } })[aba](el);
+    ({ resumo: abaResumo, avisos: abaAvisos, aparencia: abaAparencia, financas: abaFinancas, receita: function (x) { if (window.Novidades) Novidades.abaReceita(x); }, novidades: function (x) { if (window.Novidades) Novidades.abaNovidades(x); }, comunidade: abaComunidade, anunciantes: abaAnunciantes, pagamentos: function (x) { if (window.Pag) Pag.abaMaster(x); }, lugares: abaLugares, anuncios: abaAnuncios, avaliacoes: abaAvaliacoes, config: abaConfig, usuarios: function (x) { if (window.Auth) Auth.abaUsuarios(x); }, recursos: function (x) { PainelRecursos.recursos(x); }, banners: function (x) { if (window.Social) Social.abaBanners(x); }, publicacoes: function (x) { if (window.Social) Social.abaPosts(x); }, parceiros: function (x) { PainelRecursos.parceiros(x); }, newsletter: function (x) { PainelRecursos.newsletter(x); }, pesquisa: function (x) { PainelRecursos.pesquisa(x); } })[aba](el);
   }
 
   function naoLidos() { return Store.lista("avisos").filter(function (a) { return !a.lido; }).length; }

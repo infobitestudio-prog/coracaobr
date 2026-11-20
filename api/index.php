@@ -16,10 +16,10 @@ $CFG = [
 ];
 if (is_file(__DIR__ . '/config.php')) { $extra = require __DIR__ . '/config.php'; if (is_array($extra)) $CFG = array_merge($CFG, $extra); }
 
-const COLS = ['lugares','avaliacoes','anuncios','config','fluxos','avisos','metricas','anunciantes','classificados','alertas','cupons','interesse','perfis','parceiros','respostas','posts','curtidas','seguindo','pagamentos'];
-const PUBLICAS = ['lugares','config','anuncios','alertas','anunciantes','avaliacoes','fluxos','metricas','classificados','cupons','parceiros','posts','curtidas','seguindo','pagamentos'];
+const COLS = ['lugares','avaliacoes','anuncios','config','fluxos','avisos','metricas','anunciantes','classificados','alertas','cupons','interesse','perfis','parceiros','respostas','posts','curtidas','seguindo','pagamentos','pets','perguntas'];
+const PUBLICAS = ['lugares','config','anuncios','alertas','anunciantes','avaliacoes','fluxos','metricas','classificados','cupons','parceiros','posts','curtidas','seguindo','pagamentos','pets','perguntas'];
 const SO_MASTER = ['lugares','config','anuncios','alertas','parceiros','pagamentos'];
-const POR_PESSOA = ['avaliacoes','fluxos','avisos','metricas','anunciantes','classificados','cupons','interesse','perfis','respostas','posts','curtidas','seguindo'];
+const POR_PESSOA = ['avaliacoes','fluxos','avisos','metricas','anunciantes','classificados','cupons','interesse','perfis','respostas','posts','curtidas','seguindo','pets','perguntas'];
 const PAPEIS = ['usuario','anunciante','master'];
 const ID_RE = '/^[A-Za-z0-9_-]{1,120}$/';
 
@@ -193,7 +193,8 @@ function precosServidor(): array {
   $g = configDoc('geral'); $brl = ($g['moedaAnuncio'] ?? '') === 'BRL'; $pr = (array)($g['promo'] ?? []);
   return ['pacote' => $brl ? (float)($g['precoAnuncio'] ?? 50) : 50.0, 'porPacote' => $brl ? max(1, (int)($g['anunciosPorPacote'] ?? 3)) : 3,
     'promo' => $brl ? (float)($pr['preco'] ?? 20) : 20.0, 'promoDepo' => $brl ? max(1, (int)($pr['curadorias'] ?? 5)) : 5, 'promoAnuncios' => 1,
-    'selo' => (float)($g['precoVerificado'] ?? 30) ?: 30.0, 'impulso' => (float)($g['precoImpulso'] ?? 25) ?: 25.0, 'diasImpulso' => max(1, (int)($g['diasImpulso'] ?? 7))];
+    'selo' => (float)($g['precoVerificado'] ?? 30) ?: 30.0, 'impulso' => (float)($g['precoImpulso'] ?? 25) ?: 25.0, 'diasImpulso' => max(1, (int)($g['diasImpulso'] ?? 7)),
+    'clube' => (float)($g['precoClube'] ?? 15) ?: 15.0, 'mural' => (float)($g['precoMural'] ?? 10) ?: 10.0, 'diasMural' => max(1, (int)($g['diasMural'] ?? 30))];
 }
 function hojeDallas(): string { return (new DateTime('now', new DateTimeZone('America/Chicago')))->format('Y-m-d'); }
 function maisUmMesPhp(string $iso): string { $d = new DateTime($iso . ' 12:00'); $dia = (int)$d->format('j'); $d->modify('first day of next month'); $d->setDate((int)$d->format('Y'), (int)$d->format('n'), min($dia, (int)$d->format('t'))); return $d->format('Y-m-d'); }
@@ -210,6 +211,25 @@ function aplicaPacote(string $uid, array $c, string $pagId): array {
     $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['pagamentos', $uid, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]); versao('pagamentos');
     avisaEquipe('Selo Verificado pago · conferir negócio', "Pix do selo Verificado aprovado. Abra Painel master → Pagamentos → Selo Verificado para conferir e aprovar.\nConta: $uid");
     return ['tipo' => 'verificado'];
+  }
+  if ($plano === 'clube' || $plano === 'mural') {
+    foreach ((array)($pg[$plano === 'clube' ? 'clubePag' : 'mural'] ?? []) as $x) if (($x['aviso'] ?? '') === 'mp:' . $pagId) return $x;
+    $u0 = $pdo->prepare('SELECT nome FROM usuarios WHERE id = ?'); $u0->execute([$uid]); $nome0 = (string)($u0->fetchColumn() ?: '');
+    if ($plano === 'clube') {
+      $cl = (array)($pg['clube'] ?? []); $ini = !empty($cl['ate']) && $cl['ate'] >= $hoje ? date('Y-m-d', strtotime($cl['ate'] . ' +1 day')) : $hoje;
+      $pk = ['id' => 'cl' . base_convert((string)time(), 10, 36), 'valor' => (float)($c['valor'] ?? 0), 'pagoEm' => gmdate('c'), 'inicio' => $ini, 'fim' => maisUmMesPhp($ini), 'aviso' => 'mp:' . $pagId, 'metodo' => 'pix-auto'];
+      $pg['clubePag'] = array_slice(array_merge((array)($pg['clubePag'] ?? []), [$pk]), -60);
+      $pg['clube'] = ['desde' => $cl['desde'] ?? $hoje, 'ate' => $pk['fim'], 'nome' => $nome0, 'numero' => $cl['numero'] ?? strtoupper(substr(hash('sha256', $uid), 0, 8))];
+      avisaEquipe('Novo membro do Clube · R$ ' . number_format($pk['valor'], 2, ',', '.'), "Assinatura do Clube CoraçãoBR paga e liberada automaticamente.\nConta: $nome0 ($uid)\nVálida até " . date('d/m/Y', strtotime($pk['fim'])));
+    } else {
+      $item = (string)($c['itemId'] ?? ''); $ja = ''; foreach ((array)($pg['mural'] ?? []) as $x) if (($x['itemId'] ?? '') === $item && $x['fim'] >= $hoje && $x['fim'] > $ja) $ja = $x['fim'];
+      $ini = $ja ? date('Y-m-d', strtotime($ja . ' +1 day')) : $hoje;
+      $pk = ['id' => 'mu' . base_convert((string)time(), 10, 36), 'itemId' => $item, 'valor' => (float)($c['valor'] ?? 0), 'pagoEm' => gmdate('c'), 'inicio' => $ini, 'fim' => date('Y-m-d', strtotime($ini . ' +' . ($p['diasMural'] - 1) . ' day')), 'aviso' => 'mp:' . $pagId, 'metodo' => 'pix-auto'];
+      $pg['mural'] = array_slice(array_merge((array)($pg['mural'] ?? []), [$pk]), -60);
+    }
+    $pg['atualizadoEm'] = gmdate('c');
+    $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['pagamentos', $uid, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]); versao('pagamentos');
+    return $pk;
   }
   if ($plano === 'impulso') {
     $ja = ''; foreach ($lista as $x) if (($x['tipo'] ?? '') === 'impulso' && ($x['lugarId'] ?? '') === ($c['lugarId'] ?? '') && $x['fim'] >= $hoje && $x['fim'] > $ja) $ja = $x['fim'];
@@ -642,18 +662,7 @@ case 'newsletter_cron': {
   /* Envio automático semanal: a Hostinger chama este endereço pelo agendador (Cron Jobs). */
   $chave = trim((string)@file_get_contents(dirname($CFG['db']) . '/CHAVE-CRON.txt'));
   if ($chave === '' || !hash_equals($chave, (string)($_GET['chave'] ?? ''))) erro('Chave inválida.', 403);
-  $cfg = configDoc('newsletter');
-  if (empty($cfg['automatica'])) sai(['ok' => true, 'msg' => 'Envio automático desligado no painel.']);
-  $ult = banco()->query("SELECT v FROM meta WHERE k = 'news-auto'")->fetchColumn();
-  if ($ult && time() - (int)$ult < 6 * 86400) sai(['ok' => true, 'msg' => 'Já enviado nesta semana.']);
-  @set_time_limit(600);
-  $d = montaNewsletter();
-  if (!$d['itens']) sai(['ok' => true, 'msg' => 'Nada para enviar.']);
-  $env = 0; $fal = 0;
-  foreach (banco()->query('SELECT email, token FROM assinantes WHERE ativo = 1 LIMIT 2000')->fetchAll() as $a) { if (envia($a['email'], $d['assunto'], $d['html'], $a['token'])) $env++; else $fal++; }
-  banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('news-auto', ?)")->execute([(string)time()]);
-  banco()->prepare('INSERT INTO envios (assunto, modo, enviados, falhas, em) VALUES (?, ?, ?, ?, ?)')->execute([$d['assunto'], 'automático', $env, $fal, agora()]);
-  sai(['ok' => true, 'enviados' => $env, 'falhas' => $fal]);
+  sai(['ok' => true] + newsletterAuto());
 }
 case 'metro': {
   $f = __DIR__ . '/../dados/metro.json'; $g = __DIR__ . '/../data/metro.json';
@@ -812,6 +821,15 @@ case 'atualizar_diario': {
   }
   // relatório
   $robo = configDoc('robo'); $robo['servidor'] = $rel; $robo['ultimaExecucaoServidor'] = $rel['data']; $salva('config', 'robo', $robo);
+  // newsletter semanal (toda quinta, com eventos do fim de semana e cupons) e aviso no celular na sexta
+  $dow = (int)$agoraD->format('N');
+  if ($dow === 4) { try { $r = newsletterAuto(); $rel['feito'][] = 'Newsletter semanal: ' . ($r['msg'] ?? ($r['enviados'] . ' e-mails enviados')); } catch (Throwable $e) { $rel['erros'][] = 'Newsletter: ' . $e->getMessage(); } }
+  if ($dow === 5 && ($geral['pushFds'] ?? true) !== false && (string)$pdo->query("SELECT v FROM meta WHERE k = 'push-fds'")->fetchColumn() !== $hoje) {
+    $sab = date('Y-m-d', strtotime($hoje . ' +1 day')); $dom = date('Y-m-d', strtotime($hoje . ' +2 day')); $n = 0;
+    foreach ($pdo->query("SELECT data FROM docs WHERE col = 'lugares'") as $r0) { $l0 = json_decode($r0['data'], true); if (!is_array($l0) || !in_array($l0['categoria'] ?? '', ['evento', 'show'], true) || ($l0['publicado'] ?? true) === false || !empty($l0['cancelado'])) continue; $ini = (string)($l0['dataInicio'] ?? ''); $fim = (string)($l0['dataFim'] ?? $ini); if ($ini !== '' && $ini <= $dom && $fim >= $hoje) $n++; }
+    if ($n > 0) { try { $r = enviaPush('Fim de semana brasileiro em DFW', $n . ($n === 1 ? ' evento' : ' eventos') . ' neste fim de semana. Veja a programação no CoraçãoBR.', './#explorar', 'eventos'); $rel['feito'][] = 'Aviso no celular: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push: ' . $e->getMessage(); } }
+    $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('push-fds', ?)")->execute([$hoje]);
+  }
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
   versao('lugares'); versao('config');
   sai(['ok' => true] + $rel);
@@ -821,14 +839,17 @@ case 'pix_criar': {
   $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
   if (mpToken() === '') erro('O Pix automático ainda não foi ligado pela equipe.', 409);
   if (!limite('pix:' . $u['id'], 20, 3600)) erro('Muitas cobranças geradas. Aguarde alguns minutos.', 429); marca('pix:' . $u['id']);
-  $p = precosServidor(); $plano = in_array($corpo['plano'] ?? '', ['pacote', 'promo', 'verificado', 'impulso'], true) ? $corpo['plano'] : 'pacote'; $promo = $plano === 'promo';
+  $p = precosServidor(); $plano = in_array($corpo['plano'] ?? '', ['pacote', 'promo', 'verificado', 'impulso', 'clube', 'mural'], true) ? $corpo['plano'] : 'pacote'; $promo = $plano === 'promo';
   $qtd = $plano === 'pacote' ? max(1, min(30, (int)($corpo['qtd'] ?? 1))) : 1;
   $comeca = ($corpo['comeca'] ?? '') === 'renovar' ? 'renovar' : 'agora';
   $lugarId = (string)($corpo['lugarId'] ?? '');
   if ($plano === 'impulso' && strpos($lugarId, $u['id'] . '~') !== 0) erro('Escolha um dos seus anúncios para impulsionar.');
+  $itemId = (string)($corpo['itemId'] ?? '');
+  if ($plano === 'mural' && strpos($itemId, $u['id'] . '~') !== 0) erro('Escolha uma das suas publicações do Mural para destacar.');
   $desconto = $plano === 'pacote' && (int)(pagamentoDe($u['id'])['creditosIndicacao'] ?? 0) > 0 ? round($p['pacote'] / 2, 2) : 0;
-  $valor = round($plano === 'promo' ? $p['promo'] : ($plano === 'verificado' ? $p['selo'] : ($plano === 'impulso' ? $p['impulso'] : $qtd * $p['pacote'] - $desconto)), 2); if ($valor <= 0) erro('Valor inválido.');
-  $desc = $plano === 'verificado' ? 'CoraçãoBR · selo Verificado' : ($plano === 'impulso' ? 'CoraçãoBR · impulsionar anúncio por ' . $p['diasImpulso'] . ' dias' : ($promo ? 'CoraçãoBR · promoção de curadoria (1 anúncio + ' . $p['promoDepo'] . ' depoimentos)' : 'CoraçãoBR · ' . ($qtd * $p['porPacote']) . ' anúncios por 1 mês'));
+  $valor = round($plano === 'promo' ? $p['promo'] : ($plano === 'verificado' ? $p['selo'] : ($plano === 'impulso' ? $p['impulso'] : ($plano === 'clube' ? $p['clube'] : ($plano === 'mural' ? $p['mural'] : $qtd * $p['pacote'] - $desconto)))), 2); if ($valor <= 0) erro('Valor inválido.');
+  $desc = $plano === 'clube' ? 'CoraçãoBR · Clube CoraçãoBR (1 mês)' : ($plano === 'mural' ? 'CoraçãoBR · destaque no Mural por ' . $p['diasMural'] . ' dias' : '');
+  if ($desc === '') $desc = $plano === 'verificado' ? 'CoraçãoBR · selo Verificado' : ($plano === 'impulso' ? 'CoraçãoBR · impulsionar anúncio por ' . $p['diasImpulso'] . ' dias' : ($promo ? 'CoraçãoBR · promoção de curadoria (1 anúncio + ' . $p['promoDepo'] . ' depoimentos)' : 'CoraçãoBR · ' . ($qtd * $p['porPacote']) . ' anúncios por 1 mês'));
   $expira = (new DateTime('+30 minutes'))->format('Y-m-d\TH:i:s.vP');
   $nome = explode(' ', trim($u['nome']), 2);
   $r = mp('POST', '/v1/payments', ['transaction_amount' => $valor, 'description' => $desc, 'payment_method_id' => 'pix', 'date_of_expiration' => $expira,
@@ -837,7 +858,7 @@ case 'pix_criar': {
   $tx = $r['point_of_interaction']['transaction_data'] ?? null;
   if (!is_array($r) || empty($r['id']) || !$tx) erro('O Mercado Pago não gerou o Pix agora. Tente de novo em instantes.' . (isset($r['message']) ? ' (' . mb_substr((string)$r['message'], 0, 120) . ')' : ''), 502);
   $id = (string)$r['id'];
-  $c = ['uid' => $u['id'], 'plano' => $plano, 'qtd' => $qtd, 'comeca' => $comeca, 'lugarId' => $lugarId, 'desconto' => $desconto, 'valor' => $valor, 'status' => 'pendente', 'criadoEm' => gmdate('c'), 'expira' => $expira];
+  $c = ['uid' => $u['id'], 'plano' => $plano, 'qtd' => $qtd, 'comeca' => $comeca, 'lugarId' => $lugarId, 'itemId' => $itemId, 'desconto' => $desconto, 'valor' => $valor, 'status' => 'pendente', 'criadoEm' => gmdate('c'), 'expira' => $expira];
   banco()->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$id, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
   sai(['ok' => true, 'id' => $id, 'valor' => $valor, 'copiaecola' => $tx['qr_code'] ?? '', 'qr' => $tx['qr_code_base64'] ?? '', 'expira' => $expira]);
 }
@@ -917,6 +938,120 @@ case 'cron_info': {
   if (!is_file($f)) @file_put_contents($f, bin2hex(random_bytes(12)) . "\n");
   $c = trim((string)@file_get_contents($f)); $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
   sai(['ok' => true, 'url' => baseUrl() . 'api/?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
+}
+/* ===== Assistente "Pergunte ao CoraçãoBR" (Claude, pela API oficial da Anthropic) =====
+   O servidor escolhe os lugares do guia que combinam com a pergunta e manda só esses para a IA, que responde citando os lugares.
+   Sem a chave (Painel master → Novidades), responde com a busca do próprio guia. */
+case 'assistente': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $perg = trim(mb_substr((string)($corpo['pergunta'] ?? ''), 0, 500));
+  if (mb_strlen($perg) < 3) erro('Escreva sua pergunta.');
+  $quem = eu() ? eu()['id'] : ip();
+  if (!limite('ia:' . $quem, 30, 3600)) erro('Muitas perguntas seguidas. Tente de novo daqui a pouco.', 429); marca('ia:' . $quem);
+  $cands = buscaLugares($perg, 30);
+  $ids = array_map(fn($l) => $l['id'], array_slice($cands, 0, 8));
+  $key = chaveIA();
+  if ($key === '' || !is_file(__DIR__ . '/vendor/autoload.php')) sai(['ok' => true, 'modo' => 'busca', 'resposta' => '', 'ids' => $ids]);
+  $hist = [];
+  foreach (array_slice((array)($corpo['historico'] ?? []), -6) as $h) {
+    $r = ($h['role'] ?? '') === 'assistant' ? 'assistant' : 'user'; $t = trim(mb_substr((string)($h['content'] ?? ''), 0, 1500));
+    if ($t === '' || ($hist && end($hist)['role'] === $r)) continue;
+    if (!$hist && $r === 'assistant') continue;
+    $hist[] = ['role' => $r, 'content' => $t];
+  }
+  if ($hist && end($hist)['role'] === 'user') array_pop($hist);
+  $linhas = [];
+  foreach ($cands as $l) {
+    $linhas[] = '[' . $l['id'] . '] ' . ($l['nome'] ?? '') . ' | ' . ($l['categoria'] ?? '') . ' | ' . trim(($l['bairro'] ?? '') . ', ' . ($l['cidade'] ?? ''), ', ') .
+      (!empty($l['nota']) ? ' | nota ' . $l['nota'] : '') . (!empty($l['dataInicio']) ? ' | data ' . $l['dataInicio'] . (!empty($l['dataFim']) && $l['dataFim'] !== $l['dataInicio'] ? ' a ' . $l['dataFim'] : '') : '') .
+      (!empty($l['gratuito']) ? ' | grátis' : '') . (!empty($l['falaPortugues']) || !empty($l['portugues']) ? ' | fala português' : '') . (!empty($l['cupom']) ? ' | cupom: ' . mb_substr((string)$l['cupom'], 0, 60) : '') .
+      ' | ' . mb_substr(preg_replace('/\s+/', ' ', strip_tags((string)($l['descricao'] ?? $l['resumo'] ?? ''))), 0, 160);
+  }
+  $sistema = "Você é o assistente do CoraçãoBR, guia em português para brasileiros que moram ou estão de passagem em Dallas–Fort Worth, no Texas.\n" .
+    "Responda sempre em português do Brasil, de forma calorosa, direta e curta (no máximo 120 palavras).\n" .
+    "Para recomendar lugares, eventos ou serviços, use SOMENTE os itens da lista enviada junto com a pergunta e cite cada um com o código entre colchetes duplos, por exemplo [[abc123]]; o site transforma o código em link.\n" .
+    "Nunca invente telefone, preço, horário, endereço ou data que não esteja na lista. Se a lista não tiver o que a pessoa procura, diga isso e sugira procurar no Explorar do guia.\n" .
+    "Para dúvidas práticas de imigrante (documentos, carteira de motorista, SSN, escola, saúde), dê uma orientação geral e indique o site oficial do órgão; não é assessoria jurídica, médica ou fiscal.\n" .
+    "Não responda a pedidos fora do tema do guia e da vida de brasileiros no Texas.";
+  $msgs = $hist; $msgs[] = ['role' => 'user', 'content' => "Hoje é " . hojeDallas() . ".\nItens do guia que podem ajudar:\n" . ($linhas ? implode("\n", $linhas) : '(nenhum item encontrado)') . "\n\nPergunta: " . $perg];
+  try {
+    require_once __DIR__ . '/vendor/autoload.php';
+    $cli = new \Anthropic\Client(apiKey: $key);
+    $m = $cli->beta->messages->create(
+      model: modeloIA(), maxTokens: 4000, system: $sistema, messages: $msgs,
+      outputConfig: ['effort' => 'low'], fallbacks: 'default', betas: ['server-side-fallback-2026-07-01'],
+    );
+    if ($m->stopReason === 'refusal') sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'Não posso ajudar com isso aqui. Veja o que o guia encontrou:', 'ids' => $ids]);
+    $txt = ''; foreach ($m->content as $b) if ($b->type === 'text') $txt .= $b->text;
+    $citados = []; if (preg_match_all('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', $txt, $mm)) $citados = array_values(array_unique($mm[1]));
+    $validos = array_map(fn($l) => $l['id'], $cands);
+    $txt = preg_replace_callback('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', fn($x) => in_array($x[1], $validos, true) ? $x[0] : '', $txt);
+    $k = 'ia:' . date('Y-m'); banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute([$k]);
+    sai(['ok' => true, 'modo' => 'ia', 'resposta' => trim($txt), 'ids' => array_values(array_intersect($citados, $validos))]);
+  } catch (\Anthropic\Core\Exceptions\RateLimitException $e) {
+    sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'O assistente está com muita procura agora. Veja o que o guia encontrou:', 'ids' => $ids]);
+  } catch (\Anthropic\Core\Exceptions\APIStatusException $e) {
+    error_log('[coracaobr] IA: ' . $e->getMessage());
+    sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'O assistente não respondeu agora. Veja o que o guia encontrou:', 'ids' => $ids]);
+  } catch (\Anthropic\Core\Exceptions\APIConnectionException $e) {
+    sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'Sem conexão com o assistente agora. Veja o que o guia encontrou:', 'ids' => $ids]);
+  }
+}
+case 'chave_ia': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  $f = dirname($CFG['db']) . '/ANTHROPIC.key'; $k = trim((string)($corpo['chave'] ?? ''));
+  if (isset($corpo['modelo'])) { $mo = in_array($corpo['modelo'], ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $corpo['modelo'] : 'claude-opus-5-5'; @file_put_contents(dirname($CFG['db']) . '/ANTHROPIC.modelo', $mo); if ($k === '' && empty($corpo['apagar'])) sai(['ok' => true, 'msg' => 'Modelo salvo.']); }
+  if ($k === '' && !empty($corpo['apagar'])) { @unlink($f); sai(['ok' => true, 'msg' => 'Assistente com IA desligado. A busca do guia continua funcionando.']); }
+  if (!preg_match('/^sk-ant-[A-Za-z0-9_\-]{20,300}$/', $k)) erro('Isso não parece uma chave da Anthropic (começa com sk-ant-).');
+  file_put_contents($f, $k); @chmod($f, 0600);
+  sai(['ok' => true, 'msg' => 'Chave salva no servidor. O assistente já responde com IA.']);
+}
+case 'ia_info': {
+  exigeMaster();
+  sai(['ok' => true, 'ligado' => chaveIA() !== '', 'sdk' => is_file(__DIR__ . '/vendor/autoload.php'), 'modelo' => modeloIA(), 'mes' => (int)banco()->query("SELECT v FROM meta WHERE k = 'ia:" . date('Y-m') . "'")->fetchColumn()]);
+}
+/* ===== Notificações no celular (Web Push com VAPID, sem conteúdo no envio: o aparelho busca a última mensagem) ===== */
+case 'push_chave': { sai(['ok' => true, 'chave' => vapid()['pub']]); }
+case 'push_inscrever': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $ep = (string)($corpo['endpoint'] ?? '');
+  if (!preg_match('#^https://[a-z0-9.-]+(:\d+)?/[\x21-\x7e]{10,800}$#i', $ep)) erro('Inscrição inválida.');
+  if (!limite('push:' . ip(), 20, 3600)) erro('Tente de novo mais tarde.', 429); marca('push:' . ip());
+  $temas = array_values(array_filter(array_map(fn($t) => preg_replace('/[^a-z0-9-]/', '', (string)$t), (array)($corpo['temas'] ?? [])))) ;
+  banco()->prepare("INSERT INTO docs (col, id, data, em) VALUES ('push', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([hash('sha256', $ep), json_encode(['endpoint' => $ep, 'uid' => eu()['id'] ?? '', 'temas' => array_slice($temas, 0, 20), 'em' => gmdate('c')]), agora()]);
+  sai(['ok' => true]);
+}
+case 'push_sair': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  banco()->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([hash('sha256', (string)($corpo['endpoint'] ?? ''))]); sai(['ok' => true]);
+}
+case 'push_ultima': {
+  $j = json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'push-ultima'")->fetchColumn(), true);
+  sai(['ok' => true, 'msg' => is_array($j) ? $j : ['titulo' => 'CoraçãoBR', 'texto' => 'Novidades no guia para você.', 'url' => './']]);
+}
+case 'push_enviar': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  $t = campo('titulo', 60); $x = campo('texto', 160); $url = campo('url', 200);
+  if ($t === '' || $x === '') erro('Escreva o título e o texto.');
+  @set_time_limit(300);
+  sai(['ok' => true] + enviaPush($t, $x, $url ?: './'));
+}
+case 'push_info': {
+  exigeMaster(); sai(['ok' => true, 'inscritos' => (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'push'")->fetchColumn(), 'ultima' => json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'push-ultima'")->fetchColumn(), true)]);
+}
+/* ===== Mapa do site para o Google (sitemap.xml e robots.txt, com o endereço real do site) ===== */
+case 'sitemap': {
+  header('Content-Type: application/xml; charset=utf-8'); header('Cache-Control: public, max-age=3600');
+  $b = baseUrl(); $urls = [$b];
+  $f = __DIR__ . '/../guia/paginas.json'; $pg = is_file($f) ? json_decode((string)file_get_contents($f), true) : [];
+  foreach ((array)$pg as $p) if (is_string($p) && preg_match('#^guia/[a-z0-9/-]+/$#', $p)) $urls[] = $b . $p;
+  echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+  foreach ($urls as $u) echo '<url><loc>' . htmlspecialchars($u, ENT_XML1) . '</loc><changefreq>weekly</changefreq></url>';
+  echo '</urlset>'; exit;
+}
+case 'robots': {
+  header('Content-Type: text/plain; charset=utf-8'); header('Cache-Control: public, max-age=86400');
+  echo "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /dados/\nDisallow: /uploads/\n\nSitemap: " . baseUrl() . "sitemap.xml\n"; exit;
 }
 default: erro('Ação desconhecida.', 404);
 }
@@ -999,8 +1134,10 @@ function montaNewsletter(): array {
   $html = '';
   if (!empty($cfg['intro'])) $html .= '<p style="font-size:15px;line-height:1.55">' . nl2br($e($cfg['intro'])) . '</p>';
   if ($eventos) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">Próximos eventos</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($eventos as $l) { $dt = DateTime::createFromFormat('Y-m-d', $l['_d']); $html .= $cartao($l, $dt ? $dt->format('d/m') : ''); } $html .= '</table>'; }
+  $cup = array_slice(array_values(array_filter($por, fn($l) => !empty($l['cupom']) && !in_array($l['categoria'] ?? '', ['evento', 'show'], true))), 0, 6);
+  if ($cup) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">Cupons da semana</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($cup as $l) $html .= $cartao($l, '🎟 ' . mb_substr((string)$l['cupom'], 0, 70)); $html .= '</table>'; }
   if ($dest) { $html .= '<h2 style="font-size:18px;color:#142019;margin:22px 0 4px">' . $e($cfg['tituloDestaques'] ?? 'Vale a visita') . '</h2><table width="100%" cellpadding="0" cellspacing="0">'; foreach ($dest as $l) $html .= $cartao($l, $l['bairro'] ?? ($l['categoria'] ?? '')); $html .= '</table>'; }
-  return ['assunto' => ($cfg['assunto'] ?? '') ?: 'A semana na CoraçãoBR', 'html' => $html, 'itens' => count($eventos) + count($dest)];
+  return ['assunto' => ($cfg['assunto'] ?? '') ?: 'A semana na CoraçãoBR', 'html' => $html, 'itens' => count($eventos) + count($dest) + count($cup)];
 }
 function moldura(string $miolo, string $token): string {
   $base = baseUrl(); $sair = $base . 'api/?acao=newsletter_sair&t=' . $token;
@@ -1033,4 +1170,88 @@ function envia(string $para, string $assunto, string $miolo, string $token): boo
   $h = "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\nList-Unsubscribe: <" . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token . ">\r\n";
   $corpo = "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n$txt\r\n--$b\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n$html\r\n--$b--";
   return @mail($para, '=?UTF-8?B?' . base64_encode($assunto) . '?=', $corpo, $h);
+}
+
+/* ---------- assistente: chave, modelo e busca dos lugares que combinam com a pergunta ---------- */
+function chaveIA(): string { global $CFG; $k = trim((string)($CFG['anthropic_key'] ?? '')); if ($k === '') $k = trim((string)@file_get_contents(dirname($CFG['db']) . '/ANTHROPIC.key')); return $k; }
+function modeloIA(): string { global $CFG; $m = trim((string)@file_get_contents(dirname($CFG['db']) . '/ANTHROPIC.modelo')); return in_array($m, ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $m : 'claude-opus-5-5'; }
+function semAcento(string $t): string { $t = mb_strtolower($t); $t = strtr($t, ['á'=>'a','à'=>'a','â'=>'a','ã'=>'a','ä'=>'a','é'=>'e','ê'=>'e','è'=>'e','í'=>'i','ì'=>'i','ó'=>'o','ô'=>'o','õ'=>'o','ò'=>'o','ú'=>'u','ù'=>'u','ü'=>'u','ç'=>'c','ñ'=>'n']); return $t; }
+function buscaLugares(string $perg, int $max = 30): array {
+  $SIN = ['comer' => ['restaurante','comida','churrasc','lanchonete','padaria','acai','pizza'], 'comida' => ['restaurante','churrasc','lanchonete','padaria'], 'churrasco' => ['churrasc','steakhouse','rodizio'],
+    'mercado' => ['mercado','market','loja','emporio'], 'igreja' => ['igreja','culto','missa','church'], 'medico' => ['medic','clinica','saude','dentista','doctor'], 'dentista' => ['dentista','odonto','dental'],
+    'advogado' => ['advoga','imigra','lawyer','attorney'], 'contador' => ['contab','contador','tax','imposto'], 'show' => ['show','evento','festa','balada'], 'festa' => ['festa','evento','show'], 'evento' => ['evento','show','festa'],
+    'cabelo' => ['salao','cabelo','barbearia','beleza'], 'unha' => ['salao','manicure','beleza'], 'crianca' => ['crianca','kids','infantil','parque','familia'], 'cafe' => ['cafe','padaria','coffee'], 'pao' => ['padaria','pao'],
+    'carro' => ['auto','mecanic','carro','oficina'], 'casa' => ['imobil','corretor','aluguel','casa'], 'futebol' => ['futebol','soccer','esporte'], 'passeio' => ['parque','museu','passeio','atracao','turismo']];
+  $STOP = ['onde','qual','quais','como','para','pra','com','que','uma','um','uns','umas','tem','tenho','quero','perto','aqui','dallas','texas','de','do','da','dos','das','no','na','nos','nas','em','e','o','a','os','as','me','eu','voce','algum','alguma','bom','boa','melhor','melhores','hoje','fim','semana'];
+  $q = semAcento($perg); $toks = [];
+  foreach (preg_split('/[^a-z0-9]+/', $q) as $t) { if (strlen($t) < 3 || in_array($t, $STOP, true)) continue; $toks[] = $t; foreach ($SIN as $k => $vs) if (strpos($t, $k) === 0) $toks = array_merge($toks, $vs); }
+  $toks = array_values(array_unique($toks)); $hoje = hojeDallas(); $fds = preg_match('/fim de semana|sabado|domingo|hoje|amanha|semana/', $q);
+  $out = [];
+  foreach (banco()->query("SELECT id, data FROM docs WHERE col = 'lugares'") as $r) {
+    $l = json_decode($r['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo']) || !empty($l['cancelado'])) continue;
+    $evento = in_array($l['categoria'] ?? '', ['evento', 'show'], true);
+    if ($evento && ($l['dataFim'] ?? $l['dataInicio'] ?? '9999') < $hoje) continue;
+    $l['id'] = $r['id'];
+    $txt = semAcento(implode(' ', [$l['nome'] ?? '', $l['categoria'] ?? '', $l['subcategoria'] ?? '', $l['bairro'] ?? '', $l['cidade'] ?? '', implode(' ', (array)($l['tags'] ?? [])), mb_substr((string)($l['descricao'] ?? ''), 0, 400)]));
+    $nome = semAcento((string)($l['nome'] ?? '')); $sc = 0;
+    foreach ($toks as $t) { if (strpos($nome, $t) !== false) $sc += 5; elseif (strpos($txt, $t) !== false) $sc += 2; }
+    if ($fds && $evento) $sc += 3;
+    if (!$sc && $toks) continue;
+    $sc += min(2, (float)($l['nota'] ?? 0) / 2.5);
+    $l['_sc'] = $sc; $out[] = $l;
+  }
+  usort($out, fn($a, $b) => $b['_sc'] <=> $a['_sc']);
+  return array_slice($out, 0, $max);
+}
+
+/* ---------- Web Push: chave VAPID (gerada no 1º uso, fica só no servidor) e envio ---------- */
+function b64u(string $b): string { return rtrim(strtr(base64_encode($b), '+/', '-_'), '='); }
+function vapid(): array {
+  global $CFG; banco(); $f = dirname($CFG['db']) . '/VAPID.pem';
+  if (!is_file($f)) {
+    $k = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]);
+    if (!$k) throw new RuntimeException('OpenSSL sem suporte a curvas elípticas.');
+    openssl_pkey_export($k, $pem); if (!@file_put_contents($f, $pem)) throw new RuntimeException('Não foi possível gravar a chave VAPID.'); @chmod($f, 0600);
+  }
+  $pk = openssl_pkey_get_private((string)file_get_contents($f)); $d = openssl_pkey_get_details($pk);
+  $x = str_pad($d['ec']['x'], 32, "\0", STR_PAD_LEFT); $y = str_pad($d['ec']['y'], 32, "\0", STR_PAD_LEFT);
+  return ['key' => $pk, 'pub' => b64u("\x04" . $x . $y)];
+}
+function jwtVapid(string $aud, $key): string {
+  $h = b64u(json_encode(['typ' => 'JWT', 'alg' => 'ES256'])); $p = b64u(json_encode(['aud' => $aud, 'exp' => time() + 12 * 3600, 'sub' => 'mailto:' . emailOficial()]));
+  openssl_sign("$h.$p", $der, $key, OPENSSL_ALGO_SHA256);
+  /* assinatura DER (SEQUENCE de dois INTEGER) → 64 bytes r||s */
+  $o = 3; $o += (ord($der[1]) & 0x80) ? (ord($der[1]) & 0x7f) : 0; $rl = ord($der[$o]); $r = substr($der, $o + 1, $rl); $o += 1 + $rl + 1; $sl = ord($der[$o]); $s = substr($der, $o + 1, $sl);
+  $r = str_pad(ltrim($r, "\0"), 32, "\0", STR_PAD_LEFT); $s = str_pad(ltrim($s, "\0"), 32, "\0", STR_PAD_LEFT);
+  return "$h.$p." . b64u($r . $s);
+}
+function enviaPush(string $titulo, string $texto, string $url, string $tema = ''): array {
+  $pdo = banco(); $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('push-ultima', ?)")->execute([json_encode(['titulo' => $titulo, 'texto' => $texto, 'url' => $url, 'em' => gmdate('c')], JSON_UNESCAPED_UNICODE)]);
+  $v = vapid(); $env = 0; $fal = 0; $jwts = [];
+  foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'push' LIMIT 5000")->fetchAll() as $row) {
+    $s = json_decode($row['data'], true); $ep = (string)($s['endpoint'] ?? ''); if ($ep === '') continue;
+    if ($tema !== '' && !empty($s['temas']) && !in_array($tema, (array)$s['temas'], true)) continue;
+    $pu = parse_url($ep); $aud = $pu['scheme'] . '://' . $pu['host'] . (isset($pu['port']) ? ':' . $pu['port'] : '');
+    $jwts[$aud] = $jwts[$aud] ?? jwtVapid($aud, $v['key']);
+    $ctx = stream_context_create(['http' => ['method' => 'POST', 'header' => "Authorization: vapid t={$jwts[$aud]}, k={$v['pub']}\r\nTTL: 86400\r\nUrgency: normal\r\nContent-Length: 0", 'content' => '', 'timeout' => 10, 'ignore_errors' => true]]);
+    @file_get_contents($ep, false, $ctx); $st = 0; if (!empty($http_response_header[0]) && preg_match('/\s(\d{3})\s?/', $http_response_header[0], $m)) $st = (int)$m[1];
+    if ($st >= 200 && $st < 300) $env++; else { $fal++; if ($st === 404 || $st === 410) $pdo->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([$row['id']]); }
+  }
+  return ['enviados' => $env, 'falhas' => $fal];
+}
+
+/* ---------- newsletter semanal automática (usada pelo cron da newsletter e pela rotina diária) ---------- */
+function newsletterAuto(bool $forcarLigada = false): array {
+  $cfg = configDoc('newsletter');
+  if (($cfg['automatica'] ?? true) === false && !$forcarLigada) return ['msg' => 'Envio automático desligado no painel.'];
+  $ult = banco()->query("SELECT v FROM meta WHERE k = 'news-auto'")->fetchColumn();
+  if ($ult && time() - (int)$ult < 6 * 86400) return ['msg' => 'Já enviado nesta semana.'];
+  @set_time_limit(600);
+  $d = montaNewsletter();
+  if (!$d['itens']) return ['msg' => 'Nada para enviar.'];
+  $env = 0; $fal = 0;
+  foreach (banco()->query('SELECT email, token FROM assinantes WHERE ativo = 1 LIMIT 2000')->fetchAll() as $a) { if (envia($a['email'], $d['assunto'], $d['html'], $a['token'])) $env++; else $fal++; }
+  banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('news-auto', ?)")->execute([(string)time()]);
+  banco()->prepare('INSERT INTO envios (assunto, modo, enviados, falhas, em) VALUES (?, ?, ?, ?, ?)')->execute([$d['assunto'], 'automático', $env, $fal, agora()]);
+  return ['enviados' => $env, 'falhas' => $fal];
 }

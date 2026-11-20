@@ -29,8 +29,17 @@ for f in ("manifest.webmanifest", "sw.js", "icon-192.png", "icon-512.png"):
     shutil.copy(ROOT / f, OUT / f)
 # servidor próprio: API em PHP, configuração inicial e regras da hospedagem
 (OUT / "api").mkdir()
-for f in ("index.php", "config.exemplo.php", "metro_gtfs.php"):
+for f in ("index.php", "config.exemplo.php", "metro_gtfs.php", "composer.json"):
     shutil.copy(ROOT / "api" / f, OUT / "api" / f)
+# biblioteca oficial da Anthropic (assistente com IA): instale com "composer install --no-dev" dentro de api/ antes de empacotar
+if (ROOT / "api" / "vendor" / "autoload.php").exists():
+    shutil.copytree(ROOT / "api" / "vendor", OUT / "api" / "vendor", ignore=shutil.ignore_patterns(".git", "tests", "docs", ".github", "*.md", "examples"))
+    (OUT / "api" / "vendor" / ".htaccess").write_text("Require all denied\nDeny from all\n")
+else:
+    print("AVISO: api/vendor ausente; o assistente vai usar só a busca do guia. Rode: cd api && composer install --no-dev")
+# páginas para o Google (categoria × cidade) + índice usado pelo sitemap.xml
+import sys; sys.path.insert(0, str(ROOT / "tools")); import seo
+print("SEO:", len(seo.gerar(OUT, L, time.strftime("%Y-%m-%d"))), "páginas")
 shutil.copy(ROOT / "data" / "config-inicial.json", OUT / "data" / "config-inicial.json")
 shutil.copy(ROOT / "data" / "metro.json", OUT / "data" / "metro.json")
 shutil.copy(ROOT / ".htaccess.site", OUT / ".htaccess")

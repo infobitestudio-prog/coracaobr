@@ -169,7 +169,7 @@
     try {
       if (arq) comp = await Store.salvarFoto(arq);
       var meus = anunciosDe(uid), l = (PED.lugarId && Store.obter("lugares", PED.lugarId)) || meus[0] || {};
-      await Store.gravar("avisos", Store.novoId("pg"), { tipo: "pagamento-informado", plano: PED.plano, qtd: PED.qtd || 1, comeca: PED.comeca || "agora", lugarAlvo: PED.lugarId || "", uid: uid, metodo: f.dataset.pgForm, ref: f.ref.value.trim().slice(0, 120), comprovante: comp, valor: PED.valor, moeda: "BRL", lugarId: l.id || "", nome: l.nome || (Store.conta && Store.conta() ? Store.conta().nome : ""), categoria: l.categoria || "", criadoEm: new Date().toISOString(), lido: false });
+      await Store.gravar("avisos", Store.novoId("pg"), { tipo: "pagamento-informado", plano: PED.plano, qtd: PED.qtd || 1, comeca: PED.comeca || "agora", lugarAlvo: PED.lugarId || "", itemId: PED.itemId || "", uid: uid, metodo: f.dataset.pgForm, ref: f.ref.value.trim().slice(0, 120), comprovante: comp, valor: PED.valor, moeda: "BRL", lugarId: l.id || "", nome: l.nome || (Store.conta && Store.conta() ? Store.conta().nome : ""), categoria: l.categoria || "", criadoEm: new Date().toISOString(), lido: false });
       G.toast("Pagamento informado. A equipe confere e libera em seguida.");
       location.hash = PED.volta || "anunciante";
     } catch (er) { b.disabled = false; G.toast(er.message || "Não foi possível enviar agora."); }
@@ -197,11 +197,11 @@
   var PX = null, pxT = null;
   function pixAuto() { return !!(Store.servidor && Store.servidor() && Store.estado.sessao && Store.estado.sessao.pixAuto); }
   function pixAutoHtml() {
-    var valor = PED.valor, chave = [PED.plano, PED.qtd, PED.comeca, PED.lugarId || "", valor].join(":");
+    var valor = PED.valor, chave = [PED.plano, PED.qtd, PED.comeca, PED.lugarId || "", PED.itemId || "", valor].join(":");
     if (PX && PX.chave !== chave && PX.status !== "aprovado") PX = null;
     if (!PX) return '<div class="pxa"><div class="pxa-hd"><span class="pg-ic">' + ic("bulb") + "</span><div><b>Pix com confirmação automática</b><small>Gere o Pix, pague no app do banco e seus anúncios entram no ar sozinhos, na hora.</small></div></div>" +
       '<button type="button" class="btn pxa-go" data-pxa-gerar data-chave="' + esc(chave) + '">Gerar Pix de ' + reais(valor) + "</button></div>";
-    if (PX.status === "aprovado") return '<div class="pxa pxa-ok"><span class="pxa-ck">✓</span><div><b>Pagamento confirmado!</b><small>' + (PED.plano === "verificado" ? "A equipe já recebeu o pedido do selo." : PED.plano === "impulso" ? "Seu anúncio já está no topo." : "Seus anúncios já estão liberados.") + ' Levando você ao painel…</small></div></div>';
+    if (PX.status === "aprovado") return '<div class="pxa pxa-ok"><span class="pxa-ck">✓</span><div><b>Pagamento confirmado!</b><small>' + (PED.plano === "verificado" ? "A equipe já recebeu o pedido do selo." : PED.plano === "impulso" ? "Seu anúncio já está no topo." : PED.plano === "clube" ? "Sua carteirinha do Clube já está ativa." : PED.plano === "mural" ? "Sua publicação já está em destaque." : "Seus anúncios já estão liberados.") + ' Levando você de volta…</small></div></div>';
     if (PX.status === "expirado" || PX.status === "cancelado") return '<div class="pxa"><p><b>Este Pix ' + (PX.status === "expirado" ? "expirou" : "foi cancelado") + ".</b> Gere um novo para continuar.</p><button type=\"button\" class=\"btn\" data-pxa-novo>Gerar novo Pix</button></div>";
     return '<div class="pix"><div class="pix-qr"><img src="data:image/png;base64,' + esc(PX.qr) + '" alt="QR Code Pix" style="width:100%;display:block"></div><div class="pix-info"><p class="pix-v"><small>Valor</small><b>' + reais(PX.valor) + "</b></p>" +
       '<label class="pix-l" for="pix-cc">Pix copia e cola</label><textarea id="pix-cc" class="pix-cc" readonly rows="3">' + esc(PX.copiaecola) + '</textarea><div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + esc(PX.copiaecola) + '">Copiar código Pix</button></div>' +
@@ -219,7 +219,7 @@
       Store.api("pix_status", null, "&id=" + encodeURIComponent(PX.id)).then(function (j) {
         if (!PX || j.status === PX.status) return;
         PX.status = j.status; redesenhaPix();
-        if (j.status === "aprovado") { clearInterval(pxT); G.toast("Pagamento confirmado! Seus anúncios estão no ar."); Store.sincronizarAgora().then(function () { setTimeout(function () { PX = null; location.hash = (PED && PED.volta) || "anunciante"; }, 2200); }); }
+        if (j.status === "aprovado") { clearInterval(pxT); G.toast(PED && PED.plano === "clube" ? "Pagamento confirmado! Bem-vindo ao Clube CoraçãoBR." : PED && PED.plano === "mural" ? "Pagamento confirmado! Publicação em destaque." : "Pagamento confirmado! Seus anúncios estão no ar."); Store.sincronizarAgora().then(function () { setTimeout(function () { PX = null; location.hash = (PED && PED.volta) || "anunciante"; }, 2200); }); }
       }).catch(function () { /* tenta de novo no próximo ciclo */ });
     }, 1000);
   }
@@ -228,7 +228,7 @@
     if (e.target.closest("[data-pxa-novo]")) { PX = null; redesenhaPix(); return; }
     if (!b) return;
     b.disabled = true; b.textContent = "Gerando Pix…";
-    Store.api("pix_criar", { plano: PED.plano, qtd: PED.qtd, comeca: PED.comeca, lugarId: PED.lugarId || "" }).then(function (j) {
+    Store.api("pix_criar", { plano: PED.plano, qtd: PED.qtd, comeca: PED.comeca, lugarId: PED.lugarId || "", itemId: PED.itemId || "" }).then(function (j) {
       PX = { chave: b.dataset.chave, id: j.id, valor: j.valor, qr: j.qr, copiaecola: j.copiaecola, expira: j.expira, status: "pendente" }; redesenhaPix(); acompanha();
     }).catch(function (er) { b.disabled = false; b.textContent = "Tentar de novo"; G.toast(er.message || "Não foi possível gerar o Pix agora."); });
   });
@@ -266,7 +266,7 @@
     el.innerHTML = '<div class="stack">' +
       '<div class="panel stack" style="gap:12px"><h3>Pagamentos informados' + (pend.length ? " (" + pend.length + ")" : "") + "</h3>" +
       (function () { var fila = Store.lista("pagamentos").filter(function (d) { return d.verificacao && d.verificacao.status === "analise"; }); return fila.length ? '<div class="panel stack" style="gap:12px"><h3>Selo Verificado · em análise (' + fila.length + ")</h3>" + fila.map(function (d) { var ls = contas[d.id] || []; return '<div class="pgm-c"><div class="pgm-t"><b>' + esc(ls.map(function (l) { return l.nome; }).join(" · ") || d.id) + "</b><small>Pago em " + diaLocal(d.verificacao.pagoEm || "") + " · confira nome, contato e endereço dos anúncios</small>" + ls.map(function (l) { return '<a class="small" href="#lugar-' + esc(l.id) + '">ver ' + esc(l.nome) + "</a>"; }).join(" ") + '</div><div class="pgm-a"><button type="button" class="btn sm" data-vf="aprovado" data-uid="' + esc(d.id) + '">Aprovar selo</button><button type="button" class="btn ghost sm" data-vf="recusado" data-uid="' + esc(d.id) + '">Recusar</button></div></div>'; }).join("") + "</div>" : ""; })() + '<div class="panel stack" style="gap:12px"><h3>Pagamentos informados · lista</h3>' +
-      (pend.length ? pend.map(function (a) { return '<div class="pgm-c"><div class="pgm-t"><b>' + esc(a.nome || a.uid) + " · " + esc((a.metodo || "").toUpperCase()) + " · " + reais(a.valor || 0) + " · " + (a.plano === "promo" ? "promoção de curadoria" : (a.qtd || 1) + (Number(a.qtd) > 1 ? " pacotes" : " pacote") + " (" + (Number(a.qtd || 1) * porPacote()) + " anúncios)" + (a.comeca === "renovar" ? " · renovação" : "")) + "</b><small>" + br(a.criadoEm) + " · ref.: " + esc(a.ref || "—") + "</small>" + (a.comprovante ? '<a class="small" href="' + esc(Store.urlFoto(a.comprovante)) + '" target="_blank" rel="noopener">ver comprovante</a>' : "") + '</div><div class="pgm-a"><button type="button" class="btn sm" data-pgm-ok="' + esc(a.id) + '" data-uid="' + esc(a.uid) + '">Confirmar</button><button type="button" class="btn ghost sm" data-pgm-no="' + esc(a.id) + '">Recusar</button></div></div>'; }).join("") : '<p class="muted small">Nenhum pagamento aguardando confirmação.</p>') + "</div>" +
+      (pend.length ? pend.map(function (a) { return '<div class="pgm-c"><div class="pgm-t"><b>' + esc(a.nome || a.uid) + " · " + esc((a.metodo || "").toUpperCase()) + " · " + reais(a.valor || 0) + " · " + (a.plano === "clube" ? "Clube CoraçãoBR (1 mês)" : a.plano === "mural" ? "destaque no Mural" : a.plano === "verificado" ? "selo Verificado" : a.plano === "impulso" ? "impulso" : a.plano === "promo" ? "promoção de curadoria" : (a.qtd || 1) + (Number(a.qtd) > 1 ? " pacotes" : " pacote") + " (" + (Number(a.qtd || 1) * porPacote()) + " anúncios)" + (a.comeca === "renovar" ? " · renovação" : "")) + "</b><small>" + br(a.criadoEm) + " · ref.: " + esc(a.ref || "—") + "</small>" + (a.comprovante ? '<a class="small" href="' + esc(Store.urlFoto(a.comprovante)) + '" target="_blank" rel="noopener">ver comprovante</a>' : "") + '</div><div class="pgm-a"><button type="button" class="btn sm" data-pgm-ok="' + esc(a.id) + '" data-uid="' + esc(a.uid) + '">Confirmar</button><button type="button" class="btn ghost sm" data-pgm-no="' + esc(a.id) + '">Recusar</button></div></div>'; }).join("") : '<p class="muted small">Nenhum pagamento aguardando confirmação.</p>') + "</div>" +
       '<div class="panel stack" style="gap:12px"><h3>Contas de anunciantes</h3><p class="small muted">Cada pacote pago libera ' + porPacote() + " anúncios por 1 mês e entra no ar 1 hora depois da confirmação. Pacotes somam. Tolerância de " + TOLERANCIA + " dias depois do término.</p>" +
       (Object.keys(contas).length ? Object.keys(contas).map(linhaConta).join("") : '<p class="muted small">Nenhuma conta de anunciante ainda.</p>') + "</div>" +
       (Store.servidor && Store.servidor() ? '<div class="panel stack" style="gap:12px" id="pgm-mp"><h3>Pix automático (Mercado Pago)</h3><p class="small muted">Com o Pix automático, cada compra gera uma cobrança Pix com QR Code. Quando o pagamento cai, o pacote é liberado na hora, sem confirmação manual, e o anunciante recebe e-mail. Sem ele, vale o Pix pela chave e a confirmação manual acima.</p><p data-mp-st class="small">Verificando…</p>' +
@@ -280,7 +280,7 @@
       '<button class="btn" type="submit" style="justify-self:start">Salvar</button></form></div>';
     el.onclick = function (ev) {
       var b, box = ev.target.closest(".pgm-c"), uid = box && box.dataset.uid;
-      if ((b = ev.target.closest("[data-pgm-ok]"))) { var av = Store.obter("avisos", b.dataset.pgmOk); if (!av) return; novoPacote(av.uid, { tipo: av.plano, qtd: Number(av.qtd) || 1, comeca: av.comeca, lugarId: av.lugarAlvo }, av); return; }
+      if ((b = ev.target.closest("[data-pgm-ok]"))) { var av = Store.obter("avisos", b.dataset.pgmOk); if (!av) return; novoPacote(av.uid, { tipo: av.plano, qtd: Number(av.qtd) || 1, comeca: av.comeca, lugarId: av.lugarAlvo, itemId: av.itemId, valor: av.valor, nome: av.nome }, av); return; }
       if ((b = ev.target.closest("[data-vf]"))) { var vu = b.dataset.uid, vv = Object.assign({}, verificacao(vu) || {}); vv.status = b.dataset.vf; vv.revisadoEm = new Date().toISOString(); if (b.dataset.vf === "recusado") vv.nota = (prompt("Motivo (aparece para o anunciante):") || "").slice(0, 160); grava(vu, { verificacao: vv }, b.dataset.vf === "aprovado" ? "Selo Verificado aprovado." : "Verificação recusada."); return; }
       if ((b = ev.target.closest("[data-pgm-no]"))) { var a = Store.obter("avisos", b.dataset.pgmNo); if (a) Store.gravar("avisos", a.id, Object.assign({}, a, { recusado: true, lido: true })).then(function () { abaMaster(el); }); return; }
       if (!uid) return;
@@ -312,6 +312,17 @@
     /* cria o pacote confirmado: agora (soma vagas) ou depois do plano atual (renovação) */
     function novoPacote(uid, o, aviso) {
       if (o.tipo === "verificado") { grava(uid, { verificacao: { status: "analise", pagoEm: new Date().toISOString(), valor: precoSelo(), aviso: aviso ? aviso.id : "" } }, "Pagamento do selo confirmado. Agora é só conferir o negócio e aprovar."); if (aviso) Store.gravar("avisos", aviso.id, Object.assign({}, aviso, { confirmado: true, lido: true })); return; }
+      if (o.tipo === "clube" || o.tipo === "mural") {
+        var dc = doc(uid) || {}, agoraI = new Date().toISOString(), base = { valor: Number(o.valor) || (o.tipo === "clube" ? Number(cfg().precoClube) || 15 : Number(cfg().precoMural) || 10), pagoEm: agoraI, aviso: aviso ? aviso.id : "", metodo: aviso ? aviso.metodo || "" : "equipe" };
+        if (o.tipo === "clube") {
+          var cl = dc.clube || {}, iniC = cl.ate && cl.ate >= hoje() ? somaDias(cl.ate, 1) : hoje(), pc = Object.assign({ id: "cl" + Date.now().toString(36), inicio: iniC, fim: maisUmMes(iniC) }, base);
+          grava(uid, { clubePag: (dc.clubePag || []).concat([pc]).slice(-60), clube: { desde: cl.desde || hoje(), ate: pc.fim, nome: cl.nome || o.nome || "", numero: cl.numero || "" } }, "Clube confirmado até " + br(pc.fim) + ".");
+        } else {
+          var jaM = (dc.mural || []).filter(function (m) { return m.itemId === o.itemId && m.fim >= hoje(); }).reduce(function (m, x) { return x.fim > m ? x.fim : m; }, ""), iniM = jaM ? somaDias(jaM, 1) : hoje(), dm = Math.max(1, Number(cfg().diasMural) || 30);
+          grava(uid, { mural: (dc.mural || []).concat([Object.assign({ id: "mu" + Date.now().toString(36), itemId: o.itemId || "", inicio: iniM, fim: somaDias(iniM, dm - 1) }, base)]).slice(-60) }, "Destaque no Mural confirmado.");
+        }
+        if (aviso) Store.gravar("avisos", aviso.id, Object.assign({}, aviso, { confirmado: true, lido: true })); return;
+      }
       if (o.tipo === "impulso") {
         var d0 = doc(uid) || {}, l0 = (Array.isArray(d0.pacotes) ? d0.pacotes : pacotes(uid).map(function (x) { var y = Object.assign({}, x); delete y.antigo; return y; })).slice(), ja = impulsos(uid).filter(function (pk) { return pk.lugarId === o.lugarId && pk.fim >= hoje(); }).reduce(function (m, pk) { return pk.fim > m ? pk.fim : m; }, "");
         var ini0 = ja ? somaDias(ja, 1) : hoje(), pki = { id: "im" + Date.now().toString(36), tipo: "impulso", lugarId: o.lugarId || "", qtd: 1, anuncios: 0, valor: precoImpulso(), moeda: "BRL", pagoEm: new Date().toISOString(), inicio: ini0, fim: somaDias(ini0, diasImpulso() - 1), ativaEm: "", aviso: aviso ? aviso.id : "", metodo: aviso ? aviso.metodo || "" : "equipe" };
@@ -334,7 +345,8 @@
   }
   function campo(id, rot, val, extra) { return '<div class="field"><label for="' + id + '">' + rot + '</label><input id="' + id + '" value="' + esc(val == null ? "" : val) + '" ' + (extra || "") + "></div>"; }
 
+  function checkout(ped) { PED = ped; return pagamentoHtml(Store.uid()); }
   G.views.extra = viewExtra;
   G.views.pagar = function () { viewPagar(false); }; G.views["pagar-promo"] = function () { viewPagar(true); };
-  window.Pag = { creditosIndicacao: creditosIndicacao, precoSelo: precoSelo, precoImpulso: precoImpulso, diasImpulso: diasImpulso, verificacao: verificacao, verificado: verificado, selo: selo, impulsos: impulsos, impulsionado: impulsionado, preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
+  window.Pag = { checkout: checkout, creditosIndicacao: creditosIndicacao, precoSelo: precoSelo, precoImpulso: precoImpulso, diasImpulso: diasImpulso, verificacao: verificacao, verificado: verificado, selo: selo, impulsos: impulsos, impulsionado: impulsionado, preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
 })();
