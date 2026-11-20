@@ -1,0 +1,51 @@
+ESTÚDIO CORAÇÃOBR - editor de artes para o Instagram
+=====================================================
+
+O que é
+-------
+Um editor separado da plataforma (HTML/CSS/JS puro, sem build), na pasta estudio/.
+Ele lê a base atual do guia (../data/seed.json) e as fotos do site toda vez que abre,
+então as artes sempre usam os lugares, eventos, cupons e fotos mais recentes.
+
+Como abrir
+----------
+1. No site publicado: https://seudominio/estudio/
+   (a pasta estudio/ precisa estar publicada junto com data/, img/, fotos_eventos/ e fotos_cidades/).
+2. No computador, com um servidor local na pasta raiz do site:
+      cd guia-texas
+      python3 -m http.server 8090
+   e abra http://localhost:8090/estudio/
+
+Não abra o index.html com dois cliques (file://): o navegador bloqueia a leitura do
+seed.json e a exportação de PNG com fotos.
+
+Como usar
+---------
+- Galeria: 30 modelos prontos (15 para o consumidor, 15 para o anunciante). Toque em
+  um para abrir no editor. "Baixar todas desta aba" baixa um PNG por arte (o navegador
+  pode pedir permissão para vários downloads).
+- Gerar criativos: escolha público, tipo, região/cidade, quantidade e formato. As artes
+  geradas ficam na aba "Gerados" e abrem no editor para ajustes.
+- Editor: clique para selecionar, arraste para mover, use as alças para redimensionar e
+  a bolinha de cima para girar. Dois cliques num texto editam ali mesmo; dois cliques
+  numa foto ativam o enquadramento (arraste e use a roda do mouse para zoom).
+- Painel esquerdo: Adicionar (texto, imagem, formas, logo, QR, selos, ícones, emojis),
+  Fotos (busca nas fotos do guia; "só fotos reais" esconde as ilustrativas), Camadas
+  (esconder, travar, selecionar) e Paleta (troca a paleta inteira da arte em um clique).
+- Painel direito: propriedades da camada selecionada (fonte, cor, sombra, contorno,
+  destaque, brilho/contraste/saturação, filtro escuro, cantos, posição, ordem...).
+- Formato: Feed 1080x1080, Retrato 1080x1350 ou Story 1080x1920 (menu no topo).
+- Salvar guarda em "Meus projetos" neste navegador (localStorage). "Baixar PNG" gera
+  a arte em 1080 px de largura.
+- No celular, os painéis abrem pela barra de baixo.
+
+Atalhos: Ctrl+Z desfaz, Ctrl+Shift+Z refaz, Ctrl+D duplica, Delete apaga, setas movem
+(Shift = 10 px), Ctrl+] / Ctrl+[ frente/trás, Ctrl+L trava, Ctrl+C / Ctrl+V copia e cola,
+Ctrl+S salva, Ctrl+E baixa PNG, Enter edita o texto selecionado, Esc tira a seleção.
+
+Observações
+-----------
+- O QR code aponta para o endereço onde o estúdio está aberto (no localhost aparece
+  "seudominio.com"; troque o link no painel do QR).
+- Os cupons da base atual vêm de anunciantes de exemplo (nome com "(exemplo)").
+- Projetos salvos ficam só neste navegador; fotos enviadas ocupam espaço do localStorage.

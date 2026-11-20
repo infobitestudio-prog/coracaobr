@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estúdio CoraçãoBR</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#04341A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Barlow+Condensed:wght@500;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Geist:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500..900;1,500..900&display=swap">
+<link rel="stylesheet" href="estudio.css">
+</head>
+<body>
+<div id="app">
+  <header class="tb">
+    <button class="tb-brand" id="btnGaleria" title="Abrir a galeria de modelos">
+      <svg class="tb-sym" viewBox="0 0 270 200" aria-hidden="true"><use href="#symLogo"/></svg>
+      <span class="tb-name">Estúdio <b>Coração<i>BR</i></b></span>
+    </button>
+    <div class="tb-group tb-hist">
+      <button class="ib" id="btnUndo" title="Desfazer (Ctrl+Z)" aria-label="Desfazer"><svg><use href="#i-undo"/></svg></button>
+      <button class="ib" id="btnRedo" title="Refazer (Ctrl+Shift+Z)" aria-label="Refazer"><svg><use href="#i-redo"/></svg></button>
+    </div>
+    <input class="tb-title" id="docName" value="Arte sem nome" aria-label="Nome da arte" spellcheck="false">
+    <div class="tb-spacer"></div>
+    <select class="tb-sel" id="selFormato" aria-label="Formato da lona" title="Formato">
+      <option value="1080">Feed 1:1 (1080 × 1080)</option>
+      <option value="1350">Retrato 4:5 (1080 × 1350)</option>
+      <option value="1920">Story 9:16 (1080 × 1920)</option>
+    </select>
+    <button class="btn btn-q tb-gen" id="btnGerar"><svg><use href="#i-spark"/></svg><span>Gerar criativos</span></button>
+    <button class="btn btn-q" id="btnSalvar" title="Salvar no navegador (Ctrl+S)"><svg><use href="#i-save"/></svg><span>Salvar</span></button>
+    <button class="btn btn-sun" id="btnExportar" title="Baixar PNG 1080 px (Ctrl+E)"><svg><use href="#i-down"/></svg><span>Baixar PNG</span></button>
+  </header>
+
+  <div class="work">
+    <aside class="pane pane-l" id="paneL">
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="add" class="on">Adicionar</button>
+        <button role="tab" data-tab="fotos">Fotos</button>
+        <button role="tab" data-tab="camadas">Camadas</button>
+        <button role="tab" data-tab="tema">Paleta</button>
+      </nav>
+      <div class="tabp on" data-panel="add" id="pAdd"></div>
+      <div class="tabp" data-panel="fotos" id="pFotos"></div>
+      <div class="tabp" data-panel="camadas" id="pCamadas"></div>
+      <div class="tabp" data-panel="tema" id="pTema"></div>
+    </aside>
+
+    <main class="stage-wrap" id="stageWrap">
+      <div class="stage" id="stage">
+        <canvas id="cv" width="1080" height="1080"></canvas>
+        <div class="ov" id="ov"></div>
+      </div>
+      <div class="zoom">
+        <button class="ib" id="zOut" aria-label="Diminuir zoom"><svg><use href="#i-minus"/></svg></button>
+        <button class="z-val" id="zFit" title="Caber na tela">100%</button>
+        <button class="ib" id="zIn" aria-label="Aumentar zoom"><svg><use href="#i-plus"/></svg></button>
+      </div>
+    </main>
+
+    <aside class="pane pane-r" id="paneR">
+      <div class="props" id="props"></div>
+    </aside>
+  </div>
+
+  <nav class="mb" id="mobileBar">
+    <button data-sheet="add"><svg><use href="#i-plus"/></svg><span>Adicionar</span></button>
+    <button data-sheet="fotos"><svg><use href="#i-img"/></svg><span>Fotos</span></button>
+    <button data-sheet="props"><svg><use href="#i-sliders"/></svg><span>Editar</span></button>
+    <button data-sheet="camadas"><svg><use href="#i-layers"/></svg><span>Camadas</span></button>
+    <button data-sheet="tema"><svg><use href="#i-drop"/></svg><span>Paleta</span></button>
+  </nav>
+</div>
+
+<!-- Galeria -->
+<section class="gal" id="gal" aria-label="Galeria de artes">
+  <div class="gal-top">
+    <div class="gal-head">
+      <div class="gal-brand"><svg class="tb-sym" viewBox="0 0 270 200" aria-hidden="true"><use href="#symLogo"/></svg><span>Estúdio <b>Coração<i>BR</i></b></span></div>
+      <h1>Artes para o Instagram, com o que está no guia hoje</h1>
+      <p>Abra um modelo, troque texto e foto, baixe em PNG 1080 px. As fotos e os lugares vêm direto da base do CoraçãoBR.</p>
+      <div class="gal-actions">
+        <button class="btn btn-sun" id="gGerar"><svg><use href="#i-spark"/></svg><span>Gerar criativos</span></button>
+        <button class="btn btn-ghost" id="gNovo"><svg><use href="#i-plus"/></svg><span>Arte em branco</span></button>
+        <button class="btn btn-ghost" id="gVoltar" hidden><svg><use href="#i-back"/></svg><span>Voltar ao editor</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="gal-bar">
+    <div class="seg" id="gTabs">
+      <button data-g="modelos" class="on">Modelos prontos <em id="nModelos">30</em></button>
+      <button data-g="gerados">Gerados <em id="nGerados">0</em></button>
+      <button data-g="projetos">Meus projetos <em id="nProjetos">0</em></button>
+    </div>
+    <div class="seg seg-s" id="gFiltro">
+      <button data-f="todos" class="on">Todos</button>
+      <button data-f="consumidor">Consumidor</button>
+      <button data-f="anunciante">Anunciante</button>
+    </div>
+    <button class="btn btn-q" id="gExportarTodas"><svg><use href="#i-down"/></svg><span>Baixar todas desta aba</span></button>
+  </div>
+  <div class="gal-grid" id="gGrid"></div>
+</section>
+
+<!-- Gerador -->
+<dialog class="dlg" id="dlgGerar">
+  <form method="dialog" id="formGerar">
+    <h2>Gerar criativos</h2>
+    <p class="muted">Lê a base atual do guia e monta artes novas, variando layout, foto e paleta. Cada uma abre no editor.</p>
+    <fieldset class="fs"><legend>Para quem</legend>
+      <label class="chip"><input type="radio" name="publico" value="consumidor" checked><span>Consumidor</span></label>
+      <label class="chip"><input type="radio" name="publico" value="anunciante"><span>Anunciante</span></label>
+    </fieldset>
+    <fieldset class="fs"><legend>Tipo</legend>
+      <label class="chip"><input type="radio" name="tipo" value="misto" checked><span>Misturar</span></label>
+      <label class="chip"><input type="radio" name="tipo" value="destaque"><span>Lugar em destaque</span></label>
+      <label class="chip"><input type="radio" name="tipo" value="top"><span>Top da categoria</span></label>
+      <label class="chip"><input type="radio" name="tipo" value="eventos"><span>Eventos próximos</span></label>
+      <label class="chip"><input type="radio" name="tipo" value="cupons"><span>Cupons</span></label>
+      <label class="chip"><input type="radio" name="tipo" value="institucional"><span>Institucional</span></label>
+    </fieldset>
+    <div class="row2">
+      <label class="fld"><span>Região ou cidade</span><select name="cidade" id="gCidade"></select></label>
+      <label class="fld"><span>Quantidade</span><select name="qtd"><option>3</option><option selected>6</option><option>9</option><option>12</option></select></label>
+      <label class="fld"><span>Formato</span><select name="formato"><option value="misto">Variado</option><option value="1080">Feed</option><option value="1350">Retrato</option><option value="1920">Story</option></select></label>
+    </div>
+    <div class="dlg-act">
+      <button class="btn btn-q" value="cancel" formnovalidate>Cancelar</button>
+      <button class="btn btn-pri" value="ok" id="gGo"><svg><use href="#i-spark"/></svg><span>Gerar</span></button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="fileImg" accept="image/*" hidden>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="hgL" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#0AA23C"/><stop offset=".6" stop-color="#088F36"/><stop offset="1" stop-color="#05692A"/></linearGradient>
+    <linearGradient id="hgF" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#05501F"/><stop offset="1" stop-color="#0B7A32" stop-opacity="0"/></linearGradient>
+    <linearGradient id="hgY" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F7B500"/><stop offset="1" stop-color="#FFC20E"/></linearGradient>
+    <linearGradient id="hgC" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#078A35"/><stop offset=".8" stop-color="#0A9A3D"/><stop offset="1" stop-color="#46B86E"/></linearGradient>
+  </defs>
+  <symbol id="symLogo" viewBox="0 0 270 200"><g transform="scale(0.3333)">
+    <path fill="url(#hgL)" d="M270 30 C330 32 365 60 385 100 L330 190 C300 165 250 150 200 160 C160 168 148 200 152 240 C160 330 230 430 330 520 L368 556 C240 520 110 430 50 340 C10 270 15 160 70 90 C120 40 200 28 270 30 Z"/>
+    <path fill="url(#hgF)" d="M152 200 C160 120 195 66 250 38 L292 34 C238 66 210 112 206 162 C180 166 160 176 152 200 Z"/>
+    <path fill="url(#hgY)" d="M322 188 C360 110 440 30 540 22 C610 18 670 50 705 105 L640 148 C600 122 540 112 480 132 C440 146 410 190 386 255 Z"/>
+    <path fill="none" stroke="url(#hgC)" stroke-width="108" stroke-linecap="round" stroke-linejoin="round" d="M270 382 L394 518 L748 172"/>
+  </g></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5zM8 3v5h7V3M8 21v-7h8v7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3 3.8M6.6 6.6C3.8 8.3 2 12 2 12s3.5 7 10 7a9.6 9.6 0 0 0 4.4-1"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-dn" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></symbol>
+  <symbol id="i-shape" viewBox="0 0 24 24"><rect x="3" y="3" width="10" height="10" rx="1"/><circle cx="16" cy="16" r="5"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M21 14v7h-7M17 21v0"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V3h9l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></symbol>
+  <symbol id="i-crop" viewBox="0 0 24 24"><path d="M6 2v16h16M2 6h16v16"/></symbol>
+  <symbol id="i-al-l" viewBox="0 0 24 24"><path d="M4 3v18M8 7h10M8 12h6M8 17h12"/></symbol>
+  <symbol id="i-al-c" viewBox="0 0 24 24"><path d="M12 3v18M6 7h12M8 12h8M5 17h14"/></symbol>
+  <symbol id="i-al-r" viewBox="0 0 24 24"><path d="M20 3v18M6 7h10M10 12h6M4 17h12"/></symbol>
+  <symbol id="i-al-t" viewBox="0 0 24 24"><path d="M3 4h18M7 8v10M12 8v6M17 8v12"/></symbol>
+  <symbol id="i-al-m" viewBox="0 0 24 24"><path d="M3 12h18M7 6v12M12 8v8M17 5v14"/></symbol>
+  <symbol id="i-al-b" viewBox="0 0 24 24"><path d="M3 20h18M7 6v10M12 10v6M17 4v12"/></symbol>
+</svg>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="estudio.js"></script>
+<script src="modelos.js"></script>
+<script src="editor.js"></script>
+</body>
+</html>
