@@ -171,50 +171,42 @@
   Store.assinar(function () { if (Store.estado.pronto) desce(); });
   window.addEventListener("hashchange", sobe); document.addEventListener("visibilitychange", function () { if (document.hidden) sobe(); }); setInterval(sobe, 20000);
 
-  /* ---------- caixinha ---------- */
-  /* Caixinha: Pix para a chave oficial com valor livre (a pessoa digita no app do banco) ou um valor sugerido */
-  var CX = 0;
+  /* ---------- caixinha do desenvolvedor ----------
+     A pessoa escolhe o valor (ou digita outro) e o site gera o Pix com esse valor, na chave oficial.
+     Com o Pix automático ligado, a confirmação aparece na tela e volta para o início.
+     "Valor em aberto" gera o Pix sem valor: a pessoa digita quanto quiser no app do banco. */
+  var CX = 10, CXA = false;
+  function valoresCx() { var c = G.config().caixinha || {}; return (c.valoresPix && c.valoresPix.length) ? c.valoresPix.map(Number).filter(function (v) { return v >= 1; }) : [5, 10, 20, 50, 100]; }
   function viewCaixinha() {
-    CX_CHAVE = false;
-    var c = G.config().caixinha || {}, vals = (c.valoresPix && c.valoresPix.length) ? c.valoresPix : [5, 10, 20, 50];
-    G.app.innerHTML = '<section class="block cx"><div class="wrap stack in" style="max-width:720px">' +
-      '<div style="text-align:center;display:grid;justify-items:center;gap:10px"><span class="tic" style="width:64px;height:64px">' + ic("heart") + '</span><h1 class="page-h">Apoie o CoraçãoBR</h1>' +
-      '<p class="muted" style="max-width:52ch">' + esc(c.texto || "Gostou do guia? Qualquer valor ajuda a manter o site gratuito, atualizado todos os dias e a levar o guia para outras cidades.") + "</p></div>" +
-      '<div class="panel stack cx-box"><div class="cx-vs" role="group" aria-label="Valor do apoio"><button type="button" data-cx="0" aria-pressed="' + (CX === 0) + '">Valor livre</button>' + vals.map(function (v) { return '<button type="button" data-cx="' + v + '" aria-pressed="' + (CX === v) + '">' + G.reais(v) + "</button>"; }).join("") + '</div>' +
-      '<div class="cx-out"><label for="cx-v">Outro valor (R$)</label><input id="cx-v" type="number" min="1" step="1" inputmode="decimal" placeholder="Digite o valor" value="' + (CX && vals.indexOf(CX) < 0 ? CX : "") + '"></div>' +
-      '<div id="cx-pix">' + pixCaixinha() + "</div>" +
-      '<p class="small muted" style="text-align:center">' + (cxAuto() ? "O Pix é confirmado sozinho. Obrigado por fazer o CoraçãoBR bater mais forte. 💚💛" : "Com <b>valor livre</b>, o QR Code vem sem valor e você digita quanto quiser no app do banco. Obrigado por fazer o CoraçãoBR bater mais forte. 💚💛") + '</p></div>' +
-      (G.sacHtml ? G.sacHtml("o apoio", true) : "") + "</div></section>";
+    var c = G.config().caixinha || {}, vals = valoresCx();
+    G.app.innerHTML = '<section class="block cx2"><div class="wrap">' +
+      '<header class="cx2-h"><span class="cx2-ic">' + ic("heart") + '</span><p class="eyebrow">Caixinha do desenvolvedor</p><h1 class="page-h">Apoie o CoraçãoBR</h1><p class="muted">' + esc(c.texto || "Gostou do guia? Qualquer valor ajuda a manter o site gratuito, atualizado todos os dias e a levar o guia para outras cidades.") + "</p></header>" +
+      '<div class="cx2-g"><div class="cx2-v"><h2>Quanto você quer apoiar?</h2>' +
+      '<div class="cx2-ch" role="group" aria-label="Valor do apoio">' + vals.map(function (v) { return '<button type="button" data-cx="' + v + '" aria-pressed="' + (!CXA && CX === v) + '">' + G.reais(v) + "</button>"; }).join("") + "</div>" +
+      '<div class="cx2-out"><label for="cx-v">Outro valor</label><div class="cx2-in"><span>R$</span><input id="cx-v" type="number" min="1" max="5000" step="1" inputmode="decimal" placeholder="Digite o valor" value="' + (!CXA && vals.indexOf(CX) < 0 && CX ? CX : "") + '"></div></div>' +
+      '<label class="cx2-ab"><input type="checkbox" data-cx-aberto' + (CXA ? " checked" : "") + '><span><b>Valor em aberto</b><small>Gera o Pix sem valor: você digita quanto quiser no app do banco.</small></span></label>' +
+      '<ul class="cx2-ben"><li>' + ic("heart") + "Mantém o guia gratuito para todos</li><li>" + ic("globe") + "Leva o CoraçãoBR para novas cidades</li><li>" + ic("star") + "Eventos e lugares atualizados todo dia</li></ul></div>" +
+      '<div class="cx2-p" id="cx-pix"></div></div>' + (G.sacHtml ? G.sacHtml("o apoio", true) : "") + "</div></section>";
+    montaPix();
   }
-  /* Pix automático ligado (Mercado Pago): QR com valor e confirmação; ao entrar o pagamento, agradece e volta para o início */
-  var CX_CHAVE = false;
-  function cxAuto() { return !!(window.Pag && Pag.pixAuto && Pag.pixAuto()) && !CX_CHAVE; }
-  function pixCaixinha() {
-    if (cxAuto()) return CX >= 1 ? '<div class="pxa cx-auto"><div class="pxa-hd"><span class="pg-ic">' + ic("heart") + '</span><div><b>Pix com confirmação automática</b><small>Assim que o pagamento entrar, a gente agradece e volta para a página inicial.</small></div></div><button type="button" class="btn pxa-go" data-cx-gerar>Gerar Pix de ' + G.reais(CX) + '</button><button type="button" class="more" data-cx-chave>Prefiro usar a chave Pix</button></div>'
-      : '<div class="pxa cx-auto"><p class="muted" style="margin:0">Escolha um valor acima ou digite quanto quer apoiar para gerar o Pix.</p><button type="button" class="more" data-cx-chave>Prefiro usar a chave Pix (valor livre)</button></div>';
-    if (!window.Pix) return "";
-    var h = Pix.bloco(CX, "CAIXINHA" + (CX ? String(CX).replace(/\D/g, "") : "LIVRE"), "Apoio CoracaoBR");
-    return CX ? h : h.replace(/<p class="pix-v">[\s\S]*?<\/p>/, '<p class="pix-v"><small>Valor</small><b>Você escolhe</b></p>');
+  function montaPix() {
+    var el = $("#cx-pix"); if (!el || !window.Pag || !Pag.checkoutPix) return;
+    if (!CXA && !(CX >= 1 && CX <= 5000)) { el.innerHTML = '<div class="pxk pxk-vazio"><span class="pxk-pix">' + ic("heart") + "</span><b>" + (CX > 5000 ? "O valor máximo por Pix é R$ 5.000" : "Escolha um valor ao lado") + "</b><small>Ou marque “Valor em aberto” para decidir no app do banco.</small></div>"; return; }
+    Pag.checkoutPix(el, { plano: "caixinha", valor: CXA ? 0 : CX, aberto: CXA, rotulo: "Apoio CoracaoBR", txid: "CAIXINHA" + (CXA ? "LIVRE" : String(Math.round(CX))), aprovado: function (r) {
+      Pag.obrigado({ k: r.manual ? "Obrigado!" : "Pix recebido", titulo: "Obrigado pelo apoio!", texto: r.manual ? "Seu Pix vai direto para a conta do CoraçãoBR. É você quem mantém o guia gratuito e atualizado." : "Seu Pix de " + G.reais(r.valor) + " chegou e fez o CoraçãoBR bater mais forte. É você quem mantém o guia gratuito e atualizado.", botao: "Voltar para o início", ir: function () { location.hash = "#inicio"; } });
+    } });
   }
+  function marcaCx() { Array.from(document.querySelectorAll("[data-cx]")).forEach(function (x) { x.setAttribute("aria-pressed", String(!CXA && Number(x.dataset.cx) === CX)); }); var ab = $("[data-cx-aberto]"); if (ab) ab.checked = CXA; }
   document.addEventListener("click", function (e) {
-    if (e.target.closest("[data-cx-chave]")) { CX_CHAVE = true; var ec = $("#cx-pix"); if (ec) ec.innerHTML = pixCaixinha(); return; }
-    if (e.target.closest("[data-cx-gerar]")) {
-      var el = $("#cx-pix"); if (!el || !(CX >= 1)) return;
-      Pag.pixAvulso(el, { plano: "caixinha", valor: CX, aprovado: function (r) { Pag.obrigado({ k: "Pix recebido", titulo: "Obrigado pelo apoio!", texto: "Seu Pix de " + G.reais(r.valor) + " fez o CoraçãoBR bater mais forte. É você quem mantém o guia gratuito e atualizado.", botao: "Voltar para o início", ir: function () { CX = 0; location.hash = "#inicio"; } }); } });
-      return;
-    }
     var b = e.target.closest("[data-cx]"); if (!b) return;
-    CX = Number(b.dataset.cx) || 0; var i = $("#cx-v"); if (i) i.value = "";
-    Array.from(document.querySelectorAll("[data-cx]")).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
-    var el = $("#cx-pix"); if (el) el.innerHTML = pixCaixinha();
+    CX = Number(b.dataset.cx) || 0; CXA = false; var i = $("#cx-v"); if (i) i.value = ""; marcaCx(); montaPix();
   });
+  document.addEventListener("change", function (e) { if (!e.target.matches("[data-cx-aberto]")) return; CXA = e.target.checked; if (!CXA && !(CX >= 1)) CX = valoresCx()[1] || 10; marcaCx(); montaPix(); });
   document.addEventListener("input", function (e) {
     if (e.target.id !== "cx-v") return; var v = Math.round(Number(String(e.target.value).replace(",", ".")) * 100) / 100;
-    CX = v > 0 ? v : 0; Array.from(document.querySelectorAll("[data-cx]")).forEach(function (x) { x.setAttribute("aria-pressed", Number(x.dataset.cx) === CX && !e.target.value ? "true" : x.dataset.cx === "0" && !CX ? "true" : "false"); });
-    clearTimeout(e.target._t); e.target._t = setTimeout(function () { var el = $("#cx-pix"); if (el) el.innerHTML = pixCaixinha(); }, 250);
+    CX = v > 0 ? v : 0; CXA = false; marcaCx();
+    clearTimeout(e.target._t); e.target._t = setTimeout(montaPix, 350);
   });
-
-
   G.views.entrar = viewConta; G.views.conta = viewConta; G.views.caixinha = viewCaixinha;
   window.Usuario = { blocoEvento: blocoEvento, registraAval: registraAval, verificar: verificar };
 })();

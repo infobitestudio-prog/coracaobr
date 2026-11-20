@@ -149,32 +149,122 @@
       '<div class="dk-card dk-flat"><div class="dk-ch"><h3>Seus pacotes</h3></div>' + linhaDoTempo(uid) + "</div>" +
       "</div>" + '<aside class="pg-side">' + resumo + (G.sacHtml ? G.sacHtml("pagamento", true) : "") + "</aside></div></div></section>";
   }
-  /* bloco de pagamento (Pix automático ou Pix pela chave + "Já paguei") para o pedido atual (PED) */
-  var PED = null;
-  function pagamentoHtml(uid) {
-    var fs = formas(), valor = PED.valor;
-    return '<h2 class="pg-h">Pague ' + reais(valor) + ' por Pix</h2><div class="pg-fs">' + fs.map(function (f, i) {
-      var txid = "CBR" + String(uid || "").replace(/[^A-Za-z0-9]/g, "").slice(-8).toUpperCase() + PED.plano.slice(0, 2).toUpperCase() + (PED.qtd || 1) + new Date().toISOString().slice(5, 10).replace("-", "");
-      if (pixAuto()) return '<div class="pg-f pxa-box" data-pxa><div class="pg-fc">' + pixAutoHtml() + "</div></div>";
-      var corpo = window.Pix ? Pix.bloco(valor, txid, PED.rotulo) : '<div class="pg-chave"><small>Chave Pix</small><b>' + esc(f.chave) + "</b><small>Em nome de " + esc(f.titular) + '</small><button type="button" class="btn ghost sm" data-copiar="' + esc(f.chave) + '">Copiar</button></div><p class="pg-val">Valor: <b>' + reais(valor) + "</b></p>";
-      return '<details class="pg-f"' + (i === 0 ? " open" : "") + '><summary><span class="pg-ic">' + ic(f.ic) + "</span><span><b>" + f.nome + "</b><small>" + f.desc + "</small></span></summary><div class=\"pg-fc\">" + corpo +
-        '<form class="pg-inf" data-pg-form="' + f.k + '"><p class="small muted">Depois de pagar, avise aqui para a equipe confirmar.</p><div class="field"><label>Código, nome do pagador ou referência</label><input name="ref" maxlength="120" required placeholder="Ex.: ID da transação ou nome de quem pagou"></div>' +
-        '<div class="field"><label>Comprovante (foto ou print, opcional)</label><input type="file" name="comp" accept="image/*"></div><button class="btn ghost sm" type="submit">Já paguei ' + reais(valor) + "</button></form></div></details>";
-    }).join("") + "</div>";
+  /* ---------- checkout Pix (anúncio, selo, impulso, Clube, Mural e caixinha) ----------
+     Todo recebimento cai na chave coracaobr.oficial@gmail.com (conta Mercado Pago).
+     Com o Pix automático ligado (Access Token do Mercado Pago no painel), o Pix é gerado com o valor e a
+     confirmação aparece sozinha na tela. Sem ele, o Pix é gerado pela chave (QR + copia e cola) e a pessoa
+     avisa "Já paguei"; a equipe confirma. Na caixinha, a pessoa escolhe o valor ou paga em aberto. */
+  var PED = null, K = null, kT = null;
+  var IPIX = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.6c.6 0 1.2.2 1.6.7l3.2 3.2h-.9c-.8 0-1.6.3-2.2.9L12 9.1 10.3 7.4c-.6-.6-1.4-.9-2.2-.9h-.9l3.2-3.2c.4-.5 1-.7 1.6-.7zM5.4 7.9h2.7c.4 0 .8.2 1.1.5l2.1 2.1c.4.4 1 .4 1.4 0l2.1-2.1c.3-.3.7-.5 1.1-.5h2.7l1.8 1.8c.9.9.9 2.3 0 3.2l-1.8 1.8h-2.7c-.4 0-.8-.2-1.1-.5l-2.1-2.1c-.4-.4-1-.4-1.4 0l-2.1 2.1c-.3.3-.7.5-1.1.5H5.4l-1.8-1.8c-.9-.9-.9-2.3 0-3.2zM7.2 17.5h.9c.8 0 1.6-.3 2.2-.9l1.7-1.7 1.7 1.7c.6.6 1.4.9 2.2.9h.9l-3.2 3.2c-.9.9-2.3.9-3.2 0z"/></svg>';
+  var ICOPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>';
+  function pixAuto() { return !!(Store.servidor && Store.servidor() && Store.estado.sessao && Store.estado.sessao.pixAuto); }
+  function chaveOficial() { return window.Pix ? Pix.dados().chave : G.chavePix((cfg().pagamentos || {}).pix); }
+  /* K = { plano, valor, aberto, modo: auto|chave, fase, pagId, qr|svg, cc, expira, txid, rotulo, aprovado(), volta } */
+  function novoK(o) { return { plano: o.plano, qtd: o.qtd || 1, comeca: o.comeca || "agora", lugarId: o.lugarId || "", itemId: o.itemId || "", valor: Number(o.valor) || 0, aberto: !!o.aberto, rotulo: o.rotulo || "CoracaoBR", txid: o.txid || "", modo: !o.aberto && pixAuto() ? "auto" : "chave", fase: "inicio", aprovado: o.aprovado || null, ped: o.ped || null }; }
+  function passo(f) { return f === "aprovado" ? 3 : /^(aguardando|informar|informado|expirado)$/.test(f) ? 2 : 1; }
+  function kHtml() {
+    var p = passo(K.fase), cx = K.plano === "caixinha";
+    var modo = K.modo === "auto" ? '<span class="pxk-modo auto"><i></i>Confirmação automática</span>' : cx ? '<span class="pxk-modo">Pix pela chave</span>' : '<span class="pxk-modo">Confirmação pela equipe</span>';
+    var st = [["Gerar o Pix", 1], ["Pagar no banco", 2], [K.modo === "auto" ? "Confirmado na tela" : cx ? "Pronto" : "Confirmação", 3]].map(function (x) { return '<li class="' + (p > x[1] ? "ok" : p === x[1] ? "on" : "") + '"><i>' + (p > x[1] ? "✓" : x[1]) + "</i><span>" + x[0] + "</span></li>"; }).join("");
+    return '<div class="pxk" data-pxk><div class="pxk-top"><span class="pxk-pix">' + IPIX + '</span><div class="pxk-tt"><small>Pagamento por Pix</small><b>' + (K.aberto ? "Valor em aberto" : reais(K.valor)) + "</b></div>" + modo + "</div>" +
+      '<ol class="pxk-st" aria-label="Etapas do pagamento">' + st + "</ol>" +
+      '<div class="pxk-c" data-pxk-c>' + kCorpo() + "</div>" +
+      '<div class="pxk-rc"><span class="pxk-rci">' + ic("heart") + '</span><div><small>Recebedor</small><b>CoraçãoBR</b><small>Chave Pix: <b>' + esc(chaveOficial()) + "</b> · Mercado Pago</small></div></div></div>";
+  }
+  function qrBloco() {
+    return '<div class="pxk-g"><div class="pxk-qr">' + (K.qr ? '<img src="data:image/png;base64,' + esc(K.qr) + '" alt="QR Code Pix de ' + esc(reais(K.valor)) + '">' : K.svg) + "<small>Leia com o app do banco</small></div>" +
+      '<div class="pxk-cp"><label for="pxk-cc">Pix copia e cola</label><div class="pxk-code" id="pxk-cc">' + esc(K.cc) + '</div><button type="button" class="btn pxk-copy" data-copiar="' + esc(K.cc) + '">' + ICOPY + "Copiar código Pix</button>" + kAcao() + "</div></div>" +
+      '<ol class="pxk-how"><li>Abra o app do seu banco e vá em <b>Pix</b>.</li><li>Escolha <b>Ler QR Code</b> ou <b>Pix copia e cola</b>.</li><li>Confira <b>CoraçãoBR</b>' + (K.aberto ? ", digite o valor" : " e " + esc(reais(K.valor))) + " e confirme.</li></ol>";
+  }
+  function kAcao() {
+    if (K.modo === "auto") return '<div class="pxk-wait"><span class="pxa-sp"></span><div><b>Aguardando o pagamento…</b><small>Pague e deixe esta tela aberta: a confirmação aparece aqui sozinha. Expira em <b data-pxk-t>30:00</b>.</small></div></div>';
+    if (K.plano === "caixinha") return '<button type="button" class="btn ghost pxk-sec" data-pxk-fiz>Já fiz o Pix</button><small class="pxk-nota">' + (K.aberto ? "Pix com valor em aberto: você escolhe quanto no app do banco." : "Este Pix vai pela chave; o valor já vem preenchido.") + "</small>";
+    return '<button type="button" class="btn ghost pxk-sec" data-pxk-paguei>Já paguei ' + esc(reais(K.valor)) + '</button><small class="pxk-nota">Depois de pagar, toque em "Já paguei". A equipe confere e libera; a confirmação aparece aqui e por e-mail.</small>';
+  }
+  function kCorpo() {
+    var f = K.fase;
+    if (f === "inicio") return '<p class="pxk-tx">Gere o Pix ' + (K.aberto ? "com valor em aberto" : "com o valor certo") + " e pague no app do seu banco, pelo QR Code ou pelo Pix copia e cola.</p>" +
+      '<button type="button" class="btn pxk-go" data-pxk-gerar>' + IPIX + (K.aberto ? "Gerar Pix com valor em aberto" : "Gerar Pix de " + esc(reais(K.valor))) + "</button>";
+    if (f === "gerando") return '<div class="pxk-wait"><span class="pxa-sp"></span><div><b>Gerando o seu Pix…</b><small>Só um instante.</small></div></div>';
+    if (f === "aguardando") return qrBloco();
+    if (f === "informar") return '<form class="pxk-inf" data-pg-form="pix"><p class="pxk-tx">Conte para a equipe como foi o pagamento. Assim que conferirmos, seus anúncios entram no ar e você vê a confirmação aqui.</p>' +
+      '<div class="field"><label for="pxk-ref">Nome de quem pagou ou código da transação</label><input id="pxk-ref" name="ref" maxlength="120" required placeholder="Ex.: Maria Silva ou E1234…"></div>' +
+      '<div class="field"><label for="pxk-comp">Comprovante (foto ou print, opcional)</label><input id="pxk-comp" type="file" name="comp" accept="image/*"></div>' +
+      '<div class="row" style="gap:8px"><button class="btn" type="submit">Enviar aviso de pagamento</button><button type="button" class="btn ghost" data-pxk-volta>Voltar ao QR Code</button></div></form>';
+    if (f === "informado") return '<div class="pxk-ok pend"><span class="pxk-okck">' + ic("clock") + '</span><div><b>Recebemos seu aviso de pagamento</b><small>A equipe confere o Pix e libera em seguida. Pode continuar navegando: a confirmação aparece na tela e chega por e-mail.</small></div></div>';
+    if (f === "aprovado") return '<div class="pxk-ok"><span class="pxk-okck">✓</span><div><b>Pagamento confirmado!</b><small>Obrigado. ' + (K.plano === "caixinha" ? "Seu apoio chegou." : "Tudo liberado na sua conta.") + "</small></div></div>";
+    if (f === "expirado") return '<div class="pxk-ok bad"><span class="pxk-okck">!</span><div><b>Este Pix ' + (K.status === "cancelado" ? "foi cancelado" : "expirou") + '</b><small>Gere um novo para continuar. Nada foi cobrado.</small></div></div><button type="button" class="btn pxk-go" data-pxk-gerar>' + IPIX + "Gerar novo Pix</button>";
+    return '<div class="pxk-ok bad"><span class="pxk-okck">!</span><div><b>Não foi possível gerar o Pix agora</b><small>' + esc(K.erro || "Tente de novo em instantes.") + '</small></div></div><div class="row" style="gap:8px"><button type="button" class="btn" data-pxk-gerar>Tentar de novo</button>' + (K.modo === "auto" ? '<button type="button" class="btn ghost" data-pxk-chave>Pagar pela chave Pix</button>' : "") + "</div>";
+  }
+  function kPinta() { var el = document.querySelector("[data-pxk]"); if (!el || !K) return; var tmp = document.createElement("div"); tmp.innerHTML = kHtml(); el.replaceWith(tmp.firstChild); }
+  function kGerar() {
+    if (K.modo === "chave") {
+      if (!window.Pix) { K.fase = "erro"; K.erro = "O gerador de Pix não carregou. Atualize a página."; return kPinta(); }
+      var uid = Store.uid() || "";
+      var txid = K.txid || ((K.plano === "caixinha" ? "APOIO" : "CBR") + String(uid).replace(/[^A-Za-z0-9]/g, "").slice(-8).toUpperCase() + String(K.plano).slice(0, 2).toUpperCase() + (K.qtd || 1) + new Date().toISOString().slice(5, 10).replace("-", ""));
+      var g = Pix.gerar(K.aberto ? 0 : K.valor, txid, K.rotulo); K.cc = g.code; K.svg = g.svg; K.qr = ""; K.fase = "aguardando"; return kPinta();
+    }
+    K.fase = "gerando"; kPinta(); var k0 = K;
+    Store.api("pix_criar", { plano: K.plano, qtd: K.qtd, comeca: K.comeca, lugarId: K.lugarId, itemId: K.itemId, valor: K.valor }).then(function (j) {
+      if (K !== k0) return;
+      K.pagId = j.id; K.valor = Number(j.valor) || K.valor; K.qr = j.qr; K.cc = j.copiaecola; K.expira = j.expira; K.fase = "aguardando"; K.n = 0; kPinta(); kOuvir();
+    }).catch(function (er) { if (K !== k0) return; K.fase = "erro"; K.erro = er && er.message; kPinta(); });
+  }
+  function kOuvir() {
+    clearInterval(kT);
+    kT = setInterval(function () {
+      if (!K || K.fase !== "aguardando" || K.modo !== "auto" || !document.querySelector("[data-pxk]")) { clearInterval(kT); return; }
+      var t = document.querySelector("[data-pxk-t]"), rest = Math.max(0, Math.round((new Date(K.expira).getTime() - Date.now()) / 1000));
+      if (t) t.textContent = String(Math.floor(rest / 60)).padStart(2, "0") + ":" + String(rest % 60).padStart(2, "0");
+      if ((K.n = (K.n || 0) + 1) % 4) return;   /* consulta a cada 4 s */
+      var k0 = K;
+      Store.api("pix_status", null, "&id=" + encodeURIComponent(K.pagId)).then(function (r) {
+        if (K !== k0 || K.fase !== "aguardando") return;
+        if (r.status === "aprovado") { clearInterval(kT); K.fase = "aprovado"; kPinta(); kAprovado(); }
+        else if (r.status === "expirado" || r.status === "cancelado") { clearInterval(kT); K.fase = "expirado"; K.status = r.status; kPinta(); }
+      }).catch(function () { /* tenta de novo no próximo ciclo */ });
+    }, 1000);
+  }
+  function kAprovado() {
+    var k = K; Store.sincronizarAgora().catch(function () {}).then(function () {
+      if (k.aprovado) return k.aprovado({ valor: k.valor, id: k.pagId });
+      obrigadoPlano(k.ped || { plano: k.plano }, k.valor);
+    });
+  }
+  document.addEventListener("click", function (e) {
+    if (!K || !e.target.closest("[data-pxk]")) return;
+    if (e.target.closest("[data-pxk-gerar]")) { kGerar(); return; }
+    if (e.target.closest("[data-pxk-chave]")) { K.modo = "chave"; kGerar(); return; }
+    if (e.target.closest("[data-pxk-paguei]")) { K.fase = "informar"; kPinta(); var i = document.getElementById("pxk-ref"); if (i) i.focus(); return; }
+    if (e.target.closest("[data-pxk-volta]")) { K.fase = "aguardando"; kPinta(); return; }
+    if (e.target.closest("[data-pxk-fiz]")) { var k = K; K.fase = "aprovado"; kPinta(); if (k.aprovado) k.aprovado({ valor: k.aberto ? 0 : k.valor, manual: true }); return; }
+    var cp = e.target.closest(".pxk-copy"); if (cp) { var tx = cp.innerHTML; cp.classList.add("ok"); cp.innerHTML = ICOPY + "Código copiado!"; setTimeout(function () { cp.classList.remove("ok"); cp.innerHTML = tx; }, 2200); }
+  });
+  /* checkout dos planos (página de contratar, selo, impulso, Clube e Mural): usa o pedido atual (PED) */
+  function pagamentoHtml() {
+    var chave = [PED.plano, PED.qtd, PED.comeca, PED.lugarId || "", PED.itemId || "", PED.valor].join(":");
+    if (!K || K.chaveP !== chave || K.plano === "caixinha") { clearInterval(kT); K = novoK({ plano: PED.plano, qtd: PED.qtd, comeca: PED.comeca, lugarId: PED.lugarId, itemId: PED.itemId, valor: PED.valor, rotulo: PED.rotulo, ped: PED }); K.chaveP = chave; }
+    else if (K.fase === "aprovado" || K.fase === "erro") K.fase = "inicio";
+    if (K.fase === "aguardando" && K.modo === "auto") setTimeout(kOuvir, 0);
+    return '<h2 class="pg-h">Pagamento</h2>' + kHtml();
+  }
+  /* checkout avulso (caixinha): monta dentro de el */
+  function checkoutPix(el, o) {
+    clearInterval(kT); K = novoK({ plano: o.plano || "caixinha", valor: o.valor, aberto: o.aberto, rotulo: o.rotulo || "Apoio CoracaoBR", txid: o.txid, aprovado: o.aprovado });
+    el.innerHTML = kHtml();
   }
   document.addEventListener("submit", async function (ev) {
     var f = ev.target.closest("[data-pg-form]"); if (!f || !PED) return; ev.preventDefault();
-    var uid = Store.uid(), b = f.querySelector("button"), arq = f.comp && f.comp.files && f.comp.files[0], comp = "";
-    b.disabled = true;
+    var uid = Store.uid(), b = f.querySelector("button[type=submit]"), arq = f.comp && f.comp.files && f.comp.files[0], comp = "";
+    b.disabled = true; b.textContent = "Enviando…";
     try {
       if (arq) comp = await Store.salvarFoto(arq);
       var meus = anunciosDe(uid), l = (PED.lugarId && Store.obter("lugares", PED.lugarId)) || meus[0] || {};
-      await Store.gravar("avisos", Store.novoId("pg"), { tipo: "pagamento-informado", plano: PED.plano, qtd: PED.qtd || 1, comeca: PED.comeca || "agora", lugarAlvo: PED.lugarId || "", itemId: PED.itemId || "", uid: uid, metodo: f.dataset.pgForm, ref: f.ref.value.trim().slice(0, 120), comprovante: comp, valor: PED.valor, moeda: "BRL", lugarId: l.id || "", nome: l.nome || (Store.conta && Store.conta() ? Store.conta().nome : ""), categoria: l.categoria || "", criadoEm: new Date().toISOString(), lido: false });
-      G.toast("Pagamento informado. A equipe confere e libera em seguida.");
-      location.hash = PED.volta || "anunciante";
-    } catch (er) { b.disabled = false; G.toast(er.message || "Não foi possível enviar agora."); }
+      await Store.gravar("avisos", Store.novoId("pg"), { tipo: "pagamento-informado", plano: PED.plano, qtd: PED.qtd || 1, comeca: PED.comeca || "agora", lugarAlvo: PED.lugarId || "", itemId: PED.itemId || "", uid: uid, metodo: "pix", ref: f.ref.value.trim().slice(0, 120), comprovante: comp, valor: PED.valor, moeda: "BRL", lugarId: l.id || "", nome: l.nome || (Store.conta && Store.conta() ? Store.conta().nome : ""), categoria: l.categoria || "", criadoEm: new Date().toISOString(), lido: false });
+      if (K) { K.fase = "informado"; kPinta(); }
+      G.toast("Aviso enviado. A equipe confere o Pix e libera em seguida.");
+    } catch (er) { b.disabled = false; b.textContent = "Enviar aviso de pagamento"; G.toast(er.message || "Não foi possível enviar agora."); }
   });
-
   /* ---------- selo Verificado e impulsionar (#extra-selo, #extra-impulso-<anúncio>) ---------- */
   function viewExtra(rota) {
     var uid = Store.uid(); if (!uid) { location.hash = "#entrar"; return; }
@@ -194,45 +284,6 @@
   }
 
   /* ---------- Pix automático: cobrança do Mercado Pago, confirmação e liberação sozinhas ---------- */
-  var PX = null, pxT = null;
-  function pixAuto() { return !!(Store.servidor && Store.servidor() && Store.estado.sessao && Store.estado.sessao.pixAuto); }
-  function pixAutoHtml() {
-    var valor = PED.valor, chave = [PED.plano, PED.qtd, PED.comeca, PED.lugarId || "", PED.itemId || "", valor].join(":");
-    if (PX && PX.chave !== chave && PX.status !== "aprovado") PX = null;
-    if (!PX) return '<div class="pxa"><div class="pxa-hd"><span class="pg-ic">' + ic("bulb") + "</span><div><b>Pix com confirmação automática</b><small>Gere o Pix, pague no app do banco e seus anúncios entram no ar sozinhos, na hora.</small></div></div>" +
-      '<button type="button" class="btn pxa-go" data-pxa-gerar data-chave="' + esc(chave) + '">Gerar Pix de ' + reais(valor) + "</button></div>";
-    if (PX.status === "aprovado") return '<div class="pxa pxa-ok"><span class="pxa-ck">✓</span><div><b>Pagamento confirmado!</b><small>' + (PED.plano === "verificado" ? "A equipe já recebeu o pedido do selo." : PED.plano === "impulso" ? "Seu anúncio já está no topo." : PED.plano === "clube" ? "Sua carteirinha do Clube já está ativa." : PED.plano === "mural" ? "Sua publicação já está em destaque." : "Seus anúncios já estão liberados.") + ' Levando você de volta…</small></div></div>';
-    if (PX.status === "expirado" || PX.status === "cancelado") return '<div class="pxa"><p><b>Este Pix ' + (PX.status === "expirado" ? "expirou" : "foi cancelado") + ".</b> Gere um novo para continuar.</p><button type=\"button\" class=\"btn\" data-pxa-novo>Gerar novo Pix</button></div>";
-    return '<div class="pix"><div class="pix-qr"><img src="data:image/png;base64,' + esc(PX.qr) + '" alt="QR Code Pix" style="width:100%;display:block"></div><div class="pix-info"><p class="pix-v"><small>Valor</small><b>' + reais(PX.valor) + "</b></p>" +
-      '<label class="pix-l" for="pix-cc">Pix copia e cola</label><textarea id="pix-cc" class="pix-cc" readonly rows="3">' + esc(PX.copiaecola) + '</textarea><div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + esc(PX.copiaecola) + '">Copiar código Pix</button></div>' +
-      '<div class="pxa-wait"><span class="pxa-sp"></span><span><b>Aguardando o pagamento…</b><small>A confirmação é automática. Pode deixar esta tela aberta. Expira em <b data-pxa-t>30:00</b>.</small></span></div></div></div>';
-  }
-  function redesenhaPix() { var el = document.querySelector("[data-pxa] .pg-fc"); if (el && PED) el.innerHTML = pixAutoHtml(); }
-  function acompanha() {
-    clearInterval(pxT);
-    pxT = setInterval(function () {
-      if (!PX || PX.status !== "pendente") { clearInterval(pxT); return; }
-      var t = document.querySelector("[data-pxa-t]"), rest = Math.max(0, Math.round((new Date(PX.expira).getTime() - Date.now()) / 1000));
-      if (t) t.textContent = String(Math.floor(rest / 60)).padStart(2, "0") + ":" + String(rest % 60).padStart(2, "0");
-      if (!document.querySelector("[data-pxa]")) { clearInterval(pxT); return; }
-      if ((PX.n = (PX.n || 0) + 1) % 4) return;   /* consulta a cada 4 s */
-      Store.api("pix_status", null, "&id=" + encodeURIComponent(PX.id)).then(function (j) {
-        if (!PX || j.status === PX.status) return;
-        PX.status = j.status; redesenhaPix();
-        if (j.status === "aprovado") { clearInterval(pxT); var ped = PED, vl = PX && PX.valor; Store.sincronizarAgora().catch(function () {}).then(function () { PX = null; obrigadoPlano(ped, vl); }); }
-      }).catch(function () { /* tenta de novo no próximo ciclo */ });
-    }, 1000);
-  }
-  document.addEventListener("click", function (e) {
-    var b = e.target.closest("[data-pxa-gerar]");
-    if (e.target.closest("[data-pxa-novo]")) { PX = null; redesenhaPix(); return; }
-    if (!b) return;
-    b.disabled = true; b.textContent = "Gerando Pix…";
-    Store.api("pix_criar", { plano: PED.plano, qtd: PED.qtd, comeca: PED.comeca, lugarId: PED.lugarId || "", itemId: PED.itemId || "" }).then(function (j) {
-      PX = { chave: b.dataset.chave, id: j.id, valor: j.valor, qr: j.qr, copiaecola: j.copiaecola, expira: j.expira, status: "pendente" }; redesenhaPix(); acompanha();
-    }).catch(function (er) { b.disabled = false; b.textContent = "Tentar de novo"; G.toast(er.message || "Não foi possível gerar o Pix agora."); });
-  });
-
   /* ---------- pagamento lido: agradece e leva para a página certa ----------
      o = { k, titulo, texto, botao, segundos, ir } · contagem regressiva com botão "ir agora" */
   function obrigado(o) {
@@ -254,37 +305,12 @@
     if (pl === "impulso") return obrigado({ titulo: "Obrigado! Seu anúncio está no topo", texto: "Pagamento recebido. O impulso já começou a contar.", botao: "Ver meus anúncios", ir: function () { vaiConta("anuncios"); } });
     obrigado({ titulo: "Obrigado! Seus anúncios estão no ar", texto: "Pagamento recebido" + (valor ? " (" + reais(valor) + ")" : "") + ". As ferramentas do anunciante foram liberadas na sua conta.", botao: "Ver meus anúncios", ir: function () { vaiConta("anuncios"); } });
   }
-  /* Pix avulso com confirmação automática (caixinha do desenvolvedor): gera, mostra o QR, consulta a cada 4 s e chama o.aprovado */
-  var AV = null, avT = null;
-  function pixAvulso(el, o) {
-    clearInterval(avT); el.innerHTML = '<div class="pxa-wait"><span class="pxa-sp"></span><span><b>Gerando o Pix…</b></span></div>';
-    Store.api("pix_criar", { plano: o.plano, valor: o.valor }).then(function (j) {
-      AV = { id: j.id, valor: j.valor, expira: j.expira, el: el, o: o, n: 0, status: "pendente" };
-      el.innerHTML = '<div class="pix" data-pxa-avulso><div class="pix-qr"><img src="data:image/png;base64,' + esc(j.qr) + '" alt="QR Code Pix" style="width:100%;display:block"></div><div class="pix-info"><p class="pix-v"><small>Valor</small><b>' + reais(j.valor) + "</b></p>" +
-        '<label class="pix-l" for="pxv-cc">Pix copia e cola</label><textarea id="pxv-cc" class="pix-cc" readonly rows="3">' + esc(j.copiaecola) + '</textarea><div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + esc(j.copiaecola) + '">Copiar código Pix</button></div>' +
-        '<div class="pxa-wait"><span class="pxa-sp"></span><span><b>Aguardando o pagamento…</b><small>Assim que o Pix entrar, a gente agradece e volta para o início. Expira em <b data-pxv-t>30:00</b>.</small></span></div></div></div>';
-      avT = setInterval(function () {
-        if (!AV || !document.body.contains(AV.el) || !AV.el.querySelector("[data-pxa-avulso]")) { clearInterval(avT); return; }
-        var t = AV.el.querySelector("[data-pxv-t]"), rest = Math.max(0, Math.round((new Date(AV.expira).getTime() - Date.now()) / 1000));
-        if (t) t.textContent = String(Math.floor(rest / 60)).padStart(2, "0") + ":" + String(rest % 60).padStart(2, "0");
-        if ((AV.n = AV.n + 1) % 4) return;
-        Store.api("pix_status", null, "&id=" + encodeURIComponent(AV.id)).then(function (r) {
-          if (!AV || r.status === AV.status) return; AV.status = r.status;
-          if (r.status === "aprovado") { clearInterval(avT); var a = AV; AV = null; a.el.innerHTML = '<div class="pxa pxa-ok"><span class="pxa-ck">✓</span><div><b>Pix recebido!</b><small>Obrigado de coração.</small></div></div>'; a.o.aprovado({ valor: a.valor, id: a.id }); }
-          else if (r.status === "expirado" || r.status === "cancelado") { clearInterval(avT); AV.el.innerHTML = '<div class="pxa"><p><b>Este Pix ' + (r.status === "expirado" ? "expirou" : "foi cancelado") + '.</b> Gere um novo para continuar.</p><button type="button" class="btn" data-pxv-novo>Gerar novo Pix</button></div>'; var b2 = AV.el.querySelector("[data-pxv-novo]"), oo = AV.o, ee = AV.el; b2.onclick = function () { pixAvulso(ee, oo); }; }
-        }).catch(function () { /* tenta de novo no próximo ciclo */ });
-      }, 1000);
-    }).catch(function (er) {
-      el.innerHTML = '<p class="auth-msg">' + esc(er.message || "Não foi possível gerar o Pix agora.") + '</p><button type="button" class="btn" data-pxv-de-novo>Tentar de novo</button>';
-      el.querySelector("[data-pxv-de-novo]").onclick = function () { pixAvulso(el, o); };
-    });
-  }
   /* Pix informado ("Já paguei") confirmado pela equipe enquanto a pessoa está no site: agradece uma vez */
   var antes = null;
   Store.assinar(function () {
     var uid = Store.uid(); if (!uid || !Store.estado.pronto) return;
     var agora = { pend: informados(uid).length, vagas: vagas(uid) };
-    if (antes && antes.uid === uid && antes.pend > 0 && agora.pend < antes.pend && agora.vagas > antes.vagas && !document.querySelector(".obg")) obrigadoPlano({ plano: "pacote" });
+    if (antes && antes.uid === uid && antes.pend > 0 && agora.pend < antes.pend && agora.vagas > antes.vagas && !document.querySelector(".obg")) { if (K && K.fase === "informado") { K.fase = "aprovado"; kPinta(); } obrigadoPlano({ plano: "pacote" }); }
     antes = { uid: uid, pend: agora.pend, vagas: agora.vagas };
   });
 
@@ -403,5 +429,5 @@
   function checkout(ped) { PED = ped; return pagamentoHtml(Store.uid()); }
   G.views.extra = viewExtra;
   G.views.pagar = function () { viewPagar(false); }; G.views["pagar-promo"] = function () { viewPagar(true); };
-  window.Pag = { obrigado: obrigado, obrigadoPlano: obrigadoPlano, pixAvulso: pixAvulso, pixAuto: pixAuto, checkout: checkout, creditosIndicacao: creditosIndicacao, precoSelo: precoSelo, precoImpulso: precoImpulso, diasImpulso: diasImpulso, verificacao: verificacao, verificado: verificado, selo: selo, impulsos: impulsos, impulsionado: impulsionado, preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
+  window.Pag = { obrigado: obrigado, obrigadoPlano: obrigadoPlano, checkoutPix: checkoutPix, pixAuto: pixAuto, checkout: checkout, creditosIndicacao: creditosIndicacao, precoSelo: precoSelo, precoImpulso: precoImpulso, diasImpulso: diasImpulso, verificacao: verificacao, verificado: verificado, selo: selo, impulsos: impulsos, impulsionado: impulsionado, preco: preco, porPacote: porPacote, promocional: promocional, chamada: chamada, estado: estado, vagas: vagas, banners: banners, pacotes: pacotes, situacao: situacao, fimAtual: fimAtual, anunciosDe: anunciosDe, visivel: visivel, noAr: noAr, blocoPainel: blocoPainel, calculadora: calculadora, linhaDoTempo: linhaDoTempo, avisoPrevia: avisoPrevia, abaMaster: abaMaster, formas: formas, informados: informados };
 })();

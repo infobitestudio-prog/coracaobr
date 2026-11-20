@@ -11,6 +11,8 @@
   }
   function limpa(t, n) { return String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9 ]/g, "").toUpperCase().trim().slice(0, n); }
   /* chave: CPF/CNPJ só números; telefone com +55; e-mail e chave aleatória como estão */
+  /* nome do recebedor no QR: até 25 letras, cortando na palavra inteira */
+  function nomeQR(n) { var t = limpa(n, 80); if (t.length <= 25) return t; t = t.slice(0, 26); var i = t.lastIndexOf(" "); return (i > 3 ? t.slice(0, i) : t.slice(0, 25)).trim(); }
   function chave(k) {
     k = String(k || "").trim();
     if (/@/.test(k) || /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(k)) return k;
@@ -22,7 +24,7 @@
     var gui = campo("00", "br.gov.bcb.pix") + campo("01", chave(o.chave)) + (o.descricao ? campo("02", limpa(o.descricao, 40)) : "");
     var txid = (String(o.txid || "CORACAOBR").replace(/[^A-Za-z0-9]/g, "") || "CORACAOBR").slice(0, 25);
     var s = campo("00", "01") + campo("26", gui) + campo("52", "0000") + campo("53", "986") + (Number(o.valor) > 0 ? campo("54", Number(o.valor).toFixed(2)) : "") +
-      campo("58", "BR") + campo("59", limpa(o.nome, 25) || "CORACAOBR") + campo("60", limpa(o.cidade, 15) || "BRASIL") + campo("62", campo("05", txid)) + "6304";
+      campo("58", "BR") + campo("59", nomeQR(o.nome) || "CORACAOBR") + campo("60", limpa(o.cidade, 15) || "BRASIL") + campo("62", campo("05", txid)) + "6304";
     return s + crc16(s);
   }
   function qrSvg(texto) {
@@ -50,5 +52,7 @@
     var t = b.dataset.copiar, ok = function () { G.toast(/^000201/.test(t) ? "Código Pix copiado. Cole no app do banco." : "Copiado."); };
     if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok).catch(function () { G.toast(t); }); else G.toast(t);
   });
-  window.Pix = { payload: payload, bloco: bloco, dados: dados, crc16: crc16 };
+  /* gera o Pix pela chave (copia e cola + QR em SVG), com valor ou em aberto */
+  function gerar(valor, txid, descricao) { var d = dados(), code = payload({ chave: d.chave, nome: d.nome, cidade: d.cidade, valor: valor, txid: txid, descricao: descricao }); return { code: code, svg: qrSvg(code), chave: d.chave, nome: d.nome }; }
+  window.Pix = { payload: payload, bloco: bloco, dados: dados, crc16: crc16, gerar: gerar, nomeQR: nomeQR };
 })();
