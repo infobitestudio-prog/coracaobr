@@ -532,11 +532,108 @@ case 'metro': {
   $arq = is_file($f) && (!is_file($g) || filemtime($f) >= filemtime($g)) ? $f : $g;
   header('Cache-Control: public, max-age=3600'); readfile($arq); exit;
 }
+case 'atualizar_diario': {
+  /* Atualização diária automática. A Hostinger chama este endereço de hora em hora (Cron Jobs); ele só trabalha às 5h de Dallas, uma vez por dia
+     (ou na hora, com &forcar=1 pela equipe). Atualiza: cotação do dólar (PTAX do Banco Central), metrô (GTFS oficial, toda semana),
+     eventos vencidos e, com a chave da Google Places API, nota, avaliações, horário, telefone e site dos lugares. */
+  $chave = trim((string)@file_get_contents(dirname($CFG['db']) . '/CHAVE-CRON.txt'));
+  $porChave = $chave !== '' && hash_equals($chave, (string)($_GET['chave'] ?? ''));
+  if (!$porChave && !master()) erro('Chave inválida.', 403);
+  $tz = new DateTimeZone('America/Chicago'); $agoraD = new DateTime('now', $tz); $hoje = $agoraD->format('Y-m-d');
+  $forcar = !empty($_GET['forcar']);
+  $ult = (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn();
+  if (!$forcar && ((int)$agoraD->format('G') !== 5 || $ult === $hoje)) sai(['ok' => true, 'msg' => 'Fora do horário (roda às 5h de Dallas) ou já rodou hoje.', 'ultima' => $ult]);
+  @set_time_limit(900); @ini_set('memory_limit', '1024M');
+  $rel = ['data' => $agoraD->format('c'), 'feito' => [], 'erros' => []];
+  $pdo = banco();
+  $salva = function (string $col, string $id, array $d) use ($pdo) { $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, json_encode($d, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), agora()]); };
+  $http = function (string $url, ?array $corpo = null, array $cab = []) {
+    $h = array_merge(['User-Agent: CoracaoBR/1.0'], $cab); if ($corpo !== null) $h[] = 'Content-Type: application/json';
+    $ctx = stream_context_create(['http' => ['method' => $corpo === null ? 'GET' : 'POST', 'header' => implode("\r\n", $h), 'content' => $corpo === null ? '' : json_encode($corpo), 'timeout' => 30, 'ignore_errors' => true]]);
+    $r = @file_get_contents($url, false, $ctx); return $r === false ? null : json_decode($r, true);
+  };
+  // 1) dólar (PTAX venda do Banco Central do Brasil)
+  $geral = configDoc('geral');
+  if (($geral['cotacaoAuto'] ?? true) !== false) {
+    for ($i = 0; $i < 6; $i++) {
+      $d = (new DateTime("-$i day", $tz))->format('m-d-Y');
+      $j = $http("https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@d)?@d='" . $d . "'&\$format=json");
+      $v = $j['value'][0]['cotacaoVenda'] ?? null;
+      if ($v) { $geral['cotacao'] = round((float)$v, 2); $geral['cotacaoEm'] = (new DateTime("-$i day", $tz))->format('Y-m-d'); $salva('config', 'geral', $geral); $rel['feito'][] = 'Dólar: R$ ' . number_format($geral['cotacao'], 2, ',', '.') . ' (PTAX ' . $geral['cotacaoEm'] . ')'; break; }
+    }
+    if (empty($geral['cotacaoEm']) || $geral['cotacaoEm'] < (new DateTime('-7 day', $tz))->format('Y-m-d')) $rel['erros'][] = 'Cotação do dólar não atualizada.';
+  }
+  // 2) metrô (uma vez por semana)
+  $mj = dirname($CFG['db']) . '/metro.json';
+  if (!is_file($mj) || filemtime($mj) < time() - 6 * 86400 || $forcar && !empty($_GET['metro'])) {
+    try { require_once __DIR__ . '/metro_gtfs.php'; $r = atualizarMetro(dirname($CFG['db']), $mj); $rel['feito'][] = 'Metrô: ' . $r['linhas'] . ' linhas, ' . $r['estacoes'] . ' estações (GTFS oficial)'; }
+    catch (Throwable $e) { $rel['erros'][] = 'Metrô: ' . $e->getMessage(); }
+  }
+  // 3) eventos que já terminaram saem do ar
+  $n = 0;
+  foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) {
+    $l = json_decode($row['data'], true); if (!is_array($l)) continue;
+    if (in_array($l['categoria'] ?? '', ['evento', 'show'], true) && !empty($l['dataFim']) && $l['dataFim'] < $hoje && ($l['publicado'] ?? true) !== false) { $l['publicado'] = false; $l['encerradoEm'] = $hoje; $salva('lugares', $row['id'], $l); $n++; }
+  }
+  if ($n) $rel['feito'][] = "$n eventos encerrados saíram do ar";
+  // 4) Google Places: nota, avaliações reais, horário, telefone e site
+  $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
+  if ($gk !== '') {
+    $mask = 'id,rating,userRatingCount,reviews,googleMapsUri,regularOpeningHours,nationalPhoneNumber,websiteUri,businessStatus';
+    $fila = [];
+    foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) { $l = json_decode($row['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo'])) continue; $fila[] = [$row['id'], $l, (string)($l['notaExterna']['em'] ?? '')]; }
+    usort($fila, fn($a, $b) => strcmp($a[2], $b[2]));
+    $ok = 0; $lim = (int)($CFG['google_por_dia'] ?? 60);
+    foreach (array_slice($fila, 0, $lim) as [$id, $l]) {
+      if (!empty($l['googlePlaceId'])) $p = $http('https://places.googleapis.com/v1/places/' . rawurlencode($l['googlePlaceId']) . '?languageCode=pt-BR', null, ['X-Goog-Api-Key: ' . $gk, 'X-Goog-FieldMask: ' . $mask]);
+      else {
+        $q = ['textQuery' => trim(($l['nome'] ?? '') . ' ' . ($l['endereco'] ?? ($l['cidade'] ?? 'Dallas') . ' TX')), 'languageCode' => 'pt-BR', 'maxResultCount' => 1];
+        if (isset($l['lat'], $l['lng']) && $l['lat']) $q['locationBias'] = ['circle' => ['center' => ['latitude' => (float)$l['lat'], 'longitude' => (float)$l['lng']], 'radius' => 3000.0]];
+        $r = $http('https://places.googleapis.com/v1/places:searchText', $q, ['X-Goog-Api-Key: ' . $gk, 'X-Goog-FieldMask: ' . implode(',', array_map(fn($x) => 'places.' . $x, explode(',', $mask)))]);
+        if (isset($r['error'])) { $rel['erros'][] = 'Google: ' . ($r['error']['message'] ?? 'erro'); break; }
+        $p = $r['places'][0] ?? null;
+      }
+      if (!is_array($p) || isset($p['error']) || empty($p['id'])) continue;
+      $l['googlePlaceId'] = $p['id'];
+      if (!empty($p['rating'])) $l['notaExterna'] = ['fonte' => 'Google', 'media' => (float)$p['rating'], 'total' => (int)($p['userRatingCount'] ?? 0), 'link' => $p['googleMapsUri'] ?? '', 'em' => $hoje];
+      $l['avaliacoesExternas'] = array_values(array_map(fn($v) => ['fonte' => 'Google', 'autor' => $v['authorAttribution']['displayName'] ?? 'Usuário do Google', 'nota' => (int)($v['rating'] ?? 0), 'texto' => $v['text']['text'] ?? ($v['originalText']['text'] ?? ''), 'data' => $v['relativePublishTimeDescription'] ?? '', 'link' => $v['authorAttribution']['uri'] ?? ($p['googleMapsUri'] ?? '')], array_slice((array)($p['reviews'] ?? []), 0, 5)));
+      if (!empty($p['regularOpeningHours']['periods']) && empty($l['horasManual'])) {
+        $h = []; for ($k = 0; $k < 7; $k++) $h[(string)$k] = [];
+        foreach ($p['regularOpeningHours']['periods'] as $pe) {
+          if (!isset($pe['open']['day'])) continue; $d0 = (int)$pe['open']['day']; $a = (int)$pe['open']['hour'] * 60 + (int)($pe['open']['minute'] ?? 0);
+          if (!isset($pe['close'])) { $f = $a + 1440; } else { $f = (int)$pe['close']['hour'] * 60 + (int)($pe['close']['minute'] ?? 0); $dd = ((int)$pe['close']['day'] - $d0 + 7) % 7; $f += $dd * 1440; }
+          $h[(string)$d0][] = ['a' => $a, 'f' => $f];
+        }
+        $l['horas'] = $h; $l['horarioFonte'] = 'Google · ' . $hoje;
+        if (!empty($p['regularOpeningHours']['weekdayDescriptions'])) $l['horario'] = implode(' · ', $p['regularOpeningHours']['weekdayDescriptions']);
+      }
+      if (empty($l['telefone']) && !empty($p['nationalPhoneNumber'])) $l['telefone'] = $p['nationalPhoneNumber'];
+      if (empty($l['site']) && !empty($p['websiteUri'])) $l['site'] = $p['websiteUri'];
+      if (($p['businessStatus'] ?? '') === 'CLOSED_PERMANENTLY') { $l['publicado'] = false; $l['fechadoGoogle'] = $hoje; }
+      $l['atualizadoEm'] = substr($hoje, 0, 7);
+      $salva('lugares', $id, $l); $ok++;
+    }
+    $rel['feito'][] = "Google: $ok lugares com nota, avaliações e horário atualizados";
+  } else $rel['erros'][] = 'Sem chave da Google Places API: avaliações e horários do Google não foram atualizados.';
+  // relatório
+  $robo = configDoc('robo'); $robo['servidor'] = $rel; $robo['ultimaExecucaoServidor'] = $rel['data']; $salva('config', 'robo', $robo);
+  $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
+  versao('lugares'); versao('config');
+  sai(['ok' => true] + $rel);
+}
+case 'chave_google': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  $k = trim((string)($corpo['chave'] ?? '')); $f = dirname($CFG['db']) . '/GOOGLE-PLACES.key';
+  if ($k === '') { @unlink($f); sai(['ok' => true, 'msg' => 'Chave removida.']); }
+  if (!preg_match('/^[A-Za-z0-9_\-]{20,80}$/', $k)) erro('Chave inválida.');
+  file_put_contents($f, $k); @chmod($f, 0600); sai(['ok' => true, 'msg' => 'Chave salva no servidor.']);
+}
 case 'cron_info': {
   exigeMaster();
   $f = dirname($CFG['db']) . '/CHAVE-CRON.txt';
   if (!is_file($f)) @file_put_contents($f, bin2hex(random_bytes(12)) . "\n");
-  sai(['ok' => true, 'url' => baseUrl() . 'api/?acao=newsletter_cron&chave=' . trim((string)@file_get_contents($f))]);
+  $c = trim((string)@file_get_contents($f)); $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
+  sai(['ok' => true, 'url' => baseUrl() . 'api/?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
 }
 default: erro('Ação desconhecida.', 404);
 }
