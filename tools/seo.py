@@ -113,7 +113,7 @@ def pagina(destino, rel, titulo, desc, h1, sub, itens, links, raiz):
           "itemListElement": [{"@type": "ListItem", "position": i, "name": l["nome"], "item": item_ld(l)} for i, l in enumerate(itens, 1)]}
     corpo = ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
              '<title>%s</title><meta name="description" content="%s"><meta property="og:title" content="%s"><meta property="og:description" content="%s">'
-             '<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta name="robots" content="noai, noimageai"><meta name="tdm-reservation" content="1"><link rel="icon" href="%sicon-192.png"><style>%s</style>'
+             '<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta name="robots" content="noai, noimageai"><meta name="tdm-reservation" content="1"><link rel="icon" href="%sfavicon.ico" sizes="any"><style>%s</style>'
              '<script type="application/ld+json">%s</script></head><body><header><div class="w"><a href="%s">Coração<b>BR</b></a></div></header>'
              '<main class="w"><h1>%s</h1><p class="sub">%s</p><ol class="l">%s</ol>'
              '<div class="cta">Mapa, horários, avaliações de brasileiros e cupons: <a href="%s">abra o guia CoraçãoBR</a>.</div>%s</main>'

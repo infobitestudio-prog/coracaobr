@@ -4,6 +4,12 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
    Envie todo o conteúdo desta pasta para a pasta do site (ex.: public_html/coracaobr/),
    substituindo os arquivos antigos. Inclua os arquivos ocultos: .htaccess
    (no Gerenciador de Arquivos do hPanel, eles aparecem normalmente).
+   ATENÇÃO NA HOSTINGER: o CoraçãoBR é um site PHP. Não use a opção "Aplicativo Node.js" / "Implantar app"
+   do hPanel: ela trata o pacote como app Node.js, troca o .htaccess por linhas "Passenger..." e o site
+   passa a dar erro 503 e a falhar no certificado SSL. Envie pelo Gerenciador de Arquivos (botão Enviar,
+   ou suba o .zip e use "Extrair"). Se o .htaccess do servidor tiver linhas começando com "Passenger",
+   substitua pelo .htaccess desta pasta.
+   Depois, em hPanel → Segurança → SSL, confira que o certificado está "Ativo" e ligue "Forçar HTTPS".
 
 2. CRIAR A CONTA MASTER (só uma vez, com a chave de instalação)
    Abra https://SEU-SITE/coracaobr/#painel

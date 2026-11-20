@@ -814,7 +814,7 @@ case 'atualizar_diario': {
       if (!is_array($p) || isset($p['error']) || empty($p['id'])) continue;
       $l['googlePlaceId'] = $p['id'];
       if (!empty($p['rating'])) $l['notaExterna'] = ['fonte' => 'Google', 'media' => (float)$p['rating'], 'total' => (int)($p['userRatingCount'] ?? 0), 'link' => $p['googleMapsUri'] ?? '', 'em' => $hoje];
-      /* fotos reais do Google: guardamos só a referência e o autor (crédito obrigatório); a imagem é servida na hora por api/?acao=foto_google */
+      /* fotos reais do Google: guardamos só a referência e o autor (crédito obrigatório); a imagem é servida na hora por api/index.php?acao=foto_google */
       $l['fotosGoogle'] = array_values(array_filter(array_map(fn($f) => ['ref' => (string)($f['name'] ?? ''), 'autor' => $f['authorAttributions'][0]['displayName'] ?? 'Usuário do Google', 'link' => $f['authorAttributions'][0]['uri'] ?? ($p['googleMapsUri'] ?? '')], array_slice((array)($p['photos'] ?? []), 0, 8)), fn($f) => preg_match('#^places/[\w-]+/photos/[\w-]+$#', $f['ref'])));
       $l['avaliacoesExternas'] = array_values(array_map(fn($v) => ['fonte' => 'Google', 'autor' => $v['authorAttribution']['displayName'] ?? 'Usuário do Google', 'nota' => (int)($v['rating'] ?? 0), 'texto' => $v['text']['text'] ?? ($v['originalText']['text'] ?? ''), 'data' => $v['relativePublishTimeDescription'] ?? '', 'link' => $v['authorAttribution']['uri'] ?? ($p['googleMapsUri'] ?? '')], array_slice((array)($p['reviews'] ?? []), 0, 5)));
       if (!empty($p['regularOpeningHours']['periods']) && empty($l['horasManual'])) {
@@ -1021,7 +1021,7 @@ case 'pix_token': {
 case 'pix_info': {
   exigeMaster();
   $n = (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'cobrancas'")->fetchColumn();
-  sai(['ok' => true, 'ligado' => mpToken() !== '', 'webhook' => baseUrl() . 'api/?acao=pix_webhook', 'cobrancas' => $n]);
+  sai(['ok' => true, 'ligado' => mpToken() !== '', 'webhook' => baseUrl() . 'api/index.php?acao=pix_webhook', 'cobrancas' => $n]);
 }
 case 'indicacoes': {
   $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
@@ -1081,7 +1081,7 @@ case 'cron_info': {
   $f = dirname($CFG['db']) . '/CHAVE-CRON.txt';
   if (!is_file($f)) @file_put_contents($f, bin2hex(random_bytes(12)) . "\n");
   $c = trim((string)@file_get_contents($f)); $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
-  sai(['ok' => true, 'url' => baseUrl() . 'api/?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
+  sai(['ok' => true, 'url' => baseUrl() . 'api/index.php?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/index.php?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
 }
 /* ===== Assistente "Pergunte ao CoraçãoBR" (Claude, pela API oficial da Anthropic) =====
    O servidor escolhe os lugares do guia que combinam com a pergunta e manda só esses para a IA, que responde citando os lugares.
@@ -1365,7 +1365,7 @@ function montaNewsletter(): array {
   return ['assunto' => ($cfg['assunto'] ?? '') ?: 'A semana no CoraçãoBR', 'html' => $html, 'itens' => count($eventos) + count($dest) + count($cup)];
 }
 function moldura(string $miolo, string $token): string {
-  $base = baseUrl(); $sair = $base . 'api/?acao=newsletter_sair&t=' . $token;
+  $base = baseUrl(); $sair = $base . 'api/index.php?acao=newsletter_sair&t=' . $token;
   return '<!doctype html><html><body style="margin:0;background:#EEF1EC"><div style="max-width:600px;margin:0 auto;padding:24px 18px;font-family:Arial,Helvetica,sans-serif;color:#142019">' .
     '<div style="font:700 22px Arial;color:#024E25">Coração<span style="color:#E3A600">BR</span></div>' .
     '<div style="background:#fff;border-radius:16px;padding:20px 22px;margin-top:14px">' . $miolo . '<p style="margin-top:22px"><a href="' . htmlspecialchars($base) . '" style="background:#024E25;color:#fff;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:700">Abrir o guia</a></p></div>' .
@@ -1379,7 +1379,7 @@ function emailPagador(?string $email, string $quem): string {
   if (!filter_var($e, FILTER_VALIDATE_EMAIL) || $e === 'coracaobr.oficial@gmail.com' || $e === mb_strtolower(emailOficial())) return 'cliente+' . preg_replace('/[^a-z0-9]/i', '', substr($quem, 0, 16)) . '@' . $host;
   return $e;
 }
-function avisoMp(): array { $u = baseUrl() . 'api/?acao=pix_webhook'; return strpos($u, 'https://') === 0 ? ['notification_url' => $u] : []; }
+function avisoMp(): array { $u = baseUrl() . 'api/index.php?acao=pix_webhook'; return strpos($u, 'https://') === 0 ? ['notification_url' => $u] : []; }
 /* Todo recebimento cai no Pix do e-mail oficial (conta Mercado Pago); a chave CNPJ antiga é trocada sozinha */
 function chavePix(?string $k): string { $k = trim((string)$k); return ($k === '' || preg_replace('/\D/', '', $k) === '32021268000104') ? 'coracaobr.oficial@gmail.com' : $k; }
 /* SAC: atendimento por e-mail e WhatsApp, assinado em todo e-mail para clientes */
@@ -1406,9 +1406,9 @@ function envia(string $para, string $assunto, string $miolo, string $token): boo
   $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost'));
   $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
   $html = moldura($miolo, $token);
-  $txt = trim(html_entity_decode(strip_tags(str_replace(['<br>', '</tr>', '</p>', '</h2>'], "\n", $miolo)), ENT_QUOTES, 'UTF-8')) . "\n\nSair da lista: " . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token;
+  $txt = trim(html_entity_decode(strip_tags(str_replace(['<br>', '</tr>', '</p>', '</h2>'], "\n", $miolo)), ENT_QUOTES, 'UTF-8')) . "\n\nSair da lista: " . baseUrl() . 'api/index.php?acao=newsletter_sair&t=' . $token;
   $b = 'cbr' . bin2hex(random_bytes(8));
-  $h = "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\nList-Unsubscribe: <" . baseUrl() . 'api/?acao=newsletter_sair&t=' . $token . ">\r\n";
+  $h = "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$b\"\r\nList-Unsubscribe: <" . baseUrl() . 'api/index.php?acao=newsletter_sair&t=' . $token . ">\r\n";
   $corpo = "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n$txt\r\n--$b\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n$html\r\n--$b--";
   return @mail($para, '=?UTF-8?B?' . base64_encode($assunto) . '?=', $corpo, $h);
 }

@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Diagnóstico · CoraçãoBR</title>
 <style>
 :root {
@@ -127,12 +130,12 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
     add("site", "Banners dos patrocinadores", pt.ok ? "ok" : "av", pt.ok ? "Pasta dos patrocinadores presente." : "Banner animado do QR-DOG não encontrado.", "Suba a pasta img/patrocinadores/ do zip.");
 
     /* ---------- servidor ---------- */
-    var se = await pega(base + "api/?acao=sessao"), sj2 = json(se.tx);
+    var se = await pega(base + "api/index.php?acao=sessao"), sj2 = json(se.tx);
     if (!sj2 || !sj2.ok) {
       add("servidor", "API em PHP", "er", se.st ? "A API respondeu status " + se.st + " sem os dados esperados." : "A API não respondeu.",
         "Confira se a pasta api/ foi enviada e se a hospedagem tem PHP 8.1 ou mais novo (hPanel → Avançado → Configuração do PHP). Em GitHub Pages a API não roda: use a Hostinger.");
     } else add("servidor", "API em PHP", "ok", "Respondeu em " + se.ms + " ms.");
-    var dg = json((await pega(base + "api/?acao=diagnostico")).tx);
+    var dg = json((await pega(base + "api/index.php?acao=diagnostico")).tx);
     if (dg && dg.ok) {
       add("servidor", "Versão do PHP", dg.phpOk ? "ok" : "er", "PHP " + dg.php + (dg.phpOk ? "" : " (precisa 8.1+)"), "hPanel → Avançado → Configuração do PHP → escolha 8.2 ou 8.3.");
       var fx = Object.keys(dg.ext).filter(function (k) { return !dg.ext[k]; });
@@ -159,12 +162,12 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
       add("sync", "Sessão e login", "ok", sj2.conta ? "Conectado como " + sj2.conta.nome + " (" + (sj2.conta.papel === "master" ? "master" : "usuário") + ")." : "Sessão ativa (visitante). Entre com a conta master para os testes completos.");
       if (sj2.conta && sj2.conta.papel === "master") {
         var tok = "t" + Date.now().toString(36), hdr = { "Content-Type": "application/json", "X-CSRF": sj2.csrf };
-        var w = json((await pega(base + "api/?acao=gravar", { method: "POST", headers: hdr, body: JSON.stringify({ col: "config", id: "diag-teste", data: { token: tok, em: new Date().toISOString() } }) })).tx);
-        var rd = json((await pega(base + "api/?acao=doc&col=config&id=diag-teste")).tx);
-        var sy = json((await pega(base + "api/?acao=sync&v=" + encodeURIComponent(JSON.stringify({ config: -1 })))).tx);
+        var w = json((await pega(base + "api/index.php?acao=gravar", { method: "POST", headers: hdr, body: JSON.stringify({ col: "config", id: "diag-teste", data: { token: tok, em: new Date().toISOString() } }) })).tx);
+        var rd = json((await pega(base + "api/index.php?acao=doc&col=config&id=diag-teste")).tx);
+        var sy = json((await pega(base + "api/index.php?acao=sync&v=" + encodeURIComponent(JSON.stringify({ config: -1 })))).tx);
         var noSync = sy && sy.cols && sy.cols.config && (sy.cols.config.docs || []).some(function (d) { return (d.id === "diag-teste") || (d.data && d.data.token === tok) || d.token === tok; });
-        await pega(base + "api/?acao=apagar", { method: "POST", headers: hdr, body: JSON.stringify({ col: "config", id: "diag-teste" }) });
-        var some = json((await pega(base + "api/?acao=doc&col=config&id=diag-teste")).tx);
+        await pega(base + "api/index.php?acao=apagar", { method: "POST", headers: hdr, body: JSON.stringify({ col: "config", id: "diag-teste" }) });
+        var some = json((await pega(base + "api/index.php?acao=doc&col=config&id=diag-teste")).tx);
         var gravou = w && w.ok, leu = rd && rd.data && rd.data.token === tok, apagou = some && some.ok && !some.existe;
         add("sync", "Gravar, ler e sincronizar dados", gravou && leu && noSync && apagou ? "ok" : "er", gravou && leu && noSync && apagou ? "Gravou, leu de volta, apareceu na sincronização dos aparelhos e foi apagado. Tudo sincronizado." : "Gravou: " + (gravou ? "sim" : "não") + " · leu: " + (leu ? "sim" : "não") + " · sincronizou: " + (noSync ? "sim" : "não") + " · apagou: " + (apagou ? "sim" : "não"), "Confira a permissão de gravação da pasta dados/ e o arquivo api/index.php.");
       } else add("sync", "Gravar, ler e sincronizar dados", "info", "Entre com a conta master para testar a gravação e a sincronização.");
@@ -212,6 +215,8 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
     add("google", "Cache das imagens", cc && !/no-cache|no-store/.test(cc) ? "ok" : "av", cc ? "Cache: " + cc : "Sem cabeçalho de cache.", "O .htaccess define 30 dias de cache para fotos.");
     var mf = await pega(base + "manifest.webmanifest"), mj = json(mf.tx), ic = await pega(base + "icon-512.png");
     add("google", "App instalável (manifest e ícones)", mj && mj.name && ic.ok ? "ok" : "er", mj ? "\"" + mj.name + "\", ícones " + (ic.ok ? "presentes" : "faltando") + "." : "manifest.webmanifest não carregou.", "Suba manifest.webmanifest, icon-192.png e icon-512.png.");
+    var fv = await pega(base + "favicon.ico"), fv2 = await pega(base + "apple-touch-icon.png");
+    add("google", "Favicon (logo na aba do navegador)", fv.ok && fv2.ok ? "ok" : "er", fv.ok && fv2.ok ? "favicon.ico e apple-touch-icon.png presentes." : "Faltando: " + [fv.ok ? "" : "favicon.ico", fv2.ok ? "" : "apple-touch-icon.png"].filter(Boolean).join(", ") + ".", "Suba favicon.ico, favicon-32.png e apple-touch-icon.png na raiz do site.");
     var sw = await pega(base + "sw.js");
     add("google", "Funciona como app (sw.js)", sw.ok && "serviceWorker" in navigator ? "ok" : "er", sw.ok ? "Service worker presente." : "sw.js não encontrado.", "Suba o sw.js da raiz do zip.");
 

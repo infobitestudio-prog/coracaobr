@@ -15,7 +15,7 @@
   function carrega() {
     if (D) return Promise.resolve(D); if (carregando) return carregando;
     var srv = Store.servidor && Store.servidor();
-    carregando = (srv ? fetch("api/?acao=metro").then(function (r) { if (!r.ok) throw 0; return r.json(); }) : Promise.reject())
+    carregando = (srv ? fetch("api/index.php?acao=metro").then(function (r) { if (!r.ok) throw 0; return r.json(); }) : Promise.reject())
       .catch(function () { return fetch("data/metro.json").then(function (r) { return r.json(); }); })
       .then(function (d) { D = d; D.porId = {}; D.linhas.forEach(function (l) { D.porId[l.id] = l; }); return D; });
     return carregando;

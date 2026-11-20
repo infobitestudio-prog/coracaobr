@@ -172,7 +172,7 @@
      As permissões são decididas no servidor; aqui só se repassa o pedido. */
   var csrf = "", ouvintes = {}, versoes = {}, syncT = null, syncando = null;
   function api(acao, corpo, extra) {
-    var q = "api/?acao=" + acao + (extra || "");
+    var q = "api/index.php?acao=" + acao + (extra || "");
     var op = { credentials: "same-origin", headers: { "X-CSRF": csrf } };
     if (corpo instanceof FormData) { op.method = "POST"; op.body = corpo; }
     else if (corpo) { op.method = "POST"; op.headers["Content-Type"] = "application/json"; op.body = JSON.stringify(corpo); }

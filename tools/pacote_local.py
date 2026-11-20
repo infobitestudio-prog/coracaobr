@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Monta dist/coracaobr: versão completa para abrir direto no computador (duplo clique no index.html)
 ou subir em qualquer hospedagem. O index.html ganha o cabeçalho HTML completo que a publicação no claude.ai acrescenta sozinha."""
-import json, shutil, zipfile
+import json, re, shutil, zipfile
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "dist" / "coracaobr"
@@ -9,9 +9,11 @@ if OUT.exists():
     shutil.rmtree(OUT)
 (OUT / "js").mkdir(parents=True); (OUT / "data").mkdir(); (OUT / "img").mkdir()
 corpo = (ROOT / "index.html").read_text()
+# o cabeçalho abaixo já traz título, favicon, manifest e ícone do iPhone: tira as cópias do corpo (que servem só à publicação no claude.ai)
+corpo = re.sub(r'^\s*(<title>.*?</title>|<link rel="(?:icon|manifest|apple-touch-icon)"[^>]*>)\s*\n', "", corpo, flags=re.M)
 head = ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         '<title>CoraçãoBR · Guia brasileiro nos EUA: lugares, eventos e serviços em português</title><meta name="description" content="A plataforma brasileira para quem vive ou visita os EUA: restaurantes, mercados, serviços, eventos e passeios em português, com avaliações reais. Dallas–Fort Worth, Houston, Austin e San Antonio."><meta property="og:type" content="website"><meta property="og:site_name" content="CoraçãoBR"><meta property="og:title" content="CoraçãoBR · Guia brasileiro nos EUA: lugares, eventos e serviços em português"><meta property="og:description" content="A plataforma brasileira para quem vive ou visita os EUA: restaurantes, mercados, serviços, eventos e passeios em português, com avaliações reais. Dallas–Fort Worth, Houston, Austin e San Antonio."><meta property="og:image" content="img/postais/dallas-noite.jpg"><meta property="og:locale" content="pt_BR"><meta name="twitter:card" content="summary_large_image"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="robots" content="noai, noimageai"><meta name="tdm-reservation" content="1"><meta name="author" content="CoraçãoBR · Infobite"><meta name="copyright" content="© CoraçãoBR · Infobite · Danilo Araujo Santos. Todos os direitos reservados."><script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Organization", "name": "CoraçãoBR", "description": "A plataforma brasileira para quem vive ou visita os EUA: restaurantes, mercados, serviços, eventos e passeios em português, com avaliações reais. Dallas–Fort Worth, Houston, Austin e San Antonio.", "email": "coracaobr.oficial@gmail.com", "logo": "icon-512.png", "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "email": "coracaobr.oficial@gmail.com", "telephone": "+55-11-98357-3266", "availableLanguage": ["Portuguese", "English", "Spanish"]}, "areaServed": ["Dallas–Fort Worth", "Houston", "Austin", "San Antonio"]}, {"@context": "https://schema.org", "@type": "WebSite", "name": "CoraçãoBR", "inLanguage": "pt-BR"}]</script>'
-        '<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="CoraçãoBR"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">'
+        '<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#04341A"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="CoraçãoBR"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">'
         '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body>')
 import re, time
 VER = time.strftime("%Y%m%d%H%M")
@@ -28,7 +30,7 @@ for src in {ft["src"] for l in L for ft in l.get("fotos", [])}:
 shutil.copytree(ROOT / "img" / "hero", OUT / "img" / "hero")
 shutil.copytree(ROOT / "img" / "patrocinadores", OUT / "img" / "patrocinadores")
 shutil.copytree(ROOT / "img" / "postais", OUT / "img" / "postais")   # cartões-postais do banner principal e dos patrocinadores
-for f in ("manifest.webmanifest", "sw.js", "icon-192.png", "icon-512.png", "diagnostico.html", "ai.txt"):
+for f in ("manifest.webmanifest", "sw.js", "icon-192.png", "icon-512.png", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "diagnostico.html", "ai.txt"):
     shutil.copy(ROOT / f, OUT / f)
 # proteção contra uso por I.A.: reserva de mineração de texto e dados (TDMRep, padrão europeu)
 (OUT / ".well-known").mkdir(exist_ok=True); shutil.copy(ROOT / ".well-known" / "tdmrep.json", OUT / ".well-known" / "tdmrep.json")
@@ -40,6 +42,15 @@ for f in ("index.php", "config.exemplo.php", "metro_gtfs.php", "composer.json"):
 if (ROOT / "api" / "vendor" / "autoload.php").exists():
     shutil.copytree(ROOT / "api" / "vendor", OUT / "api" / "vendor", ignore=shutil.ignore_patterns(".git", "tests", "docs", ".github", "*.md", "examples"))
     (OUT / "api" / "vendor" / ".htaccess").write_text("Require all denied\nDeny from all\n")
+    # a biblioteca standard-webhooks traz versões em JavaScript, Java, Python…: só a de PHP é usada. Sem isso, o painel da
+    # Hostinger acha o package.json do JavaScript e trata o site como app Node.js (o que derrubou o domínio na 1ª instalação)
+    lib = OUT / "api" / "vendor" / "standard-webhooks" / "standard-webhooks" / "libraries"
+    if lib.exists():
+        for d in lib.iterdir():
+            if d.name != "php":
+                shutil.rmtree(d) if d.is_dir() else d.unlink()
+    for pj in list((OUT / "api" / "vendor").rglob("package.json")) + list((OUT / "api" / "vendor").rglob("package-lock.json")):
+        pj.unlink()
 else:
     print("AVISO: api/vendor ausente; o assistente vai usar só a busca do guia. Rode: cd api && composer install --no-dev")
 # páginas para o Google (categoria × cidade) + índice usado pelo sitemap.xml

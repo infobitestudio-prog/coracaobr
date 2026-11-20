@@ -2,6 +2,8 @@
 AddDefaultCharset UTF-8
 AddCharset UTF-8 .html .js .css .json .txt .webmanifest
 Options -Indexes
+# a página inicial e a API abrem pelo endereço da pasta (api/ → api/index.php)
+DirectoryIndex index.html index.php
 # O banco de dados nunca é servido pela web
 RedirectMatch 404 /dados(/|$)
 RedirectMatch 404 /api/vendor(/|$)
@@ -14,6 +16,7 @@ RedirectMatch 404 /api/vendor(/|$)
   # Robôs que treinam inteligência artificial e ferramentas de clonar sites não entram no site (a API fica de fora:
   # o Mercado Pago e a tarefa diária precisam dela). Google, Bing e as prévias do WhatsApp/Facebook continuam liberados.
   RewriteCond %{REQUEST_URI} !/api/
+  RewriteCond %{REQUEST_URI} !^/\.well-known/
   RewriteCond %{HTTP_USER_AGENT} (GPTBot|ChatGPT-User|OAI-SearchBot|ClaudeBot|Claude-Web|Claude-User|anthropic-ai|CCBot|Google-Extended|GoogleOther|PerplexityBot|Perplexity-User|Bytespider|Amazonbot|Applebot-Extended|meta-externalagent|meta-externalfetcher|FacebookBot|cohere-ai|cohere-training|Diffbot|Omgili|ImagesiftBot|Timpibot|YouBot|AI2Bot|Ai2Bot|MistralAI|DuckAssistBot|PanguBot|Kangaroo|Sidetrade|VelenPublic|img2dataset|Scrapy|HTTrack|WebCopier|WebZIP|Offline\ Explorer|SiteSnagger|Teleport|WebReaper|SiteSucker|Wget|curl\/|python-requests|python-urllib|aiohttp|httpx|Go-http-client|node-fetch|axios|undici|HeadlessChrome|PhantomJS|Puppeteer|Playwright|Selenium|Firecrawl|Crawl4AI|ScrapingBee|Apify|Jina|Zyte|DataForSeoBot|magpie-crawler|Brightbot|ICC-Crawler) [NC]
   RewriteRule .* - [F,L]
 
