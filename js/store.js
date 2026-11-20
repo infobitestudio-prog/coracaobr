@@ -215,7 +215,7 @@
     }
   };
   var assetsServidor = {
-    upload: function (blob) { var fd = new FormData(); fd.append("foto", blob, "foto.jpg"); return api("foto", fd); },
+    upload: function (blob) { var fd = new FormData(); fd.append("foto", blob, blob && blob.type === "image/webp" ? "foto.webp" : "foto.jpg"); return api("foto", fd); },
     delete: function (id) { return api("apagar_foto", { id: id }); }
   };
   async function tentaServidor() {
@@ -312,7 +312,8 @@
         c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
         c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
         URL.revokeObjectURL(url);
-        c.toBlob(function (b) { b ? res({ blob: b, canvas: c }) : rej(new Error("Imagem inválida")); }, "image/jpeg", 0.82);
+        /* WebP quando o aparelho sabe gerar (menor para enviar no 4G); senão JPEG. O servidor recomprime de qualquer jeito. */
+        c.toBlob(function (b) { if (b && b.type === "image/webp") return res({ blob: b, canvas: c }); c.toBlob(function (j) { j ? res({ blob: j, canvas: c }) : rej(new Error("Imagem inválida")); }, "image/jpeg", 0.82); }, "image/webp", 0.82);
       };
       img.onerror = function () { URL.revokeObjectURL(url); rej(new Error("Não foi possível ler a imagem")); };
       img.src = url;
@@ -323,7 +324,7 @@
     var r = await resize(file, st.modo === "nuvem" ? 1600 : 1100);
     if (st.modo === "nuvem") {
       if (!assets) throw new Error(st.servidor ? "Entre na sua conta para enviar fotos." : "Só quem pode editar este guia envia fotos.");
-      var up = await assets.upload(r.blob, { type: "image/jpeg" });
+      var up = await assets.upload(r.blob, { type: r.blob.type || "image/jpeg" });
       return "asset:" + up.id;
     }
     return r.canvas.toDataURL("image/jpeg", 0.8);
@@ -334,10 +335,11 @@
     }
   }
   /* Só aceita fotos do próprio guia (pasta img/, armazenamento do Artifact) ou imagens embutidas; links externos de terceiros são ignorados. */
-  var FOTO_OK = /^(asset:[0-9a-f-]{8,64}$|img\/[\w.-]+\.(jpe?g|png|webp)$|fotos_eventos\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|fotos_cidades\/[\w-]+\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|data:image\/(jpeg|png|webp);base64,)/i;
-  function urlFoto(src) {
+  var FOTO_OK = /^(asset:[0-9a-f-]{8,64}w?$|img\/[\w.-]+\.(jpe?g|png|webp)$|fotos_eventos\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|fotos_cidades\/[\w-]+\/[\w-]+\/[\w.-]+\.(jpe?g|png|webp)$|data:image\/(jpeg|png|webp);base64,)/i;
+  /* tam "p": miniatura (listas e cards), quando existir */
+  function urlFoto(src, tam) {
     if (!src || typeof src !== "string" || !FOTO_OK.test(src)) return "";
-    if (/^asset:/.test(src)) return st.servidor ? "uploads/" + src.slice(6) + ".jpg" : "/_blob/" + src.slice(6);
+    if (/^asset:/.test(src)) { var id = src.slice(6); if (!st.servidor) return "/_blob/" + id; return "uploads/" + id + (/w$/.test(id) ? (tam === "p" ? "-p.webp" : ".webp") : ".jpg"); }
     return src;
   }
 

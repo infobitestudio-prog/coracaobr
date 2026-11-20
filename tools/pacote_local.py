@@ -52,6 +52,25 @@ for f in ("leaflet.js", "leaflet.css"):
 for pasta in ("estudio", "apresentacao"):
     if (ROOT / pasta).exists():
         shutil.copytree(ROOT / pasta, OUT / pasta)
+# site leve: JavaScript e CSS minificados (esbuild); sem esbuild, segue sem minificar
+import subprocess, shutil as _sh, os as _os
+ESB = _sh.which("esbuild") or next((x for x in ("/tmp/claude-0/esb/node_modules/.bin/esbuild", str(ROOT / "node_modules/.bin/esbuild")) if _os.path.exists(x)), None)
+if ESB:
+    antes = sum(f.stat().st_size for f in (OUT / "js").glob("*.js"))
+    for f in (OUT / "js").glob("*.js"):
+        r = subprocess.run([ESB, str(f), "--minify", "--target=es2017", "--charset=utf8", "--log-level=error", "--outfile=" + str(f), "--allow-overwrite"], capture_output=True, text=True)
+        if r.returncode: print("AVISO: não minifiquei", f.name, r.stderr[:200])
+    depois = sum(f.stat().st_size for f in (OUT / "js").glob("*.js"))
+    h = (OUT / "index.html").read_text()
+    import re as _re
+    def _css(m):
+        r = subprocess.run([ESB, "--loader=css", "--minify", "--charset=utf8", "--log-level=error"], input=m.group(1), capture_output=True, text=True)
+        return "<style>" + (r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else m.group(1)) + "</style>"
+    h2 = _re.sub(r"<style>([\s\S]*?)</style>", _css, h)
+    (OUT / "index.html").write_text(h2)
+    print(f"minificado: js {antes/1024:.0f} KB → {depois/1024:.0f} KB · index.html {len(h.encode())/1024:.0f} KB → {len(h2.encode())/1024:.0f} KB")
+else:
+    print("AVISO: esbuild ausente; o pacote vai sem minificar (npm i esbuild)")
 import sys as _sys
 if "--zip" not in _sys.argv:
     print(OUT, "(sem zip; use --zip para gerar o pacote)"); raise SystemExit(0)

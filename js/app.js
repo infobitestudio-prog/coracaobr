@@ -261,7 +261,7 @@
     l = l || {};
     /* ordem: fotos enviadas pelo anunciante → imagem do site oficial → fotos reais do Google → fotos de acervo/ilustrativas */
     var proprias = [], acervo = [], reais = [];
-    (l.fotos || []).forEach(function (f) { var u = Store.urlFoto(f.src); if (!u) return; (/^asset:/.test(f.src) ? proprias : acervo).push(Object.assign({}, f, { src: u })); });
+    (l.fotos || []).forEach(function (f) { var u = Store.urlFoto(f.src, larg && larg <= 800 ? "p" : ""); if (!u) return; (/^asset:/.test(f.src) ? proprias : acervo).push(Object.assign({}, f, { src: u })); });
     var fsite = (l.fotoSite && l.fotoSite.src) ? l.fotoSite : FOTOS_SITE[l.id];
     if (fsite && /^https:\/\/[^\s"'<>]+$/.test(fsite.src || "")) reais.push({ src: fsite.src, credito: "Site oficial", pagina: fsite.pagina || "" });
     if (st().servidor && Array.isArray(l.fotosGoogle)) l.fotosGoogle.forEach(function (g) { if (g && /^places\/[\w-]+\/photos\/[\w-]+$/.test(g.ref || "")) reais.push({ src: "api/?acao=foto_google&w=" + (larg || 1200) + "&ref=" + encodeURIComponent(g.ref), credito: (g.autor || "Usuário do Google") + " · Google", pagina: g.link || "", google: true }); });

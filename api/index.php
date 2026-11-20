@@ -327,6 +327,7 @@ function processaPagamento(string $pagId): array {
   $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$pagId, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
   return ['status' => $c['status'], 'cobranca' => $c];
 }
+function apagaArquivosFoto(string $id): void { global $CFG; foreach (['.jpg', '.webp', '-p.webp'] as $e) @unlink($CFG['uploads'] . '/' . $id . $e); }
 function temMaster(): bool { return (bool)banco()->query("SELECT 1 FROM usuarios WHERE papel = 'master' LIMIT 1")->fetchColumn(); }
 function baseUrl(): string {
   global $https, $caminho;
@@ -603,8 +604,18 @@ case 'foto': {
   $dir = $CFG['uploads'];
   if (!is_dir($dir)) @mkdir($dir, 0755, true);
   if (!is_file($dir . '/.htaccess')) @file_put_contents($dir . '/.htaccess', "Options -Indexes\nRemoveHandler .php .phtml .phar\nRemoveType .php .phtml .phar\n<FilesMatch \"\\.(php|phtml|phar|pl|py|cgi|sh)$\">\nRequire all denied\n</FilesMatch>\n");
+  /* WebP (~35% menor que JPEG com a mesma qualidade) + miniatura de 640 px para listas e cards; sem WebP no servidor, JPEG progressivo */
   $id = bin2hex(random_bytes(16));
-  if (!imagejpeg($dst, $dir . '/' . $id . '.jpg', 84)) erro('Não foi possível salvar a foto.', 500);
+  if (function_exists('imagewebp')) {
+    $id .= 'w';
+    if (!imagewebp($dst, $dir . '/' . $id . '.webp', 80)) erro('Não foi possível salvar a foto.', 500);
+    $kp = min(1, 640 / max($nw, $nh)); $pw = max(1, (int)round($nw * $kp)); $ph = max(1, (int)round($nh * $kp));
+    $mini = imagecreatetruecolor($pw, $ph); imagecopyresampled($mini, $dst, 0, 0, 0, 0, $pw, $ph, $nw, $nh);
+    @imagewebp($mini, $dir . '/' . $id . '-p.webp', 76); imagedestroy($mini);
+  } else {
+    imageinterlace($dst, true);
+    if (!imagejpeg($dst, $dir . '/' . $id . '.jpg', 82)) erro('Não foi possível salvar a foto.', 500);
+  }
   banco()->prepare('INSERT INTO fotos (id, dono, em) VALUES (?, ?, ?)')->execute([$id, $u['id'], agora()]);
   if (!master()) marca('foto:' . $u['id']);
   sai(['ok' => true, 'id' => $id]);
@@ -613,12 +624,12 @@ case 'apagar_foto': {
   if ($metodo !== 'POST') erro('Use POST.', 405);
   $u = exigeLogin();
   $id = campo('id', 40);
-  if (!preg_match('/^[a-f0-9]{32}$/', $id)) erro('Foto inválida.');
+  if (!preg_match('/^[a-f0-9]{32}w?$/', $id)) erro('Foto inválida.');
   $st = banco()->prepare('SELECT dono FROM fotos WHERE id = ?'); $st->execute([$id]);
   $dono = $st->fetchColumn();
   if ($dono === false) sai(['ok' => true]);
   if ($dono !== $u['id'] && !master()) erro('Sem permissão.', 403);
-  @unlink($CFG['uploads'] . '/' . $id . '.jpg');
+  apagaArquivosFoto($id);
   banco()->prepare('DELETE FROM fotos WHERE id = ?')->execute([$id]);
   sai(['ok' => true]);
 }
@@ -1175,7 +1186,7 @@ function apagaUsuario(string $id): void {
   $pdo->beginTransaction();
   foreach (POR_PESSOA as $c) { $pdo->prepare('DELETE FROM docs WHERE col = ? AND id = ?')->execute([$c, $id]); versao($c); }
   $st = $pdo->prepare('SELECT id FROM fotos WHERE dono = ?'); $st->execute([$id]);
-  foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $f) @unlink($CFG['uploads'] . '/' . $f . '.jpg');
+  foreach ($st->fetchAll(PDO::FETCH_COLUMN) as $f) apagaArquivosFoto($f);
   $pdo->prepare('DELETE FROM fotos WHERE dono = ?')->execute([$id]);
   $pdo->prepare('DELETE FROM usuarios WHERE id = ?')->execute([$id]);
   $pdo->commit();
@@ -1209,7 +1220,7 @@ function montaNewsletter(): array {
   $base = baseUrl(); $e = fn($t) => htmlspecialchars((string)$t, ENT_QUOTES, 'UTF-8');
   $cartao = function ($l, $quando) use ($base, $e) {
     $foto = ''; $f = $l['fotos'][0]['src'] ?? '';
-    if ($f && preg_match('#^(img|fotos_eventos|fotos_cidades)/#', $f)) $foto = $base . $f; elseif (preg_match('#^asset:([a-f0-9]{32})$#', $f, $m)) $foto = $base . 'uploads/' . $m[1] . '.jpg';
+    if ($f && preg_match('#^(img|fotos_eventos|fotos_cidades)/#', $f)) $foto = $base . $f; elseif (preg_match('#^asset:([a-f0-9]{32})(w?)$#', $f, $m)) $foto = $base . 'uploads/' . $m[1] . $m[2] . ($m[2] ? '.webp' : '.jpg');
     $preco = !empty($l['gratuito']) ? 'Grátis' : (!empty($l['precoMin']) ? 'A partir de US$ ' . $e($l['precoMin']) : '');
     return '<tr><td style="padding:10px 0;border-bottom:1px solid #E4E9E3">' . ($foto ? '<img src="' . $e($foto) . '" alt="" width="96" height="72" style="float:left;width:96px;height:72px;object-fit:cover;border-radius:10px;margin-right:12px">' : '') .
       '<a href="' . $e($base . '#lugar-' . $l['id']) . '" style="color:#024E25;font-weight:700;text-decoration:none;font-size:16px">' . $e($l['nome'] ?? '') . '</a><br><span style="color:#5F6B64;font-size:13px">' . $e($quando) . ($preco ? ' · ' . $e($preco) : '') . ' · ' . $e($l['cidade'] ?? '') . '</span></td></tr>';
