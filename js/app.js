@@ -259,7 +259,7 @@
     var est = l.tipo === "estabelecimento";
     if (!est && l.gratuito) return { gratis: true };
     var min = Number(l.precoMin) || 0, med = Number(l.precoMedio) || 0, max = Number(l.precoMax) || 0, menu = false;
-    if (est && l.anunciante) { var m = precoDoMenu(l); if (m) { min = m.min; med = m.med; max = m.max; menu = true; } }   // cardápio cadastrado pela própria empresa
+    if (est && (l.anunciante || l._dono)) { var m = precoDoMenu(l); if (m) { min = m.min; med = m.med; max = m.max; menu = true; } }   // cardápio cadastrado pela própria empresa
     if (!(min > 0)) return null;
     if (med && med < min) med = min; if (max && max < min) max = 0; if (max && med > max) med = max;
     return { min: min, med: med, max: max, base: l.precoBase || (est ? "prato principal" : "entrada adulto"), menu: menu,
@@ -287,7 +287,7 @@
       (p.med ? "<div><small>" + (est ? "Média por pessoa" : "Preço médio") + "</small><b>" + usd(p.med) + "</b>" + brl(p.med) + "<i>" + (est ? "sem bebida" : "entre os ingressos") + "</i></div>" : "") +
       (p.max ? "<div><small>Até</small><b>" + usd(p.max) + "</b>" + brl(p.max) + "<i>" + (est ? "maior valor" : "maior valor") + "</i></div>" : "") + "</div>" +
       (mc ? '<p class="pz-cat">Média em ' + esc(CATS[l.categoria] || "lugares parecidos") + " · " + esc(cid().nome) + ": <b>" + usd(mc.med) + "</b> por pessoa (" + mc.n + " lugares com preço conferido)</p>" : "") +
-      '<p class="pz-f">' + (p.menu ? "Calculado do cardápio da empresa" : l.anunciante ? "Informado pela empresa" : "Pesquisado no " + (p.terceiros ? "cardápio publicado na internet" : "site oficial")) + (p.quando ? " · conferido em " + esc(mesAno(p.quando)) : "") + (p.fonte ? ' · <a href="' + esc(p.fonte) + '" target="_blank" rel="noopener">ver fonte</a>' : "") + ". Valores sem taxas e gorjeta; podem mudar.</p></div>";
+      '<p class="pz-f">' + (p.menu ? "Calculado do cardápio da empresa" : (l.anunciante || l._dono) ? "Informado pela empresa" : "Pesquisado no " + (p.terceiros ? "cardápio publicado na internet" : "site oficial")) + (p.quando ? " · conferido em " + esc(mesAno(p.quando)) : "") + (p.fonte ? ' · <a href="' + esc(p.fonte) + '" target="_blank" rel="noopener">ver fonte</a>' : "") + ". Valores sem taxas e gorjeta; podem mudar.</p></div>";
   }
   function mesAno(s) { var m = /^(\d{4})-(\d{2})/.exec(String(s || "")); if (!m) return String(s || ""); return ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m[2]) - 1] + "/" + m[1]; }
   function precoHtml(l) {
