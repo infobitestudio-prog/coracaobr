@@ -55,7 +55,7 @@
     var depo = Store.lista("avaliacoes").filter(function (a) { return Number(a.estrelas) >= 4 && String(a.texto || "").trim().length >= 25 && lugar(a.lugarId); })
       .sort(function (a, b) { return (b.criadoEm || "").localeCompare(a.criadoEm || ""); }).slice(0, 10);
     out.depoimentos = depo.length ? '<section class="block reveal"><div class="head"><h2>' + esc(tx("depoimentos", "Quem foi, recomenda")) + '</h2><a class="more" href="#ranking">ver ranking</a></div><div class="hscroll depos">' + depo.map(function (a) { var l = lugar(a.lugarId), n = String(a.nome || "Visitante").trim(); return '<a class="depo" href="#lugar-' + esc(l.id) + '"><span class="dq">“</span><p>' + esc(String(a.texto).slice(0, 220)) + '</p><span class="dp"><span class="avatar sm">' + esc(n.charAt(0).toUpperCase()) + "</span><span><b>" + esc(n.split(" ")[0]) + "</b><small>" + "★".repeat(Math.round(a.estrelas)) + " · " + esc(l.nome) + (a.tipo === "experiencia" ? " · esteve aqui" : "") + "</small></span></span></a>"; }).join("") + "</div></section>" : "";
-    out.instalar = window.__convite && window.__convite.app ? "" : '<section class="block reveal instalar-sec"><a class="panel instalar" href="#instalar"><span class="aic">' + ic("phone") + '</span><span><b>Tenha o guia na tela do celular</b><small class="muted">Abre como um app, sem ocupar espaço.</small></span>' + ic("arrow") + "</a></section>";
+    out.instalar = window.__convite && window.__convite.app ? "" : '<section class="block reveal instalar-sec"><a class="panel instalar" href="#instalar-app"><span class="aic">' + ic("phone") + '</span><span><b>Tenha o guia na tela do celular</b><small class="muted">Abre como um app, sem ocupar espaço.</small></span>' + ic("arrow") + "</a></section>";
     return out;
   }
 
@@ -225,18 +225,19 @@
   /* Botão "Instalar no celular" usado em qualquer página (login, cadastro...): abre o instalador do navegador quando existe; senão, o passo a passo. */
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-instalar-app]"); if (!b) return; e.preventDefault();
+    if (window.CBRApp && CBRApp.abrir(b.dataset.instalarApp || "")) return;
     if (promptInstalar) { promptInstalar.prompt(); promptInstalar.userChoice && promptInstalar.userChoice.then(function () { promptInstalar = null; }); }
-    else location.hash = "#instalar";
+    else location.hash = "#instalar-app";
   });
   function viewInstalar() {
-    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    G.app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:16px;max-width:720px"><div><p class="eyebrow">Atalho</p><h1 class="page-h">Guia na tela do celular</h1><p class="muted">Abre direto, como um aplicativo, sem baixar nada da loja.</p></div>' +
-      (promptInstalar ? '<button type="button" class="btn" data-instala>Instalar agora</button>' : "") +
-      '<div class="panel stack"' + (ios ? "" : ' style="order:2"') + '><h3>iPhone (Safari)</h3><ol class="passos"><li>Toque no botão Compartilhar (quadrado com seta para cima).</li><li>Role e toque em <b>Adicionar à Tela de Início</b>.</li><li>Confirme em <b>Adicionar</b>.</li></ol></div>' +
-      '<div class="panel stack"><h3>Android (Chrome)</h3><ol class="passos"><li>Toque nos três pontinhos no canto de cima.</li><li>Toque em <b>Instalar app</b> ou <b>Adicionar à tela inicial</b>.</li><li>Confirme.</li></ol></div>' +
-      '<div class="panel stack"><h3>Computador</h3><p class="muted">No Chrome ou no Edge, clique no ícone de instalar na barra de endereço, ou adicione o guia aos favoritos.</p></div></div></section>';
-    var b = $("[data-instala]"); if (b) b.onclick = function () { promptInstalar.prompt(); promptInstalar = null; };
+    var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1), and = /Android/i.test(navigator.userAgent);
+    var jaApp = window.CBRApp && CBRApp.instalado && CBRApp.instalado();
+    var bt = function (os, nome, alt) { return '<button type="button" class="btn ia-pg' + (alt ? " ghost" : "") + '" data-instalar-app="' + os + '">' + nome + "</button>"; };
+    G.app.innerHTML = '<section class="block"><div class="wrap stack in" style="gap:18px;max-width:640px;text-align:center;justify-items:center"><span class="cx2-ic">' + ic("phone") + '</span><div><p class="eyebrow">Aplicativo CoraçãoBR · grátis</p><h1 class="page-h">Instale o app no seu celular</h1><p class="muted">Abre direto da tela inicial, em tela cheia, sem loja e sem ocupar espaço.</p></div>' +
+      (jaApp ? '<div class="panel"><b>Você já está usando o app.</b></div>' : '<div class="ia-pgs">' + bt("ios", "iPhone", !ios) + bt("android", "Android", !and) + "</div>" +
+        '<div class="panel stack" style="gap:6px;text-align:left;width:100%"><h3>No computador</h3><p class="muted small">No Chrome ou no Edge, clique no ícone de instalar na barra de endereço.</p></div>') + "</div></section>";
   }
+
 
   /* ---------- cupom com QR Code ---------- */
   function codigo(l) {
@@ -271,6 +272,6 @@
     };
   }
 
-  G.views.mural = viewMural; G.views["roteiro-ia"] = viewIA; G.views.custo = viewCusto; G.views.cidades = viewCidades; G.views.instalar = viewInstalar;
+  G.views.mural = viewMural; G.views["roteiro-ia"] = viewIA; G.views.custo = viewCusto; G.views.cidades = viewCidades; G.views["instalar-app"] = viewInstalar;
   window.Comunidade = { secoes: secoes, botaoCupom: botaoCupom, validador: validador, validadorInit: validadorInit, TIPOS_AL: TIPOS_AL, TIPOS_CL: TIPOS_CL, classificadosAtivos: classificadosAtivos, alertasAtivos: alertasAtivos, CIDADES: CIDADES, viewMural: viewMural };
 })();
