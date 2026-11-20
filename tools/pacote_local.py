@@ -18,7 +18,7 @@ corpo = re.sub(r'src="(js/[\w-]+\.js)"', lambda m: 'src="' + m.group(1) + '?v=' 
 (OUT / "index.html").write_text(head + corpo + "</body></html>")
 for f in (ROOT / "js").glob("*.js"):
     shutil.copy(f, OUT / "js" / f.name)
-for f in ("seed.json", "seed.js"):
+for f in ("seed.json", "seed.js", "fotos-site.json"):
     shutil.copy(ROOT / "data" / f, OUT / "data" / f)
 L = json.loads((ROOT / "data" / "seed.json").read_text())["lugares"]
 for src in {ft["src"] for l in L for ft in l.get("fotos", [])}:

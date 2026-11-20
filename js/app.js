@@ -184,7 +184,23 @@
     var t = precoCurto(l); if (!t) return "";
     return '<span class="price' + (l.gratuito && l.tipo !== "estabelecimento" ? " free" : "") + (l.tipo !== "estabelecimento" && !l.gratuito && l.precoConfirmado === false ? " unk" : "") + '">' + esc(t) + "</span>";
   }
-  function foto(l, i) { var f = (l.fotos || [])[i || 0]; return f ? Store.urlFoto(f.src) : ""; }
+  /* Fotos de um lugar: as do guia/anunciante + fotos reais do Google (pela API oficial, com crédito do autor) + imagem oficial do site do lugar.
+     As do Google são servidas pelo nosso servidor (api/?acao=foto_google), que não expõe a chave. */
+  function fotosDe(l, larg) {
+    l = l || {};
+    /* ordem: fotos enviadas pelo anunciante → imagem do site oficial → fotos reais do Google → fotos de acervo/ilustrativas */
+    var proprias = [], acervo = [], reais = [];
+    (l.fotos || []).forEach(function (f) { var u = Store.urlFoto(f.src); if (!u) return; (/^asset:/.test(f.src) ? proprias : acervo).push(Object.assign({}, f, { src: u })); });
+    var fsite = (l.fotoSite && l.fotoSite.src) ? l.fotoSite : FOTOS_SITE[l.id];
+    if (fsite && /^https:\/\/[^\s"'<>]+$/.test(fsite.src || "")) reais.push({ src: fsite.src, credito: "Site oficial", pagina: fsite.pagina || "" });
+    if (st().servidor && Array.isArray(l.fotosGoogle)) l.fotosGoogle.forEach(function (g) { if (g && /^places\/[\w-]+\/photos\/[\w-]+$/.test(g.ref || "")) reais.push({ src: "api/?acao=foto_google&w=" + (larg || 1200) + "&ref=" + encodeURIComponent(g.ref), credito: (g.autor || "Usuário do Google") + " · Google", pagina: g.link || "", google: true }); });
+    return proprias.concat(reais, acervo).slice(0, 24);
+  }
+  function st() { return Store.estado || {}; }
+  /* imagens oficiais dos sites dos lugares (geradas pelo robô diário; servem também nas versões sem servidor) */
+  var FOTOS_SITE = {};
+  fetch("data/fotos-site.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) { FOTOS_SITE = j || {}; if (Store.estado && Store.estado.pronto && !document.querySelector("form:focus-within")) { try { render(false); } catch (e) { /* ok */ } } }).catch(function () {});
+  function foto(l, i) { var x = fotosDe(l, 640)[i || 0]; return x ? x.src : ""; }
   function picHtml(l) { var f = foto(l); return f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : ""; }
   function regiao(l) { return l.cidade === "Dallas" || !l.cidade ? (l.bairro || "Dallas") : l.cidade; }
   /* Eventos no mesmo local viram um card só: o próximo a acontecer, com a contagem dos demais. */
@@ -534,7 +550,7 @@
   function externas(l) {
     var q = encodeURIComponent(l.nome + " " + (l.cidade || "Dallas") + " TX"), lista = Array.isArray(l.avaliacoesExternas) ? l.avaliacoesExternas.filter(function (r) { return r && r.texto && r.autor; }).slice(0, 6) : [];
     var nota = l.notaExterna && Number(l.notaExterna.media) ? '<p class="small"><b>' + Number(l.notaExterna.media).toFixed(1) + " ★</b> no " + esc(l.notaExterna.fonte || "Google") + (l.notaExterna.total ? " · " + Number(l.notaExterna.total).toLocaleString("pt-BR") + " avaliações" : "") + "</p>" : "";
-    return '<div class="panel stack ext" style="gap:10px"><h3>O que dizem em outros sites</h3>' + nota +
+    return '<div class="panel stack ext" style="gap:10px"><h3>' + (lista.length ? "Avaliações reais do Google" : "O que dizem em outros sites") + "</h3>" + (l.categoria === "evento" && lista.length ? '<p class="small muted">Avaliações do local onde o evento acontece.</p>' : "") + nota +
       lista.map(function (r) { return '<div class="rv"><span class="av">' + esc(String(r.autor).charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(r.autor) + "</b>" + (r.nota ? stars(r.nota) : "") + '</div><small class="muted">' + esc(r.fonte || "Google") + (r.data ? " · " + esc(r.data) : "") + "</small><p>" + esc(String(r.texto).slice(0, 400)) + "</p>" + (url(r.link) ? '<a class="small" href="' + esc(r.link) + '" target="_blank" rel="noopener">ver no ' + esc(r.fonte || "Google") + "</a>" : "") + "</div></div>"; }).join("") +
       '<div class="row"><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">Google</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.yelp.com/search?find_desc=' + encodeURIComponent(l.nome) + "&find_loc=" + encodeURIComponent((l.cidade || "Dallas") + ", TX") + '">Yelp</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Search?q=' + q + '">Tripadvisor</a></div></div>';
   }
@@ -601,18 +617,18 @@
     if (!l) { fechar(); toast("Este lugar não está mais no guia."); return; }
     if (L.id !== id) L = { id: id, foto: 0, estrelas: 0, nome: L.nome || meuNome(), texto: "", tab: "sobre", lermais: false, avaliando: false };
     var sc = $(".sheet-scroll", sheetCard), topo = manterScroll && sc ? sc.scrollTop : 0;
-    var fs = (l.fotos || []).slice(0, 20); if (L.foto >= fs.length) L.foto = 0;
+    var fs = fotosDe(l); if (L.foto >= fs.length) L.foto = 0;
     var f = fs[L.foto], n = notas(l), av = avaliacoesDe(id), est = l.tipo === "estabelecimento", mi = milhas(l);
     var destino = encodeURIComponent([l.nome, l.endereco].filter(Boolean).join(", "));
     var perto = lugares().filter(function (o) { return o.id !== id && dist(l, o) != null; }).sort(function (a, b) { return dist(l, a) - dist(l, b); }).slice(0, 12); perto = primeiro(perto).slice(0, 6);
     var ad = anuncios("lugar")[0];
     var precoBar = est ? (l.faixaPreco || "–") : l.gratuito ? "Gratuito" : l.precoMin > 0 ? usd(l.precoMin) : "Pago";
     sheetCard.innerHTML = '<div class="sheet-scroll"><div class="sheet-photo" id="sp"><span class="grab"></span>' +
-      (f ? '<img src="' + esc(Store.urlFoto(f.src)) + '" alt="Foto de ' + esc(l.nome) + '">' + (f.credito ? '<span class="cred">' + (f.ilustrativa ? "Foto ilustrativa: " : "Foto: ") + (url(f.pagina) ? '<a href="' + esc(f.pagina) + '" target="_blank" rel="noopener">' + esc(f.credito) + "</a>" : esc(f.credito)) + (f.licenca ? " · " + esc(f.licenca) : "") + "</span>" : "") : '<div class="phx">' + esc(l.nome) + "</div>") +
+      (f ? '<img src="' + esc(f.src) + '" alt="Foto de ' + esc(l.nome) + '"' + (f.google ? ' referrerpolicy="no-referrer"' : "") + ">" + (f.credito ? '<span class="cred">' + (f.ilustrativa ? "Foto ilustrativa: " : "Foto: ") + (url(f.pagina) ? '<a href="' + esc(f.pagina) + '" target="_blank" rel="noopener">' + esc(f.credito) + "</a>" : esc(f.credito)) + (f.licenca ? " · " + esc(f.licenca) : "") + "</span>" : "") : '<div class="phx">' + esc(l.nome) + "</div>") +
       '<button type="button" class="round close" data-fechar aria-label="Fechar">' + ic("down") + "</button>" +
       (window.Extras ? Extras.botaoFav(l) : "") +
       (fs.length > 1 ? '<button type="button" class="round prev" data-foto="-1" aria-label="Foto anterior">' + ic("left") + '</button><button type="button" class="round next" data-foto="1" aria-label="Próxima foto">' + ic("right") + '</button><div class="dots">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Foto ' + (i + 1) + '"></button>'; }).join("") + "</div>" : "") +
-      (fs.length > 1 ? '<div class="sp-th">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Ver foto ' + (i + 1) + '"><img src="' + esc(Store.urlFoto(x.src)) + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "") + "</div>" +
+      (fs.length > 1 ? '<div class="sp-th">' + fs.map(function (x, i) { return '<button type="button" data-ir="' + i + '" aria-current="' + (i === L.foto) + '" aria-label="Ver foto ' + (i + 1) + '"><img src="' + esc(x.src) + '" alt="" loading="lazy"></button>'; }).join("") + "</div>" : "") + "</div>" +
       '<div class="sheet-body' + (manterScroll ? " quiet" : "") + '"><div class="sb-grid"><div class="sb-main">' +
       (window.Pag ? Pag.avisoPrevia(l) : "") + '<div class="sb-tit"><p class="eyebrow">' + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + (l.brasileiro ? " · Brasileiro" : "") + '</p><h2 style="margin-top:4px">' + esc(l.nome) + "</h2>" +
       '<div class="row badges">' + (n.guia != null ? '<span class="badge"><span style="color:var(--sun)">★</span> <b class="num">' + n.guia.toFixed(1) + "</b>" + (n.qtd ? " (" + n.qtd + ")" : "") + "</span>" : "") +
@@ -689,7 +705,7 @@
   sheet.addEventListener("click", function (e) {
     if (e.target === sheet || e.target.closest("[data-fechar]")) { fechar(); return; }
     var p = e.target.closest("[data-foto]"), d = e.target.closest("[data-ir]"), s = e.target.closest("#pick button");
-    var n = ((Store.obter("lugares", L.id) || {}).fotos || []).slice(0, 20).length;
+    var n = fotosDe(Store.obter("lugares", L.id) || {}).length;
     if (p && n) { L.foto = (L.foto + Number(p.dataset.foto) + n) % n; folha(L.id, true); }
     if (d) { L.foto = Number(d.dataset.ir); folha(L.id, true); }
     var lk = e.target.closest("a[href]");
@@ -850,7 +866,7 @@
     if (rota() === "explorar") { pintada = null; render(false); }
   });
   window.addEventListener("hashchange", function () { render(false); });
-  window.Guia = { reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; Store.assinar(function (col) { render(true, col); }); Store.iniciar(); pedirLocal(false); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ligar); else setTimeout(ligar, 0);

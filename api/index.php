@@ -82,6 +82,10 @@ function importaBase(PDO $pdo, bool $novo): void {
     if (!is_array($l) || !preg_match(ID_RE, (string)($l['id'] ?? ''))) continue;
     $id = $l['id']; unset($l['id']);
     $ins->execute(['lugares', $id, json_encode($l, JSON_UNESCAPED_UNICODE), agora()]);
+    if (!empty($l['fotoSite']['src'])) {   // imagem oficial do site: completa lugares já existentes, sem mexer no resto
+      $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $st->execute([$id]); $d = json_decode((string)$st->fetchColumn(), true);
+      if (is_array($d) && empty($d['fotoSite']['src'])) { $d['fotoSite'] = $l['fotoSite']; $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($d, JSON_UNESCAPED_UNICODE), agora(), $id]); }
+    }
   }
   if (is_file($CFG['config_inicial'])) {
     $cfg = json_decode((string)file_get_contents($CFG['config_inicial']), true);
@@ -703,11 +707,11 @@ case 'atualizar_diario': {
   // 4) Google Places: nota, avaliações reais, horário, telefone e site
   $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
   if ($gk !== '') {
-    $mask = 'id,rating,userRatingCount,reviews,googleMapsUri,regularOpeningHours,nationalPhoneNumber,websiteUri,businessStatus';
+    $mask = 'id,rating,userRatingCount,reviews,photos,googleMapsUri,regularOpeningHours,nationalPhoneNumber,websiteUri,businessStatus';
     $fila = [];
     foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) { $l = json_decode($row['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo'])) continue; $fila[] = [$row['id'], $l, (string)($l['notaExterna']['em'] ?? '')]; }
     usort($fila, fn($a, $b) => strcmp($a[2], $b[2]));
-    $ok = 0; $lim = (int)($CFG['google_por_dia'] ?? 60);
+    $ok = 0; $lim = !empty($_GET['todos']) && master() ? 600 : (int)($CFG['google_por_dia'] ?? 60);   // &todos=1: a equipe atualiza o guia inteiro de uma vez
     foreach (array_slice($fila, 0, $lim) as [$id, $l]) {
       if (!empty($l['googlePlaceId'])) $p = $http('https://places.googleapis.com/v1/places/' . rawurlencode($l['googlePlaceId']) . '?languageCode=pt-BR', null, ['X-Goog-Api-Key: ' . $gk, 'X-Goog-FieldMask: ' . $mask]);
       else {
@@ -720,6 +724,8 @@ case 'atualizar_diario': {
       if (!is_array($p) || isset($p['error']) || empty($p['id'])) continue;
       $l['googlePlaceId'] = $p['id'];
       if (!empty($p['rating'])) $l['notaExterna'] = ['fonte' => 'Google', 'media' => (float)$p['rating'], 'total' => (int)($p['userRatingCount'] ?? 0), 'link' => $p['googleMapsUri'] ?? '', 'em' => $hoje];
+      /* fotos reais do Google: guardamos só a referência e o autor (crédito obrigatório); a imagem é servida na hora por api/?acao=foto_google */
+      $l['fotosGoogle'] = array_values(array_filter(array_map(fn($f) => ['ref' => (string)($f['name'] ?? ''), 'autor' => $f['authorAttributions'][0]['displayName'] ?? 'Usuário do Google', 'link' => $f['authorAttributions'][0]['uri'] ?? ($p['googleMapsUri'] ?? '')], array_slice((array)($p['photos'] ?? []), 0, 8)), fn($f) => preg_match('#^places/[\w-]+/photos/[\w-]+$#', $f['ref'])));
       $l['avaliacoesExternas'] = array_values(array_map(fn($v) => ['fonte' => 'Google', 'autor' => $v['authorAttribution']['displayName'] ?? 'Usuário do Google', 'nota' => (int)($v['rating'] ?? 0), 'texto' => $v['text']['text'] ?? ($v['originalText']['text'] ?? ''), 'data' => $v['relativePublishTimeDescription'] ?? '', 'link' => $v['authorAttribution']['uri'] ?? ($p['googleMapsUri'] ?? '')], array_slice((array)($p['reviews'] ?? []), 0, 5)));
       if (!empty($p['regularOpeningHours']['periods']) && empty($l['horasManual'])) {
         $h = []; for ($k = 0; $k < 7; $k++) $h[(string)$k] = [];
@@ -739,6 +745,24 @@ case 'atualizar_diario': {
     }
     $rel['feito'][] = "Google: $ok lugares com nota, avaliações e horário atualizados";
   } else $rel['erros'][] = 'Sem chave da Google Places API: avaliações e horários do Google não foram atualizados.';
+  // 4c) imagem oficial do site de cada lugar (og:image), renovada a cada 30 dias
+  $nS = 0; $limS = !empty($_GET['todos']) && master() ? 400 : 40; $antes30 = date('Y-m-d', strtotime($hoje . ' -30 day'));
+  foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) {
+    if ($nS >= $limS) break;
+    $l = json_decode($row['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || empty($l['site']) || !preg_match('#^https?://#i', $l['site'])) continue;
+    if (!empty($l['fotoSite']['em']) && $l['fotoSite']['em'] > $antes30) continue;
+    $nS++;
+    $ctx = stream_context_create(['http' => ['method' => 'GET', 'header' => "User-Agent: Mozilla/5.0 (compatible; CoracaoBR/1.0; +" . baseUrl() . ")\r\nAccept: text/html", 'timeout' => 10, 'ignore_errors' => true, 'follow_location' => 1, 'max_redirects' => 4]]);
+    $html = @file_get_contents($l['site'], false, $ctx, 0, 400000); $img = '';
+    if ($html && preg_match('#<meta[^>]+(?:property|name)=["\'](?:og:image(?::secure_url)?|twitter:image)["\'][^>]*content=["\']([^"\']+)#i', $html, $m)) $img = html_entity_decode($m[1]);
+    elseif ($html && preg_match('#<meta[^>]+content=["\']([^"\']+)["\'][^>]*(?:property|name)=["\'](?:og:image|twitter:image)#i', $html, $m)) $img = html_entity_decode($m[1]);
+    if ($img !== '' && !preg_match('#^https?://#i', $img)) { $b = parse_url($l['site']); $img = ($b['scheme'] ?? 'https') . '://' . ($b['host'] ?? '') . '/' . ltrim($img, '/'); }
+    $img = preg_replace('#^http://#i', 'https://', $img);
+    $l['fotoSite'] = preg_match('#^https://[^\s"\'<>]{8,600}$#', $img) && !preg_match('#logo|favicon|sprite|placeholder#i', $img) ? ['src' => $img, 'pagina' => $l['site'], 'em' => $hoje] : ['src' => '', 'pagina' => $l['site'], 'em' => $hoje];
+    $salva('lugares', $row['id'], $l);
+  }
+  if ($nS) $rel['feito'][] = "Imagens oficiais dos sites conferidas: $nS lugares";
+  if ($nS) { $mapa = []; foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) { $l = json_decode($row['data'], true); if (!empty($l['fotoSite']['src'])) $mapa[$row['id']] = ['src' => $l['fotoSite']['src'], 'pagina' => $l['fotoSite']['pagina'] ?? '']; } @file_put_contents(__DIR__ . '/../data/fotos-site.json', json_encode($mapa, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)); }
   // 4b) Pix automático: confere cobranças pendentes das últimas 48 h (caso algum aviso do Mercado Pago tenha se perdido)
   if (mpToken() !== '') { $nP = 0; foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'cobrancas'")->fetchAll() as $row) { $c = json_decode($row['data'], true); if (is_array($c) && ($c['status'] ?? '') === 'pendente' && strtotime($c['criadoEm'] ?? 'now') > time() - 172800) { $r = processaPagamento($row['id']); if ($r['status'] === 'aprovado') $nP++; } } $rel['feito'][] = "Pix conferidos: $nP aprovados"; }
   // 5) lembretes por e-mail: 3, 2 e 1 dia antes do fim do pacote (se não houver renovação já paga emendando)
@@ -867,6 +891,18 @@ case 'pedido': {
   $ok = @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: novo pedido de ' . $nome) . '?=', $txt, "From: CoraçãoBR <$de>\r\nReply-To: $rt\r\nContent-Type: text/plain; charset=UTF-8\r\n");
   $k = 'pedidos:' . $lid . ':' . date('Y-m'); banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute([$k]);
   sai(['ok' => true, 'enviado' => (bool)$ok]);
+}
+case 'foto_google': {
+  /* entrega a foto do Google sem expor a chave: pede o endereço da imagem à API oficial e redireciona; o navegador guarda por 1 dia */
+  global $CFG; $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
+  $ref = (string)($_GET['ref'] ?? ''); $w = max(200, min(1600, (int)($_GET['w'] ?? 1200)));
+  if ($gk === '' || !preg_match('#^places/[\w-]+/photos/[\w-]+$#', $ref)) { http_response_code(404); exit; }
+  if (!limite('fg:' . ip(), 600, 3600)) { http_response_code(429); exit; } marca('fg:' . ip());
+  $ctx = stream_context_create(['http' => ['method' => 'GET', 'header' => 'X-Goog-Api-Key: ' . $gk, 'timeout' => 15, 'ignore_errors' => true]]);
+  $j = json_decode((string)@file_get_contents('https://places.googleapis.com/v1/' . $ref . '/media?maxWidthPx=' . $w . '&skipHttpRedirect=true', false, $ctx), true);
+  $u = (string)($j['photoUri'] ?? '');
+  if (!preg_match('#^https://[\w.-]+\.(googleusercontent|google|gstatic)\.com/#', $u)) { http_response_code(404); exit; }
+  header('Cache-Control: public, max-age=86400'); header('Location: ' . $u, true, 302); exit;
 }
 case 'chave_google': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);

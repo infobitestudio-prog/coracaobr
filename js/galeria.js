@@ -10,7 +10,7 @@
   function fotosDoLugar() {
     var m = /^#lugar-(.+)$/.exec(location.hash), l = m && Store.obter("lugares", decodeURIComponent(m[1]));
     if (!l) return null;
-    return { nome: l.nome, fotos: (l.fotos || []).slice(0, 20).map(function (f) { return { src: Store.urlFoto(f.src), cred: f.credito ? (f.ilustrativa ? "Foto ilustrativa: " : "Foto: ") + f.credito + (f.licenca ? " · " + f.licenca : "") : "" }; }) };
+    return { nome: l.nome, fotos: G.fotosDe(l, 1600).map(function (f) { return { src: f.src, cred: f.credito ? (f.ilustrativa ? "Foto ilustrativa: " : "Foto: ") + f.credito + (f.licenca ? " · " + f.licenca : "") : "" }; }) };
   }
 
   document.addEventListener("click", function (e) {
