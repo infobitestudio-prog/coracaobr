@@ -950,8 +950,16 @@
     pintada = r; revelar();
   }
   function digitando() { var a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && (app.contains(a) || sheetCard.contains(a))); }
+  /* título da aba por tela (Google e relatórios do Analytics) */
+  var TITULOS = { inicio: "", explorar: "Explorar lugares, eventos e serviços", mapa: "Mapa", metro: "Metrô de Dallas", feed: "Feed", mural: "Mural de vagas e classificados", ranking: "Os mais bem avaliados", anuncie: "Anuncie para brasileiros nos EUA", "roteiro-ia": "Roteiro com IA", caixinha: "Apoie o CoraçãoBR", conta: "Minha conta", entrar: "Entrar", cadastro: "Criar conta", parcerias: "Parcerias e expansão", sobre: "Sobre", chegada: "Primeiros 30 dias nos EUA", "fala-portugues": "Profissionais que falam português", clube: "Clube CoraçãoBR" };
+  function tituloDe(r) {
+    var base = "CoraçãoBR";
+    if (r.indexOf("lugar-") === 0) { var l = Store.obter("lugares", r.slice(6)); return l ? l.nome + " · " + (CATS[l.categoria] || "") + (l.cidade ? " em " + l.cidade : "") + " · " + base : base; }
+    var t = TITULOS[r]; return t ? t + " · " + base : base + " · Guia brasileiro nos EUA: lugares, eventos e serviços em português";
+  }
   function render(viaDados, col) {
     var st = Store.estado, r = rota();
+    if (st.pronto) { var tt = tituloDe(r); if (document.title !== tt) document.title = tt; }
     $("#aviso").hidden = !st.aviso; $("#aviso-txt").textContent = st.aviso || "";
     if (!st.pronto) return;
     faixa();

@@ -226,7 +226,8 @@
     }, 1000);
   }
   function kAprovado() {
-    var k = K; Store.sincronizarAgora().catch(function () {}).then(function () {
+    var k = K; if (window.Mkt) Mkt.evento("purchase", { value: Number(k.valor) || 0, currency: "BRL", transaction_id: String(k.pagId || ""), items: [{ item_name: k.plano }] });
+    Store.sincronizarAgora().catch(function () {}).then(function () {
       if (k.aprovado) return k.aprovado({ valor: k.valor, id: k.pagId });
       obrigadoPlano(k.ped || { plano: k.plano }, k.valor);
     });

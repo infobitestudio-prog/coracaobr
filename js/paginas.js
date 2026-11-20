@@ -24,11 +24,29 @@
   function viewSobre() {
     var n = G.lugares().length, ev = G.lugares().filter(function (l) { return l.categoria === "evento"; }).length;
     pagina("Sobre", "CoraçãoBR",
-      '<p class="lead">Coração brasileiro, em qualquer lugar do mundo. Reunimos em português o que um brasileiro precisa para viver ou passear fora do Brasil: passeios, eventos, restaurantes, serviços, documentos e comunidade. Dallas–Fort Worth, no Texas, é o nosso primeiro mercado.</p>' +
+      '<p class="lead">O CoraçãoBR é uma plataforma brasileira, feita por brasileiros, para quem vive ou passeia fora do Brasil. Reunimos em português passeios, eventos, restaurantes, serviços, documentos e comunidade. Começamos pelo Texas (Dallas–Fort Worth, Houston, Austin e San Antonio) e estamos prontos para novas regiões, inclusive no Brasil, como São Paulo.</p>' +
       '<div class="kpis"><div class="kpi"><b class="num">' + n + '</b><span>lugares no guia</span></div><div class="kpi"><b class="num">' + ev + '</b><span>eventos acompanhados</span></div><div class="kpi"><b class="num">3</b><span>idiomas na interface</span></div></div>' +
       "<h2>Como funciona</h2><ul><li>A curadoria visita fontes oficiais e confere preços, horários e endereços. Cada lugar mostra a data da última conferência.</li><li>Eventos, hotéis, avisos da comunidade e a cotação do dólar são atualizados todos os dias.</li><li>As notas combinam a avaliação da curadoria com as avaliações de quem foi.</li><li>Empresas anunciam com plano mensal e aparecem marcadas como Patrocinado.</li></ul>" +
       "<h2 id=\"contato\">Fale com a gente</h2>" + contatoCards() +
-      '<div class="row"><a class="btn" href="#anuncie">Anunciar meu negócio</a><a class="btn ghost" href="#termos">Termos de uso</a><a class="btn ghost" href="#privacidade">Privacidade</a></div>');
+      '<div class="row"><a class="btn" href="#anuncie">Anunciar meu negócio</a><a class="btn ghost" href="#parcerias">Parcerias e expansão</a><a class="btn ghost" href="#termos">Termos de uso</a><a class="btn ghost" href="#privacidade">Privacidade</a></div>');
+  }
+  /* Parcerias e expansão: empresas, parceiros, sócios, novos locais, propagandas e novas regiões */
+  function viewParcerias() {
+    var s = G.sac ? G.sac() : { email: email(), wa: function () { return "#"; }, zapTxt: "" };
+    var card = function (ic2, tit, txt, ass, href) { return '<a class="pc-c" href="' + (href || mailto(ass)) + '"' + (href && /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : "") + '><span class="pc-ic">' + ic2 + "</span><b>" + tit + "</b><small>" + txt + "</small><em>" + (href === "#anuncie" ? "Ver planos" : "Falar com a equipe") + " →</em></a>"; };
+    var regioes = G.CIDADES_GUIA ? Object.keys(G.CIDADES_GUIA).map(function (k) { return G.CIDADES_GUIA[k].nome; }) : [];
+    pagina("Parcerias e expansão", "Cresça com o CoraçãoBR",
+      '<p class="lead">Somos uma plataforma brasileira em expansão. Hoje no Texas (' + esc(regioes.join(", ")) + '); em breve, novas regiões nos EUA e no Brasil, começando por São Paulo. Se você tem um negócio, uma marca, um espaço ou quer levar o CoraçãoBR para a sua cidade, fale com a gente.</p>' +
+      '<div class="pc-g">' +
+      card("🏪", "Anuncie seu negócio", "Restaurantes, mercados, serviços e eventos: apareça para quem fala português, com fotos, mapa, cupom e métricas.", "", "#anuncie") +
+      card("🤝", "Parcerias e patrocínio", "Marcas, criadores e eventos: patrocínio de seções, banner no rodízio da página inicial e ações com a comunidade.", "parceria e patrocínio") +
+      card("📣", "Propagandas e campanhas", "Campanhas para o público brasileiro, com relatório de visualizações e cliques.", "propaganda e campanha") +
+      card("📍", "Cadastrar um local", "Conhece um lugar brasileiro ou que atende em português? Indique e a curadoria confere.", "cadastrar um local") +
+      card("🧭", "Leve para a sua cidade", "Quer operar o CoraçãoBR em outra região (EUA ou Brasil)? Conte sobre a cidade e o seu projeto.", "nova região") +
+      card("💼", "Sócios e investidores", "Interesse em fazer parte da empresa ou investir na expansão da plataforma.", "sócios e investidores") +
+      "</div>" +
+      '<div class="pc-num"><div><b>' + (G.todosLugares ? G.todosLugares().length : "") + '</b><small>lugares no guia</small></div><div><b>' + regioes.length + '</b><small>regiões no Texas</small></div><div><b>3</b><small>idiomas</small></div><div><b>24h</b><small>app no celular</small></div></div>' +
+      (G.sacHtml ? G.sacHtml("parcerias") : ""));
   }
   function viewTermos() {
     pagina("CoraçãoBR", "Termos de uso",
@@ -48,5 +66,5 @@
       "<h2>Notificações</h2><p>Só com a sua permissão, e você pode desligar a qualquer momento em Minha conta.</p>" +
       "<h2>Seus direitos</h2><p>Você pode apagar suas avaliações, roteiros e publicações a qualquer momento. Para remover todos os seus dados, escreva para <a href=\"" + mailto("privacidade e dados") + "\">" + esc(email()) + "</a>.</p>" + "<h2>Contato</h2>" + contato());
   }
-  G.views.sobre = viewSobre; G.emailOficial = email; G.mailto = mailto; G.views.termos = viewTermos; G.views.privacidade = viewPrivacidade;
+  G.views.sobre = viewSobre; G.emailOficial = email; G.mailto = mailto; G.views.termos = viewTermos; G.views.privacidade = viewPrivacidade; G.views.parcerias = viewParcerias;
 })();

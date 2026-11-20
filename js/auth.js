@@ -120,6 +120,7 @@
         /* sem cidade escolhida ainda: o guia abre na região do CEP */
         var c = j.conta || {}, perto = c.zipLat && G.cidadeMaisPerto && !(G.escolheuCidade && G.escolheuCidade()) ? G.cidadeMaisPerto({ lat: c.zipLat, lng: c.zipLng }) : null;
         if (perto) try { localStorage.setItem("cidade", perto.id); } catch (er) { /* ok */ }
+        if (window.Mkt) Mkt.evento("sign_up", Object.assign({ method: "email" }, Mkt.utm()));
         vaiPara(destino(j.conta));
       }).catch(function (er) { ocupa(f, false); msg(m, er.message); });
     };

@@ -11,6 +11,7 @@ RedirectMatch 404 /api/vendor(/|$)
   RewriteEngine On
   RewriteRule ^sitemap\.xml$ api/index.php?acao=sitemap [L,QSA]
   RewriteRule ^robots\.txt$ api/index.php?acao=robots [L,QSA]
+  RewriteRule ^(google[0-9a-fA-F]+\.html)$ api/index.php?acao=gverif&f=$1 [L]
 </IfModule>
 <FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|log)$">
   Require all denied

@@ -1143,6 +1143,12 @@ case 'sitemap': {
   foreach ($urls as $u) echo '<url><loc>' . htmlspecialchars($u, ENT_XML1) . '</loc><changefreq>weekly</changefreq></url>';
   echo '</urlset>'; exit;
 }
+case 'gverif': {
+  /* Search Console: verificação por arquivo HTML (o nome vem do Painel master → Google e anúncios) */
+  $f = (string)($_GET['f'] ?? ''); $g = (array)(configDoc('geral')['marketing'] ?? []);
+  if (!preg_match('/^google[0-9a-f]{6,40}\.html$/i', $f) || strcasecmp($f, (string)($g['gsc'] ?? '')) !== 0) { http_response_code(404); exit; }
+  header('Content-Type: text/html; charset=utf-8'); echo 'google-site-verification: ' . $f; exit;
+}
 case 'robots': {
   header('Content-Type: text/plain; charset=utf-8'); header('Cache-Control: public, max-age=86400');
   echo "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /dados/\nDisallow: /uploads/\n\nSitemap: " . baseUrl() . "sitemap.xml\n"; exit;
