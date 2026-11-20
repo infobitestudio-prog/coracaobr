@@ -9,6 +9,23 @@ RedirectMatch 404 /api/vendor(/|$)
 # Mapa do site e robots.txt com o endereço real do site (gerados pela API)
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # PROTEÇÃO CONTRA CÓPIA E ROBÔS DE I.A.
+  # Robôs que treinam inteligência artificial e ferramentas de clonar sites não entram no site (a API fica de fora:
+  # o Mercado Pago e a tarefa diária precisam dela). Google, Bing e as prévias do WhatsApp/Facebook continuam liberados.
+  RewriteCond %{REQUEST_URI} !/api/
+  RewriteCond %{HTTP_USER_AGENT} (GPTBot|ChatGPT-User|OAI-SearchBot|ClaudeBot|Claude-Web|Claude-User|anthropic-ai|CCBot|Google-Extended|GoogleOther|PerplexityBot|Perplexity-User|Bytespider|Amazonbot|Applebot-Extended|meta-externalagent|meta-externalfetcher|FacebookBot|cohere-ai|cohere-training|Diffbot|Omgili|ImagesiftBot|Timpibot|YouBot|AI2Bot|Ai2Bot|MistralAI|DuckAssistBot|PanguBot|Kangaroo|Sidetrade|VelenPublic|img2dataset|Scrapy|HTTrack|WebCopier|WebZIP|Offline\ Explorer|SiteSnagger|Teleport|WebReaper|SiteSucker|Wget|curl\/|python-requests|python-urllib|aiohttp|httpx|Go-http-client|node-fetch|axios|undici|HeadlessChrome|PhantomJS|Puppeteer|Playwright|Selenium|Firecrawl|Crawl4AI|ScrapingBee|Apify|Jina|Zyte|DataForSeoBot|magpie-crawler|Brightbot|ICC-Crawler) [NC]
+  RewriteRule .* - [F,L]
+
+  # A base completa de lugares só é entregue para as páginas do próprio site (o app no servidor lê pela API)
+  RewriteCond %{HTTP_HOST}@@%{HTTP_REFERER} !^([^@]*)@@https?://(www\.)?\1(/|$) [NC]
+  RewriteRule (^|/)data/(seed\.json|seed\.js|fotos-site\.json)$ - [F,L,NC]
+
+  # Fotos só aparecem no próprio site (outros sites não "puxam" as imagens). Buscadores e redes sociais liberados.
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteCond %{HTTP_HOST}@@%{HTTP_REFERER} !^([^@]*)@@https?://(www\.)?\1(/|$) [NC]
+  RewriteCond %{HTTP_REFERER} !(google|bing|yahoo|duckduckgo|facebook|instagram|whatsapp|t\.co|linkedin|pinterest|mercadopago) [NC]
+  RewriteRule \.(jpe?g|png|webp|gif|avif)$ - [F,L,NC]
   RewriteRule ^sitemap\.xml$ api/index.php?acao=sitemap [L,QSA]
   RewriteRule ^robots\.txt$ api/index.php?acao=robots [L,QSA]
   RewriteRule ^(google[0-9a-fA-F]+\.html)$ api/index.php?acao=gverif&f=$1 [L]
@@ -16,12 +33,32 @@ RedirectMatch 404 /api/vendor(/|$)
 <FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|log)$">
   Require all denied
 </FilesMatch>
+# Arquivos de configuração do servidor (.htaccess e afins) nunca são servidos
+<FilesMatch "^\.ht">
+  Require all denied
+</FilesMatch>
 # Configuração da instalação (chave): só o PHP lê, pela web nunca
 <FilesMatch "^config(\.exemplo)?\.php$">
   Require all denied
 </FilesMatch>
+# A base completa de lugares e as instruções de instalação não ficam abertas para download (o app lê tudo pela API)
+<FilesMatch "^(seed\.v[0-9]+\.json|seed\.parcial\.json|config-inicial\.json|INSTALAR\.txt|composer\.(json|lock)|.*\.(md|py|sh|bak|sql|log|zip))$">
+  Require all denied
+</FilesMatch>
 
 # HTML, JS e CSS: o navegador confere se há versão nova a cada visita (resposta rápida 304 quando não mudou)
+# Segurança: o site não abre dentro de outro site (clones por "moldura"), o navegador não adivinha tipos de arquivo,
+# a localização e a câmera só servem ao próprio site, e o conteúdo vem marcado como proibido para treinar I.A.
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Content-Security-Policy "frame-ancestors 'self'"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(self), camera=(self), microphone=(), payment=(), usb=(), interest-cohort=()"
+  Header always set X-Robots-Tag "noai, noimageai"
+  Header always set tdm-reservation "1"
+  Header unset X-Powered-By
+</IfModule>
 <IfModule mod_headers.c>
   <FilesMatch "\.(html|js|css|json|webmanifest)$">
     Header set Cache-Control "no-cache, must-revalidate"
@@ -33,7 +70,7 @@ RedirectMatch 404 /api/vendor(/|$)
 
 # Site leve: compressão gzip do que é texto e cache longo para imagens e fontes
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml application/manifest+json
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/javascript application/x-javascript application/json application/xml image/svg+xml application/manifest+json
 </IfModule>
 <IfModule mod_expires.c>
   ExpiresActive On

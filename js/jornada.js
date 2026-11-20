@@ -120,6 +120,7 @@
   }
   /* notificação do sistema pelo service worker (Android e app instalado no iPhone); sem ele, a do navegador */
   function notificaSistema(titulo, msg, url, tag) {
+    if (G.notifica) return G.notifica(titulo, msg, url, tag);
     if (!("Notification" in window) || Notification.permission !== "granted") return;
     var op = { body: msg, icon: "icon-192.png", badge: "icon-192.png", tag: tag, data: { url: url } };
     var direto = function () { try { new Notification(titulo, op); } catch (e) { /* sem suporte */ } };
@@ -184,5 +185,15 @@
 
   G.views["meus-roteiros"] = viewMeusRoteiros;
   G.views["meu-roteiro"] = viewMeuRoteiro;
-  window.Jornada = { checaPosicao: checaPosicao, adotar: adotar, botaoQuero: botaoQuero, blocoConfig: blocoConfig, convite: convite, meus: meus, progresso: progresso };
+  /* Teste do painel master: mostra o aviso "Por perto" de verdade (cartão na tela + notificação no celular), sem gastar o limite diário. */
+  function teste() {
+    var c = G.cid ? G.cid() : { lat: 32.7767, lng: -96.797 };
+    var ls = (G.todosLugares ? G.todosLugares() : G.lugares()).filter(function (l) { return typeof l.lat === "number" && l.tipo === "estabelecimento"; });
+    var l = ls.filter(function (x) { return x.anunciante; })[0] || ls.sort(function (a, b) { return G.dist(c, a) - G.dist(c, b); })[0];
+    if (!l) return Promise.resolve({ ok: false, msg: "Nenhum lugar no guia para o teste." });
+    mostra(l, 0.4);
+    var msg = "Vi que você está aqui perto de " + l.nome + " (" + textoDist(0.4) + "). Que tal passar para " + sugestao(l) + "?";
+    return Promise.resolve(notificaSistema("Por perto: " + l.nome, msg, "./#lugar-" + l.id, "teste-perto")).then(function (ok) { return { ok: true, sistema: !!ok, lugar: l.nome }; });
+  }
+  window.Jornada = { teste: teste, checaPosicao: checaPosicao, adotar: adotar, botaoQuero: botaoQuero, blocoConfig: blocoConfig, convite: convite, meus: meus, progresso: progresso };
 })();

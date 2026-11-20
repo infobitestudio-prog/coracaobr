@@ -18,7 +18,25 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
    a IA, as tags do Google/Meta e o robô diário. Cada item que não estiver OK mostra como resolver.
    Use "Copiar relatório" para mandar o resultado ao suporte.
 
-4. PRONTO
+4. TESTAR AS NOTIFICAÇÕES NO SEU CELULAR
+   Instale o app no celular (no iPhone: Compartilhar → Adicionar à Tela de Início) e entre com a conta master.
+   Painel master → Visão geral → botão "TESTE AS NOTIFICAÇÕES DA PLATAFORMA EM SEU CELULAR".
+   Ele testa, sem cadastrar nada: permissão, notificação na tela, push do servidor (app fechado), aviso de
+   "passou perto", evento novo dos temas, avisos automáticos do robô, tela de pagamento confirmado e os
+   e-mails (para você e para o e-mail oficial). Cada item mostra se funcionou e, se não, como resolver.
+
+5. PROTEÇÃO CONTRA CÓPIA (já vem ligada no .htaccess e na API)
+   - Robôs de inteligência artificial (GPTBot, ClaudeBot, CCBot, Perplexity, Bytespider e outros) e
+     ferramentas de clonar sites (HTTrack, wget, curl, scripts) são bloqueados. Google, Bing e as prévias do
+     WhatsApp/Facebook continuam liberados (SEO e compartilhamento normais).
+   - robots.txt, ai.txt e .well-known/tdmrep.json avisam que é proibido usar o conteúdo para treinar I.A.
+   - As fotos não abrem em outros sites (hotlink), a base de lugares não fica aberta para download,
+     o site não abre dentro de outro site (moldura/iframe) e a API limita downloads repetidos da base.
+   - Uma cópia das páginas em outro domínio, sem o servidor, mostra "Cópia não autorizada".
+   - O código vai minificado e com aviso de direitos autorais em cada arquivo.
+   IMPORTANTE: envie também os arquivos ocultos (.htaccess e a pasta .well-known).
+
+6. PRONTO
    - Visitantes navegam sem conta.
    - Uma conta só para todo mundo (e-mail, senha e CEP americano/ZIP obrigatório). Com ela a pessoa
      curte, comenta, avalia, salva roteiros e recebe avisos do que está perto do CEP dela.

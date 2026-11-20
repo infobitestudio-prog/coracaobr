@@ -47,7 +47,7 @@
   function abrir(el) {
     raiz = el;
     if (!Store.admin()) {
-      el.innerHTML = '<section class="block"><div class="wrap narrow"><p class="eyebrow">Área restrita</p><h1 class="page-h">Painel master</h1><p class="muted">Só a conta master da CoraçãoBR abre este painel. Para o seu negócio, use <a href="#conta">Minha conta → Meu negócio</a>.</p></div></section>';
+      el.innerHTML = '<section class="block"><div class="wrap narrow"><p class="eyebrow">Área restrita</p><h1 class="page-h">Painel master</h1><p class="muted">Só a conta master do CoraçãoBR abre este painel. Para o seu negócio, use <a href="#conta">Minha conta → Meu negócio</a>.</p></div></section>';
       return;
     }
     var menu = menuMaster(), ids = menu.map(function (m) { return m.id; });
@@ -155,7 +155,7 @@
       '<div class="pm-mp-f"><label class="sr" for="pm-mp-tk">Access Token do Mercado Pago</label><input id="pm-mp-tk" name="token" type="password" autocomplete="off" placeholder="APP_USR-..." required><button class="btn" type="submit">Ligar Pix automático</button></div>' +
       '<button type="button" class="more" data-dk-ir="pagamentos">Como pegar o Access Token</button><p class="pm-mp-m small" role="status"></p></form>'
       : srvOn ? '<div class="dk-card pm-mp ok"><div class="pm-mp-t">' + D("check") + '<div><b>Pix automático ligado</b><small>Pagamentos confirmados pelo Mercado Pago liberam os anúncios na hora, sem a equipe.</small></div></div></div>' : "";
-    el.innerHTML = '<div class="pm-res">' + cardMp +
+    el.innerHTML = '<div class="pm-res"><button type="button" class="pm-tn" data-teste-not>' + D("bell") + '<span><b>TESTE AS NOTIFICAÇÕES DA PLATAFORMA EM SEU CELULAR</b><small>Push do servidor, aviso de lugar por perto, eventos, pagamento e e-mails, sem cadastrar anúncios nem eventos.</small></span></button>' + cardMp +
       '<div class="dk-card dk-dark pm-hero"><div><small>Receita do mês</small><b class="dk-big">' + G.reais(receitaMes) + "</b><p>" + vendas + (vendas === 1 ? " pacote vendido" : " pacotes vendidos") + " · " + ativos + (ativos === 1 ? " anunciante ativo" : " anunciantes ativos") + '</p></div><div class="ad-pl-a"><button type="button" class="btn" data-dk-ir="pagamentos">' + (pix ? "Confirmar " + pix + " Pix" : "Pagamentos") + '</button><button type="button" class="btn ghost" data-dk-ir="receita">Ver receita</button></div></div>' +
       '<div class="dk-grid dk-g4">' + (Store.servidor && Store.servidor() ? card("…", "Contas", "users", "usuarios") : card(ls.length, "Lugares no guia", "pin", "lugares")) + card(ativos, "Anunciantes ativos", "store", "anunciantes") + card(pix, "Pix a confirmar", "pix", "pagamentos") + card(av.length, "Avaliações", "star", "avaliacoes") + "</div>" +
       '<div class="dk-grid dk-g2"><div class="dk-card dk-flat"><div class="dk-ch"><h3>Pendências</h3><span class="pill ' + (abertas.length ? "warn" : "ok") + '">' + (abertas.length ? abertas.length + " para resolver" : "tudo em dia") + "</span></div>" +
@@ -357,36 +357,43 @@
     });
   }
 
-  /* ---------- finanças: todos os preços num lugar só, e o resumo do que entra por mês ---------- */
+  /* ---------- finanças: o que entra por mês (em reais) e os valores de cada coisa ---------- */
   function abaFinancas(el) {
-    var c = G.config(), pg = c.pagamentos || {}, cx = c.caixinha || {}, vals = (cx.valores && cx.valores.length ? cx.valores : [5, 10, 20]);
-    var ans = Store.lista("lugares").filter(function (l) { return l.assinatura && !l.demo; }), hoje = G.hojeISO();
-    var ativos = ans.filter(function (l) { var a = l.assinatura; return a.status === "ativa" || (a.proximaCobranca || "") >= hoje; });
-    var mrr = ativos.filter(function (l) { return l.assinatura.status === "ativa"; }).reduce(function (t, l) { return t + (Number(l.assinatura.valor) || 0); }, 0);
-    var porPlano = { basico: 0, destaque: 0 }; ativos.forEach(function (l) { porPlano[l.assinatura.plano === "destaque" ? "destaque" : "basico"]++; });
-    var cls = Store.lista("classificados"), clMes = cls.filter(function (x) { return (x.criadoEm || "").slice(0, 7) === hoje.slice(0, 7); }), clRec = clMes.filter(function (x) { return x.pago === "link"; }).reduce(function (t, x) { return t + (Number(x.valor) || 0); }, 0), clCobrar = clMes.filter(function (x) { return x.pago === "teste"; }).reduce(function (t, x) { return t + (Number(x.valor) || 0); }, 0);
+    var c = G.config(), cx = c.caixinha || {}, hoje = G.hojeISO(), mes = hoje.slice(0, 7), pags = Store.lista("pagamentos");
+    var rec = 0, vendas = 0, ativos = 0, clube = 0, mural = 0;
+    var soma = function (x) { if (x && String(x.pagoEm || "").slice(0, 7) === mes && Number(x.valor) > 0) { rec += Number(x.valor); vendas++; } };
+    pags.forEach(function (d) {
+      (d.pacotes || []).forEach(soma); (d.clubePag || []).forEach(soma); (d.mural || []).forEach(soma); soma(d.verificacao);
+      if (window.Pag && Pag.vagas && Pag.vagas(d.id) > 0) ativos++;
+      if (d.clube && (d.clube.ate || "") >= hoje) clube++;
+      (d.mural || []).forEach(function (m) { if ((m.fim || "") >= hoje) mural++; });
+    });
+    var vals = (cx.valoresPix && cx.valoresPix.length ? cx.valoresPix : [5, 10, 20, 50, 100]);
     var k = function (n, t) { return '<div class="kpi"><b class="num">' + n + "</b><span>" + t + "</span></div>"; };
+    var linha = function (n, v, d) { return "<tr><td>" + n + '</td><td class="num"><b>' + v + "</b></td><td class=\"small muted\">" + d + "</td></tr>"; };
+    var pc = function (k2, pad) { return Number(c[k2]) || pad; };
     el.innerHTML = '<div class="stack in" style="max-width:860px">' +
-      '<div class="kpis">' + k(G.usd(mrr), "receita mensal recorrente") + k(ativos.length, "anunciantes ativos") + k(G.usd(clRec), "classificados pagos no mês") + k(G.usd(clCobrar), "classificados a cobrar") + "</div>" +
+      '<div class="kpis">' + k(G.reais(rec), "receita do mês (" + vendas + (vendas === 1 ? " venda" : " vendas") + ")") + k(ativos, "anunciantes com plano ativo") + k(clube, "membros do Clube") + k(mural, "destaques no Mural") + "</div>" +
+      '<div class="panel stack" style="gap:10px"><h3>Valores atuais</h3><div class="tbl-wrap"><table class="tbl"><tbody>' +
+      linha("Pacote de anúncios", G.reais(pc("precoAnuncio", 50)) + "/mês", pc("anunciosPorPacote", 3) + " anúncios por pacote; os pacotes somam") +
+      linha("Selo Verificado", G.reais(pc("precoVerificado", 30)), "selo verde em todos os anúncios") +
+      linha("Impulsionar", G.reais(pc("precoImpulso", 25)), "topo das listas por " + pc("diasImpulso", 7) + " dias") +
+      linha("Clube CoraçãoBR", G.reais(pc("precoClube", 15)) + "/mês", "carteirinha com descontos") +
+      linha("Destaque no Mural", G.reais(pc("precoMural", 10)), "primeiro lugar por " + pc("diasMural", 30) + " dias") +
+      "</tbody></table></div>" +
+      '<div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn sm" data-dk-ir="pagamentos">Mudar pacote, selo e impulso</button><button type="button" class="btn sm ghost" data-dk-ir="novidades">Mudar Clube e Mural</button></div>' +
+      '<p class="small muted">Os pagamentos são por Pix na chave oficial (' + esc(G.chavePix ? G.chavePix((c.pagamentos || {}).pix) : "coracaobr.oficial@gmail.com") + '), pelo Mercado Pago.</p></div>' +
       '<form id="f-fin" class="stack">' +
-      '<fieldset><legend>Plano do anunciante (valor único)</legend><div class="form2">' + fld("fi-bas", "Preço por mês (US$)", c.precoAnuncio, { attr: 'inputmode="decimal"' }) +
-      fld("fi-lbas", "Link de pagamento mensal (Stripe Payment Link)", pg.anuncio || pg.basico || "", { cls: "full", attr: 'placeholder="https://buy.stripe.com/..."' }) + '</div><p class="small muted">Quem já assina continua pagando o valor que contratou. O novo preço vale para novos anunciantes e reativações.</p></fieldset>' +
-      '<fieldset><legend>Mural de classificados</legend><div class="form2">' + fld("fi-cl", "Preço por anúncio (US$, 0 = grátis)", c.precoClassificado, { attr: 'inputmode="decimal"' }) + fld("fi-cld", "Dias no ar", c.diasClassificado, { attr: 'inputmode="numeric"' }) + fld("fi-lcl", "Link de pagamento do classificado", pg.classificado || "", { cls: "full", attr: 'placeholder="https://"' }) + "</div></fieldset>" +
-      '<fieldset><legend>Passe de acesso ao guia</legend><div class="form2">' + sel("fi-pago", "Passe de acesso", c.acessoPago ? "1" : "0", [["0", "Desligado: guia liberado"], ["1", "Ligado"]]) + fld("fi-acesso", "Valor do passe (US$)", c.precoAcesso, { attr: 'inputmode="decimal"' }) + "</div></fieldset>" +
-      '<fieldset><legend>Apoie o CoraçãoBR (caixinha)</legend><div class="form2">' + fld("fi-cx1", "Valor sugerido 1 (US$)", vals[0], { attr: 'inputmode="decimal"' }) + fld("fi-cx2", "Valor sugerido 2", vals[1], { attr: 'inputmode="decimal"' }) + fld("fi-cx3", "Valor sugerido 3", vals[2], { attr: 'inputmode="decimal"' }) +
-      fld("fi-cxl", "Link de pagamento (Stripe, PayPal)", cx.link || "", { cls: "full", attr: 'placeholder="https://"' }) + fld("fi-pix", "Chave PIX", cx.pix || "") + fld("fi-zelle", "Zelle (e-mail ou telefone)", cx.zelle || "") + fld("fi-cxt", "Mensagem da caixinha", cx.texto || "", { cls: "full", attr: "maxlength=160" }) + "</div></fieldset>" +
+      '<fieldset><legend>Caixinha do desenvolvedor (Apoie-nos)</legend><div class="form2">' + fld("fi-cx1", "Valor sugerido 1 (R$)", vals[0], { attr: 'inputmode="decimal"' }) + fld("fi-cx2", "Valor sugerido 2 (R$)", vals[1], { attr: 'inputmode="decimal"' }) + fld("fi-cx3", "Valor sugerido 3 (R$)", vals[2], { attr: 'inputmode="decimal"' }) + fld("fi-cx4", "Valor sugerido 4 (R$)", vals[3] || "", { attr: 'inputmode="decimal"' }) + fld("fi-cx5", "Valor sugerido 5 (R$)", vals[4] || "", { attr: 'inputmode="decimal"' }) +
+      fld("fi-cxt", "Mensagem da caixinha", cx.texto || "", { cls: "full", attr: "maxlength=160" }) + '</div><p class="small muted">Quem apoia também pode digitar outro valor ou gerar um Pix com valor em aberto.</p></fieldset>' +
+      '<fieldset><legend>Mural de classificados</legend><div class="form2">' + fld("fi-cld", "Dias que cada publicação fica no ar", c.diasClassificado || 30, { attr: 'inputmode="numeric"' }) + "</div></fieldset>" +
       '<fieldset><legend>Cotação do dólar</legend><div class="form2">' + fld("fi-cot", "Reais por dólar", c.cotacao || "", { attr: 'inputmode="decimal"' }) + sel("fi-cauto", "Atualização", c.cotacaoAuto === false ? "0" : "1", [["1", "Automática (o robô atualiza todo dia)"], ["0", "Manual (fica o valor ao lado)"]]) + '<p class="note full">Última atualização: ' + esc(c.cotacaoEm || "manual") + "</p></div></fieldset>" +
-      '<div><button class="btn" type="submit">Salvar finanças</button></div></form>' +
-      '<div class="panel stack" style="gap:10px"><h3>Assinaturas</h3>' + (ans.length ? '<div class="list">' + ans.sort(function (a, b) { return (a.assinatura.proximaCobranca || "").localeCompare(b.assinatura.proximaCobranca || ""); }).map(function (l) { var a = l.assinatura; return '<div class="lrow" style="grid-template-columns:minmax(0,1fr) auto;padding:12px 16px;cursor:default"><span><b>' + esc(l.nome) + "</b><small>" + (a.plano === "destaque" ? "Destaque" : "Básico") + " · " + G.usd(a.valor || 0) + "/mês · " + (a.modo === "link" ? "cartão (link)" : "cobrança manual") + '</small></span><span class="pill ' + (a.status === "ativa" ? "ok" : "warn") + '">' + (a.status === "ativa" ? "renova " : "até ") + esc(a.proximaCobranca || "") + "</span></div>"; }).join("") + "</div>" : '<p class="muted small">Nenhuma assinatura de verdade ainda (os 3 anúncios de demonstração não entram na conta).</p>') + "</div>" +
-      '<p class="note">Como receber de verdade: crie no Stripe um "Payment Link" de assinatura mensal para cada plano e cole aqui. Ao publicar, o anunciante é levado para a página segura do Stripe. Quando o Stripe confirmar, a cobrança mensal passa a ser automática.</p></div>';
+      '<div><button class="btn" type="submit">Salvar</button></div></form></div>';
     $("#f-fin", el).addEventListener("submit", function (e) {
       e.preventDefault();
-      var links = { anuncio: v("fi-lbas"), classificado: v("fi-lcl"), cx: v("fi-cxl") };
-      for (var x in links) if (links[x] && !/^https:\/\//i.test(links[x])) { G.toast("Os links precisam começar com https://"); return; }
-      salvaCfg({ precoAnuncio: num("fi-bas") || 0, precoClassificado: num("fi-cl") || 0, diasClassificado: Math.max(1, Math.round(num("fi-cld") || 30)), acessoPago: v("fi-pago") === "1", precoAcesso: num("fi-acesso") || 0,
-        pagamentos: Object.assign({}, c.pagamentos || {}, { anuncio: links.anuncio, classificado: links.classificado }),
-        caixinha: Object.assign({}, cx, { valores: [num("fi-cx1") || 5, num("fi-cx2") || 10, num("fi-cx3") || 20], link: links.cx, pix: v("fi-pix"), zelle: v("fi-zelle"), texto: v("fi-cxt") }),
-        cotacao: num("fi-cot") || 0, cotacaoAuto: v("fi-cauto") === "1" }, "Finanças salvas.").then(function () { corpo(); });
+      var vs = ["fi-cx1", "fi-cx2", "fi-cx3", "fi-cx4", "fi-cx5"].map(num).filter(function (x) { return x >= 1; });
+      salvaCfg({ diasClassificado: Math.max(1, Math.round(num("fi-cld") || 30)), caixinha: Object.assign({}, cx, { valoresPix: vs.length ? vs : [5, 10, 20, 50, 100], texto: v("fi-cxt") }),
+        cotacao: num("fi-cot") || 0, cotacaoAuto: v("fi-cauto") === "1" }, "Valores salvos.").then(function () { corpo(); });
     });
   }
 

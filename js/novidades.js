@@ -436,5 +436,5 @@
     if (temas && !temas._push) { G.views.temas = function (r) { temas(r); var w = G.app.querySelector(".wrap"); if (w && !w.querySelector(".push-box")) { var bx = blocoPush(); if (bx) w.children[0].insertAdjacentHTML("afterend", bx); } }; G.views.temas._push = true; }
   }, 0);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", botaoCidade); else botaoCidade();
-  window.Novidades = { patrocinio: patrocinio, muralDestaque: muralDestaque, membro: membro, arte: arte, botaoArte: botaoArte, blocoPush: blocoPush, abaReceita: abaReceita, abaNovidades: abaNovidades, seletorCidade: seletorCidade, CIDADES: CIDADES };
+  window.Novidades = { pushLigar: pushLigar, pushSuportado: pushSuportado, pushLigado: pushLigado, patrocinio: patrocinio, muralDestaque: muralDestaque, membro: membro, arte: arte, botaoArte: botaoArte, blocoPush: blocoPush, abaReceita: abaReceita, abaNovidades: abaNovidades, seletorCidade: seletorCidade, CIDADES: CIDADES };
 })();

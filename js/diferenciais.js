@@ -71,7 +71,7 @@
     avisou = true; grava("temas-vistos", vistos.concat(novos.map(function (l) { return l.id; })).slice(-300));
     var txt = novos.length === 1 ? "Evento novo para você: " + novos[0].nome : novos.length + " eventos novos dos seus temas";
     var bar = document.createElement("a"); bar.className = "df-bar"; bar.href = "#temas"; bar.innerHTML = ic("bell") + "<span>" + esc(txt) + "</span><b>Ver →</b>"; document.body.appendChild(bar); setTimeout(function () { bar.classList.add("on"); }, 50); setTimeout(function () { bar.classList.remove("on"); setTimeout(function () { bar.remove(); }, 400); }, 9000);
-    try { if ("Notification" in window && Notification.permission === "granted") new Notification("CoraçãoBR", { body: txt, icon: "icon-192.png", tag: "temas" }); } catch (er) { /* alguns celulares só avisam pelo app instalado */ }
+    if (G.notifica) G.notifica("CoraçãoBR", txt, "./#temas", "temas");
   }
   Store.assinar(function () { setTimeout(checaTemas, 2500); });
 
@@ -162,5 +162,13 @@
   function refIndicacao() { try { return localStorage.getItem("indicado-por") || ""; } catch (e) { return ""; } }
 
   G.views.chegada = viewChegada; G.views.temas = viewTemas; G.views["fala-portugues"] = viewFala; G.views.conversor = viewConversor;
-  window.Diferenciais = { blocoTurbinar: blocoTurbinar, refIndicacao: refIndicacao, conversorHtml: conversorHtml, abrirPedido: abrirPedido };
+  /* Teste do painel master: a faixa "Evento novo para você" e a notificação, com um evento de verdade da agenda. */
+  function testeTemas() {
+    var h = hoje(), ev = G.lugares().filter(function (l) { return l.categoria === "evento" && l.dataInicio && (l.dataFim || l.dataInicio) >= h; }).sort(function (a, b) { return a.dataInicio < b.dataInicio ? -1 : 1; })[0];
+    var txt = "Evento novo para você: " + (ev ? ev.nome : "programação do fim de semana");
+    var bar = document.createElement("a"); bar.className = "df-bar"; bar.href = "#temas"; bar.innerHTML = ic("bell") + "<span>" + esc(txt) + "</span><b>Ver →</b>"; document.body.appendChild(bar);
+    setTimeout(function () { bar.classList.add("on"); }, 50); setTimeout(function () { bar.classList.remove("on"); setTimeout(function () { bar.remove(); }, 400); }, 7000);
+    return Promise.resolve(G.notifica ? G.notifica("CoraçãoBR", txt, "./#temas", "teste-temas") : false).then(function (ok) { return { ok: true, sistema: !!ok }; });
+  }
+  window.Diferenciais = { testeTemas: testeTemas, blocoTurbinar: blocoTurbinar, refIndicacao: refIndicacao, conversorHtml: conversorHtml, abrirPedido: abrirPedido };
 })();

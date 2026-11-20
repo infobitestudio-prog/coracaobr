@@ -98,7 +98,7 @@
   }
   /* banner do carrossel (mesmo formato para patrocinador, anunciante e evento) */
   function bannerVit(it, i) {
-    var lz = i ? ' loading="lazy"' : "", bg = it.visual === "qrdog" ? qrdogFrame() : it.bg ? '<img class="bn2-bg" src="' + esc(it.bg) + '"' + (it.bgM ? ' srcset="' + esc(it.bgM) + " 1280w, " + esc(it.bg) + ' 2560w" sizes="(max-width: 860px) 100vw, 1200px"' : "") + ' alt=""' + lz + ' decoding="async">' : "";
+    var lz = i ? ' loading="lazy"' : "", bg = it.visual === "qrdog" ? qrdogFrame() : it.bg ? '<img class="bn2-bg" src="' + esc(it.bg) + '"' + (it.bgM ? ' srcset="' + esc(it.bgM) + " 1280w, " + (it.bg.indexOf("img/postais/") >= 0 ? esc(it.bg.replace(/\.jpg$/, "-g.jpg")) + " 1920w, " : "") + esc(it.bg) + ' 2560w" sizes="(max-width: 860px) 100vw, 1200px"' : "") + ' alt=""' + lz + ' decoding="async">' : "";
     return '<a class="vit-slide bn2 bn2-' + (it.visual || "foto") + ' bn2-' + it.k + '" href="' + esc(it.href) + '" style="--c:' + esc(it.cor || "#0BA84A") + '" aria-label="' + esc(it.nome || it.titulo) + (it.tag ? " (" + esc(it.tag.toLowerCase()) + ")" : "") + '">' + bg + visual(it.visual, it) +
       (it.visual === "qrdog" ? "" : '<span class="bn2-tx"><span class="bn2-k">' + (it.logo ? '<img src="' + esc(it.logo) + '" alt=""' + lz + ">" : "") + esc(it.kick) + "</span><b class=\"bn2-t\">" + esc(it.titulo) + "</b>" + (it.sub ? '<span class="bn2-s">' + esc(it.sub) + "</span>" : "") +
         (it.info && it.info.length || it.selo ? '<span class="bn2-i">' + (it.selo ? '<em class="bn2-live"><i></i>' + esc(it.selo) + "</em>" : "") + esc((it.info || []).filter(Boolean).join(" · ")) + "</span>" : "") + "</span>") +
@@ -107,7 +107,7 @@
   /* slide do banner principal (mesmo formato dos slides com título) */
   function slideHero(it, i) {
     var lz = i ? ' loading="lazy"' : "";
-    var fundo = it.visual === "qrdog" ? '<span class="bnh bnh-qd">' + qrdogFrame() + "</span>" : it.bg ? '<img src="' + esc(it.bg) + '"' + (it.bgM ? ' srcset="' + esc(it.bgM) + " 1280w, " + esc(it.bg) + ' 2560w" sizes="100vw"' : "") + ' alt="" decoding="async"' + lz + ">" : '<span class="bnh bnh-' + esc(it.visual) + '" style="--c:' + esc(it.cor) + '">' + visual(it.visual, it) + "</span>";
+    var fundo = it.visual === "qrdog" ? '<span class="bnh bnh-qd">' + qrdogFrame() + "</span>" : it.bg ? '<img src="' + esc(it.bg) + '"' + (it.bgM ? ' srcset="' + esc(it.bgM) + " 1280w, " + (it.bg.indexOf("img/postais/") >= 0 ? esc(it.bg.replace(/\.jpg$/, "-g.jpg")) + " 1920w, " : "") + esc(it.bg) + ' 2560w" sizes="100vw"' : "") + ' alt="" decoding="async"' + lz + ">" : '<span class="bnh bnh-' + esc(it.visual) + '" style="--c:' + esc(it.cor) + '">' + visual(it.visual, it) + "</span>";
     return fundo + '<div class="cap' + (it.visual === "qrdog" ? " cap-qd" : "") + '"><div class="wrap"><span class="kick bn-kick">' + (it.logo ? '<img src="' + esc(it.logo) + '" alt="">' : "") + esc(it.tag ? it.tag + " · " + it.nome : it.kick) + '</span><div class="h1">' + esc(it.titulo) + '</div><p class="hsub">' + esc(it.sub) + "</p>" +
       (it.info && it.info.length || it.selo ? '<p class="bn-info">' + (it.selo ? '<em class="bn2-live"><i></i>' + esc(it.selo) + "</em>" : "") + esc(it.info.join(" · ")) + "</p>" : "") + "</div></div>" + (it.cred ? '<span class="bn-cred">' + esc(it.cred) + "</span>" : "");
   }

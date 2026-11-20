@@ -23,7 +23,7 @@
   function view() {
     var c = cfg(), uid = Store.uid(), admin = Store.admin(), aberta = ativa();
     if (!aberta && !admin) {
-      G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:40px"><h1 class="page-h">Promoção encerrada</h1><p class="muted">A promoção de lançamento não está disponível agora. O pacote de anunciante custa ' + G.reais(Pag.preco()) + " e libera " + Pag.porPacote() + " anúncios por mês.</p><a class=\"btn\" href=\"#anuncie\">Ver o plano</a></div></section>";
+      G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:40px"><h1 class="page-h">' + (hoje() < c.inicio ? "A promoção começa em " + br(c.inicio) : "Promoção encerrada") + '</h1><p class="muted">' + (hoje() < c.inicio ? "Fica disponível de " + br(c.inicio) + " a " + br(c.fim) + ". Enquanto isso, o pacote" : "A promoção de lançamento não está disponível agora. O pacote") + " de anunciante custa " + G.reais(Pag.preco()) + " e libera " + Pag.porPacote() + " anúncios por mês.</p><a class=\"btn\" href=\"#anuncie\">Ver o plano</a></div></section>";
       return;
     }
     var papel = Store.papel && Store.papel(), logado = !!uid, creds = creditosAtivos(uid), comp = curadoriasCompradas(uid), usadas = minhasCuradorias(uid).length, livres = Math.max(0, comp - usadas);

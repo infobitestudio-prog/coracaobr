@@ -1,0 +1,12 @@
+# CoraçãoBR · ai.txt
+# O conteúdo, as fotos, os dados e o código deste site são protegidos por direitos autorais
+# (© CoraçãoBR · Infobite · Danilo Araujo Santos). Não é permitido usá-los para treinar,
+# ajustar ou alimentar sistemas de inteligência artificial, nem copiar ou clonar a plataforma.
+User-Agent: *
+Disallow: /
+Disallow: *.jpg
+Disallow: *.jpeg
+Disallow: *.png
+Disallow: *.webp
+Disallow: *.json
+Disallow: *.js

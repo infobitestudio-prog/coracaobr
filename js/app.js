@@ -120,7 +120,7 @@
     return c;
   }
   /* Valor aproximado em reais, destacado nas cores do Brasil. A cotação é de referência e se edita no Painel. */
-  function brl(n) { var c = Number(config().cotacao) || CONFIG_PADRAO.cotacao; n = Number(n); return c > 0 && n > 0 ? ' <span class="brl" title="Cotação de referência: R$ ' + c.toFixed(2).replace(".", ",") + ' por dólar">≈ R$ ' + (n * c).toFixed(2).replace(".", ",") + "</span>" : ""; }
+  function brl(n) { var c = Number(config().cotacao) || CONFIG_PADRAO.cotacao; n = Number(n); return c > 0 && n > 0 ? ' <span class="brl" title="Cotação de referência: R$ ' + c.toFixed(2).replace(".", ",") + ' por dólar">≈ R$ ' + (n * c).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</span>" : ""; }
   function toast(msg) { var t = $("#toast"), dl = document.querySelector("dialog[open]"); (dl || document.body).appendChild(t); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 3200); }
   function sess(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
 
@@ -302,7 +302,7 @@
     var proprias = [], acervo = [], reais = [];
     (l.fotos || []).forEach(function (f) { var u = Store.urlFoto(f.src, larg && larg <= 800 ? "p" : ""); if (!u) return; (/^asset:/.test(f.src) ? proprias : acervo).push(Object.assign({}, f, { src: u })); });
     var fsite = (l.fotoSite && l.fotoSite.src) ? l.fotoSite : FOTOS_SITE[l.id];
-    if (fsite && /^https:\/\/[^\s"'<>]+$/.test(fsite.src || "")) reais.push({ src: fsite.src, credito: "Site oficial", pagina: fsite.pagina || "" });
+    if (fsite && /^https:\/\/[^\s"'<>]+$/.test(fsite.src || "")) reais.push({ src: st().servidor ? "api/?acao=foto_site&w=" + (larg && larg <= 800 ? 640 : 1280) + "&u=" + encodeURIComponent(fsite.src) : fsite.src, credito: "Site oficial", pagina: fsite.pagina || "" });   // no servidor: cópia leve em WebP
     if (st().servidor && Array.isArray(l.fotosGoogle)) l.fotosGoogle.forEach(function (g) { if (g && /^places\/[\w-]+\/photos\/[\w-]+$/.test(g.ref || "")) reais.push({ src: "api/?acao=foto_google&w=" + (larg || 1200) + "&ref=" + encodeURIComponent(g.ref), credito: (g.autor || "Usuário do Google") + " · Google", pagina: g.link || "", google: true }); });
     return proprias.concat(reais, acervo).slice(0, 24);
   }
@@ -368,7 +368,7 @@
   /* cartões-postais de cada cidade (fotos em alta, licença livre; ver js/postais.js) */
   var POSTAIS_CID = { dfw: ["dallas-noite", "dallas-panorama"], houston: ["houston-noite", "houston-bayou"], austin: ["austin"], sanantonio: ["sanantonio"] };
   function postaisDa(c) { var ok = window.POSTAIS || []; return (POSTAIS_CID[c] || []).filter(function (k) { return ok.indexOf(k) >= 0; }); }
-  function postalImg(k, i) { var lazy = i ? ' loading="lazy"' : ' fetchpriority="high"'; return '<img src="img/postais/' + k + '.jpg" srcset="img/postais/' + k + '-m.jpg 1280w, img/postais/' + k + '.jpg 2560w" sizes="100vw" alt="" decoding="async"' + lazy + ">"; }
+  function postalImg(k, i) { var lazy = i ? ' loading="lazy"' : ' fetchpriority="high"'; return '<img src="img/postais/' + k + '.jpg" srcset="img/postais/' + k + '-m.jpg 1280w, img/postais/' + k + '-g.jpg 1920w, img/postais/' + k + '.jpg 2560w" sizes="100vw" alt="" decoding="async"' + lazy + ">"; }
   function credPostal(k) { var c = (window.CREDITOS_FOTOS || {})[k + ".jpg"]; return c && c.autor ? '<span class="bn-cred">Foto: ' + esc(c.autor) + " · " + esc(c.licenca) + "</span>" : ""; }
   function heroImg(l, i) {
     var lazy = i ? ' loading="lazy"' : ' fetchpriority="high"';
@@ -1040,7 +1040,23 @@
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") fechaNav(); });
   window.addEventListener("hashchange", function () { fechaNav(); });
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  try { console.log("%cCoraçãoBR", "font:800 22px system-ui;color:#0B7A35", "\n© Infobite · Danilo Araujo Santos. Plataforma, marca, dados e código protegidos por direitos autorais. Proibido copiar, clonar ou usar para treinar inteligência artificial."); } catch (e) { /* ok */ }
+  /* Foto que não carrega (site externo fora do ar, link trocado, bloqueio de hotlink): no lugar do ícone de imagem quebrada,
+     entra a próxima foto do lugar ou um fundo neutro com o coração da marca. */
+  var FOTO_VAZIA = "data:image/svg+xml;charset=utf-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#E9EDEA"/><path d="M200 196c-38-30-62-52-62-80 0-20 15-34 33-34 12 0 23 7 29 17 6-10 17-17 29-17 18 0 33 14 33 34 0 28-24 50-62 80z" fill="#C9D3CD"/></svg>');
+  /* Notificação na tela do celular: pelo service worker (Android e app instalado no iPhone); sem ele, a do navegador. Devolve se mostrou. */
+  function notifica(titulo, msg, url, tag) {
+    if (!("Notification" in window) || Notification.permission !== "granted") return Promise.resolve(false);
+    var op = { body: msg, icon: "icon-192.png", badge: "icon-192.png", tag: tag || "cbr", data: { url: url || "./" } };
+    var direto = function () { try { new Notification(titulo, op); return true; } catch (e) { return false; } };
+    if (!navigator.serviceWorker || !navigator.serviceWorker.getRegistration) return Promise.resolve(direto());
+    return navigator.serviceWorker.getRegistration().then(function (r) { if (r && r.showNotification) return r.showNotification(titulo, op).then(function () { return true; }); return direto(); }).catch(direto);
+  }
+  document.addEventListener("error", function (e) {
+    var im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.semFoto) return;
+    im.dataset.semFoto = "1"; im.removeAttribute("srcset"); im.src = FOTO_VAZIA; im.classList.add("sem-foto");
+  }, true);
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;

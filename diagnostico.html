@@ -65,6 +65,7 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
     <button class="pri" type="button" id="rodar">Rodar de novo</button>
     <button type="button" id="copiar">Copiar relatório</button>
     <a class="bt" href="./#entrar">Entrar como master</a>
+    <a class="bt" href="./#painel">Testar notificações</a>
     <a class="bt" href="./">Abrir o site</a>
   </div>
   <div id="grupos"></div>
@@ -74,7 +75,7 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
 (function () {
   "use strict";
   var GRUPOS = [
-    ["site", "Site e arquivos"], ["servidor", "Servidor (PHP e banco)"], ["seguranca", "Segurança"],
+    ["site", "Site e arquivos"], ["servidor", "Servidor (PHP e banco)"], ["sync", "Conexão e sincronização"], ["seguranca", "Segurança e proteção contra cópia"],
     ["google", "Google, velocidade e app"], ["painel", "Configurações do painel"]
   ];
   var itens = [];
@@ -144,10 +145,37 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
       add("servidor", "Lugares e preços importados", seedOk ? "ok" : "av", seedOk ? "Versão " + dg.seedBanco + " importada." : "Arquivo " + (dg.seedArquivo || "–") + " · banco " + (dg.seedBanco || "ainda não importado"), "Abra o site uma vez: a importação acontece sozinha no primeiro acesso.");
       add("servidor", "Configuração (api/config.php)", dg.configPhp && dg.chaveInstalacao ? "ok" : dg.configPhp ? "av" : "er", dg.configPhp ? (dg.chaveInstalacao ? "Arquivo presente, com a chave de instalação." : "Arquivo presente, sem a chave de instalação.") : "api/config.php não encontrado.", "Use o api/config.php que veio no zip (ele já traz a chave de instalação).");
       add("servidor", "Conta master criada", dg.instalado ? "ok" : "av", dg.instalado ? "A instalação foi concluída." : "Ainda não há conta master.", "Abra o site → #instalar, informe a chave de instalação e crie a conta master.");
-      add("servidor", "Envio de e-mails", dg.mail ? "ok" : "av", dg.mail ? "A função de e-mail do PHP está disponível." : "mail() desativado.", "Peça à Hostinger para liberar o envio de e-mails do PHP, ou crie o e-mail nao-responda@seu-dominio no hPanel.");
+      add("servidor", "Envio de e-mails", dg.mail ? "ok" : "av", dg.mail ? "A função de e-mail do PHP está disponível. Para enviar um e-mail de verdade, use o teste de notificações do painel master." : "mail() desativado.", "Peça à Hostinger para liberar o envio de e-mails do PHP, ou crie o e-mail nao-responda@seu-dominio no hPanel.");
       add("servidor", "Biblioteca da IA (api/vendor)", dg.vendor ? "ok" : "av", dg.vendor ? "Presente." : "Ausente: o assistente usa só a busca do guia.", "Suba a pasta api/vendor/ do zip.");
       add("servidor", "Robô diário (5h)", dg.diario ? "ok" : "av", dg.diario ? "Última atualização: " + dg.diario : "Ainda não rodou.", "Painel master → Site → copie o link do robô diário e crie uma tarefa Cron no hPanel (todo dia às 5h).");
     } else if (sj2 && sj2.ok) add("servidor", "Diagnóstico do servidor", "av", "A API está no ar, mas sem o diagnóstico.", "Suba o api/index.php mais novo do zip.");
+
+    /* ---------- conexão e sincronização ---------- */
+    if (dg && dg.agora) {
+      var dif = Math.round((Date.now() - Date.parse(dg.agora)) / 1000);
+      add("sync", "Relógio do servidor", Math.abs(dif) < 300 ? "ok" : "av", Math.abs(dif) < 300 ? "Servidor e aparelho no mesmo horário (diferença de " + Math.abs(dif) + " s)." : "Diferença de " + Math.round(dif / 60) + " min entre o servidor e este aparelho.", "Confira o fuso e a hora do servidor (hPanel) e do aparelho; avisos de vencimento e eventos usam a data.");
+    }
+    if (sj2 && sj2.ok) {
+      add("sync", "Sessão e login", "ok", sj2.conta ? "Conectado como " + sj2.conta.nome + " (" + (sj2.conta.papel === "master" ? "master" : "usuário") + ")." : "Sessão ativa (visitante). Entre com a conta master para os testes completos.");
+      if (sj2.conta && sj2.conta.papel === "master") {
+        var tok = "t" + Date.now().toString(36), hdr = { "Content-Type": "application/json", "X-CSRF": sj2.csrf };
+        var w = json((await pega(base + "api/?acao=gravar", { method: "POST", headers: hdr, body: JSON.stringify({ col: "config", id: "diag-teste", data: { token: tok, em: new Date().toISOString() } }) })).tx);
+        var rd = json((await pega(base + "api/?acao=doc&col=config&id=diag-teste")).tx);
+        var sy = json((await pega(base + "api/?acao=sync&v=" + encodeURIComponent(JSON.stringify({ config: -1 })))).tx);
+        var noSync = sy && sy.cols && sy.cols.config && (sy.cols.config.docs || []).some(function (d) { return (d.id === "diag-teste") || (d.data && d.data.token === tok) || d.token === tok; });
+        await pega(base + "api/?acao=apagar", { method: "POST", headers: hdr, body: JSON.stringify({ col: "config", id: "diag-teste" }) });
+        var some = json((await pega(base + "api/?acao=doc&col=config&id=diag-teste")).tx);
+        var gravou = w && w.ok, leu = rd && rd.data && rd.data.token === tok, apagou = some && some.ok && !some.existe;
+        add("sync", "Gravar, ler e sincronizar dados", gravou && leu && noSync && apagou ? "ok" : "er", gravou && leu && noSync && apagou ? "Gravou, leu de volta, apareceu na sincronização dos aparelhos e foi apagado. Tudo sincronizado." : "Gravou: " + (gravou ? "sim" : "não") + " · leu: " + (leu ? "sim" : "não") + " · sincronizou: " + (noSync ? "sim" : "não") + " · apagou: " + (apagou ? "sim" : "não"), "Confira a permissão de gravação da pasta dados/ e o arquivo api/index.php.");
+      } else add("sync", "Gravar, ler e sincronizar dados", "info", "Entre com a conta master para testar a gravação e a sincronização.");
+    }
+    if ("serviceWorker" in navigator) {
+      var reg = await navigator.serviceWorker.getRegistration();
+      var cks = []; try { cks = await caches.keys(); } catch (e) { /* sem cache */ }
+      add("sync", "App no aparelho (service worker)", reg && reg.active ? "ok" : "info", reg && reg.active ? "Ativo neste aparelho" + (cks.length ? " · cache " + cks.join(", ") : "") + "." : "Ainda não ativo neste aparelho: abra o site uma vez e volte aqui.");
+      var sub = reg && reg.pushManager ? await reg.pushManager.getSubscription().catch(function () { return null; }) : null;
+      add("sync", "Este aparelho recebe push", sub ? "ok" : "info", sub ? "Inscrito para notificações do servidor." : "Não inscrito. No painel master, use o botão TESTE AS NOTIFICAÇÕES DA PLATAFORMA EM SEU CELULAR.");
+    }
 
     /* ---------- segurança ---------- */
     var cf = await pega(base + "api/config.php");
@@ -161,6 +189,13 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
     var up = await pega(base + "uploads/");
     add("seguranca", "Listagem de pastas desligada", /Index of/i.test(up.tx) ? "er" : "ok", /Index of/i.test(up.tx) ? "A pasta uploads/ lista os arquivos." : "As pastas não listam arquivos.", "O .htaccess desliga a listagem (Options -Indexes).");
 
+    var hh = ini.h || new Headers();
+    var cab = ["x-frame-options", "x-content-type-options", "referrer-policy", "permissions-policy"].filter(function (k) { return !hh.get(k); });
+    add("seguranca", "Cabeçalhos de segurança", cab.length ? "av" : "ok", cab.length ? "Faltando: " + cab.join(", ") : "Anti-moldura (clones por iframe), tipos de arquivo e permissões protegidos.", "Envie o .htaccess da raiz do zip (a Hostinger usa as regras dele).");
+    add("seguranca", "Conteúdo marcado contra uso por I.A.", /noai/i.test(hh.get("x-robots-tag") || "") ? "ok" : "av", /noai/i.test(hh.get("x-robots-tag") || "") ? "Páginas marcadas como proibidas para treinar I.A. (noai, TDM)." : "Marcação noai não encontrada.", "Envie o .htaccess da raiz do zip.");
+    var ai = await pega(base + "ai.txt");
+    add("seguranca", "ai.txt e reserva de mineração (TDM)", ai.ok && /Disallow/.test(ai.tx) ? "ok" : "av", ai.ok ? "Aviso de direitos para robôs de I.A. publicado." : "ai.txt não encontrado.", "Suba ai.txt e a pasta .well-known/ do zip.");
+
     /* ---------- google, velocidade e app ---------- */
     var sm = await pega(base + "sitemap.xml");
     var smOk = sm.ok && /<urlset/.test(sm.tx), smDom = smOk && sm.tx.indexOf(location.host) >= 0, nU = (sm.tx.match(/<loc>/g) || []).length;
@@ -168,6 +203,7 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
       "O .htaccess gera o sitemap com o endereço real. Depois, envie " + base + "sitemap.xml no Google Search Console.");
     var rb = await pega(base + "robots.txt");
     add("google", "robots.txt", rb.ok && /Sitemap:/i.test(rb.tx) ? "ok" : "av", rb.ok ? rb.tx.trim().split("\n").slice(-1)[0] : "Não encontrado.", "Envie o .htaccess da raiz do zip.");
+    add("seguranca", "Robôs de I.A. proibidos no robots.txt", rb.ok && /User-agent: GPTBot/.test(rb.tx) && /User-agent: ClaudeBot/.test(rb.tx) ? "ok" : "av", rb.ok && /GPTBot/.test(rb.tx) ? "GPTBot, ClaudeBot, CCBot, Google-Extended, Perplexity e outros: proibidos. Google e Bing: liberados." : "A lista de robôs de I.A. não aparece no robots.txt.", "Suba o api/index.php mais novo e o .htaccess.");
     var gp = await pega(base + "guia/churrascaria/");
     add("google", "Páginas para o Google (guia/)", gp.ok && /application\/ld\+json/.test(gp.tx) ? "ok" : "er", gp.ok ? "Páginas por categoria e cidade, com dados estruturados e preços." : "guia/ não encontrada.", "Suba a pasta guia/ do zip.");
     var js = await pega(base + "js/app.js"), enc = (js.h.get("content-encoding") || "").toLowerCase();
@@ -185,6 +221,7 @@ code { font: .86em ui-monospace, SFMono-Regular, Menlo, monospace; background: v
       var m = dg && dg.master;
       if (!m) add("painel", "Detalhes do painel", "info", sj2.conta ? "Entre com a conta master para ver Pix, IA, Google e notificações." : "Entre com a conta master neste navegador e rode de novo.");
       else {
+        if (sj2.pixAuto) add("painel", "Token do Mercado Pago válido", m.mpValido ? "ok" : "er", m.mpValido ? "O Mercado Pago aceitou o token" + (m.mpConta ? " (conta " + m.mpConta + ")" : "") + "." : "O Mercado Pago recusou o token (código " + (m.mpCodigo || "?") + ").", "Gere um Access Token de produção no Mercado Pago (Suas integrações → Credenciais de produção) e cole de novo no painel.");
         add("painel", "Chave Pix e e-mail oficial", m.pixChave && m.emailOficial ? "ok" : "av", "Pix: " + (m.pixChave || "–") + " · e-mail: " + (m.emailOficial || "–"), "Painel master → Configurações → Pagamentos.");
         add("painel", "Assistente com IA", m.ia ? "ok" : "av", m.ia ? "Ligado." : "Sem chave: responde com a busca do guia.", "Painel master → Novidades → chave da IA.");
         add("painel", "Fotos do Google (Places)", m.google ? "ok" : "av", m.google ? "Ligado." : "Sem chave do Google Places.", "Painel master → Configurações → chave do Google Places (opcional).");

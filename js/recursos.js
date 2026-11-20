@@ -353,7 +353,7 @@
     }
     if (k === "newsletter" && on("newsletter") && Store.servidor && Store.servidor()) {
       var nc = G.config().newsletterTexto || {};
-      return '<section class="block reveal"><form class="panel news" id="f-news" novalidate><div><h3>' + esc(nc.titulo || "A semana na CoraçãoBR, no seu e-mail") + '</h3><p class="muted small">' + esc(nc.texto || "Eventos da semana e lugares que valem a visita. Um e-mail por semana, sem spam.") + '</p></div><div class="row" style="gap:8px"><label class="sr" for="news-email">Seu e-mail</label><input id="news-email" type="email" placeholder="seu@email.com" autocomplete="email" required style="flex:1;min-width:0;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit"><input type="text" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" id="news-site"><button class="btn" type="submit">Quero receber</button></div><p class="small" id="news-msg" hidden></p></form></section>';
+      return '<section class="block reveal"><form class="panel news" id="f-news" novalidate><div><h3>' + esc(nc.titulo || "A semana no CoraçãoBR, no seu e-mail") + '</h3><p class="muted small">' + esc(nc.texto || "Eventos da semana e lugares que valem a visita. Um e-mail por semana, sem spam.") + '</p></div><div class="row" style="gap:8px"><label class="sr" for="news-email">Seu e-mail</label><input id="news-email" type="email" placeholder="seu@email.com" autocomplete="email" required style="flex:1;min-width:0;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit"><input type="text" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" id="news-site"><button class="btn" type="submit">Quero receber</button></div><p class="small" id="news-msg" hidden></p></form></section>';
     }
     return "";
   }
@@ -379,7 +379,7 @@
   function mostraConvitePesquisa(p) {
     if ($("#pesq-card")) return;
     var d = document.createElement("div"); d.id = "pesq-card"; d.className = "pesq-card"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", p.titulo || "Pesquisa");
-    d.innerHTML = "<b>" + esc(p.titulo || "Ajude a melhorar a CoraçãoBR") + "</b><p>" + esc(p.convite || "Responda em 1 minuto.") + (p.recompensa ? " <strong>" + esc(p.recompensa) + "</strong>" : "") + '</p><div class="row" style="gap:8px"><button type="button" class="btn sm" data-pesq-sim>Responder</button><button type="button" class="btn ghost sm" data-pesq-nao>Agora não</button></div>';
+    d.innerHTML = "<b>" + esc(p.titulo || "Ajude a melhorar o CoraçãoBR") + "</b><p>" + esc(p.convite || "Responda em 1 minuto.") + (p.recompensa ? " <strong>" + esc(p.recompensa) + "</strong>" : "") + '</p><div class="row" style="gap:8px"><button type="button" class="btn sm" data-pesq-sim>Responder</button><button type="button" class="btn ghost sm" data-pesq-nao>Agora não</button></div>';
     document.body.appendChild(d);
   }
   function formPesquisa(p) {

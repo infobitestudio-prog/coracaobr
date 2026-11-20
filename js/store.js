@@ -232,6 +232,20 @@
     } catch (e) { return false; }
   }
 
+  /* Trava contra cópia: sem a API do servidor oficial, o app só abre nos endereços conhecidos (GitHub Pages, testes no
+     computador e o arquivo aberto direto). Um clone das páginas em outro domínio (sem o PHP) mostra o aviso e não carrega. */
+  var OFICIAIS = /^(localhost|127\.0\.0\.1|\[::1\]|infobitestudio-prog\.github\.io|.*\.claudeusercontent\.com|claude\.ai)$/i;
+  async function copiaNaoAutorizada() {
+    if (location.protocol === "file:" || OFICIAIS.test(location.hostname)) return false;
+    try { var r = await fetch("api/index.php?acao=sessao", { method: "GET", cache: "no-store", credentials: "same-origin" }); if (r.status !== 404) return false; } catch (e) { return false; }
+    return true;
+  }
+  function avisoCopia() {
+    st.pronto = false;
+    document.documentElement.classList.remove("intro-on");
+    document.body.innerHTML = '<div style="min-height:100vh;display:grid;place-items:center;padding:24px;background:#04341A;color:#fff;font:16px/1.5 system-ui,sans-serif;text-align:center"><div style="max-width:520px"><p style="font:800 1.5rem system-ui;margin:0 0 10px">Cópia não autorizada</p><p style="margin:0 0 16px;opacity:.85">Esta página copia o CoraçãoBR sem autorização. A plataforma, a marca, os dados e o código são protegidos por direitos autorais (© CoraçãoBR · Infobite).</p><p style="margin:0 0 18px"><a href="https://infobitestudio-prog.github.io/coracaobr/" style="display:inline-block;background:#34C46A;color:#04140A;font-weight:700;padding:12px 18px;border-radius:12px;text-decoration:none">Ir para o CoraçãoBR oficial</a></p><p style="margin:0;font-size:.85rem;opacity:.7">Encontrou esta cópia? Avise: coracaobr.oficial@gmail.com</p></div></div>';
+  }
+
   async function boot() {
     if (await tentaServidor()) return;
     var cl = window.claude;
@@ -247,6 +261,7 @@
         return;
       }
     }
+    if (await copiaNaoAutorizada()) { avisoCopia(); return; }
     bootLocal();
   }
 
