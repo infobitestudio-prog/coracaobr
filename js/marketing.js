@@ -45,7 +45,7 @@
   /* aviso de cookies: só aparece se alguma tag estiver configurada */
   function aviso() {
     if (!ativo() || consent() || document.getElementById("ck")) return;
-    var d = document.createElement("div"); d.id = "ck"; d.className = "ck"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Aviso de cookies");
+    var d = document.createElement("div"); d.id = "ck"; d.className = "ck-aviso"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Aviso de cookies");
     d.innerHTML = '<p>Usamos cookies para medir as visitas e melhorar o CoraçãoBR. Veja a <a href="#privacidade">política de privacidade</a>.</p><div class="ck-a"><button type="button" class="btn sm" data-ck="sim">Aceitar</button><button type="button" class="btn sm ghost" data-ck="nao">Agora não</button></div>';
     document.body.appendChild(d);
     d.addEventListener("click", function (e) { var b = e.target.closest("[data-ck]"); if (!b) return; consent(b.dataset.ck); d.remove(); if (b.dataset.ck === "sim") carrega(); });
