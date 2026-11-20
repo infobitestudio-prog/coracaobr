@@ -41,7 +41,7 @@
       '<dl class="pix-dl"><dt>Chave Pix (CNPJ)</dt><dd>' + G.esc(d.chave) + "</dd><dt>Favorecido</dt><dd>" + G.esc(d.nome) + "</dd></dl>" +
       '<label class="pix-l" for="pix-cc">Pix copia e cola</label><textarea id="pix-cc" class="pix-cc" readonly rows="3">' + G.esc(code) + '</textarea>' +
       '<div class="row" style="gap:8px"><button type="button" class="btn sm" data-copiar="' + G.esc(code) + '">Copiar código Pix</button><button type="button" class="btn ghost sm" data-copiar="' + G.esc(d.chave) + '">Copiar chave</button></div>' +
-      '<p class="small muted">Abra o app do seu banco, escolha Pix → Ler QR Code ou Pix copia e cola. O valor já vem preenchido.</p></div></div>';
+      '<p class="small muted">Abra o app do seu banco, escolha Pix → Ler QR Code ou Pix copia e cola. ' + (Number(valor) > 0 ? "O valor já vem preenchido." : "Depois é só digitar o valor que quiser.") + '</p></div></div>';
   }
   /* copiar (fora da ficha do lugar, que tem o próprio tratamento) */
   document.addEventListener("click", function (e) {

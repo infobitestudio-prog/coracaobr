@@ -125,7 +125,7 @@ function ip(): string { return substr((string)($_SERVER['REMOTE_ADDR'] ?? '0'), 
 $acao = (string)($_GET['acao'] ?? '');
 $metodo = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $corpo = [];
-if ($metodo === 'POST') {
+if ($metodo === 'POST' && $acao !== 'pix_webhook') {   // o aviso do Mercado Pago não traz CSRF; ele é conferido consultando o pagamento na API
   $origem = $_SERVER['HTTP_ORIGIN'] ?? '';
   if ($origem !== '' && parse_url($origem, PHP_URL_HOST) !== parse_url('//' . ($_SERVER['HTTP_HOST'] ?? ''), PHP_URL_HOST)) erro('Origem não permitida.', 403);
   if (!hash_equals($_SESSION['csrf'], (string)($_SERVER['HTTP_X_CSRF'] ?? ''))) erro('Sessão expirada. Recarregue a página.', 403);
@@ -176,6 +176,62 @@ function vagasDe(array $pg, ?string $hoje = null): int {
   if (($pg['status'] ?? '') === 'cortesia' && !empty($pg['cortesiaAte']) && $hoje <= $pg['cortesiaAte']) $n = max($n, (int)($pg['cortesiaVagas'] ?? 3));
   return $n;
 }
+/* ===== Pix automático (Mercado Pago): cobrança com QR Code por compra; o pagamento aprovado libera o pacote sozinho ===== */
+function mpToken(): string { global $CFG; $t = trim((string)($CFG['mercadopago_token'] ?? '')); if ($t === '') $t = trim((string)@file_get_contents(dirname($CFG['db']) . '/MERCADOPAGO.token')); return $t; }
+function mp(string $metodo, string $caminho, ?array $corpo = null, string $idem = ''): ?array {
+  $h = ['Authorization: Bearer ' . mpToken(), 'Content-Type: application/json', 'User-Agent: CoracaoBR/1.0'];
+  if ($idem !== '') $h[] = 'X-Idempotency-Key: ' . $idem;
+  $ctx = stream_context_create(['http' => ['method' => $metodo, 'header' => implode("\r\n", $h), 'content' => $corpo === null ? '' : json_encode($corpo, JSON_UNESCAPED_UNICODE), 'timeout' => 25, 'ignore_errors' => true]]);
+  $r = @file_get_contents('https://api.mercadopago.com' . $caminho, false, $ctx); return $r === false ? null : json_decode($r, true);
+}
+/* preços em reais, do Painel master (com os padrões novos se a configuração ainda for a antiga, em dólar) */
+function precosServidor(): array {
+  $g = configDoc('geral'); $brl = ($g['moedaAnuncio'] ?? '') === 'BRL'; $pr = (array)($g['promo'] ?? []);
+  return ['pacote' => $brl ? (float)($g['precoAnuncio'] ?? 50) : 50.0, 'porPacote' => $brl ? max(1, (int)($g['anunciosPorPacote'] ?? 3)) : 3,
+    'promo' => $brl ? (float)($pr['preco'] ?? 20) : 20.0, 'promoDepo' => $brl ? max(1, (int)($pr['curadorias'] ?? 5)) : 5, 'promoAnuncios' => 1];
+}
+function hojeDallas(): string { return (new DateTime('now', new DateTimeZone('America/Chicago')))->format('Y-m-d'); }
+function maisUmMesPhp(string $iso): string { $d = new DateTime($iso . ' 12:00'); $dia = (int)$d->format('j'); $d->modify('first day of next month'); $d->setDate((int)$d->format('Y'), (int)$d->format('n'), min($dia, (int)$d->format('t'))); return $d->format('Y-m-d'); }
+/* grava o pacote pago na conta (mesma regra do painel master) e avisa por e-mail */
+function aplicaPacote(string $uid, array $c, string $pagId): array {
+  $pdo = banco(); $pg = pagamentoDe($uid); $hoje = hojeDallas(); $p = precosServidor();
+  $lista = pacotesDe($pg);
+  foreach ($lista as $x) if (($x['aviso'] ?? '') === 'mp:' . $pagId) return $x;   // já aplicado
+  $fimAtual = ''; $tol = date('Y-m-d', strtotime($hoje . ' -2 day'));
+  foreach ($lista as $x) if ($x['inicio'] <= $hoje && $x['fim'] >= $tol && $x['fim'] > $fimAtual) $fimAtual = $x['fim'];
+  $promo = ($c['plano'] ?? '') === 'promo'; $qtd = $promo ? 1 : max(1, min(30, (int)($c['qtd'] ?? 1)));
+  $ini = ($c['comeca'] ?? '') === 'renovar' && $fimAtual ? date('Y-m-d', strtotime($fimAtual . ' +1 day')) : $hoje;
+  $pk = ['id' => 'pk' . base_convert((string)time(), 10, 36) . substr($pagId, -4), 'tipo' => $promo ? 'promo' : 'pacote', 'qtd' => $qtd, 'anuncios' => $promo ? $p['promoAnuncios'] : $qtd * $p['porPacote'], 'curadorias' => $promo ? $p['promoDepo'] : 0,
+    'valor' => (float)($c['valor'] ?? 0), 'moeda' => 'BRL', 'pagoEm' => gmdate('c'), 'inicio' => $ini, 'fim' => maisUmMesPhp($ini), 'ativaEm' => $ini === $hoje ? gmdate('c') : $ini . 'T00:00:00', 'aviso' => 'mp:' . $pagId, 'metodo' => 'pix-auto'];
+  $lista[] = $pk; $pg['pacotes'] = array_slice($lista, -120);
+  if (($pg['status'] ?? '') !== 'suspenso') $pg['status'] = 'ativo';
+  if ($promo) $pg['curadorias'] = (int)($pg['curadorias'] ?? 0) + $pk['curadorias'];
+  $pg['atualizadoEm'] = gmdate('c');
+  $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['pagamentos', $uid, json_encode($pg, JSON_UNESCAPED_UNICODE), agora()]);
+  versao('pagamentos');
+  $u = $pdo->prepare('SELECT email, nome FROM usuarios WHERE id = ?'); $u->execute([$uid]); $u = $u->fetch() ?: ['email' => '', 'nome' => ''];
+  $desc = $promo ? '1 anúncio + ' . $pk['curadorias'] . ' depoimentos' : $pk['anuncios'] . ' anúncios';
+  avisaEquipe('Pix aprovado · R$ ' . number_format($pk['valor'], 2, ',', '.'), "Pagamento Pix aprovado e liberado automaticamente.\n\nConta: {$u['nome']} <{$u['email']}>\nPlano: $desc\nPeríodo: " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . "\nMercado Pago: $pagId");
+  if (filter_var($u['email'], FILTER_VALIDATE_EMAIL)) {
+    global $CFG; $host = preg_replace('/[^a-z0-9.-]/i', '', (string)($_SERVER['HTTP_HOST'] ?? 'localhost')); $de = $CFG['email_remetente'] ?: 'nao-responda@' . preg_replace('/^www\./', '', $host);
+    @mail($u['email'], '=?UTF-8?B?' . base64_encode('CoraçãoBR: pagamento confirmado, seus anúncios estão no ar') . '?=', "Olá, {$u['nome']}.\n\nRecebemos seu Pix de R$ " . number_format($pk['valor'], 2, ',', '.') . ".\nPlano: $desc, de " . date('d/m/Y', strtotime($pk['inicio'])) . ' a ' . date('d/m/Y', strtotime($pk['fim'])) . ".\n\nAcompanhe no painel: " . baseUrl() . "#anunciante\n\nEquipe CoraçãoBR\n" . emailOficial(), "From: CoraçãoBR <$de>\r\nReply-To: " . emailOficial() . "\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+  }
+  return $pk;
+}
+/* consulta o pagamento no Mercado Pago e, se aprovado, libera o pacote (usado pelo aviso automático, pela tela do anunciante e pela rotina diária) */
+function processaPagamento(string $pagId): array {
+  $pdo = banco(); $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'cobrancas' AND id = ?"); $st->execute([$pagId]); $c = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($c)) return ['status' => 'desconhecido'];
+  if (($c['status'] ?? '') === 'aprovado') return ['status' => 'aprovado', 'cobranca' => $c];
+  $pg = mp('GET', '/v1/payments/' . rawurlencode($pagId));
+  if (!is_array($pg) || empty($pg['id'])) return ['status' => $c['status'] ?? 'pendente'];
+  $s = (string)($pg['status'] ?? '');
+  if ($s === 'approved' && abs((float)($pg['transaction_amount'] ?? 0) - (float)$c['valor']) < 0.01) { $c['status'] = 'aprovado'; $c['aprovadoEm'] = gmdate('c'); $c['pacote'] = aplicaPacote($c['uid'], $c, $pagId); }
+  elseif (in_array($s, ['cancelled', 'rejected', 'refunded', 'charged_back'], true)) $c['status'] = 'cancelado';
+  elseif (!empty($c['expira']) && time() > strtotime($c['expira'])) $c['status'] = 'expirado';
+  $pdo->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$pagId, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
+  return ['status' => $c['status'], 'cobranca' => $c];
+}
 function temMaster(): bool { return (bool)banco()->query("SELECT 1 FROM usuarios WHERE papel = 'master' LIMIT 1")->fetchColumn(); }
 function baseUrl(): string {
   global $https, $caminho;
@@ -198,7 +254,7 @@ switch ($acao) {
 case 'sessao': {
   $u = eu();
   if (!temMaster()) chaveInstalacao();
-  sai(['ok' => true, 'csrf' => $_SESSION['csrf'], 'visitante' => $_SESSION['visitante'], 'conta' => $u ? publico($u) : null, 'precisaInstalar' => !temMaster()]);
+  sai(['ok' => true, 'csrf' => $_SESSION['csrf'], 'visitante' => $_SESSION['visitante'], 'conta' => $u ? publico($u) : null, 'precisaInstalar' => !temMaster(), 'pixAuto' => mpToken() !== '']);
 }
 case 'instalar': {
   if ($metodo !== 'POST') erro('Use POST.', 405);
@@ -645,6 +701,8 @@ case 'atualizar_diario': {
     }
     $rel['feito'][] = "Google: $ok lugares com nota, avaliações e horário atualizados";
   } else $rel['erros'][] = 'Sem chave da Google Places API: avaliações e horários do Google não foram atualizados.';
+  // 4b) Pix automático: confere cobranças pendentes das últimas 48 h (caso algum aviso do Mercado Pago tenha se perdido)
+  if (mpToken() !== '') { $nP = 0; foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'cobrancas'")->fetchAll() as $row) { $c = json_decode($row['data'], true); if (is_array($c) && ($c['status'] ?? '') === 'pendente' && strtotime($c['criadoEm'] ?? 'now') > time() - 172800) { $r = processaPagamento($row['id']); if ($r['status'] === 'aprovado') $nP++; } } $rel['feito'][] = "Pix conferidos: $nP aprovados"; }
   // 5) lembretes por e-mail: 3, 2 e 1 dia antes do fim do pacote (se não houver renovação já paga emendando)
   $env = 0; $pix = (array)($geral['pagamentos'] ?? []);
   foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'pagamentos'")->fetchAll() as $row) {
@@ -674,6 +732,56 @@ case 'atualizar_diario': {
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
   versao('lugares'); versao('config');
   sai(['ok' => true] + $rel);
+}
+case 'pix_criar': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
+  if (mpToken() === '') erro('O Pix automático ainda não foi ligado pela equipe.', 409);
+  if (!limite('pix:' . $u['id'], 20, 3600)) erro('Muitas cobranças geradas. Aguarde alguns minutos.', 429); marca('pix:' . $u['id']);
+  $p = precosServidor(); $promo = ($corpo['plano'] ?? '') === 'promo'; $qtd = $promo ? 1 : max(1, min(30, (int)($corpo['qtd'] ?? 1)));
+  $comeca = ($corpo['comeca'] ?? '') === 'renovar' ? 'renovar' : 'agora';
+  $valor = round($promo ? $p['promo'] : $qtd * $p['pacote'], 2); if ($valor <= 0) erro('Valor inválido.');
+  $desc = $promo ? 'CoraçãoBR · promoção de curadoria (1 anúncio + ' . $p['promoDepo'] . ' depoimentos)' : 'CoraçãoBR · ' . ($qtd * $p['porPacote']) . ' anúncios por 1 mês';
+  $expira = (new DateTime('+30 minutes'))->format('Y-m-d\TH:i:s.vP');
+  $nome = explode(' ', trim($u['nome']), 2);
+  $r = mp('POST', '/v1/payments', ['transaction_amount' => $valor, 'description' => $desc, 'payment_method_id' => 'pix', 'date_of_expiration' => $expira,
+    'payer' => ['email' => $u['email'], 'first_name' => $nome[0] ?? '', 'last_name' => $nome[1] ?? ''], 'external_reference' => $u['id'] . '|' . ($promo ? 'promo' : 'pacote') . '|' . $qtd,
+    'notification_url' => baseUrl() . 'api/?acao=pix_webhook'], bin2hex(random_bytes(16)));
+  $tx = $r['point_of_interaction']['transaction_data'] ?? null;
+  if (!is_array($r) || empty($r['id']) || !$tx) erro('O Mercado Pago não gerou o Pix agora. Tente de novo em instantes.' . (isset($r['message']) ? ' (' . mb_substr((string)$r['message'], 0, 120) . ')' : ''), 502);
+  $id = (string)$r['id'];
+  $c = ['uid' => $u['id'], 'plano' => $promo ? 'promo' : 'pacote', 'qtd' => $qtd, 'comeca' => $comeca, 'valor' => $valor, 'status' => 'pendente', 'criadoEm' => gmdate('c'), 'expira' => $expira];
+  banco()->prepare("INSERT INTO docs (col, id, data, em) VALUES ('cobrancas', ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em")->execute([$id, json_encode($c, JSON_UNESCAPED_UNICODE), agora()]);
+  sai(['ok' => true, 'id' => $id, 'valor' => $valor, 'copiaecola' => $tx['qr_code'] ?? '', 'qr' => $tx['qr_code_base64'] ?? '', 'expira' => $expira]);
+}
+case 'pix_status': {
+  $u = eu(); if (!$u) erro('Entre na sua conta para continuar.', 401);
+  $id = preg_replace('/\D/', '', (string)($_GET['id'] ?? ''));
+  $st = banco()->prepare("SELECT data FROM docs WHERE col = 'cobrancas' AND id = ?"); $st->execute([$id]); $c = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($c) || ($c['uid'] !== $u['id'] && !master())) erro('Cobrança não encontrada.', 404);
+  $r = processaPagamento($id); sai(['ok' => true, 'status' => $r['status'], 'pacote' => $r['cobranca']['pacote'] ?? null]);
+}
+case 'pix_webhook': {
+  /* aviso do Mercado Pago: nunca confia no corpo; consulta o pagamento pelo id e só então libera */
+  $b = json_decode((string)file_get_contents('php://input', false, null, 0, 20000), true) ?: [];
+  $id = preg_replace('/\D/', '', (string)($b['data']['id'] ?? $_GET['data_id'] ?? $_GET['id'] ?? ''));
+  if ($id !== '' && mpToken() !== '') processaPagamento($id);
+  http_response_code(200); header('Content-Type: application/json'); echo '{"ok":true}'; exit;
+}
+case 'pix_token': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  $k = trim((string)($corpo['token'] ?? '')); $f = dirname($CFG['db']) . '/MERCADOPAGO.token';
+  if ($k === '') { @unlink($f); sai(['ok' => true, 'msg' => 'Pix automático desligado.']); }
+  if (!preg_match('/^(APP_USR|TEST)-[A-Za-z0-9\-]{20,200}$/', $k)) erro('Isso não parece um Access Token do Mercado Pago (começa com APP_USR-).');
+  $old = @file_get_contents($f); file_put_contents($f, $k); @chmod($f, 0600);
+  $me = mp('GET', '/users/me');
+  if (!is_array($me) || empty($me['id'])) { if ($old !== false) file_put_contents($f, $old); else @unlink($f); erro('O Mercado Pago recusou este token. Confira se é o Access Token de produção.'); }
+  sai(['ok' => true, 'msg' => 'Pix automático ligado na conta ' . ($me['nickname'] ?? $me['email'] ?? $me['id']) . '.']);
+}
+case 'pix_info': {
+  exigeMaster();
+  $n = (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'cobrancas'")->fetchColumn();
+  sai(['ok' => true, 'ligado' => mpToken() !== '', 'webhook' => baseUrl() . 'api/?acao=pix_webhook', 'cobrancas' => $n]);
 }
 case 'chave_google': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);

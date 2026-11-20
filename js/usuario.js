@@ -152,21 +152,36 @@
   window.addEventListener("hashchange", sobe); document.addEventListener("visibilitychange", function () { if (document.hidden) sobe(); }); setInterval(sobe, 20000);
 
   /* ---------- caixinha ---------- */
+  /* Caixinha: Pix para a chave oficial com valor livre (a pessoa digita no app do banco) ou um valor sugerido */
+  var CX = 0;
   function viewCaixinha() {
-    var c = G.config().caixinha || {}, lk = G.url(c.link);
-    G.app.innerHTML = '<section class="block"><div class="wrap stack in" style="max-width:560px;text-align:center;justify-items:center">' +
-      '<span class="tic" style="width:64px;height:64px">' + ic("heart") + '</span><h1 class="page-h">Apoie o CoraçãoBR</h1>' +
-      '<p class="muted" style="max-width:46ch">' + esc(c.texto || "Gostou do guia? Uma contribuição ajuda a manter o site gratuito e a criar guias para outras cidades.") + "</p>" +
-      (lk ? '<div class="row" style="justify-content:center">' + ((c.valores && c.valores.length) ? c.valores : [5, 10, 20]).map(function (v) { return '<a class="btn" target="_blank" rel="noopener" href="' + esc(lk) + '">US$ ' + v + "</a>"; }).join("") + '</div><a class="btn ghost" target="_blank" rel="noopener" href="' + esc(lk) + '">Outro valor</a>' : "") +
-      (c.pix ? '<div class="panel" style="width:100%"><h3>PIX (do Brasil)</h3><p style="overflow-wrap:anywhere;user-select:all"><b>' + esc(c.pix) + '</b></p><button type="button" class="btn ghost sm" data-copiar="' + esc(c.pix) + '">Copiar chave</button></div>' : "") +
-      (c.zelle ? '<div class="panel" style="width:100%"><h3>Zelle (dos EUA)</h3><p style="user-select:all"><b>' + esc(c.zelle) + "</b></p></div>" : "") +
-      (!lk && !c.pix && !c.zelle ? (Store.admin() ? '<p class="note">Preencha o link de pagamento, a chave PIX ou o Zelle em Painel → Finanças para ativar esta página.</p>' : '<p class="note">Em breve você poderá apoiar o CoraçãoBR por aqui.</p>') : "") +
+    var c = G.config().caixinha || {}, vals = (c.valoresPix && c.valoresPix.length) ? c.valoresPix : [5, 10, 20, 50];
+    G.app.innerHTML = '<section class="block cx"><div class="wrap stack in" style="max-width:720px">' +
+      '<div style="text-align:center;display:grid;justify-items:center;gap:10px"><span class="tic" style="width:64px;height:64px">' + ic("heart") + '</span><h1 class="page-h">Apoie o CoraçãoBR</h1>' +
+      '<p class="muted" style="max-width:52ch">' + esc(c.texto || "Gostou do guia? Qualquer valor ajuda a manter o site gratuito, atualizado todos os dias e a levar o guia para outras cidades.") + "</p></div>" +
+      '<div class="panel stack cx-box"><div class="cx-vs" role="group" aria-label="Valor do apoio"><button type="button" data-cx="0" aria-pressed="' + (CX === 0) + '">Valor livre</button>' + vals.map(function (v) { return '<button type="button" data-cx="' + v + '" aria-pressed="' + (CX === v) + '">' + G.reais(v) + "</button>"; }).join("") + '</div>' +
+      '<div class="cx-out"><label for="cx-v">Outro valor (R$)</label><input id="cx-v" type="number" min="1" step="1" inputmode="decimal" placeholder="Digite o valor" value="' + (CX && vals.indexOf(CX) < 0 ? CX : "") + '"></div>' +
+      '<div id="cx-pix">' + pixCaixinha() + "</div>" +
+      '<p class="small muted" style="text-align:center">Com <b>valor livre</b>, o QR Code vem sem valor e você digita quanto quiser no app do banco. Obrigado por fazer o CoraçãoBR bater mais forte. 💚💛</p></div>' +
       "</div></section>";
   }
+  function pixCaixinha() {
+    if (!window.Pix) return "";
+    var h = Pix.bloco(CX, "CAIXINHA" + (CX ? String(CX).replace(/\D/g, "") : "LIVRE"), "Apoio CoracaoBR");
+    return CX ? h : h.replace(/<p class="pix-v">[\s\S]*?<\/p>/, '<p class="pix-v"><small>Valor</small><b>Você escolhe</b></p>');
+  }
   document.addEventListener("click", function (e) {
-    var cp = e.target.closest("#app [data-copiar]"); if (!cp) return;
-    var t = cp.dataset.copiar; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { G.toast("Copiado."); }).catch(function () { G.toast(t); });
+    var b = e.target.closest("[data-cx]"); if (!b) return;
+    CX = Number(b.dataset.cx) || 0; var i = $("#cx-v"); if (i) i.value = "";
+    Array.from(document.querySelectorAll("[data-cx]")).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+    var el = $("#cx-pix"); if (el) el.innerHTML = pixCaixinha();
   });
+  document.addEventListener("input", function (e) {
+    if (e.target.id !== "cx-v") return; var v = Math.round(Number(String(e.target.value).replace(",", ".")) * 100) / 100;
+    CX = v > 0 ? v : 0; Array.from(document.querySelectorAll("[data-cx]")).forEach(function (x) { x.setAttribute("aria-pressed", Number(x.dataset.cx) === CX && !e.target.value ? "true" : x.dataset.cx === "0" && !CX ? "true" : "false"); });
+    clearTimeout(e.target._t); e.target._t = setTimeout(function () { var el = $("#cx-pix"); if (el) el.innerHTML = pixCaixinha(); }, 250);
+  });
+
 
   G.views.entrar = viewConta; G.views.conta = viewConta; G.views.caixinha = viewCaixinha;
   window.Usuario = { blocoEvento: blocoEvento, registraAval: registraAval, verificar: verificar };

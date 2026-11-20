@@ -343,6 +343,7 @@
 
   window.Store = {
     estado: st,
+    sincronizarAgora: function () { return st.servidor ? sincroniza() : Promise.resolve(); },
     iniciar: boot,
     assinar: function (fn) { subs.add(fn); return function () { subs.delete(fn); }; },
     /* "lugares" inclui os anúncios que cada anunciante grava no próprio documento. */
