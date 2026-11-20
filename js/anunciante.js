@@ -190,7 +190,7 @@
     if (l && l.cupom && window.Comunidade) menu.splice(menu.length, 0, { id: "cupom", nome: "Cupom", ic: "tag", grupo: "Divulgação" });
     if (!l || !(window.Social && Social.blocoPainel(l))) menu = menu.filter(function (x) { return x.id !== "publicar"; });
     if (!l) menu = menu.filter(function (x) { return x.id !== "divulgar"; });
-    var pe = master ? [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] : [{ nome: "Minha conta", ic: "user", href: "#conta" }, { nome: "Tema claro/escuro", ic: "moon", acao: "data-tema" }, { nome: "Sair", ic: "out", acao: "data-sair" }];
+    var pe = master ? [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] : [{ nome: "Minha conta", ic: "user", href: "#conta" }, { nome: "Tema claro/escuro", ic: "moon", acao: "data-cor" }, { nome: "Sair", ic: "out", acao: "data-sair" }];
     var nomeConta = (Store.conta && Store.conta() && Store.conta().nome) || (l && l.nome) || "Anunciante";
     G.app.innerHTML = Dash.montar({ chave: "anunciante", marca: master ? "Visão do administrador" : "Painel do anunciante", titulo: master && l ? l.nome : nomeConta, avatar: (nomeConta || "?").charAt(0).toUpperCase(), menu: menu, pe: pe,
       secoes: { geral: geral, anuncios: anuncios, contratar: contratar, turbinar: window.Diferenciais && !master ? Diferenciais.blocoTurbinar(uid, ls) : "", depoimentos: depo, publicar: l && window.Social ? Social.blocoPainel(l) : "", divulgar: l ? qrAvalie(l) + (window.Novidades ? Novidades.botaoArte(l) : "") + divulgar(l) + (window.Extras ? Extras.kit(l) : "") : "", cupom: l && l.cupom && window.Comunidade ? Comunidade.validador(l) : "" } });

@@ -58,7 +58,7 @@
     grava("temas-vistos", evs.map(function (l) { return l.id; }));
   }
   document.addEventListener("click", function (e) {
-    var b = e.target.closest("[data-tema]");
+    var b = e.target.closest(".df-tema[data-tema]");
     if (b) { var s = ler("temas", []), k = s.indexOf(b.dataset.tema); if (k >= 0) s.splice(k, 1); else s.push(b.dataset.tema); grava("temas", s); viewTemas(); return; }
     if (e.target.closest("[data-tema-not]") && "Notification" in window) Notification.requestPermission().then(function () { viewTemas(); });
   });

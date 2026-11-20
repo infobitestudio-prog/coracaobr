@@ -845,7 +845,7 @@
   /* ---------- tema ---------- */
   function temaAtual() { return document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); }
   try { var t0 = localStorage.getItem("tema"); if (t0) document.documentElement.dataset.theme = t0; } catch (e) { /* sem armazenamento */ }
-  document.addEventListener("click", function (e) { if (!e.target.closest("[data-tema]")) return; var n = temaAtual() === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; try { localStorage.setItem("tema", n); } catch (er) { /* ok */ } if (views[rota()]) views[rota()](rota()); });
+  document.addEventListener("click", function (e) { if (!e.target.closest("[data-cor]")) return; var n = temaAtual() === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; try { localStorage.setItem("tema", n); } catch (er) { /* ok */ } if (views[rota()]) views[rota()](rota()); });
 
   /* ---------- roteador ---------- */
   var views = { inicio: viewInicio, explorar: viewExplorar, guia: viewExplorar, ranking: viewRanking, anuncie: viewAnuncie, entrar: viewEntrar };
