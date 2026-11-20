@@ -40,9 +40,16 @@ ini_set('session.gc_maxlifetime', (string)$vida);
 ini_set('session.use_strict_mode', '1');
 session_name('CBRSESS');
 session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
-session_start();
-if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
-if (empty($_SESSION['visitante'])) $_SESSION['visitante'] = 'v' . bin2hex(random_bytes(8));
+/* Fotos, sitemap, robots, aviso do Mercado Pago e tarefas automáticas não usam sessão: assim não mexem no cookie de login
+   (antes, uma foto carregando enquanto a pessoa entrava na conta podia trocar o cookie e "deslogar"). */
+$SEM_SESSAO = ['foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
+if (in_array((string)($_GET['acao'] ?? ''), $SEM_SESSAO, true)) {
+  $_SESSION = ['csrf' => '', 'visitante' => ''];
+} else {
+  session_start();
+  if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
+  if (empty($_SESSION['visitante'])) $_SESSION['visitante'] = 'v' . bin2hex(random_bytes(8));
+}
 
 /* ---------- banco ---------- */
 function banco(): PDO {
@@ -193,7 +200,9 @@ function gravaZip(string $uid, string $zip): void {
 /* Ferramentas de anúncio liberadas: pacote em vigor (ou cortesia) */
 function temPlano(string $uid): bool { return vagasDe(pagamentoDe($uid)) > 0; }
 function entra(array $u): void {
-  session_regenerate_id(true);
+  /* novo id de sessão no login (contra fixação de sessão); o antigo continua existindo sem login, para que pedidos que já estavam
+     a caminho com o cookie velho não gerem outro cookie e desfaçam o login */
+  session_regenerate_id(false);
   $_SESSION['uid'] = $u['id'];
   $_SESSION['csrf'] = bin2hex(random_bytes(24));
   banco()->prepare('UPDATE usuarios SET ultimo = ? WHERE id = ?')->execute([agora(), $u['id']]);
