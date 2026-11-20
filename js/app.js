@@ -252,20 +252,25 @@
     var ls = lugares(), by = function (g) { return primeiro(ls.filter(GRUPOS[g].f).sort(ordenaNota)); };
     var gratis = by("gratis"), com = function (id) { return Store.obter("lugares", id); };
     var cfg = config(), tx = function (k, pad) { return (cfg.textos && cfg.textos[k]) || pad; };
+    /* Banner principal: chamadas para anunciantes (foto real da cidade ao fundo) + banners dos patrocinadores oficiais. */
+    var preco = Number(cfg.precoAnuncio) || 10;
     var slides = (cfg.heroSlides && cfg.heroSlides.length ? cfg.heroSlides.map(function (h) { return { l: com(h.lugar), t: h.titulo || (com(h.lugar) || {}).nome, h: h.link || "lugar-" + h.lugar }; }) : [
-      { l: com("white-rock-lake"), t: "Dallas em português.", h: "explorar", g: "tudo" },
-      { l: com("klyde-warren-park"), t: gratis.length + " passeios de graça.", h: "explorar", g: "gratis" },
-      { l: com("fort-worth-stockyards"), t: "Cowboys de verdade em Fort Worth.", h: "lugar-fort-worth-stockyards" }
+      { l: com("white-rock-lake"), k: "Para empresas", t: "Anuncie sua empresa para novos brasileiros.", s: "Quem acabou de chegar procura tudo em português. Apareça primeiro.", cta: "Anunciar agora", h: "anuncie" },
+      { l: com("klyde-warren-park"), k: "US$" + preco + " por mês", t: "Seu negócio no mapa de quem fala português.", s: "3 anúncios + 1 banner, pin verde no mapa e publicações no feed.", cta: "Ver planos", h: "anuncie" },
+      { l: com("fort-worth-stockyards"), k: "Brasileiros em Dallas–Fort Worth", t: "Milhares de brasileiros procurando serviços. Fale com eles aqui.", s: "Restaurantes, beleza, construção, saúde, imóveis e muito mais.", cta: "Quero anunciar", h: "anuncie" }
     ]).filter(function (s) { return s.l && foto(s.l); });
-    var patHero = primeiro(ls.filter(function (l) { return l.anunciante && foto(l); }).sort(ordenaNota))[0];
-    if (patHero) slides.splice(1, 0, { l: patHero, t: patHero.nome, h: "lugar-" + patHero.id, pat: true });
+    if (window.Oficiais) {
+      var ofs = Oficiais.lista().map(function (o) { return { of: o, h: "oficial-" + o.id }; });
+      var mist = []; slides.forEach(function (x, i) { mist.push(x); if (ofs[i * 2]) mist.push(ofs[i * 2]); if (ofs[i * 2 + 1]) mist.push(ofs[i * 2 + 1]); });
+      slides = mist.concat(ofs.slice(slides.length * 2));
+    }
     if (!slides.length) slides = [{ t: "Dallas em português.", h: "explorar", g: "tudo" }];
     if (slideAtual >= slides.length) slideAtual = 0;
     var servN = function (c) { return ls.filter(function (l) { return l.categoria === c; }).length; };
     var perto = primeiro(ls.filter(function (l) { return kmDe(l) != null && ["evento", "governo", "transporte", "saude", "comunidade", "servico"].indexOf(l.categoria) < 0; }).sort(function (a, b) { return kmDe(a) - kmDe(b); }).slice(0, 12)).slice(0, 4);
     var ad = adFaixa(false);
     app.innerHTML = '<section class="ph" id="hero">' + slides.map(function (s, i) {
-      return '<a class="slide' + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.pat ? '<span class="kick" style="margin-bottom:10px">Patrocinado · recomendado pelo guia</span>' : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + "</div></div></a>";
+      return '<a class="slide' + (s.of ? " of" : "") + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.of ? Oficiais.heroSlide(s.of, i) : (s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.k ? '<span class="kick">' + esc(s.k) + "</span>" : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + (s.s ? '<p class="hsub">' + esc(s.s) + "</p>" : "") + (s.cta ? '<span class="hcta">' + esc(s.cta) + ' <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' : "") + "</div></div>") + "</a>";
     }).join("") +
       '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
       '<button type="button" class="pchip" data-partida>' + ic("pin") + (Geo.gps ? "Perto de você" : "Saindo de " + esc(Geo.nome)) + "</button>" +
@@ -594,7 +599,7 @@
       (window.Extras && Extras.aberto(l) != null ? '<span class="badge"><i class="dot" style="background:' + (Extras.aberto(l) ? "#2E8B57" : "#C2452D") + '"></i>' + (Extras.aberto(l) ? "Aberto agora" : "Fechado agora") + "</span>" : "") +
       (fluxoDe(l) ? '<span class="badge"><i class="dot" style="background:' + FLUXO[fluxoDe(l).nivel][1] + '"></i>' + FLUXO[fluxoDe(l).nivel][0] + "</span>" : "") +
       (falaPt(l) ? '<span class="badge pt">🇧🇷 Fala português</span>' : "") + (window.Recursos ? Recursos.selos(l) : "") + (Store.admin() && Store.estado.modo === "nuvem" && l.notaProvisoria ? '<span class="badge soft">nota provisória</span>' : "") + "</div></div>" +
-      acoes(l) +
+      (window.Checklist ? Checklist.botoes(l) : "") + acoes(l) +
       (window.Usuario ? Usuario.blocoEvento(l) : "") + (window.Recursos ? Recursos.blocoLugar(l) : "") + (window.Social ? Social.blocoLugar(l) : "") +
       '<div class="seg" role="tablist" id="seg">' + abasDe(l, av).map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (L.tab === t[0]) + '">' + t[1] + "</button>"; }).join("") + '<span class="seg-pill"></span></div>' +
       '<div id="tabc" class="tabc">' + abaConteudo(l, L.tab) + "</div>" +

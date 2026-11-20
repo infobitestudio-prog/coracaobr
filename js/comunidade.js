@@ -209,6 +209,13 @@
   /* ---------- instalar no celular ---------- */
   var promptInstalar = null;
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); promptInstalar = e; });
+  window.addEventListener("appinstalled", function () { promptInstalar = null; G.toast("Pronto! O CoraçãoBR está na tela do seu celular."); });
+  /* Botão "Instalar no celular" usado em qualquer página (login, cadastro...): abre o instalador do navegador quando existe; senão, o passo a passo. */
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-instalar-app]"); if (!b) return; e.preventDefault();
+    if (promptInstalar) { promptInstalar.prompt(); promptInstalar.userChoice && promptInstalar.userChoice.then(function () { promptInstalar = null; }); }
+    else location.hash = "#instalar";
+  });
   function viewInstalar() {
     var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
     G.app.innerHTML = '<section class="block"><div class="wrap stack" style="gap:16px;max-width:720px"><div><p class="eyebrow">Atalho</p><h1 class="page-h">Guia na tela do celular</h1><p class="muted">Abre direto, como um aplicativo, sem baixar nada da loja.</p></div>' +

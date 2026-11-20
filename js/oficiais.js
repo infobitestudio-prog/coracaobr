@@ -81,7 +81,29 @@
 
   /* slides do carrossel: os oficiais entram sempre, antes dos anunciantes da rodada */
   function slides() { return ativos().map(function (o) { return { tipo: "oficial", o: o }; }); }
-  function slideHtml(o, i) { return '<a class="vit-slide" href="#oficial-' + esc(o.id) + '" aria-label="' + esc(o.nome) + ' (patrocinador oficial)"><img src="' + esc(o.banner) + '" alt="' + esc(o.nome + ": " + o.resumo) + '"' + (i ? ' loading="lazy"' : "") + "></a>"; }
+  /* banner animado do QR-DOG (mesmas animações do site do QR-DOG: celular com o perfil rolando, medalha flutuando com brilho, leitura do QR e aviso no WhatsApp) */
+  function qrdogAnim(tag, extra) {
+    return "<" + tag + ' class="qda" ' + (extra || "") + ' aria-label="QR-DOG: seu pet se perdeu? Um scan traz ele de volta.">' +
+      '<span class="qda-bg"></span><span class="qda-big">QR</span>' +
+      '<span class="qda-l"><span class="qda-selo">PATROCINADOR OFICIAL</span><span class="qda-brand"><img src="img/patrocinadores/qrdog-logo.webp" alt="">QR-DOG</span>' +
+      '<span class="qda-h"><b class="f1">Seu pet se perdeu?</b><b class="f2">Um scan traz ele de volta.</b><b class="f3">O tutor recebe no WhatsApp.</b></span>' +
+      '<span class="qda-p">Medalha com QR Code para a coleira de cães e gatos. Sem app e sem bateria.</span><span class="qda-cta">Quero a medalha →</span></span>' +
+      '<span class="qda-r"><span class="qda-halo"></span><span class="qda-ring"></span>' +
+      '<span class="qda-ph"><span class="qda-notch"></span><span class="qda-sc"><span class="qda-feed"><span class="qda-top"><i>Animal perdido!</i></span><span class="qda-body"><b>Oi, eu sou<br>o Nick</b><span>Estou perdido do meu tutor. Fale com ele para dizer onde estou.</span><em>Chamar no WhatsApp</em><span class="qda-chips"><i>Border Collie</i><i>Dócil</i><i>Porte médio</i></span></span></span></span></span>' +
+      '<span class="qda-md"><img src="img/patrocinadores/qrdog-medalha.webp" alt=""><span class="qda-scan"></span><span class="qda-pulse"></span></span>' +
+      '<span class="qda-card"><small>Medalha <em>lida agora</em></small><b>E610007</b><small>escaneada pela câmera</small></span>' +
+      '<span class="qda-zap"><i></i><span><b>Tutor avisado</b><small>localização enviada no WhatsApp</small></span></span></span>' +
+      "</" + tag + ">";
+  }
+  /* slide do banner principal da home: banner inteiro sobre um fundo desfocado do próprio banner */
+  function heroSlide(o, i) {
+    var lz = i ? ' loading="lazy"' : "";
+    return '<span class="hof-bg" style="background-image:url(' + esc(o.banner) + ')"></span>' +
+      '<span class="hof-box"><span class="hof-in">' + (o.id === "qr-dog" ? qrdogAnim("span") : '<img src="' + esc(o.banner) + '" alt="' + esc(o.nome + ": " + o.resumo) + '"' + lz + ">") +
+      '<span class="hof-tag">Patrocinador oficial</span></span></span>';
+  }
+  function slideHtml(o, i) {
+    if (o.id === "qr-dog") return qrdogAnim("a", 'href="#oficial-qr-dog"').replace('class="qda"', 'class="vit-slide qda"'); return '<a class="vit-slide" href="#oficial-' + esc(o.id) + '" aria-label="' + esc(o.nome) + ' (patrocinador oficial)"><img src="' + esc(o.banner) + '" alt="' + esc(o.nome + ": " + o.resumo) + '"' + (i ? ' loading="lazy"' : "") + "></a>"; }
 
   /* seção da página inicial */
   function secao() {
@@ -98,7 +120,7 @@
     if (!o) { location.hash = "inicio"; return; }
     G.app.innerHTML = '<section class="block ofp" style="--ofc:' + o.cor + '"><div class="wrap">' +
       '<a class="more" href="#inicio">← início</a>' +
-      '<div class="ofp-ban"><img src="' + esc(o.banner) + '" alt="' + esc(o.nome) + '"></div>' +
+      (o.id === "qr-dog" ? '<div class="ofp-ban">' + qrdogAnim("div") + "</div>" : '<div class="ofp-ban"><img src="' + esc(o.banner) + '" alt="' + esc(o.nome) + '"></div>') +
       '<div class="ofp-grid"><div class="ofp-main">' +
       '<div class="ofp-h"><span class="ofc-av big"><img src="' + esc(o.avatar) + '" alt=""></span><div><p class="eyebrow">Patrocinador oficial · ' + esc(o.tipo) + "</p><h1 class=\"page-h\">" + esc(o.nome) + "</h1></div></div>" +
       '<p class="ofp-txt">' + esc(o.texto) + "</p>" +
@@ -115,5 +137,5 @@
     el.innerHTML = '<span class="f-ofc-t">Patrocinadores oficiais</span>' + ativos().map(function (o) { return '<a href="#oficial-' + esc(o.id) + '"><img src="' + esc(o.avatar) + '" alt="" loading="lazy">' + esc(o.nome) + "</a>"; }).join("");
   }
   G.views.oficial = view;
-  window.Oficiais = { lista: ativos, slides: slides, slideHtml: slideHtml, secao: secao, rodape: rodape };
+  window.Oficiais = { lista: ativos, slides: slides, slideHtml: slideHtml, heroSlide: heroSlide, secao: secao, rodape: rodape };
 })();

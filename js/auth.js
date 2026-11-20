@@ -28,14 +28,24 @@
   function moldura(titulo, sub, corpo, lado) {
     G.app.innerHTML = '<section class="block"><div class="wrap auth">' +
       '<div class="auth-lado">' + (lado || ladoPadrao()) + "</div>" +
-      '<div class="auth-card panel stack"><div><p class="eyebrow">CoraçãoBR</p><h1 class="page-h" style="margin-top:4px">' + titulo + "</h1>" + (sub ? '<p class="muted" style="margin-top:6px">' + sub + "</p>" : "") + "</div>" + corpo + "</div></div></section>";
+      '<div class="auth-card panel stack"><div><p class="eyebrow">CoraçãoBR</p><h1 class="page-h" style="margin-top:4px">' + titulo + "</h1>" + (sub ? '<p class="muted" style="margin-top:6px">' + sub + "</p>" : "") + "</div>" + corpo + botaoApp() + "</div></div></section>";
     var f = $("form", G.app), i = f && f.querySelector("input"); if (i && matchMedia("(min-width:760px)").matches) i.focus();
   }
+  /* já instalado (aberto como app)? então não mostra o botão */
+  function instalado() { return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
+  function botaoApp() {
+    if (instalado()) return "";
+    return '<div class="auth-app"><button type="button" class="auth-app-bt" data-instalar-app>' +
+      '<span class="auth-app-ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7m0 0-3-3m3 3 3-3M10 18.5h4"/></svg></span>' +
+      "<span><b>Instalar no celular</b><small>Abre como app, direto da tela inicial. Sem loja e grátis.</small></span><i aria-hidden=\"true\">→</i></button></div>";
+  }
   function ladoPadrao() {
-    return '<h2>Uma conta, três jeitos de usar</h2><ul class="auth-lista">' +
-      "<li><b>Usuário</b><span>Salve lugares, ative lembretes, monte roteiros e avalie o que visitou, em qualquer aparelho.</span></li>" +
-      "<li><b>Anunciante</b><span>Contrate um plano, publique o anúncio da sua empresa, edite quando quiser e acompanhe os resultados.</span></li>" +
-      "<li><b>Equipe</b><span>A conta master administra o guia, os anunciantes e as finanças.</span></li></ul>";
+    var it = function (t, d) { return '<li><span class="auth-ok" aria-hidden="true">✓</span><span><b>' + t + "</b><small>" + d + "</small></span></li>"; };
+    return '<div class="auth-hero"><p class="auth-kick">CoraçãoBR</p><h2>O guia dos brasileiros fora do Brasil.</h2>' +
+      '<p class="auth-sub">Uma conta, três jeitos de usar.</p><ul class="auth-lista">' +
+      it("Usuário", "Salve lugares, ative lembretes, monte roteiros e avalie o que visitou.") +
+      it("Anunciante", "Publique o anúncio da sua empresa, edite quando quiser e acompanhe os resultados.") +
+      it("Equipe", "A conta master administra o guia, os anunciantes e as finanças.") + "</ul></div>";
   }
   function msg(el, texto, ok) { el.textContent = texto || ""; el.className = "auth-msg" + (ok ? " ok" : ""); el.hidden = !texto; }
   function ocupa(f, sim) { Array.from(f.querySelectorAll("button, input")).forEach(function (x) { x.disabled = sim; }); }
@@ -181,7 +191,7 @@
       if (!s) { msg(m, "Para excluir a conta, digite a sua senha atual e toque de novo em Excluir minha conta."); return; }
       var b = e.target.closest("[data-excluir]");
       if (!b.dataset.confirma) { b.dataset.confirma = "1"; b.textContent = "Confirmar exclusão definitiva"; msg(m, "Isto apaga a conta, as avaliações, os roteiros e os anúncios. Não dá para desfazer."); return; }
-      Store.api("excluir_conta", { senha: s }).then(function () { try { ["lista", "lembretes", "meus-roteiros", "minhas-avaliacoes", "meu-nome", "meus-anuncios"].forEach(function (k) { localStorage.removeItem(k); }); } catch (er) { /* ok */ } vaiPara("#inicio"); }).catch(function (er) { msg(m, er.message); });
+      Store.api("excluir_conta", { senha: s }).then(function () { try { ["lista", "checklist", "lembretes", "meus-roteiros", "minhas-avaliacoes", "meu-nome", "meus-anuncios"].forEach(function (k) { localStorage.removeItem(k); }); } catch (er) { /* ok */ } vaiPara("#inicio"); }).catch(function (er) { msg(m, er.message); });
     }
   });
   function ligaDados() {

@@ -151,7 +151,7 @@
   }
 
   G.views.lista = viewLista; G.views.roteiros = viewRoteiros; G.views.roteiro = viewRoteiro; G.views.chegada = viewChegada;
-  window.Extras = { aberto: aberto, selos: selos, botaoFav: botaoFav, secoes: secoes, kit: kit, kitInit: kitInit };
+  window.Extras = { aberto: aberto, selos: selos, botaoFav: botaoFav, mapsRota: mapsRota, secoes: secoes, kit: kit, kitInit: kitInit };
 
   /* ---------- instalar como aplicativo ----------
      Só fora da página de prévia: service worker não funciona dentro dela. */
