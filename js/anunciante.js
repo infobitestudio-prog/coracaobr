@@ -37,12 +37,17 @@
   function meusIds() { try { return JSON.parse(localStorage.getItem("meus-anuncios") || "[]"); } catch (e) { return []; } }
   function guardaMeu(id) { var m = meusIds(); if (m.indexOf(id) < 0) m.push(id); try { localStorage.setItem("meus-anuncios", JSON.stringify(m)); } catch (e) { /* ok */ } }
   function meusLugares() { return lugaresDe(Store.uid()); }
+  /* Dono de verdade: só o que o servidor guarda no anúncio (documento da conta, donoUid ou o id que começa com o uid).
+     A memória do aparelho ("meus-anuncios") só vale no modo sem servidor e sem conta, para não mostrar anúncios de outra conta
+     que usou o mesmo celular ou computador. */
+  function donoDe(l) { return (l && (l._dono || l.donoUid || (String(l.id).indexOf("~") > 0 ? String(l.id).split("~")[0] : ""))) || ""; }
+  function ehMeu(l) { if (!l) return false; var u = Store.uid(); if (Store.admin && Store.admin()) return true; if (u) return donoDe(l) === u; return !(Store.servidor && Store.servidor()) && meusIds().indexOf(l.id) >= 0; }
   function lugaresDe(uid) {
-    var ids = uid === Store.uid() ? meusIds() : [];
-    return Store.lista("lugares").filter(function (l) { return (uid && (l._dono === uid || l.donoUid === uid || String(l.id).indexOf(uid + "~") === 0)) || (l.assinatura && ids.indexOf(l.id) >= 0); })
+    var local = !uid && !(Store.servidor && Store.servidor()), ids = local ? meusIds() : [];
+    return Store.lista("lugares").filter(function (l) { return (uid && donoDe(l) === uid) || (local && l.assinatura && ids.indexOf(l.id) >= 0); })
       .sort(function (a, b) { return String(a.criadoEm || a.id) < String(b.criadoEm || b.id) ? -1 : 1; });
   }
-  function dono(l) { return (l && (l._dono || l.donoUid)) || Store.uid(); }
+  function dono(l) { return donoDe(l) || Store.uid(); }
   function vagas() { return window.Pag ? Pag.vagas(Store.uid()) : LIMITE; }
   function maximo() { return Math.max(LIMITE, vagas()); }                       /* até 3 em prévia, sem pagar; acima disso, pelos pacotes */
   function noArDe(l) { return l.publicado !== false && (!window.Pag || Pag.visivel(l)); }
@@ -62,6 +67,7 @@
   function sec(n, id, titulo, sub, corpo) { return '<section class="ae-sec" id="ae-' + id + '"><header><span class="ae-n">' + n + '</span><div><h2>' + titulo + "</h2>" + (sub ? "<p>" + sub + "</p>" : "") + "</div></header>" + corpo + "</section>"; }
   function viewAnunciar(id) {
     var existente = id ? Store.obter("lugares", id) : null;
+    if (existente && !ehMeu(existente)) { G.toast("Esse anúncio não é da sua conta."); location.replace("#conta"); return; }
     if (!existente && meusLugares().length >= maximo()) {
       G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:30px"><h1 class="page-h">Você usou todos os seus anúncios</h1><p class="muted">Seu plano libera ' + maximo() + ' anúncios. Cada pacote de ' + G.reais(window.Pag ? Pag.preco() : 50) + " soma mais " + (window.Pag ? Pag.porPacote() : 3) + ' anúncios.</p><a class="btn" href="#pagar">Contratar mais anúncios</a><a class="more" href="#anunciante">Voltar ao painel</a></div></section>';
       return;
@@ -309,7 +315,7 @@
     if (cp) { var tx = document.getElementById("dv-texto"); if (!tx) return; (navigator.clipboard ? navigator.clipboard.writeText(tx.value) : Promise.reject()).then(function () { G.toast("Texto copiado. Cole no Facebook ou no grupo."); }).catch(function () { tx.select(); G.toast("Selecione e copie o texto."); }); return; }
     var ed = ev.target.closest("[data-editar-id]"); if (ed) { editar = ed.dataset.editarId; location.hash = "anunciar"; return; }
     var tg = ev.target.closest("[data-pausa-an]");
-    if (tg) { var x = Store.obter("lugares", tg.dataset.pausaAn); if (!x) return; x.publicado = x.publicado === false; Store.gravar("lugares", x.id, x).then(function () { G.toast(x.publicado ? "Anúncio retomado." : "Anúncio pausado."); rerender(); }).catch(falha); }
+    if (tg) { var x = Store.obter("lugares", tg.dataset.pausaAn); if (!x) return; if (!ehMeu(x)) { G.toast("Esse anúncio não é da sua conta."); return; } x.publicado = x.publicado === false; Store.gravar("lugares", x.id, x).then(function () { G.toast(x.publicado ? "Anúncio retomado." : "Anúncio pausado."); rerender(); }).catch(falha); }
   });
   document.addEventListener("change", function (ev) { var s = ev.target.closest("[data-ng-sel]"); if (s) { perfil = s.value; rerender(); } });
 
@@ -359,7 +365,7 @@
   document.addEventListener("click", function (e) { if (e.target.closest("[data-novo-anuncio]")) editar = null; });
   G.views.anunciar = function () { var id = editar; editar = null; viewAnunciar(id); };
   function temPlano() { return temPlanoDe(Store.uid()); }
-  window.Anunciante = { temPlano: temPlano, temPlanoDe: temPlanoDe, negocio: negocio, lugaresDe: lugaresDe, LIMITE: LIMITE, soma: soma, carrega: carrega,
+  window.Anunciante = { temPlano: temPlano, temPlanoDe: temPlanoDe, negocio: negocio, lugaresDe: lugaresDe, ehMeu: ehMeu, LIMITE: LIMITE, soma: soma, carrega: carrega,
     abrirPerfil: function (id) { var l = Store.obter("lugares", id); perfil = id; master = true; uidVisto = (l && (l._dono || l.donoUid)) || "~" + id; contaVista = null; viewAnunciante.buscou = false; location.hash = "anunciante"; },
     abrirConta: function (u) { perfil = null; master = true; uidVisto = u && u.id; contaVista = u || null; viewAnunciante.buscou = false; location.hash = "anunciante"; } };
 })();

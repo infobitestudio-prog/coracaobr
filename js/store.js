@@ -226,6 +226,8 @@
       var c = j.conta;
       db = dbServidor; assets = c ? assetsServidor : null;   /* qualquer conta envia fotos (usuários: fotos das avaliações, com limite no servidor) */
       uid = c ? c.uid : null; st.admin = !!(c && c.papel === "master"); st.nome = c ? c.nome : ""; st.papel = c ? c.papel : "";
+      /* conta diferente da última neste aparelho: apaga a memória local de anúncios da conta anterior */
+      try { var ult = localStorage.getItem("conta-uid") || ""; if (ult !== (uid || "")) { localStorage.removeItem("meus-anuncios"); localStorage.setItem("conta-uid", uid || ""); } } catch (e) { /* ok */ }
       st.podeFotosNuvem = !!assets;
       bootCloud();
       return true;
@@ -290,7 +292,7 @@
   function idProprio(base) { return st.modo === "nuvem" && uid ? uid + "~" + base : base; }
   function set(col, id, data) {
     var body = clean(data); delete body.id; delete body._dono;
-    if (col === "lugares" && (cache.anunciantes.has(id) || (st.modo === "nuvem" && !st.admin))) col = "anunciantes";
+    if (col === "lugares" && (cache.anunciantes.has(id) || (st.modo === "nuvem" && (!st.admin || id.indexOf("~") > 0)))) col = "anunciantes";
     if (!ID_OK.test(id)) return Promise.reject(new Error("Identificador inválido."));
     if (st.modo === "nuvem" && POR_PESSOA.indexOf(col) >= 0 && id.indexOf("~") > 0) return gravaItem(col, id, body, false);
     if (st.modo === "nuvem" && POR_PESSOA.indexOf(col) >= 0 && !st.admin) {
@@ -307,7 +309,7 @@
     });
   }
   function del(col, id) {
-    if (col === "lugares" && cache.anunciantes.has(id)) col = "anunciantes";
+    if (col === "lugares" && (cache.anunciantes.has(id) || (st.modo === "nuvem" && id.indexOf("~") > 0))) col = "anunciantes";
     if (st.modo === "nuvem" && POR_PESSOA.indexOf(col) >= 0 && id.indexOf("~") > 0) return gravaItem(col, id, null, true);
     return serial(col + "/" + id, async function () {
       if (st.modo === "nuvem") { await db.collection(col).doc(id).delete(); return; }
