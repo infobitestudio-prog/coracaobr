@@ -245,15 +245,48 @@
     for (var i = 0; i < base.length; i++) h = (h * 31 + base.charCodeAt(i)) >>> 0;
     return "CB" + h.toString(36).toUpperCase().slice(0, 5).padStart(5, "0");
   }
-  function botaoCupom(l) { return '<button type="button" class="btn sm" data-cupom="' + esc(l.id) + '" style="margin-top:8px">' + ic("ticket") + " Gerar meu código</button>"; }
+  /* o QR leva à página de resgate na plataforma: o atendente vê quem veio pelo guia, a oferta do anúncio e confirma no balcão */
+  function linkResgate(cod) { return location.href.split("#")[0] + "#resgate-" + cod; }
+  function meusCupons() { try { return JSON.parse(localStorage.getItem("cupons-meus") || "{}") || {}; } catch (e) { return {}; } }
+  function qrSvg(txt) { if (!window.qrcode) return ""; try { var q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 4, margin: 1, scalable: true }); } catch (er) { return ""; } }
+  function cupomHtml(l, cod) {
+    return '<div class="cupom"><a class="qr" href="' + esc(linkResgate(cod)) + '" aria-label="Abrir a página de resgate do cupom">' + qrSvg(linkResgate(cod)) + '</a><div><small>Seu código</small><b class="num">' + cod + '</b><span class="small">No balcão, o atendente aponta a câmera para o QR e confirma o desconto na hora.</span>' +
+      (window.Wallet ? Wallet.botao("cupom", cod) : "") + "</div></div>";
+  }
+  function botaoCupom(l) { var c = meusCupons()[l.id]; return c ? cupomHtml(l, c) : '<button type="button" class="btn sm" data-cupom="' + esc(l.id) + '" style="margin-top:8px">' + ic("ticket") + " Gerar meu código</button>"; }
+  function nomeCurto() { var n = String((Store.conta && Store.conta() && Store.conta().nome) || "").trim().split(/\s+/); return n[0] ? n[0] + (n.length > 1 ? " " + n[n.length - 1].charAt(0).toUpperCase() + "." : "") : ""; }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-cupom]"); if (!b) return;
-    var l = lugar(b.dataset.cupom); if (!l) return; var cod = codigo(l), box = b.parentNode;
-    var qr = ""; if (window.qrcode) { try { var q = window.qrcode(0, "M"); q.addData(cod); q.make(); qr = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); } catch (er) { qr = ""; } }
-    b.outerHTML = '<div class="cupom"><div class="qr">' + qr + '</div><div><small>Seu código</small><b class="num">' + cod + '</b><span class="small muted">O atendente confirma este código no painel dele.</span></div></div>';
-    Store.gravar("cupons", Store.idProprio(l.id), { lugarId: l.id, codigo: cod, criadoEm: new Date().toISOString() }).catch(function () {});
-    if (box && box.querySelector) { /* nada */ }
+    var l = lugar(b.dataset.cupom); if (!l) return; var cod = codigo(l);
+    b.outerHTML = cupomHtml(l, cod);
+    var m = meusCupons(); m[l.id] = cod; try { localStorage.setItem("cupons-meus", JSON.stringify(m)); } catch (er) { /* ok */ }
+    Store.gravar("cupons", Store.idProprio(l.id), { lugarId: l.id, codigo: cod, nome: nomeCurto(), anuncio: l.nome, oferta: l.cupom || "", criadoEm: new Date().toISOString() }).catch(function () {});
   });
+  /* página de resgate (aberta pelo QR) */
+  function viewResgate(r) {
+    var cod = String(r.replace(/^resgate-/, "")).toUpperCase().replace(/[^0-9A-Z]/g, "").slice(0, 8);
+    G.app.innerHTML = '<section class="block"><div class="wrap stack rsg" style="max-width:560px;gap:16px"><p class="muted">Conferindo o cupom ' + esc(cod) + '…</p></div></section>';
+    var achou = function (cs) {
+      var c = (cs || [])[0], l = c ? lugar(c.lugarId) : null, box = $(".rsg"); if (!box) return;
+      if (!c || !l) { box.innerHTML = '<div class="rsg-st no"><span>!</span><b>Cupom não encontrado</b><p>Confira se o QR é de um cupom do guia CoraçãoBR (código começa com CB).</p></div><a class="more" href="#inicio">Ir para o CoraçãoBR →</a>'; return; }
+      var usado = (l.validados || []).filter(function (x) { return x.codigo === cod; })[0], dono = l._dono || l.donoUid || "", pode = !!(Store.uid() && (Store.uid() === dono || (Store.admin && Store.admin())));
+      var f = G.foto ? G.foto(l) : "";
+      box.innerHTML = '<p class="eyebrow">Cupom do guia CoraçãoBR</p>' +
+        '<div class="rsg-st ' + (usado ? "usado" : "ok") + '"><span>' + (usado ? "✓" : "★") + "</span><b>" + (usado ? "Desconto já resgatado" : "Cupom válido") + "</b><p>" + (usado ? "Resgatado em " + dataBR(usado.em) + "." : "Pessoa que veio pelo guia CoraçãoBR.") + "</p></div>" +
+        '<div class="rsg-card"><div class="rsg-an">' + (f ? '<img src="' + esc(f) + '" alt="">' : "") + "<div><small>Anúncio</small><b>" + esc(l.nome) + "</b><span>" + esc(G.regiao(l)) + "</span></div></div>" +
+        '<div class="rsg-of"><small>Oferta para quem vem pelo guia</small><b>' + esc(l.cupom || c.oferta || "Desconto combinado com o anunciante") + "</b></div>" +
+        '<dl class="rsg-dl"><div><dt>Cliente</dt><dd>' + esc(c.nome || "Visitante do guia") + "</dd></div><div><dt>Código</dt><dd class=\"num\">" + esc(cod) + "</dd></div><div><dt>Gerado em</dt><dd>" + esc(dataBR(c.criadoEm)) + "</dd></div></dl></div>" +
+        (usado ? "" : pode ? '<button type="button" class="btn" data-rsg-ok="' + esc(cod) + '" style="justify-self:stretch">Confirmar resgate e aplicar o desconto</button><p class="small muted">Confirme só depois de aplicar o desconto. O resgate entra nas métricas do seu anúncio.</p>'
+          : '<div class="rsg-info"><b>É o atendente?</b> Entre na conta do anúncio para confirmar o resgate com um toque. <a href="#entrar">Entrar</a><br><b>É o cliente?</b> Mostre esta tela no balcão.</div>') +
+        '<a class="more" href="#lugar-' + esc(l.id) + '">Ver o anúncio no CoraçãoBR →</a>';
+      var ok = $("[data-rsg-ok]"); if (ok) ok.onclick = function () {
+        ok.disabled = true; l.validados = (l.validados || []).concat([{ codigo: cod, em: hoje(), nome: c.nome || "" }]).slice(-500);
+        Store.gravar("lugares", l.id, l).then(function () { G.toast("Resgate confirmado. Pode aplicar o desconto."); viewResgate(r); }).catch(function () { ok.disabled = false; G.toast("Não deu para confirmar agora. Tente de novo."); });
+      };
+    };
+    if (!/^(CB|GT)[0-9A-Z]{5}$/.test(cod)) { achou([]); return; }
+    Store.consultar("cupons", "codigo", cod).then(achou).catch(function () { achou([]); });
+  }
   function validador(l) {
     var v = (l.validados || []);
     return '<div class="panel stack" style="gap:10px"><h3>Validar cupom</h3><p class="small muted">Quando o cliente mostrar o código do guia (começa com CB), digite aqui para confirmar e contar nas métricas.</p><form class="row" id="f-val"><input id="val-cod" placeholder="CBXXXXX" maxlength="8" style="max-width:160px;text-transform:uppercase" aria-label="Código do cupom"><button class="btn sm" type="submit">Validar</button></form><p class="small"><b class="num">' + v.length + "</b> cupons validados" + (v.length ? " · último em " + dataBR(v[v.length - 1].em) : "") + "</p></div>";
@@ -272,6 +305,7 @@
     };
   }
 
+  G.views.resgate = viewResgate;
   G.views.mural = viewMural; G.views["roteiro-ia"] = viewIA; G.views.custo = viewCusto; G.views.cidades = viewCidades; G.views["instalar-app"] = viewInstalar;
   window.Comunidade = { secoes: secoes, botaoCupom: botaoCupom, validador: validador, validadorInit: validadorInit, TIPOS_AL: TIPOS_AL, TIPOS_CL: TIPOS_CL, classificadosAtivos: classificadosAtivos, alertasAtivos: alertasAtivos, CIDADES: CIDADES, viewMural: viewMural };
 })();

@@ -1798,6 +1798,42 @@ html.modo-app .instalar-sec, html.modo-app .auth-app { display: none !important 
 .clb-val span{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:2.6rem;font-weight:800;color:#fff;background:#0B7A35}
 .clb-val.no span{background:#B3261E}.clb-val b{font-size:1.2rem;color:var(--ink)}.clb-val p{margin:0;color:var(--ink)}.clb-val small{color:var(--muted)}
 .tk-clube{text-decoration:none;color:inherit}.tk-clube .tic{background:#04341A;color:#FFC20E}
+/* oferta do guia: verde com texto branco · Clube: amarelo com texto preto · QR ao lado do texto */
+.sheet .ticket, .ticket { background: linear-gradient(135deg, #087A36, #12A24C) !important; color: #fff !important; box-shadow: 0 16px 36px -22px rgba(8,122,54,.7) }
+.ticket .tic { background: rgba(255,255,255,.18) !important; color: #fff !important }
+.ticket .sponsor { color: rgba(255,255,255,.88) !important } .ticket b { color: #fff !important } .ticket .muted, .ticket .small { color: rgba(255,255,255,.9) !important }
+.ticket .btn { background: #fff !important; color: #087A36 !important; border-color: #fff !important }
+.sheet .ticket.tk-clube, .ticket.tk-clube { background: linear-gradient(135deg, #FFC20E, #FFDA55) !important; color: #111 !important; box-shadow: 0 16px 36px -22px rgba(190,140,0,.75) }
+.ticket.tk-clube .tic { background: #111 !important; color: #FFC20E !important }
+.ticket.tk-clube .sponsor { color: #3D2F00 !important } .ticket.tk-clube b { color: #111 !important } .ticket.tk-clube .muted, .ticket.tk-clube .small { color: rgba(0,0,0,.78) !important }
+.ticket.tk-clube .btn { background: #111 !important; color: #FFC20E !important; border-color: #111 !important }
+.tk-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
+.ticket .cupom { grid-template-columns: 112px minmax(0, 1fr); margin-top: 12px; padding: 12px; background: rgba(255,255,255,.12); border: 1px dashed rgba(255,255,255,.55); color: #fff }
+.ticket .cupom .qr { display: block; background: #fff; border-radius: 12px; padding: 6px; line-height: 0 }
+.ticket .cupom .qr svg { width: 100px; height: 100px }
+.ticket .cupom small { color: rgba(255,255,255,.85) !important } .ticket .cupom b { color: #fff !important; font-size: 1.55rem; letter-spacing: .14em }
+.ticket .cupom .small { display: block; line-height: 1.45; margin-top: 2px }
+.ticket .cupom .tk-acoes { margin-top: 8px }
+.ticket:has(.cupom) { grid-template-columns: minmax(0, 1fr) } .ticket:has(.cupom) > .tic { display: none }
+.ticket .cupom { grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 10px }
+.ticket .cupom .qr svg { width: 84px; height: 84px }
+.ticket .cupom b { font-size: 1.3rem; letter-spacing: .08em; white-space: nowrap }
+.ticket .cupom .small { font-size: .78rem }
+@media (max-width: 380px) { .ticket .cupom { grid-template-columns: 1fr; justify-items: start } }
+/* página de resgate do cupom (aberta pelo QR) */
+.rsg-st { display: grid; justify-items: center; gap: 4px; padding: 22px 18px; border-radius: 20px; text-align: center; color: #fff; background: linear-gradient(135deg, #087A36, #12A24C) }
+.rsg-st span { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 1.7rem; background: rgba(255,255,255,.2) }
+.rsg-st b { font: 800 1.45rem/1.15 var(--display) } .rsg-st p { margin: 0; opacity: .92 }
+.rsg-st.usado { background: linear-gradient(135deg, #2B3A33, #4B5A53) } .rsg-st.no { background: linear-gradient(135deg, #B3261E, #E2452A) }
+.rsg-card { display: grid; gap: 14px; padding: 18px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow) }
+.rsg-an { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center }
+.rsg-an img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover }
+.rsg-an small, .rsg-of small, .rsg-dl dt { font: 600 .66rem/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.rsg-an b { display: block; font-size: 1.1rem } .rsg-an span { font-size: .85rem; color: var(--muted) }
+.rsg-of { padding: 14px 16px; border-radius: 14px; background: linear-gradient(135deg, #087A36, #12A24C); color: #fff } .rsg-of small { color: rgba(255,255,255,.85) } .rsg-of b { display: block; font: 800 1.35rem/1.2 var(--display); margin-top: 4px }
+.rsg-dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 } .rsg-dl dd { margin: 4px 0 0; font-weight: 700 }
+.rsg-info { padding: 14px 16px; border-radius: 14px; background: #FFF6D6; color: #3D2F00; line-height: 1.6; font-size: .92rem }
+@media (max-width: 420px) { .rsg-dl { grid-template-columns: 1fr 1fr } }
 .pat-sec{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:12px 16px;margin:0 0 14px;border-radius:var(--r);background:var(--warn-bg);border:1px solid var(--line);color:var(--ink);text-decoration:none}
 .pat-sec .pat-k{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--sun)}.pat-sec b{font-size:1rem}.pat-sec span:not(.pat-k){color:var(--muted);font-size:.9rem}.pat-sec em{margin-left:auto;font-style:normal;font-weight:700;color:var(--accent)}
 .cl-dst{border-color:var(--sponsor)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--sponsor) 45%,transparent)}
