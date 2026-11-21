@@ -2002,6 +2002,17 @@ dialog:has(> .dlg):not([open]){display:none}
 .cq-gps{justify-content:center;width:100%}
 .cq-l{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .cq-ps{grid-column:1/-1;display:grid;gap:10px}
+.on-ps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.on-p{display:grid;justify-items:start;gap:2px;padding:14px 16px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);cursor:pointer;font:inherit;text-align:left}
+.on-p span{font-size:2rem;line-height:1} .on-p b{font-size:1.05rem} .on-p small{color:var(--muted);font-size:.8rem}
+.on-p.on{border-color:var(--accent-mid,#0B7A35);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent-mid,#0B7A35) 35%,transparent);background:color-mix(in srgb,var(--accent-mid,#0B7A35) 6%,var(--surface))}
+.on-box{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2);display:grid;gap:12px}
+.on-est{margin:0;font:700 .78rem var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.on-reg{display:grid;gap:8px} .on-reg > b{font-size:.95rem}
+.on-cs{display:flex;flex-wrap:wrap;gap:6px}
+.on-c{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:7px 12px;font:600 .85rem var(--body);cursor:pointer}
+.on-c.on{background:var(--accent-mid,#0B7A35);border-color:var(--accent-mid,#0B7A35);color:#fff}
+.on-av{margin:0;font-size:.85rem;color:var(--muted)} .on-res{margin:10px 0 0;font-size:.92rem}
 .cq-p{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:border-color .15s,transform .15s}
 .cq-p:hover{border-color:var(--accent-mid,#0B7A35);transform:translateY(-1px)} .cq-p.on{border-color:var(--sponsor,#C9A227);box-shadow:0 0 0 2px var(--sponsor,#C9A227)}
 .cq-fl{font-size:2.4rem;line-height:1} .cq-p b{display:block;font-size:1.15rem} .cq-p small{color:var(--muted);font-size:.85rem} .cq-p svg.i{width:20px;height:20px;color:var(--muted)}

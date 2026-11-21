@@ -34,6 +34,36 @@
   CIDADES = CIDADES.concat([["Anália Franco", -23.5615, -46.5602, "spzl", "São Paulo"], ["Tatuapé", -23.5403, -46.5766, "spzl", "São Paulo"], ["Mooca", -23.559, -46.599, "spzl", "São Paulo"], ["Vila Formosa", -23.566, -46.546, "spzl", "São Paulo"], ["Carrão", -23.551, -46.539, "spzl", "São Paulo"], ["Belém", -23.5343, -46.5888, "spzl", "São Paulo"], ["Vila Prudente", -23.5936, -46.5856, "spzl", "São Paulo"], ["Aricanduva", -23.566, -46.504, "spzl", "São Paulo"], ["Penha", -23.525, -46.544, "spzl", "São Paulo"], ["Vila Matilde", -23.536, -46.53, "spzl", "São Paulo"], ["Itaquera", -23.5408, -46.4705, "spzl", "São Paulo"], ["São Miguel Paulista", -23.4983, -46.4447, "spzl", "São Paulo"]]);
   var NOME_REG = { dfw: "Dallas–Fort Worth", houston: "Região de Houston", austin: "Região de Austin", sanantonio: "Região de San Antonio", spzl: "São Paulo · Zona Leste (bairros)" };
 
+  /* "Onde anunciar": país (bandeira) → estado › região › cidade/bairro. Mexe no select #n-reg (escondido), que o resto do editor já usa. */
+  var BAND = { BR: "🇧🇷", US: "🇺🇸" };
+  function regsVisiveis(D) { return Object.keys(NOME_REG).filter(function (rg) { return rg === D.regiaoGuia || !G.regiaoVisivel || G.regiaoVisivel(rg); }); }
+  function paisDe(rg) { return (((G.CIDADES_GUIA || {})[rg] || {}).pais) || (rg === "spzl" ? "BR" : "US"); }
+  function ondeHtml(D) {
+    var rgs = regsVisiveis(D), paises = []; rgs.forEach(function (rg) { var p = paisDe(rg); if (paises.indexOf(p) < 0) paises.push(p); });
+    return '<div class="on-ps">' + paises.map(function (p) { var nome = p === "BR" ? "Brasil" : "Estados Unidos"; return '<button type="button" class="on-p" data-on-pais="' + p + '"><span>' + BAND[p] + "</span><b>" + nome + "</b><small>" + (p === "BR" ? "São Paulo" : "Texas") + "</small></button>"; }).join("") + "</div>" +
+      paises.map(function (p) {
+        var meus = rgs.filter(function (rg) { return paisDe(rg) === p; });
+        return '<div class="on-box" data-on-box="' + p + '" hidden><p class="on-est">' + (p === "BR" ? "Estado de São Paulo (SP)" : "Texas (TX)") + "</p>" + meus.map(function (rg) {
+          return '<div class="on-reg"><b>' + esc(NOME_REG[rg].replace(" (bairros)", "")) + '</b><div class="on-cs">' + CIDADES.filter(function (c) { return c[3] === rg; }).map(function (c) { return '<button type="button" class="on-c" data-on-c="' + esc(c[0]) + '">' + esc(c[0]) + "</button>"; }).join("") + "</div></div>";
+        }).join("") + '<p class="on-av">' + (p === "BR" ? "Seu anúncio aparece só para quem está vendo <b>São Paulo (SP)</b> no guia, em reais." : "Seu anúncio aparece só para quem está vendo a região escolhida no <b>Texas</b>, em dólar.") + "</p></div>";
+      }).join("") + '<p class="on-res" data-on-res></p>';
+  }
+  function ondeLiga(f) {
+    var sel = f.querySelector("#n-reg"); if (!sel || !f.querySelector(".on-ps")) return;
+    var pinta = function (paisForcado) {
+      var c = CIDADES.filter(function (x) { return x[0] === sel.value; })[0], rg = c ? c[3] : "dfw", p = paisForcado || paisDe(rg);
+      f.querySelectorAll("[data-on-pais]").forEach(function (b) { b.classList.toggle("on", b.dataset.onPais === p); });
+      f.querySelectorAll("[data-on-box]").forEach(function (b) { b.hidden = b.dataset.onBox !== p; });
+      f.querySelectorAll("[data-on-c]").forEach(function (b) { b.classList.toggle("on", b.dataset.onC === sel.value && paisDe(rg) === p); });
+      var r = f.querySelector("[data-on-res]"); if (r) r.innerHTML = c && paisDe(rg) === p ? "📍 Anunciar em: <b>" + esc(c[4] ? (c[4] + " › " + c[0]) : (NOME_REG[rg] + " › " + c[0])) + "</b>" : "Escolha a cidade ou o bairro.";
+    };
+    f.addEventListener("click", function (e) {
+      var pb = e.target.closest("[data-on-pais]"); if (pb) { var c = CIDADES.filter(function (x) { return x[0] === sel.value; })[0]; if (!c || paisDe(c[3]) !== pb.dataset.onPais) { var pri = CIDADES.filter(function (x) { return paisDe(x[3]) === pb.dataset.onPais && regsVisiveis({}).indexOf(x[3]) >= 0; })[0]; if (pri) { sel.value = pri[0]; sel.dispatchEvent(new Event("change", { bubbles: true })); } } pinta(pb.dataset.onPais); return; }
+      var cb = e.target.closest("[data-on-c]"); if (cb) { sel.value = cb.dataset.onC; sel.dispatchEvent(new Event("change", { bubbles: true })); pinta(); }
+    });
+    sel.addEventListener("change", function () { pinta(); });
+    pinta();
+  }
   function meusIds() { try { return JSON.parse(localStorage.getItem("meus-anuncios") || "[]"); } catch (e) { return []; } }
   function guardaMeu(id) { var m = meusIds(); if (m.indexOf(id) < 0) m.push(id); try { localStorage.setItem("meus-anuncios", JSON.stringify(m)); } catch (e) { /* ok */ } }
   function meusLugares() { return lugaresDe(Store.uid()); }
@@ -92,6 +122,7 @@
     D.fotos = D.fotos || []; removidas = [];
     var podeBanner = (D.banner && D.banner.src) || bannersLivres(existente && existente.id) > 0, n = 0, prox = function () { return ++n; };
     var corpo =
+      sec(prox(), "onde", "Onde você vai anunciar?", "Escolha o país e depois a cidade ou o bairro. O anúncio aparece só para quem está vendo essa região do guia.", ondeHtml(D)) +
       sec(prox(), "empresa", "Sua empresa", "O que aparece no topo do anúncio.",
         '<div class="ae-g2">' + fld("n-nome", "Nome da empresa", D.nome, 'required maxlength="80" autocomplete="organization"') +
         '<div class="field cat-f"><label for="n-cat">Categoria</label><div class="cat-busca"><input type="search" id="n-cat-q" placeholder="Pesquisa rápida: babá, handyman, eletricista, piscina…" autocomplete="off" aria-label="Pesquisar categoria" aria-controls="n-cat-res"><div class="cat-res" id="n-cat-res" role="listbox" hidden></div></div>' +
@@ -115,7 +146,7 @@
       sec(prox(), "endereco", "Endereço e horário", "Quem atende em domicílio pode deixar o endereço em branco.",
         '<div class="ae-g2">' + fld("n-cep", "CEP (Brasil) ou ZIP code (EUA)", D.cep || "", 'data-cep placeholder="CEP (Brasil) ou ZIP (EUA)"', "Digite e o endereço aparece sozinho. Depois é só completar o número.") +
         fld("n-end", "Endereço", D.endereco, 'autocomplete="street-address" placeholder="Rua, número, bairro, cidade"') +
-        '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).filter(function (rg) { return rg === D.regiaoGuia || !G.regiaoVisivel || G.regiaoVisivel(rg); }).map(function (rg) { var padrao = (D.bairro && CIDADES.some(function (p) { return p[4] && p[0] === D.bairro; }) ? D.bairro : CIDADES.some(function (p) { return p[0] === D.cidade; }) ? D.cidade : "") || (G.cid ? (G.cid().pais === "BR" ? "Anália Franco" : G.cid().principal) : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
+        '<div class="field" hidden><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).filter(function (rg) { return rg === D.regiaoGuia || !G.regiaoVisivel || G.regiaoVisivel(rg); }).map(function (rg) { var padrao = (D.bairro && CIDADES.some(function (p) { return p[4] && p[0] === D.bairro; }) ? D.bairro : CIDADES.some(function (p) { return p[0] === D.cidade; }) ? D.cidade : "") || (G.cid ? (G.cid().pais === "BR" ? "Anália Franco" : G.cid().principal) : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
         '<div class="field"><span>Horário de atendimento</span>' + Horario.editor(D) + "</div>") +
       sec(prox(), "cardapio", '<span data-oferta-tit>Cardápio, catálogo e preços</span>', "Livreto com as páginas, tabela de preços ou o link do seu catálogo.",
         '<div class="ae-g2">' + fld("n-cat-link", "Link do catálogo, portfólio ou loja", D.catalogo, 'placeholder="https://"') + fld("n-cat-nome", "Nome do botão", D.catalogoNome, 'maxlength="24" placeholder="Catálogo"') + "</div>" +
@@ -189,12 +220,12 @@
       if (e.target.id === "n-cat") { var so = $("#n-oferta"); if (so && !so.dataset.manual && G.perfilNegocio) so.value = G.perfilNegocio({ categoria: e.target.value, tipo: "estabelecimento" }); ajustaOferta(); }
       if (e.target.id === "n-reg") ajustaOferta();
     });
-    ajustaOferta();
+    ajustaOferta(); ondeLiga(f);
     /* CEP/ZIP: preenche o endereço e escolhe a cidade na lista */
     var nc = $("#n-cep"); if (nc) nc.addEventListener("cep", function (e) {
       var o = e.detail, end = $("#n-end"), sel = $("#n-reg"), nn = G.norm || function (s) { return String(s || "").toLowerCase(); };
       if (end && (!end.value.trim() || end.dataset.auto)) { end.value = o.pais === "BR" ? [o.rua, o.bairro, o.cidade + " - " + o.uf, o.cep].filter(Boolean).join(", ") : o.cidade + ", " + o.uf + " " + o.cep; end.dataset.auto = "1"; }
-      if (sel) { var alvo = nn(o.pais === "BR" ? o.bairro : o.cidade), op = Array.prototype.filter.call(sel.options, function (x) { return nn(x.value) === alvo; })[0]; if (op) sel.value = op.value; }
+      if (sel) { var alvo = nn(o.pais === "BR" ? o.bairro : o.cidade), op = Array.prototype.filter.call(sel.options, function (x) { return nn(x.value) === alvo; })[0]; if (op) { sel.value = op.value; sel.dispatchEvent(new Event("change", { bubbles: true })); } }
       if (end && end.dataset.auto && o.rua) { G.toast("Endereço encontrado. Complete com o número."); try { end.focus(); end.setSelectionRange(o.rua.length, o.rua.length); } catch (er) { /* ok */ } }
       else if (end && end.dataset.auto) G.toast("Cidade encontrada: " + o.cidade + ", " + o.uf + ". Complete com a rua e o número.");
     });
