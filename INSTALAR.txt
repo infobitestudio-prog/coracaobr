@@ -57,7 +57,7 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
 
 8. PRONTO
    - Visitantes navegam sem conta.
-   - Uma conta só para todo mundo (e-mail, senha e CEP americano/ZIP obrigatório). Com ela a pessoa
+   - Uma conta só para todo mundo (e-mail, senha e CEP obrigatório: vale CEP do Brasil ou ZIP code dos EUA, e o site busca o endereço). Com ela a pessoa
      curte, comenta, avalia, salva roteiros e recebe avisos do que está perto do CEP dela.
    - Para anunciar: Minha conta → Meu negócio → criar o anúncio → pagar por Pix. Quando o pagamento é
      confirmado, as ferramentas de anúncio liberam. Se o plano vence, os anúncios ficam guardados e

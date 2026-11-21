@@ -54,7 +54,7 @@ session_name('CBRSESS');
 session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
 /* Fotos, sitemap, robots, aviso do Mercado Pago e tarefas automáticas não usam sessão: assim não mexem no cookie de login
    (antes, uma foto carregando enquanto a pessoa entrava na conta podia trocar o cookie e "deslogar"). */
-$SEM_SESSAO = ['recibo', 'wallet', 'wallet_cfg', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
+$SEM_SESSAO = ['cep', 'recibo', 'wallet', 'wallet_cfg', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
 if (in_array((string)($_GET['acao'] ?? ''), $SEM_SESSAO, true)) {
   $_SESSION = ['csrf' => '', 'visitante' => ''];
 } else {
@@ -188,14 +188,53 @@ function publico(array $u): array {
   return ['uid' => $u['id'], 'nome' => $u['nome'], 'email' => $u['email'], 'papel' => $u['papel'] === 'master' ? 'master' : 'usuario', 'zip' => (string)($u['zip'] ?? ''), 'zipCidade' => (string)($u['zip_cidade'] ?? ''),
     'zipLat' => isset($u['zip_lat']) ? (float)$u['zip_lat'] : null, 'zipLng' => isset($u['zip_lng']) ? (float)$u['zip_lng'] : null];
 }
-/* CEP americano (ZIP code): 5 dígitos. Busca cidade e coordenadas para avisar do que fica perto. */
-function zipLimpo(string $z): string { $z = preg_replace('/\D/', '', $z); return strlen($z) >= 5 ? substr($z, 0, 5) : ''; }
-function zipInfo(string $zip): ?array {
-  $ctx = stream_context_create(['http' => ['timeout' => 8, 'ignore_errors' => true, 'header' => 'User-Agent: CoracaoBR/1.0']]);
-  $j = json_decode((string)@file_get_contents('https://api.zippopotam.us/us/' . $zip, false, $ctx), true);
-  $p = $j['places'][0] ?? null; if (!$p) return zipAprox($zip);
-  return ['lat' => round((float)$p['latitude'], 5), 'lng' => round((float)$p['longitude'], 5), 'cidade' => trim(($p['place name'] ?? '') . ', ' . ($p['state abbreviation'] ?? ''), ', ')];
+/* CEP do Brasil (8 números, 00000-000) ou ZIP code dos EUA (5 números, ou ZIP+4). O formato identifica o país.
+   Busca o endereço (Brasil: ViaCEP, com BrasilAPI de reserva; EUA: Zippopotam) e as coordenadas (OpenStreetMap) para avisar do que fica perto. */
+function zipLimpo(string $z): string {
+  $d = preg_replace('/\D/', '', $z);
+  if (strlen($d) === 8) return substr($d, 0, 5) . '-' . substr($d, 5);
+  if (strlen($d) === 5 || strlen($d) === 9) return substr($d, 0, 5);
+  return '';
 }
+function cepPais(string $z): string { return strlen(preg_replace('/\D/', '', $z)) === 8 ? 'BR' : 'US'; }
+function httpJson(string $url, int $t = 8): ?array {
+  $ctx = stream_context_create(['http' => ['timeout' => $t, 'ignore_errors' => true, 'header' => "User-Agent: CoracaoBR/1.0 (+https://coracaobr.com.br)\r\nAccept: application/json"]]);
+  $r = @file_get_contents($url, false, $ctx); $j = $r ? json_decode($r, true) : null; return is_array($j) ? $j : null;
+}
+function geoOsm(array $partes): ?array {
+  $q = implode(', ', array_filter($partes, fn($x) => trim((string)$x) !== ''));
+  $j = httpJson('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' . rawurlencode($q), 8);
+  return isset($j[0]['lat']) ? ['lat' => round((float)$j[0]['lat'], 5), 'lng' => round((float)$j[0]['lon'], 5)] : null;
+}
+function cepInfo(string $cep): ?array {
+  $cep = zipLimpo($cep); if ($cep === '') return null;
+  $pdo = banco(); $k = 'cep:' . $cep;
+  $st = $pdo->prepare('SELECT v FROM meta WHERE k = ?'); $st->execute([$k]);
+  if ($c = $st->fetchColumn()) { $j = json_decode((string)$c, true); if (is_array($j) && ($j['_em'] ?? 0) > time() - 90 * 86400) { unset($j['_em']); return $j; } }
+  $o = null;
+  if (cepPais($cep) === 'BR') {
+    $d = preg_replace('/\D/', '', $cep);
+    $v = httpJson("https://viacep.com.br/ws/$d/json/");
+    if ($v && empty($v['erro']) && !empty($v['localidade'])) $o = ['rua' => (string)($v['logradouro'] ?? ''), 'bairro' => (string)($v['bairro'] ?? ''), 'cidade' => (string)$v['localidade'], 'uf' => (string)($v['uf'] ?? '')];
+    $b = null;
+    if (!$o) { $b = httpJson("https://brasilapi.com.br/api/cep/v2/$d"); if ($b && !empty($b['city'])) $o = ['rua' => (string)($b['street'] ?? ''), 'bairro' => (string)($b['neighborhood'] ?? ''), 'cidade' => (string)$b['city'], 'uf' => (string)($b['state'] ?? '')]; }
+    if (!$o) return null;
+    $g = ($o['rua'] !== '' ? geoOsm([$o['rua'], $o['bairro'], $o['cidade'], $o['uf'], 'Brasil']) : null) ?: geoOsm([$o['bairro'], $o['cidade'], $o['uf'], 'Brasil']) ?: geoOsm([$o['cidade'], $o['uf'], 'Brasil']);
+    $o += ['pais' => 'BR', 'paisNome' => 'Brasil', 'cep' => $cep, 'lat' => $g['lat'] ?? null, 'lng' => $g['lng'] ?? null];
+    $o['regiao'] = trim(($o['bairro'] !== '' ? $o['bairro'] . ', ' : '') . $o['cidade'] . '/' . $o['uf'], ', /');
+    $o['endereco'] = implode(', ', array_filter([$o['rua'], $o['bairro'], $o['cidade'] . ' - ' . $o['uf'], $cep]));
+  } else {
+    $j = httpJson('https://api.zippopotam.us/us/' . $cep); $p = $j['places'][0] ?? null;
+    if ($p) $o = ['rua' => '', 'bairro' => '', 'cidade' => (string)($p['place name'] ?? ''), 'uf' => (string)($p['state abbreviation'] ?? ''), 'lat' => round((float)$p['latitude'], 5), 'lng' => round((float)$p['longitude'], 5)];
+    else { $a = zipAprox($cep); if (!$a) return null; $o = ['rua' => '', 'bairro' => '', 'cidade' => preg_replace('/^Região de |, TX$/', '', $a['cidade']), 'uf' => 'TX', 'lat' => $a['lat'], 'lng' => $a['lng'], 'aprox' => true]; }
+    $o += ['pais' => 'US', 'paisNome' => 'Estados Unidos', 'cep' => $cep];
+    $o['regiao'] = trim($o['cidade'] . ', ' . $o['uf'], ', ');
+    $o['endereco'] = trim($o['cidade'] . ', ' . $o['uf'] . ' ' . $cep, ', ');
+  }
+  $pdo->prepare('INSERT OR REPLACE INTO meta (k, v) VALUES (?, ?)')->execute([$k, json_encode($o + ['_em' => time()], JSON_UNESCAPED_UNICODE)]);
+  return $o;
+}
+function zipInfo(string $zip): ?array { $i = cepInfo($zip); return $i ? ['lat' => $i['lat'], 'lng' => $i['lng'], 'cidade' => $i['regiao']] : null; }
 /* Sem resposta do serviço de CEP: posição aproximada pelos 3 primeiros números (regiões do guia no Texas). */
 function zipAprox(string $zip): ?array {
   $t = ['750' => [32.95, -96.75, 'Dallas'], '751' => [32.78, -96.8, 'Dallas'], '752' => [32.78, -96.8, 'Dallas'], '753' => [32.78, -96.8, 'Dallas'], '754' => [33.14, -96.11, 'Greenville'],
@@ -418,7 +457,7 @@ case 'cadastrar': {
   $papel = 'usuario';   // conta única: as ferramentas de anúncio são liberadas pelo pagamento
   $zip = zipLimpo(campo('zip', 12));
   if ($nome === '') erro('Informe seu nome.');
-  if ($zip === '') erro('Informe o seu CEP americano (ZIP code, 5 números).');
+  if ($zip === '') erro('Informe seu CEP do Brasil (8 números, ex.: 03081-003) ou ZIP code dos EUA (5 números, ex.: 75201).');
   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) erro('Informe um e-mail válido.');
   if ($m = senhaOk($senha)) erro($m);
   if (empty($corpo['aceite'])) erro('Para criar a conta, aceite os termos de uso e a política de privacidade.');
@@ -504,7 +543,7 @@ case 'perfil': {
   }
   if ($nova !== '') { if ($m = senhaOk($nova)) erro($m); $pdo->prepare('UPDATE usuarios SET hash = ? WHERE id = ?')->execute([password_hash($nova, PASSWORD_DEFAULT), $u['id']]); }
   $pdo->prepare('UPDATE usuarios SET nome = ? WHERE id = ?')->execute([$nome, $u['id']]);
-  if (isset($corpo['zip'])) { $zip = zipLimpo((string)$corpo['zip']); if ($zip === '') erro('Informe o seu CEP americano (ZIP code, 5 números).'); gravaZip($u['id'], $zip); }
+  if (isset($corpo['zip'])) { $zip = zipLimpo((string)$corpo['zip']); if ($zip === '') erro('Informe seu CEP do Brasil (8 números, ex.: 03081-003) ou ZIP code dos EUA (5 números, ex.: 75201).'); gravaZip($u['id'], $zip); }
   $st = $pdo->prepare('SELECT id, email, nome, papel, zip, zip_lat, zip_lng, zip_cidade FROM usuarios WHERE id = ?'); $st->execute([$u['id']]);
   sai(['ok' => true, 'conta' => publico($st->fetch())]);
 }
@@ -1019,6 +1058,15 @@ case 'pix_status': {
   if (!$u && !(is_array($c) && ($c['plano'] ?? '') === 'caixinha')) erro('Entre na sua conta para continuar.', 401);
   if (!is_array($c) || ($c['uid'] !== $quem && !($u && $c['uid'] === $_SESSION['visitante']) && !master())) erro('Cobrança não encontrada.', 404);
   $r = processaPagamento($id); sai(['ok' => true, 'status' => $r['status'], 'pacote' => $r['cobranca']['pacote'] ?? null]);
+}
+/* Busca de CEP (Brasil) ou ZIP code (EUA) para os formulários: endereço, cidade, estado e coordenadas. Público, com limite por IP. */
+case 'cep': {
+  $cep = zipLimpo((string)($_GET['cep'] ?? ($corpo['cep'] ?? '')));
+  if ($cep === '') erro('Digite um CEP do Brasil (8 números) ou um ZIP code dos EUA (5 números).');
+  if (!limite('cep:' . ip(), 60, 600)) erro('Muitas buscas de CEP seguidas. Tente de novo em alguns minutos.', 429); marca('cep:' . ip());
+  $i = cepInfo($cep);
+  if (!$i) erro(cepPais($cep) === 'BR' ? 'CEP não encontrado. Confira os 8 números.' : 'ZIP code não encontrado. Confira os 5 números.', 404);
+  sai(['ok' => true] + $i);
 }
 case 'wallet_cfg': { $c = walletCfg(); sai(['ok' => true, 'apple' => $c['apple'], 'google' => $c['google']]); }
 case 'wallet': {

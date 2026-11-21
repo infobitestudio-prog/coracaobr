@@ -98,7 +98,7 @@
       '<form id="f-cad" class="stack" style="gap:14px" novalidate>' +
       campo("c-nome", "Nome", "text", 'autocomplete="name" required maxlength="60"') +
       campo("c-email", "E-mail", "email", 'autocomplete="email" required maxlength="160" inputmode="email"') +
-      campo("c-zip", "CEP nos EUA (ZIP code)", "text", 'autocomplete="postal-code" required inputmode="numeric" maxlength="10" pattern="[0-9]{5}(-[0-9]{4})?" placeholder="Ex.: 75201"', "Obrigatório. Com ele avisamos de eventos e lugares perto de você. Ainda não mora nos EUA? Use o ZIP de onde vai ficar.") +
+      campo("c-zip", "CEP (Brasil) ou ZIP code (EUA)", "text", 'data-cep autocomplete="postal-code" required inputmode="numeric" maxlength="10" placeholder="CEP (Brasil) ou ZIP (EUA)"', "Obrigatório. Vale CEP do Brasil (8 números) ou ZIP code dos EUA (5 números): o site identifica sozinho e mostra o endereço. Com ele avisamos de eventos e lugares perto de você.") +
       campo("c-senha", "Senha", "password", 'autocomplete="new-password" required minlength="8" maxlength="200"', "Pelo menos 8 caracteres, com letras e números.") +
       campo("c-senha2", "Repita a senha", "password", 'autocomplete="new-password" required maxlength="200"') +
       '<label class="check"><input type="checkbox" id="c-aceite"><span>Li e aceito os <a href="#termos" target="_blank">termos de uso</a> e a <a href="#privacidade" target="_blank">política de privacidade</a>.</span></label>' +
@@ -110,7 +110,7 @@
       var d = { nome: $("#c-nome").value.trim(), email: $("#c-email").value.trim(), zip: $("#c-zip").value.trim(), senha: $("#c-senha").value, ref: window.Diferenciais ? Diferenciais.refIndicacao() : "", aceite: $("#c-aceite").checked };
       if (!d.nome) return msg(m, "Informe seu nome.");
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return msg(m, "Informe um e-mail válido.");
-      if (!/^\d{5}(-?\d{4})?$/.test(d.zip)) return msg(m, "Informe o seu CEP americano (ZIP code com 5 números, ex.: 75201).");
+      if (!(window.Cep ? Cep.valido(d.zip) : /^\d{5}(-?\d{3,4})?$/.test(d.zip))) return msg(m, window.Cep ? Cep.ERRO : "Informe seu CEP (Brasil) ou ZIP code (EUA).");
       if (d.senha.length < 8 || !/[A-Za-z]/.test(d.senha) || !/\d/.test(d.senha)) return msg(m, "A senha precisa ter pelo menos 8 caracteres, com letras e números.");
       if (d.senha !== $("#c-senha2").value) return msg(m, "As duas senhas não são iguais.");
       if (!d.aceite) return msg(m, "Para criar a conta, aceite os termos de uso e a política de privacidade.");
@@ -193,7 +193,7 @@
       '<form id="f-dados" class="stack" style="gap:12px" hidden novalidate>' +
       campo("d-nome", "Nome", "text", 'maxlength="60" value="' + esc(c.nome) + '"') +
       campo("d-email", "E-mail", "email", 'maxlength="160" value="' + esc(c.email) + '"') +
-      campo("d-zip", "CEP nos EUA (ZIP code)", "text", 'maxlength="10" inputmode="numeric" autocomplete="postal-code" value="' + esc(c.zip || "") + '"', c.zipCidade ? "Sua região: " + esc(c.zipCidade) : "Usamos para avisar do que está perto de você.") +
+      campo("d-zip", "CEP (Brasil) ou ZIP code (EUA)", "text", 'data-cep maxlength="10" inputmode="numeric" autocomplete="postal-code" placeholder="CEP (Brasil) ou ZIP (EUA)" value="' + esc(c.zip || "") + '"', c.zipCidade ? "Sua região: " + esc(c.zipCidade) + ". Vale CEP do Brasil ou ZIP dos EUA." : "Vale CEP do Brasil ou ZIP dos EUA. Usamos para avisar do que está perto de você.") +
       campo("d-nova", "Nova senha (deixe em branco para manter)", "password", 'autocomplete="new-password" maxlength="200"') +
       campo("d-atual", "Senha atual (obrigatória para trocar e-mail ou senha)", "password", 'autocomplete="current-password" maxlength="200"') +
       '<p class="auth-msg" id="d-msg" role="alert" hidden></p><div class="row" style="gap:8px"><button class="btn sm" type="submit">Salvar</button>' +
@@ -222,7 +222,7 @@
     f.onsubmit = function (e) {
       e.preventDefault(); var m = $("#d-msg");
       var d = { nome: $("#d-nome").value.trim(), email: $("#d-email").value.trim(), zip: $("#d-zip").value.trim(), senhaNova: $("#d-nova").value, senhaAtual: $("#d-atual").value };
-      if (!/^\d{5}(-?\d{4})?$/.test(d.zip)) return msg(m, "Informe o seu CEP americano (ZIP code com 5 números).");
+      if (!(window.Cep ? Cep.valido(d.zip) : /^\d{5}(-?\d{3,4})?$/.test(d.zip))) return msg(m, window.Cep ? Cep.ERRO : "Informe seu CEP (Brasil) ou ZIP code (EUA).");
       if (d.senhaNova && (d.senhaNova.length < 8 || !/[A-Za-z]/.test(d.senhaNova) || !/\d/.test(d.senhaNova))) return msg(m, "A nova senha precisa ter pelo menos 8 caracteres, com letras e números.");
       ocupa(f, true);
       Store.api("perfil", d).then(function (j) { ocupa(f, false); msg(m, "Dados salvos.", true); if (Store.estado.sessao) Store.estado.sessao.conta = j.conta; Store.estado.nome = j.conta.nome; $("#d-nova").value = ""; $("#d-atual").value = ""; })

@@ -51,7 +51,7 @@
     d.addEventListener("click", function (e) { var b = e.target.closest("[data-ck]"); if (!b) return; consent(b.dataset.ck); d.remove(); if (b.dataset.ck === "sim") carrega(); });
   }
   /* parâmetros de campanha (utm_*, gclid, fbclid) guardados para atribuir cadastro e pagamento */
-  try { var q = new URLSearchParams(location.search), utm = {}; ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid", "fbclid"].forEach(function (k) { if (q.get(k)) utm[k] = q.get(k).slice(0, 120); }); if (Object.keys(utm).length) sessionStorage.setItem("utm", JSON.stringify(utm)); } catch (e) { /* ok */ }
+  try { var q = new URLSearchParams(location.search), u0 = {}; ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid", "fbclid"].forEach(function (k) { if (q.get(k)) u0[k] = q.get(k).slice(0, 120); }); if (Object.keys(u0).length) sessionStorage.setItem("utm", JSON.stringify(u0)); } catch (e) { /* ok */ }
   function utm() { try { return JSON.parse(sessionStorage.getItem("utm") || "{}"); } catch (e) { return {}; } }
   window.addEventListener("hashchange", function () { if (carregado) pagina(); });
   document.addEventListener("click", function (e) {

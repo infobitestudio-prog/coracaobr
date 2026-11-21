@@ -90,7 +90,8 @@
         fld("n-tg", "Telegram", D.telegram, 'placeholder="@usuario ou link t.me"') + fld("n-x", "X (Twitter)", D.x, 'placeholder="@suaempresa"') +
         fld("n-li", "LinkedIn (link)", D.linkedin, 'placeholder="https://linkedin.com/company/…"') + fld("n-site", "Site da empresa", D.site, 'placeholder="https://"') + "</div>") +
       sec(prox(), "endereco", "Endereço e horário", "Quem atende em domicílio pode deixar o endereço em branco.",
-        '<div class="ae-g2">' + fld("n-end", "Endereço", D.endereco, 'autocomplete="street-address" placeholder="Rua, número, cidade, TX"') +
+        '<div class="ae-g2">' + fld("n-cep", "CEP (Brasil) ou ZIP code (EUA)", D.cep || "", 'data-cep placeholder="CEP (Brasil) ou ZIP (EUA)"', "Digite e o endereço aparece sozinho. Depois é só completar o número.") +
+        fld("n-end", "Endereço", D.endereco, 'autocomplete="street-address" placeholder="Rua, número, bairro, cidade"') +
         '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).filter(function (rg) { return rg === D.regiaoGuia || !G.regiaoVisivel || G.regiaoVisivel(rg); }).map(function (rg) { var padrao = (D.bairro && CIDADES.some(function (p) { return p[4] && p[0] === D.bairro; }) ? D.bairro : D.cidade) || (G.cid ? (G.cid().pais === "BR" ? "Anália Franco" : G.cid().principal) : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
         '<div class="field"><span>Horário de atendimento</span>' + Horario.editor(D) + "</div>") +
       sec(prox(), "cardapio", "Cardápio, catálogo e preços", "Cardápio em livreto, tabela de preços ou o link do seu catálogo.",
@@ -148,6 +149,15 @@
       e.target.value = "";
     });
     $("#n-ban").addEventListener("click", function (e) { if (e.target.closest("#n-btira")) { if (D.banner && D.banner.src) removidas.push(D.banner.src); D.banner = null; $("#n-ban").innerHTML = bannerHtml(); } });
+    /* CEP/ZIP: preenche o endereço e escolhe a cidade na lista */
+    var nc = $("#n-cep"); if (nc) nc.addEventListener("cep", function (e) {
+      var o = e.detail, end = $("#n-end"), sel = $("#n-reg"), nn = G.norm || function (s) { return String(s || "").toLowerCase(); };
+      if (end && (!end.value.trim() || end.dataset.auto)) { end.value = o.pais === "BR" ? [o.rua, o.bairro, o.cidade + " - " + o.uf, o.cep].filter(Boolean).join(", ") : o.cidade + ", " + o.uf + " " + o.cep; end.dataset.auto = "1"; }
+      if (sel) { var alvo = nn(o.pais === "BR" ? o.bairro : o.cidade), op = Array.prototype.filter.call(sel.options, function (x) { return nn(x.value) === alvo; })[0]; if (op) sel.value = op.value; }
+      if (end && end.dataset.auto && o.rua) { G.toast("Endereço encontrado. Complete com o número."); try { end.focus(); end.setSelectionRange(o.rua.length, o.rua.length); } catch (er) { /* ok */ } }
+      else if (end && end.dataset.auto) G.toast("Cidade encontrada: " + o.cidade + ", " + o.uf + ". Complete com a rua e o número.");
+    });
+    if ($("#n-end")) $("#n-end").addEventListener("input", function () { delete this.dataset.auto; });
     f.addEventListener("submit", function (e) {
       e.preventDefault(); if (ocupado) return;
       if (!v("n-cat")) { G.toast("Escolha a categoria do seu negócio."); var sc = $("#n-cat"); if (sc) { sc.scrollIntoView({ behavior: "smooth", block: "center" }); sc.focus(); } return; }
@@ -161,7 +171,10 @@
       var cl = v("n-cat-link"); D.catalogo = /^https?:\/\//i.test(cl) ? cl.slice(0, 400) : ""; D.catalogoNome = v("n-cat-nome").slice(0, 24);
       D.endereco = v("n-end"); D.regiaoGuia = reg[3] || "dfw"; if (reg[4]) { D.cidade = reg[4]; D.bairro = reg[0]; D.pais = "Brasil"; D.estado = "SP"; } else D.cidade = reg[0];
       var sem = Horario.lerEditor($("#f-an .hed")); if (sem) sem = sem.map(function (x) { return x || []; }); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; D.horario = sem ? Horario.texto(sem) : (existente ? D.horario : "");
-      if (!existente || !D.lat || D.coordsAprox) { D.lat = reg[1]; D.lng = reg[2]; D.coordsAprox = true; }
+      D.cep = window.Cep ? Cep.normal(v("n-cep")) : v("n-cep");
+      var ach = ($("#n-cep") || {})._cep;
+      if (ach && ach.lat != null && D.cep === ach.cep) { D.lat = ach.lat; D.lng = ach.lng; D.coordsAprox = !ach.rua; if (ach.pais === "BR" && ach.bairro && !D.bairro) D.bairro = ach.bairro; }
+      else if (!existente || !D.lat || D.coordsAprox) { D.lat = reg[1]; D.lng = reg[2]; D.coordsAprox = true; }
       if (document.querySelector("[data-an-etq]")) D.etiquetas = Array.from(document.querySelectorAll("[data-an-etq]")).filter(function (x) { return x.checked; }).map(function (x) { return x.dataset.anEtq; });
       if (D.banner && D.banner.src) D.banner.texto = v("n-btxt");
       D.tipo = "estabelecimento"; D.anunciante = true; if (D.publicado == null) D.publicado = true; D.atualizadoEm = G.hojeISO().slice(0, 7);
@@ -313,7 +326,7 @@
     var nome = (c && c.nome) || (n.ls[0] && n.ls[0].nome) || "Conta", e = n.estado;
     var dado = function (k, v) { return v ? '<div class="ng-dd"><small>' + k + "</small><b>" + esc(v) + "</b></div>" : ""; };
     var sec = '<div class="dk-card dk-flat ng-conta"><div class="ng-ct"><span class="dk-av">' + esc(nome.charAt(0).toUpperCase()) + "</span><div><b>" + esc(nome) + "</b><small>" + esc((c && c.email) || uid) + '</small></div><span class="pill ' + (e.vagas ? "ok" : "warn") + '">' + (e.vagas ? "Anunciante ativo" : "Usuário") + "</span></div>" +
-      '<div class="ng-dds">' + dado("CEP (ZIP)", c && c.zip ? c.zip + (c.zip_cidade ? " · " + c.zip_cidade : "") : "não informado") + dado("Papel", c ? (c.papel === "master" ? "Master" : "Usuário") : "") + dado("Plano", e.txt) + dado("Anúncios", n.ls.length + " criados · " + n.ls.filter(noArDe).length + " no ar") + dado("Criada em", c && c.criado ? dataBR(String(c.criado).slice(0, 10)) : "") + dado("Último acesso", c && c.ultimo ? dataBR(String(c.ultimo).slice(0, 10)) : "") + "</div></div>";
+      '<div class="ng-dds">' + dado("CEP / ZIP", c && c.zip ? c.zip + (c.zip_cidade ? " · " + c.zip_cidade : "") : "não informado") + dado("Papel", c ? (c.papel === "master" ? "Master" : "Usuário") : "") + dado("Plano", e.txt) + dado("Anúncios", n.ls.length + " criados · " + n.ls.filter(noArDe).length + " no ar") + dado("Criada em", c && c.criado ? dataBR(String(c.criado).slice(0, 10)) : "") + dado("Último acesso", c && c.ultimo ? dataBR(String(c.ultimo).slice(0, 10)) : "") + "</div></div>";
     var menu = [{ id: "conta", nome: "Conta", ic: "user", grupo: "", titulo: nome, sub: "Visão do master: tudo o que esta conta vê na área de negócio, com acesso total." }].concat(n.menu);
     n.secoes.conta = sec;
     G.app.innerHTML = Dash.montar({ chave: "an-master", marca: "Visão do master", titulo: nome, avatar: nome.charAt(0).toUpperCase(), menu: menu, secoes: n.secoes, pe: [{ nome: "Voltar ao painel master", ic: "back", href: "#painel" }] });
