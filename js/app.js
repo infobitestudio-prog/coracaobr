@@ -523,6 +523,17 @@
       (chips ? '<span class="c-ch">' + chips + "</span>" : "") +
       '<span class="c-f"><span class="c-lo">' + ic("pin") + esc(onde) + (t ? " · " + t + (l.anunciante ? "" : " de carro") : "") + "</span>" + (l.anunciante ? '<span class="c-cta">Ver anúncio</span>' : "") + "</span></span></a>";
   }
+  /* Banner verificado: foto escolhida pela empresa + selo + título curto + uma frase + botão. Banner pronto (imagem) entra inteiro. */
+  var BANNER_CORES = { verde: "#0B7A35", amarelo: "#F5C400", azul: "#1F6FEB", vermelho: "#D93A3A", preto: "#111" };
+  function bannerFoto(l) { var b = l.banner || {}; return b.src ? Store.urlFoto(b.src) || b.src : ""; }
+  function bannerVerificado(l, i, prev) {
+    var b = l.banner || {}, lz = i ? ' loading="lazy"' : ' fetchpriority="high"';
+    var resumo = String(l.historia || l.descricao || "").replace(/\s+/g, " ").trim(), m = resumo.match(/^.{15,90}?[.!?](\s|$)/);
+    var f = bannerFoto(l) || foto(l), cor = BANNER_CORES[b.cor] || BANNER_CORES.verde, tit = b.titulo || l.nome, fr = b.modo === "gerado" ? (b.frase || "") : (m ? m[0].trim() : resumo.slice(0, 88) + (resumo.length > 88 ? "…" : "")), cta = b.cta || "Ver anúncio";
+    var onde = [CATS[l.categoria] || "", l.bairro || l.cidade || ""].filter(Boolean).join(" · ");
+    return (f ? '<img class="hv-bg" src="' + esc(f) + '" alt="" decoding="async"' + lz + ">" : '<span class="hv-bg hv-bg0"></span>') +
+      '<div class="cap hv" style="--hv:' + cor + '"><div class="wrap"><span class="hv-k">✓ Verificado' + (onde ? " · " + esc(onde) : "") + "</span>" + (prev || i ? '<div class="h1">' : "<h1>") + esc(tit) + (prev || i ? "</div>" : "</h1>") + (fr ? '<p class="hsub">' + esc(fr) + "</p>" : "") + '<span class="hcta hv-cta">' + esc(cta) + ' <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></div>';
+  }
   function linha(l) {
     var f = foto(l), t = tempo(l, "carro");
     return '<a class="lrow nopos" href="#lugar-' + esc(l.id) + '"><span class="th">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") + "</span><span><b>" + esc(l.nome) + "</b><small>" + (l.anunciante ? "Patrocinado · " : "") + esc(CATS[l.categoria] || "") + " · " + esc(regiao(l)) + '</small></span><span class="val num">' + (t || "–") + "<small>de carro</small></span></a>";
@@ -591,40 +602,8 @@
         var d = j.daily, c = { em: Date.now(), agora: j.current || null, dias: d.time.slice(0, 3).map(function (t, i) { return { t: t, c: d.weather_code[i], max: Math.round(d.temperature_2m_max[i]), min: Math.round(d.temperature_2m_min[i]), chuva: d.precipitation_probability_max ? d.precipitation_probability_max[i] : null }; }) };
         CLIMA[ch] = c; try { sessionStorage.setItem(ch, JSON.stringify(c)); } catch (e) { /* ok */ }
         var el = document.querySelector('[data-wx="' + k + '"] .pu-3'); if (el) el.outerHTML = climaDias(c);
-        heroTempo();
       }).catch(function () { delete CLIMA_PEDIDO[ch]; var el = document.querySelector('[data-wx="' + k + '"] .pu-3'); if (el) el.outerHTML = '<span class="pu-3 off">Previsão indisponível agora</span>'; });
     return null;
-  }
-  /* Banner que reage ao tempo de agora: sol, noite, nublado, chuva ou tempestade (raios e trovões), com um aviso se dá para sair.
-     Para ver cada efeito: ?tempo=sol | noite | nublado | chuva | tempestade no endereço. */
-  function tipoTempo(a) {
-    var c = Number(a.weather_code), dia = a.is_day !== 0;
-    if (c >= 95) return "tempestade"; if ((c >= 51 && c <= 67) || (c >= 80 && c <= 82)) return "chuva";
-    if (c === 2 || c === 3 || (c >= 45 && c <= 48) || (c >= 71 && c <= 77)) return "nublado"; return dia ? "sol" : "noite";
-  }
-  var TEMPO_TXT = {
-    sol: ["☀️", "Sol", "Dia bom para sair: parques e passeios ao ar livre."],
-    noite: ["🌙", "Céu limpo", "Noite boa para sair: bares, restaurantes e eventos."],
-    nublado: ["☁️", "Nublado", "Tempo fechado, mas dá para sair. Leve um casaco."],
-    chuva: ["🌧️", "Chuva", "Leve guarda-chuva. Prefira programas cobertos: shoppings, museus e restaurantes."],
-    tempestade: ["⛈️", "Tempestade", "Raios e chuva forte: melhor não sair agora. Evite parques e áreas abertas."]
-  };
-  function heroTempo() {
-    var fx = document.querySelector("#hero .wxfx"), chip = document.querySelector("#hero [data-wxchip]"); if (!fx) return;
-    var teste = ""; try { teste = new URLSearchParams(location.search).get("tempo") || ""; } catch (e) { /* ok */ }
-    var c = climaBusca("cid", cid().lat ? [cid().lat, cid().lng] : [-23.5505, -46.6333]), a = c && c.agora;
-    var tp = TEMPO_TXT[teste] ? teste : a ? tipoTempo(a) : ""; if (!tp) return;
-    fx.className = "wxfx wx-" + tp + " on";
-    if (chip) {
-      var t = TEMPO_TXT[tp].slice(), graus = a && a.temperature_2m != null ? a.temperature_2m : null;
-      if (tp === "nublado" && graus != null) t[2] = graus >= 24 ? "Tempo fechado e abafado, mas dá para sair." : graus <= 16 ? "Tempo fechado e frio: leve um casaco." : "Tempo fechado, mas dá para sair.";
-      if (tp === "sol" && graus != null && graus >= 31) t[2] = "Sol forte: dá para sair, mas use protetor e beba água.";
-      if (tp === "noite" && graus != null && graus <= 14) t[2] = "Noite fria e sem chuva: leve um agasalho.";
-      var temp = a && a.temperature_2m != null ? Math.round(a.temperature_2m) + "° · " : "";
-      chip.innerHTML = '<span class="wxc-e">' + t[0] + '</span><span><b>Agora em ' + esc(cid().principal) + ": " + temp + t[1] + "</b><small>" + t[2] + "</small></span>";
-      chip.href = tp === "chuva" || tp === "tempestade" ? "#busca-gcomer" : tp === "noite" ? "#busca-gcomer" : "#busca-gratis";
-      chip.className = "wxchip wxc-" + tp; chip.hidden = false;
-    }
   }
   function climaDias(c) {
     if (!c) return '<span class="pu-3 carregando"><span></span><span></span><span></span></span>';
@@ -657,27 +636,29 @@
     /* rodízio: patrocinadores e anunciantes da rodada atual (troca a cada 30 min), no mesmo tamanho dos slides com título */
     heroRod = window.Social && Social.rodada ? Social.rodada() : 0;
     var bns = window.Social && Social.rodadaItens && window.Oficiais ? Social.rodadaItens(heroRod).map(function (it) { return { bn: it, h: it.href.replace(/^#/, "") }; }) : [];
-    if (bns.length) slides = bns;   // banner principal: só patrocinadores (as chamadas genéricas só entram se não houver nenhum)
+    /* banner principal: só anúncios com selo Verificado (banner gerado no editor do anúncio). Sem nenhum, uma chamada para anunciar. */
+    var verif = primeiro(ls.filter(function (l) { return window.Pag && Pag.selo && Pag.selo(l) && !l.bannerPausado && (bannerFoto(l) || foto(l)); }));
+    if (verif.length) slides = verif.slice(0, 8).map(function (l) { return { vf: l, h: "lugar-" + l.id }; });
+    else slides = slides.slice(0, 1).map(function (x) { return Object.assign({}, x, { k: "Selo Verificado", t: "Seu negócio verificado aqui.", s: "Anúncios com selo Verificado aparecem neste banner, para todo mundo que abre o guia.", cta: "Quero anunciar", h: "anuncie" }); });
     if (!slides.length) slides = [{ t: cid().principal + " em português.", h: "explorar", g: "tudo" }];
     if (slideAtual >= slides.length) slideAtual = 0;
     var servN = function (c) { return ls.filter(function (l) { return l.categoria === c; }).length; };
     var perto = primeiro(ls.filter(function (l) { return kmDe(l) != null && ["evento", "governo", "transporte", "saude", "comunidade", "servico"].indexOf(l.categoria) < 0; }).sort(function (a, b) { return kmDe(a) - kmDe(b); }).slice(0, 12)).slice(0, 4);
     var ad = adFaixa(false);
     app.innerHTML = '<section class="ph" id="hero">' + slides.map(function (s, i) {
+      if (s.vf) return '<a class="slide hv-s' + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + ": " + esc(s.vf.nome) + '" href="#' + esc(s.h) + '">' + bannerVerificado(s.vf, i) + "</a>";
       if (s.bn) return '<a class="slide bnr bnr-' + esc(s.bn.visual || "foto") + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + ": " + esc(s.bn.nome || s.bn.titulo) + '" href="#' + esc(s.h) + '" style="--c:' + esc(s.bn.cor || "#0BA84A") + '">' + Oficiais.slideHero(s.bn, i) + "</a>";
       return '<a class="slide' + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.post ? postalImg(s.post, i) + credPostal(s.post) : s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.k ? '<span class="kick">' + esc(s.k) + "</span>" : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + (s.s ? '<p class="hsub">' + esc(s.s) + "</p>" : "") + (s.cta ? '<span class="hcta">' + esc(s.cta) + ' <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' : "") + "</div></div>" + "</a>";
     }).join("") +
-      '<div class="wxfx" aria-hidden="true"><i class="wx-sol"></i><i class="wx-est"></i><i class="wx-nv n1"></i><i class="wx-nv n2"></i><i class="wx-nv n3"></i><i class="wx-ch"></i><i class="wx-ch c2"></i><i class="wx-fl"></i><svg class="wx-raio" viewBox="0 0 64 160"><path d="M38 0 10 86h20L18 160 56 62H34L48 0z"/></svg></div>' +
-      '<div class="foot"><div class="wrap"><a class="wxchip" data-wxchip hidden></a><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
-      '<button type="button" class="pchip" data-partida>' + ic("pin") + (Geo.gps ? "Perto de você" : '<span class="pc-pre">Saindo de </span>' + esc(Geo.nome)) + "</button>" +
+      '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="' + (ehBR() ? "Restaurante, parque, evento, dentista…" : "Restaurante brasileiro, passeio grátis, dentista…") + '" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
       (slides.length > 1 ? '<div class="hctl"><button type="button" class="harr" data-dir="-1" aria-label="Slide anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots">' + slides.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-current="' + (i === slideAtual) + '" aria-label="Ir para o slide ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div><button type="button" class="harr" data-dir="1" aria-label="Próximo slide"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>' : "") +
-      "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].filter(function (x) { return !(ehBR() && x[0] === "busca-gbrasileiros"); }).map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
+      "</div></div></div></section>" +
       '<div class="sh"><div class="wrap"><div class="gr"></div>' + painelUtil(ls, cfg) +
       '<nav class="menubar mb-home" aria-label="Categorias">' + Object.keys(GRUPOS).filter(function (g) { return g !== "tudo" && !(ehBR() && g === "brasileiros") && ls.some(GRUPOS[g].f); }).map(function (g) { return '<a class="mb-it" href="#explorar" data-grupo="' + g + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></a>"; }).join("") + '<a class="mb-it" href="#metro">' + ic("train") + "<span>Metrô</span></a>" + '<a class="mb-it" href="#fala-portugues">' + ic("flag") + "<span>Fala PT-BR</span></a>" + '<a class="mb-it" href="#chegada">' + ic("pin") + "<span>Chegada</span></a>" + '<a class="mb-it" href="#temas">' + ic("bell") + "<span>Alertas</span></a>" + '<a class="mb-it" href="#assistente">' + ic("chat") + "<span>Pergunte</span></a>" + '<a class="mb-it" href="#perguntas">' + ic("users") + "<span>Perguntas</span></a>" + '<a class="mb-it" href="#pets">' + ic("heart") + "<span>Pets</span></a>" + '<a class="mb-it" href="#clube">' + ic("star") + "<span>Clube</span></a></nav>" +
       (ls.length ? "" : '<section class="block"><div class="panel"><h3>O guia ainda está vazio</h3><p class="muted">Os lugares aparecem aqui assim que forem cadastrados no <a href="#painel">Painel</a>.</p></div></section>') +
       montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) + "</div></div>";
     $("#busca").addEventListener("submit", function (e) { e.preventDefault(); var tq = $("#q").value.trim(); if (window.Recursos && Recursos.buscar(tq)) return; limpaFiltro(); F.q = tq; location.hash = "explorar"; });
-    var hero = $("#hero"); heroTempo();
+    var hero = $("#hero");
     function vai(i) {
       slideAtual = (i + slides.length) % slides.length;
       Array.from(hero.querySelectorAll(".slide")).forEach(function (s, k) { s.classList.toggle("on", k === slideAtual); s.classList.toggle("ant", k === (slideAtual - 1 + slides.length) % slides.length && slides.length > 2); });
@@ -1309,7 +1290,7 @@
     var im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.semFoto) return;
     im.dataset.semFoto = "1"; im.removeAttribute("srcset"); im.src = FOTO_VAZIA; im.classList.add("sem-foto");
   }, true);
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, ehBR: ehBR, PERFIS: PERFIS, perfilNegocio: perfilNegocio, perfilDe: perfilDe, unidadeDe: unidadeDe, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, bannerVerificado: bannerVerificado, BANNER_CORES: BANNER_CORES, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, ehBR: ehBR, PERFIS: PERFIS, perfilNegocio: perfilNegocio, perfilDe: perfilDe, unidadeDe: unidadeDe, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { sincCidade(); render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;

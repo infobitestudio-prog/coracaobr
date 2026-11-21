@@ -95,7 +95,36 @@
     return (D.fotos || []).map(function (f, i) { return '<figure class="ae-ft' + (i === 0 ? " capa" : "") + '"><img src="' + esc(Store.urlFoto(f.src)) + '" alt="">' + (i === 0 ? "<em>Capa</em>" : '<button type="button" class="ae-cp" data-capa="' + i + '" title="Usar como capa">★</button>') + '<button type="button" class="ae-x" data-tirar="' + i + '" aria-label="Remover foto">×</button></figure>'; }).join("") +
       (D.fotos.length < MAX_FOTOS ? '<label class="ae-add" for="n-file"><span>+</span><small>Adicionar fotos</small></label>' : "");
   }
-  function bannerHtml() { return D.banner && D.banner.src ? '<figure class="ban-prev"><img src="' + esc(Store.urlFoto(D.banner.src)) + '" alt=""><button type="button" id="n-btira" aria-label="Remover banner">×</button></figure>' : '<label class="ae-ban0" for="n-bfile"><b>Enviar banner</b><small>1600 × 640 px · JPG ou PNG</small></label>'; }
+  /* Gerador do banner: a empresa escolhe uma foto (das fotos do anúncio ou envia outra), escreve título, frase e botão, escolhe a cor.
+     O site monta o banner em HTML (sempre nítido e leve). Só aparece no topo quando o anúncio tem o selo Verificado. */
+  function bannerHtml() {
+    var b = D.banner || {}, fotos = (D.fotos || []).filter(function (f) { return f && f.src; }), cores = G.BANNER_CORES || { verde: "#0B7A35" };
+    var sel = b.src || (fotos[0] && fotos[0].src) || "";
+    return '<div class="bg-gen">' +
+      '<div class="bg-prev ph" data-bg-prev>' + bannerPrevHtml() + "</div>" +
+      '<div class="field"><span>1. Foto do banner</span><div class="bg-fs">' + fotos.map(function (f) { return '<button type="button" class="bg-f' + (f.src === sel ? " on" : "") + '" data-bg-foto="' + esc(f.src) + '"><img src="' + esc(Store.urlFoto(f.src, "p")) + '" alt=""></button>'; }).join("") +
+        (b.src && !fotos.some(function (f) { return f.src === b.src; }) ? '<button type="button" class="bg-f on" data-bg-foto="' + esc(b.src) + '"><img src="' + esc(Store.urlFoto(b.src, "p")) + '" alt=""></button>' : "") +
+        '<label class="bg-f bg-up" for="n-bfile">+<small>Enviar foto</small></label></div>' + (fotos.length ? "" : '<small class="muted">Envie as fotos do anúncio lá em cima ou uma foto só para o banner.</small>') + "</div>" +
+      '<div class="ae-g2">' + fld("n-bt-tit", "2. Título (curto)", b.titulo || "", 'maxlength="42" placeholder="' + esc(D.nome || "Nome da empresa") + '"') + fld("n-bt-frase", "3. Frase", b.frase || "", 'maxlength="80" placeholder="Ex.: Feijoada aos sábados, com música ao vivo."') + "</div>" +
+      '<div class="ae-g2"><div class="field"><label for="n-bt-cta">4. Botão</label><select id="n-bt-cta">' + ["Ver anúncio", "Chamar no WhatsApp", "Ver cardápio", "Pedir orçamento", "Agendar horário", "Conhecer"].map(function (x) { return "<option" + ((b.cta || "Ver anúncio") === x ? " selected" : "") + ">" + x + "</option>"; }).join("") + "</select></div>" +
+      '<div class="field"><span>5. Cor do botão</span><div class="bg-cs">' + Object.keys(cores).map(function (k) { return '<button type="button" class="bg-c' + ((b.cor || "verde") === k ? " on" : "") + '" data-bg-cor="' + k + '" style="--c:' + cores[k] + '" aria-label="' + k + '"></button>'; }).join("") + "</div></div></div>" +
+      '<p class="bg-nota">' + (window.Pag && Pag.selo && D.id && Pag.selo(D) ? "✓ Este anúncio tem selo Verificado: o banner aparece no topo do site." : "O banner aparece no topo do site quando o anúncio tem o <b>selo Verificado</b>.") + (b.src || b.titulo ? ' <button type="button" class="linkbtn" id="n-btira">Remover banner</button>' : "") + "</p></div>";
+  }
+  function refazBanner() {
+    var nb = document.getElementById("n-ban"); if (!nb || nb.hidden || !document.getElementById("n-bt-tit")) return;
+    if (D.banner || v("n-bt-tit") || v("n-bt-frase")) { var bd = bannerDados(); if (bd.src && !(D.fotos || []).some(function (f) { return f.src === bd.src; }) && !(D.banner && D.banner.src === bd.src)) bd.src = ((D.fotos || [])[0] || {}).src || ""; D.banner = bd; }
+    nb.innerHTML = bannerHtml();
+  }
+  function bannerDados() {
+    var b = D.banner || {}, on = document.querySelector("[data-bg-foto].on"), cor = document.querySelector("[data-bg-cor].on");
+    return { modo: "gerado", src: on ? on.dataset.bgFoto : (b.src || ((D.fotos || [])[0] || {}).src || ""), titulo: v("n-bt-tit"), frase: v("n-bt-frase"), cta: v("n-bt-cta") || "Ver anúncio", cor: cor ? cor.dataset.bgCor : (b.cor || "verde"), texto: (v("n-bt-tit") || D.nome || "") + (v("n-bt-frase") ? ". " + v("n-bt-frase") : "") };
+  }
+  function bannerPrevHtml() {
+    if (!G.bannerVerificado) return "";
+    var b = document.getElementById("n-bt-tit") ? bannerDados() : Object.assign({ modo: "gerado", src: ((D.fotos || [])[0] || {}).src || "" }, D.banner || {});
+    var l = { nome: v("n-nome") || D.nome || "Nome da sua empresa", categoria: v("n-cat") || D.categoria, bairro: D.bairro, cidade: D.cidade, banner: Object.assign({}, b, { modo: "gerado" }), fotos: D.fotos || [] };
+    return '<div class="slide hv-s on">' + G.bannerVerificado(l, 1, true) + "</div>";
+  }
   function sec(n, id, titulo, sub, corpo) { return '<section class="ae-sec" id="ae-' + id + '"><header><span class="ae-n">' + n + '</span><div><h2>' + titulo + "</h2>" + (sub ? "<p>" + sub + "</p>" : "") + "</div></header>" + corpo + "</section>"; }
   /* Duplicar: novo anúncio com tudo do original (fotos, contatos, redes, horário, cardápio, cupom, endereço);
      ficam de fora o que é só do original: estatísticas, avaliações e fotos do Google, selo/destaque pagos e o banner se não houver vaga. */
@@ -135,8 +164,8 @@
         (window.Recursos && Recursos.on("etiquetas") ? '<fieldset class="ae-etq"><legend>Marque o que vale para o seu negócio</legend><div class="pv-op">' + Recursos.etiquetas().map(function (e) { return '<label class="check"><input type="checkbox" data-an-etq="' + esc(e.id) + '"' + ((D.etiquetas || []).indexOf(e.id) >= 0 ? " checked" : "") + "> " + esc(e.nome) + "</label>"; }).join("") + "</div></fieldset>" : "")) +
       sec(prox(), "fotos", "Fotos", "Até " + MAX_FOTOS + " fotos. A primeira é a capa; toque na estrela para trocar.",
         '<div class="ae-fotos" id="n-fotos">' + fotosHtml() + '</div><input type="file" id="n-file" accept="image/*" multiple hidden><p class="small muted"><b id="n-nf">' + D.fotos.length + "</b> de " + MAX_FOTOS + " fotos · as imagens são reduzidas automaticamente para carregar rápido.</p>") +
-      sec(prox(), "banner", "Banner do carrossel", "Aparece no carrossel da página inicial, em rodízio com os outros anunciantes. Cada pacote inclui 1 banner.",
-        podeBanner ? '<div id="n-ban">' + bannerHtml() + '</div><input type="file" id="n-bfile" accept="image/*" hidden>' + fld("n-btxt", "Texto do banner para leitores de tela", D.banner && D.banner.texto, 'maxlength="120" placeholder="Ex.: Restaurante X, feijoada aos sábados"')
+      sec(prox(), "banner", "Banner do topo do site", "Monte o banner com uma foto sua. Aparece no topo da página inicial, em rodízio, para anúncios com selo Verificado. Cada pacote inclui 1 banner.",
+        podeBanner ? '<div id="n-ban">' + bannerHtml() + '</div><input type="file" id="n-bfile" accept="image/*" hidden><input id="n-btxt" type="hidden">'
           : '<p class="note">Seus banners já estão em uso em outros anúncios. Contrate mais um pacote para ganhar outro banner, ou remova o banner de um anúncio.</p><input type="file" id="n-bfile" hidden><div id="n-ban" hidden></div><input id="n-btxt" type="hidden">') +
       sec(prox(), "contato", "Contato e redes sociais", "Preencha só o que tiver. Cada um vira um botão no anúncio.",
         '<div class="ae-g2">' + fld("n-wa", "WhatsApp (com código do país)", D.whatsapp, 'inputmode="tel" placeholder="+1 214 555 0100"') + fld("n-tel", "Telefone", D.telefone, 'inputmode="tel"') +
@@ -186,7 +215,7 @@
       if (files.length > livres) G.toast("Cada anúncio aceita até " + MAX_FOTOS + " fotos.");
       for (var i = 0; i < Math.min(files.length, livres); i++) {
         try { D.fotos.push({ src: await Store.salvarFoto(files[i]), credito: "" }); } catch (err) { G.toast(err.message || "Não foi possível enviar a foto."); break; }
-        $("#n-fotos").innerHTML = fotosHtml(); $("#n-nf").textContent = D.fotos.length; preview();
+        $("#n-fotos").innerHTML = fotosHtml(); $("#n-nf").textContent = D.fotos.length; preview(); refazBanner();
       }
       e.target.value = "";
     });
@@ -195,14 +224,22 @@
       if (b) { var x = D.fotos.splice(Number(b.dataset.tirar), 1)[0]; if (x) removidas.push(x.src); }
       else if (c) { var y = D.fotos.splice(Number(c.dataset.capa), 1)[0]; D.fotos.unshift(y); }
       else return;
-      this.innerHTML = fotosHtml(); $("#n-nf").textContent = D.fotos.length; preview();
+      this.innerHTML = fotosHtml(); $("#n-nf").textContent = D.fotos.length; preview(); refazBanner();
     });
     $("#n-bfile").addEventListener("change", function (e) {
       var fl = (e.target.files || [])[0]; if (!fl) return;
-      Store.salvarFoto(fl).then(function (src) { if (D.banner && D.banner.src) removidas.push(D.banner.src); D.banner = { src: src, texto: v("n-btxt") }; $("#n-ban").innerHTML = bannerHtml(); }).catch(function (er) { G.toast(er.message || "Não foi possível enviar o banner."); });
+      Store.salvarFoto(fl).then(function (src) { var atual = document.getElementById("n-bt-tit") ? bannerDados() : (D.banner || {}); if (D.banner && D.banner.src && !(D.fotos || []).some(function (f) { return f.src === D.banner.src; })) removidas.push(D.banner.src); D.banner = Object.assign({}, atual, { modo: "gerado", src: src }); $("#n-ban").innerHTML = bannerHtml(); }).catch(function (er) { G.toast(er.message || "Não foi possível enviar o banner."); });
       e.target.value = "";
     });
-    $("#n-ban").addEventListener("click", function (e) { if (e.target.closest("#n-btira")) { if (D.banner && D.banner.src) removidas.push(D.banner.src); D.banner = null; $("#n-ban").innerHTML = bannerHtml(); } });
+    $("#n-ban").addEventListener("click", function (e) {
+      if (e.target.closest("#n-btira")) { if (D.banner && D.banner.src && !(D.fotos || []).some(function (f) { return f.src === D.banner.src; })) removidas.push(D.banner.src); D.banner = null; this.innerHTML = bannerHtml(); return; }
+      var fb = e.target.closest("[data-bg-foto]"), cb = e.target.closest("[data-bg-cor]");
+      if (fb) { this.querySelectorAll("[data-bg-foto]").forEach(function (x) { x.classList.toggle("on", x === fb); }); }
+      if (cb) { this.querySelectorAll("[data-bg-cor]").forEach(function (x) { x.classList.toggle("on", x === cb); }); }
+      if (fb || cb) { var pv = this.querySelector("[data-bg-prev]"); if (pv) pv.innerHTML = bannerPrevHtml(); }
+    });
+    $("#n-ban").addEventListener("input", function () { var pv = this.querySelector("[data-bg-prev]"); if (pv) pv.innerHTML = bannerPrevHtml(); });
+    $("#n-ban").addEventListener("change", function () { var pv = this.querySelector("[data-bg-prev]"); if (pv) pv.innerHTML = bannerPrevHtml(); });
     if (dupInfo) dupInfo.regSel = v("n-reg");
     /* "O que você oferece?": sugerido pela categoria, ajusta os rótulos de preço, o título da lista e a moeda (R$ no Brasil, US$ nos EUA) */
     var ajustaOferta = function () {
@@ -249,14 +286,14 @@
       else if (ach && ach.lat != null && D.cep === ach.cep) { D.lat = ach.lat; D.lng = ach.lng; D.coordsAprox = !ach.rua; if (ach.pais === "BR" && ach.bairro && !D.bairro) D.bairro = ach.bairro; }
       else if (!existente || !D.lat || D.coordsAprox) { D.lat = reg[1]; D.lng = reg[2]; D.coordsAprox = true; }
       if (document.querySelector("[data-an-etq]")) D.etiquetas = Array.from(document.querySelectorAll("[data-an-etq]")).filter(function (x) { return x.checked; }).map(function (x) { return x.dataset.anEtq; });
-      if (D.banner && D.banner.src) D.banner.texto = v("n-btxt");
+      if (document.getElementById("n-bt-tit") && (D.banner || v("n-bt-tit") || v("n-bt-frase"))) { var bd = bannerDados(); D.banner = bd.src ? bd : null; }
       D.tipo = "estabelecimento"; D.anunciante = true; if (D.publicado == null) D.publicado = true; D.atualizadoEm = G.hojeISO().slice(0, 7);
       D.assinatura = Object.assign({ plano: "pacote", status: "ativa" }, D.assinatura || {}, { plano: "pacote" });
       var novo = !existente, nid = D.id;
       if (novo) { nid = Store.idProprio((D.nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 44) || "empresa") + "-" + Date.now().toString(36).slice(-4)); D.donoUid = Store.uid() || ""; D.criadoEm = new Date().toISOString(); }
       ocupado = true; $("#ae-st").textContent = "Salvando…";
       Store.gravar("lugares", nid, D).then(function () {
-        ocupado = false; removidas.filter(function (src) { return !fotoEmUso(src, nid); }).forEach(Store.apagarFoto); D.id = nid; perfil = nid;
+        ocupado = false; removidas.filter(function (src) { return !fotoEmUso(src, nid) && !(D.fotos || []).some(function (f) { return f.src === src; }) && !(D.banner && D.banner.src === src); }).forEach(Store.apagarFoto); D.id = nid; perfil = nid;
         if (novo) { guardaMeu(nid); aviso("novo-anuncio", D, 0); }
         var liberado = window.Pag ? Pag.vagas(Store.uid()) > meusLugares().length - 1 : true;
         G.toast(novo ? (liberado && vagas() ? "Anúncio publicado." : "Anúncio salvo em prévia. Ele entra no ar quando o pacote for confirmado.") : "Anúncio atualizado.");
