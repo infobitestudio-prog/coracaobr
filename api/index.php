@@ -1201,6 +1201,16 @@ case 'abertas_agora': {
   $r = fontesAbertasRobo(hojeDallas(), max(1, min(10, (int)($corpo['quantos'] ?? 5))));
   sai(['ok' => true, 'msg' => $r['feito'] ?: 'Nada para conferir agora.', 'erro' => $r['erro']]);
 }
+/* Importa os 5 mais bem avaliados no Google de cada nicho em cada bairro (regra do projeto: CLAUDE.md).
+   Usa a Google Places API oficial com a chave salva no painel. Não repete lugar que já está no guia. */
+case 'google_importar': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405); @set_time_limit(600);
+  $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
+  if ($gk === '') erro('Salve a chave da Google Places API primeiro (Painel → Atualização diária). Sem ela não há como saber a nota dos lugares.');
+  $r = importaMelhores($gk, (string)($corpo['regiao'] ?? 'spzl'), array_values(array_filter((array)($corpo['bairros'] ?? []))), array_values(array_filter((array)($corpo['nichos'] ?? []))), max(1, min(10, (int)($corpo['porNicho'] ?? 5))));
+  versao('lugares');
+  sai(['ok' => true] + $r);
+}
 case 'chave_google': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
   $k = trim((string)($corpo['chave'] ?? '')); $f = dirname($CFG['db']) . '/GOOGLE-PLACES.key';
@@ -2197,6 +2207,75 @@ function fontesAbertasRobo(string $hoje, int $quantos): array {
   }
   if ($novas) iaGravaSugestoes($sug); if ($auto) versao('lugares');
   return ['feito' => $conf ? "Fontes abertas (site oficial e OpenStreetMap): $conf lugares conferidos" . ($auto ? ", $auto dados preenchidos" : '') . ($novas ? ", $novas sugestões para aprovar" : '') : '', 'erro' => $conf && !$osmOk && $conf >= 5 ? 'OpenStreetMap não respondeu hoje (tenta de novo amanhã).' : ''];
+}
+
+/* ---------- Importação dos mais bem avaliados (Google Places API) ---------- */
+function bairrosRegiao(string $rg): array {
+  return ['spzl' => [
+    'Tatuapé' => [-23.5405, -46.5760, 1400], 'Anália Franco' => [-23.5605, -46.5605, 1000], 'Vila Formosa' => [-23.5680, -46.5440, 1300],
+  ]][$rg] ?? [];
+}
+/* nicho → [tipo do Google, busca, categoria do guia, oferta, mínimo de avaliações, tipo no guia] */
+function nichosImportacao(): array {
+  return [
+    'restaurantes' => ['restaurant', 'restaurante', 'restaurante-brasileiro', 'comida', 30, 'estabelecimento'],
+    'bares' => ['bar', 'bar', 'bar', 'comida', 30, 'estabelecimento'],
+    'padarias-cafes' => ['bakery', 'padaria', 'padaria', 'comida', 30, 'estabelecimento'],
+    'pizzarias' => ['pizza_restaurant', 'pizzaria', 'pizza', 'comida', 30, 'estabelecimento'],
+    'veterinarias' => ['veterinary_care', 'clínica veterinária', 'veterinario', 'servico', 30, 'estabelecimento'],
+    'pet-shops' => ['pet_store', 'pet shop', 'pet', 'produto', 30, 'estabelecimento'],
+    'saloes-barbearias' => ['hair_salon', 'salão de beleza e barbearia', 'cabeleireiro', 'servico', 30, 'estabelecimento'],
+    'shoppings' => ['shopping_mall', 'shopping center', 'compras', 'produto', 100, 'atracao'],
+    'parques' => ['park', 'parque', 'parque', 'ingresso', 100, 'atracao'],
+  ];
+}
+function importaMelhores(string $gk, string $rg, array $bairros, array $nichos, int $por): array {
+  $pdo = banco(); $B = bairrosRegiao($rg); $N = nichosImportacao(); $G = ['spzl' => ['Brasil', 'SP', 'São Paulo']][$rg] ?? ['', '', ''];
+  if (!$B) erro('Região sem bairros definidos para importar.');
+  $bairros = $bairros ?: array_keys($B); $nichos = $nichos ?: array_keys($N);
+  $ja = []; $jaG = [];
+  foreach (lugaresPublicados() as $l) { $ja[iaNorm('nome', (string)($l['nome'] ?? ''))] = 1; if (!empty($l['googlePlaceId'])) $jaG[$l['googlePlaceId']] = 1; }
+  $tem = [];   // quantos já foram importados em cada bairro/nicho: completa até o limite, nunca passa
+  foreach ($pdo->query("SELECT data FROM docs WHERE col = 'lugares'") as $row) { $l = json_decode($row['data'], true); if (!empty($l['googlePlaceId'])) $jaG[$l['googlePlaceId']] = 1; if (!empty($l['nome'])) $ja[iaNorm('nome', (string)$l['nome'])] = 1; if (($l['origem'] ?? '') === 'google-importacao' && ($l['publicado'] ?? true) !== false) { $kk = ($l['bairro'] ?? '') . '|' . ($l['nicho'] ?? ''); $tem[$kk] = ($tem[$kk] ?? 0) + 1; } }
+  $mask = 'places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.nationalPhoneNumber,places.websiteUri,places.regularOpeningHours,places.photos,places.googleMapsUri,places.businessStatus,places.primaryTypeDisplayName,places.editorialSummary';
+  $novos = 0; $res = []; $erros = [];
+  $base = rtrim((string)($GLOBALS['CFG']['places_url'] ?? 'https://places.googleapis.com'), '/');
+  foreach ($bairros as $bn) {
+    if (!isset($B[$bn])) continue; [$la, $lo, $raio] = $B[$bn];
+    foreach ($nichos as $nk) {
+      if (!isset($N[$nk])) continue; [$gt, $busca, $cat, $oferta, $minAv, $tipo] = $N[$nk];
+      $falta = $por - ($tem["$bn|$nk"] ?? 0); if ($falta <= 0) { $res[] = "$bn · $nk: já completo"; continue; }
+      $q = ['textQuery' => $busca . ' em ' . $bn . ', São Paulo', 'includedType' => $gt, 'strictTypeFiltering' => true, 'languageCode' => 'pt-BR', 'regionCode' => 'BR', 'pageSize' => 20,
+            'locationRestriction' => ['rectangle' => ['low' => ['latitude' => $la - $raio / 111000, 'longitude' => $lo - $raio / 102000], 'high' => ['latitude' => $la + $raio / 111000, 'longitude' => $lo + $raio / 102000]]]];
+      $ctx = stream_context_create(['http' => ['method' => 'POST', 'timeout' => 30, 'ignore_errors' => true, 'header' => "Content-Type: application/json\r\nX-Goog-Api-Key: $gk\r\nX-Goog-FieldMask: $mask", 'content' => json_encode($q, JSON_UNESCAPED_UNICODE)]]);
+      $j = json_decode((string)@file_get_contents($base . '/v1/places:searchText', false, $ctx), true);
+      if (!is_array($j)) { $erros[] = "$nk/$bn: sem resposta do Google"; continue; }
+      if (isset($j['error'])) { $erros[] = googleErro($j['error']); break 2; }
+      $cand = array_values(array_filter((array)($j['places'] ?? []), fn($p) => ($p['businessStatus'] ?? 'OPERATIONAL') === 'OPERATIONAL' && (int)($p['userRatingCount'] ?? 0) >= $minAv && !empty($p['rating']) && !isset($jaG[$p['id'] ?? '']) && !isset($ja[iaNorm('nome', (string)($p['displayName']['text'] ?? ''))])));
+      usort($cand, fn($a, $b) => [(float)$b['rating'], (int)$b['userRatingCount']] <=> [(float)$a['rating'], (int)$a['userRatingCount']]);
+      $feitos = 0;
+      foreach (array_slice($cand, 0, $falta) as $p) {
+        $nome = trim((string)($p['displayName']['text'] ?? '')); if ($nome === '' || empty($p['location'])) continue;
+        $id = $rg . '-g-' . trim(substr(preg_replace('/[^a-z0-9]+/', '-', semAcento($nome)), 0, 50), '-') . '-' . substr(md5((string)$p['id']), 0, 4);
+        $site = (string)($p['websiteUri'] ?? ''); $ig = '';
+        if (preg_match('#instagram\.com/([A-Za-z0-9_.]+)#i', $site, $m)) { $ig = $m[1]; $site = ''; }
+        $l = ['id' => $id, 'regiaoGuia' => $rg, 'tipo' => $tipo, 'categoria' => $cat, 'oferta' => $oferta, 'nome' => $nome, 'pais' => $G[0], 'estado' => $G[1], 'cidade' => $G[2], 'bairro' => $bn,
+              'endereco' => preg_replace('/, Brasil$|, Brazil$/', '', (string)($p['formattedAddress'] ?? '')), 'lat' => round((float)$p['location']['latitude'], 6), 'lng' => round((float)$p['location']['longitude'], 6),
+              'googlePlaceId' => (string)$p['id'], 'notaExterna' => ['fonte' => 'Google', 'media' => (float)$p['rating'], 'total' => (int)$p['userRatingCount'], 'link' => (string)($p['googleMapsUri'] ?? ''), 'em' => hojeDallas()],
+              'fotosGoogle' => array_values(array_filter(array_map(fn($f) => ['ref' => (string)($f['name'] ?? ''), 'autor' => $f['authorAttributions'][0]['displayName'] ?? 'Usuário do Google', 'link' => $f['authorAttributions'][0]['uri'] ?? ''], array_slice((array)($p['photos'] ?? []), 0, 10)), fn($f) => $f['ref'] !== '')),
+              'fotos' => [], 'publicado' => true, 'atualizadoEm' => substr(hojeDallas(), 0, 7), 'origem' => 'google-importacao', 'nicho' => $nk];
+        if (!empty($p['nationalPhoneNumber'])) $l['telefone'] = (string)$p['nationalPhoneNumber'];
+        if ($site !== '') $l['site'] = $site; if ($ig !== '') $l['instagram'] = $ig;
+        if (!empty($p['regularOpeningHours']['weekdayDescriptions'])) { $l['horario'] = implode(' · ', $p['regularOpeningHours']['weekdayDescriptions']); $l['horarioFonte'] = 'Google · ' . hojeDallas(); }
+        $tp = (string)($p['primaryTypeDisplayName']['text'] ?? ''); $res0 = trim((string)($p['editorialSummary']['text'] ?? ''));
+        $l['historia'] = $res0 !== '' ? $res0 : (($tp !== '' ? $tp : ucfirst($busca)) . ' em ' . $bn . ', São Paulo.');
+        $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['lugares', $id, json_encode($l, JSON_UNESCAPED_UNICODE), agora()]);
+        $jaG[$p['id']] = 1; $ja[iaNorm('nome', $nome)] = 1; $novos++; $feitos++;
+      }
+      $res[] = "$bn · $nk: $feitos";
+    }
+  }
+  return ['novos' => $novos, 'detalhe' => $res, 'erros' => $erros, 'msg' => $novos ? "$novos lugares importados (os mais bem avaliados no Google)." : ($erros ? $erros[0] : 'Nenhum lugar novo encontrado com nota suficiente.')];
 }
 
 /* ---------- Google Places ---------- */
