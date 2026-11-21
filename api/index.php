@@ -1082,13 +1082,13 @@ case 'clima': {   // previsão de 3 dias (Open-Meteo), guardada 1 hora por local
   if (!$la || !$lo || abs($la) > 90 || abs($lo) > 180) erro('Local inválido.');
   $k = 'clima:' . $la . ',' . $lo; $pdo = banco();
   $st = $pdo->prepare('SELECT v FROM meta WHERE k = ?'); $st->execute([$k]); $c = json_decode((string)$st->fetchColumn(), true);
-  if (!is_array($c) || time() - (int)($c['em'] ?? 0) > 3600) {
+  if (!is_array($c) || empty($c['current']) || time() - (int)($c['em'] ?? 0) > 1800) {
     $base = rtrim((string)($CFG['clima_url'] ?? 'https://api.open-meteo.com'), '/');
-    $j = httpJson($base . '/v1/forecast?latitude=' . $la . '&longitude=' . $lo . '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FSao_Paulo&forecast_days=3', 8);
-    if (!empty($j['daily']['time'])) { $c = ['em' => time(), 'daily' => $j['daily']]; $pdo->prepare('INSERT OR REPLACE INTO meta (k, v) VALUES (?, ?)')->execute([$k, json_encode($c)]); }
+    $j = httpJson($base . '/v1/forecast?latitude=' . $la . '&longitude=' . $lo . '&current=weather_code,temperature_2m,is_day,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=3', 8);
+    if (!empty($j['daily']['time'])) { $c = ['em' => time(), 'daily' => $j['daily'], 'current' => $j['current'] ?? null]; $pdo->prepare('INSERT OR REPLACE INTO meta (k, v) VALUES (?, ?)')->execute([$k, json_encode($c)]); }
     elseif (!is_array($c)) erro('Previsão indisponível agora.', 503);
   }
-  header('Cache-Control: public, max-age=1800'); sai(['ok' => true, 'daily' => $c['daily']]);
+  header('Cache-Control: public, max-age=900'); sai(['ok' => true, 'daily' => $c['daily'], 'current' => $c['current'] ?? null]);
 }
 case 'cep': {
   $cep = zipLimpo((string)($_GET['cep'] ?? ($corpo['cep'] ?? '')));

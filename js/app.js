@@ -583,16 +583,48 @@
   function climaBusca(k, ll) {
     var ch = "clima:" + ll[0].toFixed(2) + "," + ll[1].toFixed(2);
     if (CLIMA[ch] || CLIMA_PEDIDO[ch]) return CLIMA[ch];
-    try { var c = JSON.parse(sessionStorage.getItem(ch) || "null"); if (c && Date.now() - c.em < 3600000) { CLIMA[ch] = c; return c; } } catch (e) { /* ok */ }
+    try { var c = JSON.parse(sessionStorage.getItem(ch) || "null"); if (c && c.agora && Date.now() - c.em < 1800000) { CLIMA[ch] = c; return c; } } catch (e) { /* ok */ }
     CLIMA_PEDIDO[ch] = 1;
-    fetch(st().servidor ? "api/index.php?acao=clima&lat=" + ll[0].toFixed(2) + "&lng=" + ll[1].toFixed(2) : "https://api.open-meteo.com/v1/forecast?latitude=" + ll[0] + "&longitude=" + ll[1] + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FSao_Paulo&forecast_days=3")
+    fetch(st().servidor ? "api/index.php?acao=clima&lat=" + ll[0].toFixed(2) + "&lng=" + ll[1].toFixed(2) : "https://api.open-meteo.com/v1/forecast?latitude=" + ll[0] + "&longitude=" + ll[1] + "&current=weather_code,temperature_2m,is_day,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=3")
       .then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
         if (!j || !j.daily || !j.daily.time) throw 0;
-        var d = j.daily, c = { em: Date.now(), dias: d.time.slice(0, 3).map(function (t, i) { return { t: t, c: d.weather_code[i], max: Math.round(d.temperature_2m_max[i]), min: Math.round(d.temperature_2m_min[i]), chuva: d.precipitation_probability_max ? d.precipitation_probability_max[i] : null }; }) };
+        var d = j.daily, c = { em: Date.now(), agora: j.current || null, dias: d.time.slice(0, 3).map(function (t, i) { return { t: t, c: d.weather_code[i], max: Math.round(d.temperature_2m_max[i]), min: Math.round(d.temperature_2m_min[i]), chuva: d.precipitation_probability_max ? d.precipitation_probability_max[i] : null }; }) };
         CLIMA[ch] = c; try { sessionStorage.setItem(ch, JSON.stringify(c)); } catch (e) { /* ok */ }
         var el = document.querySelector('[data-wx="' + k + '"] .pu-3'); if (el) el.outerHTML = climaDias(c);
+        heroTempo();
       }).catch(function () { delete CLIMA_PEDIDO[ch]; var el = document.querySelector('[data-wx="' + k + '"] .pu-3'); if (el) el.outerHTML = '<span class="pu-3 off">Previsão indisponível agora</span>'; });
     return null;
+  }
+  /* Banner que reage ao tempo de agora: sol, noite, nublado, chuva ou tempestade (raios e trovões), com um aviso se dá para sair.
+     Para ver cada efeito: ?tempo=sol | noite | nublado | chuva | tempestade no endereço. */
+  function tipoTempo(a) {
+    var c = Number(a.weather_code), dia = a.is_day !== 0;
+    if (c >= 95) return "tempestade"; if ((c >= 51 && c <= 67) || (c >= 80 && c <= 82)) return "chuva";
+    if (c === 2 || c === 3 || (c >= 45 && c <= 48) || (c >= 71 && c <= 77)) return "nublado"; return dia ? "sol" : "noite";
+  }
+  var TEMPO_TXT = {
+    sol: ["☀️", "Sol", "Dia bom para sair: parques e passeios ao ar livre."],
+    noite: ["🌙", "Céu limpo", "Noite boa para sair: bares, restaurantes e eventos."],
+    nublado: ["☁️", "Nublado", "Tempo fechado, mas dá para sair. Leve um casaco."],
+    chuva: ["🌧️", "Chuva", "Leve guarda-chuva. Prefira programas cobertos: shoppings, museus e restaurantes."],
+    tempestade: ["⛈️", "Tempestade", "Raios e chuva forte: melhor não sair agora. Evite parques e áreas abertas."]
+  };
+  function heroTempo() {
+    var fx = document.querySelector("#hero .wxfx"), chip = document.querySelector("#hero [data-wxchip]"); if (!fx) return;
+    var teste = ""; try { teste = new URLSearchParams(location.search).get("tempo") || ""; } catch (e) { /* ok */ }
+    var c = climaBusca("cid", cid().lat ? [cid().lat, cid().lng] : [-23.5505, -46.6333]), a = c && c.agora;
+    var tp = TEMPO_TXT[teste] ? teste : a ? tipoTempo(a) : ""; if (!tp) return;
+    fx.className = "wxfx wx-" + tp + " on";
+    if (chip) {
+      var t = TEMPO_TXT[tp].slice(), graus = a && a.temperature_2m != null ? a.temperature_2m : null;
+      if (tp === "nublado" && graus != null) t[2] = graus >= 24 ? "Tempo fechado e abafado, mas dá para sair." : graus <= 16 ? "Tempo fechado e frio: leve um casaco." : "Tempo fechado, mas dá para sair.";
+      if (tp === "sol" && graus != null && graus >= 31) t[2] = "Sol forte: dá para sair, mas use protetor e beba água.";
+      if (tp === "noite" && graus != null && graus <= 14) t[2] = "Noite fria e sem chuva: leve um agasalho.";
+      var temp = a && a.temperature_2m != null ? Math.round(a.temperature_2m) + "° · " : "";
+      chip.innerHTML = '<span class="wxc-e">' + t[0] + '</span><span><b>Agora em ' + esc(cid().principal) + ": " + temp + t[1] + "</b><small>" + t[2] + "</small></span>";
+      chip.href = tp === "chuva" || tp === "tempestade" ? "#busca-gcomer" : tp === "noite" ? "#busca-gcomer" : "#busca-gratis";
+      chip.className = "wxchip wxc-" + tp; chip.hidden = false;
+    }
   }
   function climaDias(c) {
     if (!c) return '<span class="pu-3 carregando"><span></span><span></span><span></span></span>';
@@ -625,7 +657,7 @@
     /* rodízio: patrocinadores e anunciantes da rodada atual (troca a cada 30 min), no mesmo tamanho dos slides com título */
     heroRod = window.Social && Social.rodada ? Social.rodada() : 0;
     var bns = window.Social && Social.rodadaItens && window.Oficiais ? Social.rodadaItens(heroRod).map(function (it) { return { bn: it, h: it.href.replace(/^#/, "") }; }) : [];
-    if (bns.length) { var mist = []; slides.forEach(function (x, i) { mist.push(x); if (bns[i]) mist.push(bns[i]); }); slides = mist.concat(bns.slice(slides.length)); }
+    if (bns.length) slides = bns;   // banner principal: só patrocinadores (as chamadas genéricas só entram se não houver nenhum)
     if (!slides.length) slides = [{ t: cid().principal + " em português.", h: "explorar", g: "tudo" }];
     if (slideAtual >= slides.length) slideAtual = 0;
     var servN = function (c) { return ls.filter(function (l) { return l.categoria === c; }).length; };
@@ -635,7 +667,8 @@
       if (s.bn) return '<a class="slide bnr bnr-' + esc(s.bn.visual || "foto") + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + ": " + esc(s.bn.nome || s.bn.titulo) + '" href="#' + esc(s.h) + '" style="--c:' + esc(s.bn.cor || "#0BA84A") + '">' + Oficiais.slideHero(s.bn, i) + "</a>";
       return '<a class="slide' + (i === slideAtual ? " on" : "") + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " de " + slides.length + '" href="#' + esc(s.h) + '"' + (s.g ? ' data-grupo="' + esc(s.g) + '"' : "") + ">" + (s.post ? postalImg(s.post, i) + credPostal(s.post) : s.l ? heroImg(s.l, i) : "") + '<div class="cap"><div class="wrap">' + (s.k ? '<span class="kick">' + esc(s.k) + "</span>" : "") + (i ? '<div class="h1">' : "<h1>") + esc(s.t) + (i ? "</div>" : "</h1>") + (s.s ? '<p class="hsub">' + esc(s.s) + "</p>" : "") + (s.cta ? '<span class="hcta">' + esc(s.cta) + ' <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' : "") + "</div></div>" + "</a>";
     }).join("") +
-      '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
+      '<div class="wxfx" aria-hidden="true"><i class="wx-sol"></i><i class="wx-est"></i><i class="wx-nv n1"></i><i class="wx-nv n2"></i><i class="wx-nv n3"></i><i class="wx-ch"></i><i class="wx-ch c2"></i><i class="wx-fl"></i><svg class="wx-raio" viewBox="0 0 64 160"><path d="M38 0 10 86h20L18 160 56 62H34L48 0z"/></svg></div>' +
+      '<div class="foot"><div class="wrap"><a class="wxchip" data-wxchip hidden></a><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
       '<button type="button" class="pchip" data-partida>' + ic("pin") + (Geo.gps ? "Perto de você" : '<span class="pc-pre">Saindo de </span>' + esc(Geo.nome)) + "</button>" +
       (slides.length > 1 ? '<div class="hctl"><button type="button" class="harr" data-dir="-1" aria-label="Slide anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots">' + slides.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-current="' + (i === slideAtual) + '" aria-label="Ir para o slide ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div><button type="button" class="harr" data-dir="1" aria-label="Próximo slide"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>' : "") +
       "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].filter(function (x) { return !(ehBR() && x[0] === "busca-gbrasileiros"); }).map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
@@ -644,7 +677,7 @@
       (ls.length ? "" : '<section class="block"><div class="panel"><h3>O guia ainda está vazio</h3><p class="muted">Os lugares aparecem aqui assim que forem cadastrados no <a href="#painel">Painel</a>.</p></div></section>') +
       montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) + "</div></div>";
     $("#busca").addEventListener("submit", function (e) { e.preventDefault(); var tq = $("#q").value.trim(); if (window.Recursos && Recursos.buscar(tq)) return; limpaFiltro(); F.q = tq; location.hash = "explorar"; });
-    var hero = $("#hero");
+    var hero = $("#hero"); heroTempo();
     function vai(i) {
       slideAtual = (i + slides.length) % slides.length;
       Array.from(hero.querySelectorAll(".slide")).forEach(function (s, k) { s.classList.toggle("on", k === slideAtual); s.classList.toggle("ant", k === (slideAtual - 1 + slides.length) % slides.length && slides.length > 2); });
