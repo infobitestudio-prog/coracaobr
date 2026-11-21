@@ -36,7 +36,7 @@
       { id: "banners", nome: "Banners", ic: "image", grupo: "Conteúdo" },
       { id: "anuncios", nome: "Anúncios do site", ic: "grid", grupo: "Conteúdo", sub: "Faixas, cards e popup que aparecem no guia." },
       { id: "parceiros", nome: "Parceiros", ic: "heart", grupo: "Conteúdo" },
-      { id: "novidades", nome: "Novidades e IA", ic: "spark", grupo: "Crescimento", sub: "Assistente com IA, push, patrocínio de seções e arte para Instagram." },
+      { id: "novidades", nome: "Novidades e IA", ic: "spark", grupo: "Crescimento", sub: "IA (Gemini grátis ou Claude): assistente e atualizações do guia; push, patrocínio e arte." },
       { id: "newsletter", nome: "Newsletter", ic: "list", grupo: "Crescimento" },
       { id: "pesquisa", nome: "Pesquisa", ic: "chart", grupo: "Crescimento" },
       { id: "recursos", nome: "Recursos", ic: "grid", grupo: "Crescimento" },

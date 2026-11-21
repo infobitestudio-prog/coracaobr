@@ -567,6 +567,15 @@ footer.fcom .brand-f > span { color: #fff }
 .cep-res { display: block; margin-top: 6px; font-size: .86rem; color: var(--muted, #5A6560); min-height: 0 } .cep-res:empty { display: none }
 .cep-res.ok { color: var(--ink, #0E1311); font-weight: 600 } .cep-res.erro { color: var(--danger, #B3261E) }
 .cz-f { flex-wrap: wrap } .cz-f .cep-res { flex-basis: 100%; order: 3 }
+/* IA no painel: escolha do provedor e sugestões para aprovar */
+.ia-prov { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px }
+.ia-op { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; background: var(--surface) }
+.ia-op:has(input:checked) { border-color: var(--brand, #087A36); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand, #087A36) 18%, transparent) }
+.ia-op input { margin-top: 3px; accent-color: var(--brand, #087A36) } .ia-op span { display: grid; gap: 2px } .ia-op small { color: var(--muted) }
+.ia-robo { padding: 12px 14px; border-radius: 14px; background: var(--bg) } .ia-robo label { display: flex; gap: 8px; align-items: flex-start; flex-wrap: nowrap } .ia-robo label input[type=checkbox] { margin-top: 3px; flex: none }
+.ia-sg { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); flex-wrap: wrap }
+.ia-sg > div:first-child { flex: 1; min-width: 220px; display: grid; gap: 2px } .ia-sg p { margin: 2px 0 } .ia-sg a { word-break: break-word }
+.ia-de { text-decoration: line-through; color: var(--muted) } .ia-para { font-weight: 700; color: var(--brand, #087A36) }
 .wl-passos { margin: 4px 0 6px; padding-left: 18px; display: grid; gap: 6px; line-height: 1.55 } .wl-passos input[type=file] { max-width: 100%; margin-top: 4px }
 .rbars i { display: block; height: 100%; background: var(--sun); border-radius: 9px; transform-origin: left; animation: barx .7s cubic-bezier(.2,.7,.2,1) both }
 /* ---------- reações (❤️ 👍 😐 😢 😡 no lugar das estrelas) ---------- */

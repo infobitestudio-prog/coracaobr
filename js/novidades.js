@@ -390,10 +390,18 @@
     var campo = function (id, rot, val, extra) { return '<div class="field"><label for="' + id + '">' + rot + '</label><input id="' + id + '" value="' + esc(val == null ? "" : val) + '" ' + (extra || "") + "></div>"; };
     var lugares = G.lugares().slice().sort(function (a, b) { return String(a.nome).localeCompare(String(b.nome)); });
     el.innerHTML = '<div class="stack in" style="max-width:920px">' +
-      (servidor() ? '<div class="panel stack" style="gap:12px" id="nv-ia"><h3>Assistente com IA</h3><p class="small muted">O assistente "Pergunte ao CoraçãoBR" responde com os lugares do guia usando o Claude, da Anthropic. Sem a chave, ele responde com a busca do guia.</p><p data-ia-st class="small">Verificando…</p>' +
-        '<form class="row" style="gap:8px" data-ia-form><input type="password" name="chave" autocomplete="off" placeholder="Chave da API da Anthropic (sk-ant-…)" style="flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)"><button class="btn sm" type="submit">Salvar chave</button><button class="btn ghost sm" type="button" data-ia-off>Desligar</button></form>' +
+      (servidor() ? '<div class="panel stack" style="gap:14px" id="nv-ia"><h3>Inteligência artificial · respostas e atualizações</h3><p class="small muted">A IA responde no assistente "Pergunte ao CoraçãoBR" (sempre com os lugares do guia) e, todo dia às 5h, confere horários, telefones e sites e sugere eventos novos. Sem chave, o assistente responde com a busca do guia.</p><p data-ia-st class="small">Verificando…</p>' +
+        '<div class="ia-prov" role="radiogroup" aria-label="Qual IA usar"><label class="ia-op"><input type="radio" name="ia-prov" value="gemini"><span><b>Gemini · Google</b><small>Gratuito (com limite diário). Recomendado.</small></span></label><label class="ia-op"><input type="radio" name="ia-prov" value="claude"><span><b>Claude · Anthropic</b><small>Pago por uso, com cartão.</small></span></label></div>' +
+        '<div class="stack" style="gap:8px" data-ia-box="gemini"><b>Chave do Gemini</b><form class="row" style="gap:8px" data-ia-form="gemini"><input type="password" name="chave" autocomplete="off" placeholder="Cole a chave do Gemini (começa com AIza…)" style="flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)"><button class="btn sm" type="submit">Salvar e testar</button></form>' +
+        '<div class="row" style="gap:8px"><button type="button" class="btn ghost sm" data-ia-teste>Testar a IA agora</button><button type="button" class="btn ghost sm" data-ia-off="gemini">Apagar chave do Gemini</button></div><p class="small" data-ia-res hidden></p>' +
+        '<details class="small" open><summary>Como pegar a chave grátis (2 minutos)</summary><ol class="passos"><li>Abra <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> e entre com uma conta Google.</li><li>Toque em <b>Criar chave de API</b> (Create API key) e aceite os termos.</li><li>Copie a chave (começa com AIza) e cole no campo acima. Ela fica só no servidor e nunca aparece no site.</li></ol><p class="muted">No plano gratuito o Google limita as chamadas por minuto e por dia e pode usar os textos enviados para melhorar os produtos dele. O CoraçãoBR manda só a pergunta e os lugares do guia, sem dados pessoais.</p></details>' +
+        '<details class="small"><summary>Modelo do Gemini (avançado)</summary><form class="row" style="gap:8px;margin-top:8px" data-ia-modg><input name="m" placeholder="gemini-flash-latest" style="flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)"><button class="btn sm ghost" type="submit">Salvar modelo</button></form><p class="muted">Deixe em branco para usar sempre o Flash mais novo (gemini-flash-latest). Se um modelo for aposentado, o site troca sozinho.</p></details></div>' +
+        '<div class="stack" style="gap:8px" data-ia-box="claude" hidden><b>Chave da Anthropic</b><form class="row" style="gap:8px" data-ia-form="claude"><input type="password" name="chave" autocomplete="off" placeholder="Chave da API da Anthropic (sk-ant-…)" style="flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)"><button class="btn sm" type="submit">Salvar chave</button><button class="btn ghost sm" type="button" data-ia-off="claude">Apagar</button></form>' +
         '<div class="field" style="max-width:420px"><label for="nv-mod">Modelo</label><select id="nv-mod" data-ia-mod><option value="claude-opus-5-5">Claude Opus 5.5 (melhor qualidade)</option><option value="claude-sonnet-5-5">Claude Sonnet 5.5 (equilibrado)</option><option value="claude-haiku-5-5">Claude Haiku 5.5 (mais barato)</option></select></div>' +
-        '<details class="small"><summary>Como pegar a chave</summary><ol class="passos"><li>Entre em console.anthropic.com e crie uma conta.</li><li>Em Billing, adicione um cartão e um limite de gasto mensal.</li><li>Em API Keys, crie uma chave e cole aqui. Ela fica só no servidor, nunca aparece no site.</li></ol></details></div>' : "") +
+        '<details class="small"><summary>Como pegar a chave</summary><ol class="passos"><li>Entre em console.anthropic.com e crie uma conta.</li><li>Em Billing, adicione um cartão e um limite de gasto mensal.</li><li>Em API Keys, crie uma chave e cole aqui. Ela fica só no servidor, nunca aparece no site.</li></ol></details></div>' +
+        '<form class="stack ia-robo" style="gap:8px" data-ia-cfg><b>Atualizações automáticas com IA (usa o Gemini)</b><label class="small"><input type="checkbox" name="robo"> Conferir lugares todo dia às 5h: horário, telefone, site e se fechou</label><label class="small">Lugares por dia <input type="number" name="porDia" min="1" max="40" style="width:70px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"> <span class="muted">(o plano gratuito aguenta bem até 20)</span></label><label class="small"><input type="checkbox" name="eventos"> Toda segunda, sugerir eventos novos de cada cidade do guia</label><label class="small"><input type="checkbox" name="aplicar"> Atualizar sozinho telefone, site e horário quando a IA trouxer a fonte (sem isso, tudo fica para você aprovar). Fechar um lugar sempre pede sua aprovação.</label>' +
+        '<div class="row" style="gap:8px"><button class="btn sm" type="submit">Salvar</button><button type="button" class="btn ghost sm" data-ia-robo>Conferir 3 lugares agora</button><button type="button" class="btn ghost sm" data-ia-ev>Buscar eventos agora</button></div><p class="small muted" data-ia-robo-st></p></form>' +
+        '<div class="stack" style="gap:8px" data-ia-sug></div></div>' : "") +
       (servidor() ? '<div class="panel stack" style="gap:12px" id="nv-push"><h3>Notificações no celular</h3><p class="small muted">Quem liga as notificações (página Alertas) recebe o aviso na tela do celular. Toda sexta sai sozinho o aviso dos eventos do fim de semana.</p><p data-push-st class="small">Verificando…</p>' +
         '<form class="stack" style="gap:8px" data-push-form><div class="form2">' + campo("pu-t", "Título", "", 'maxlength="60" required') + campo("pu-u", "Abrir ao tocar (opcional)", "", 'maxlength="200" placeholder="#explorar ou #lugar-..."') + "</div>" + campo("pu-x", "Mensagem", "", 'maxlength="160" required') + '<button class="btn sm" type="submit" style="justify-self:start">Enviar para todos</button></form></div>' : "") +
       '<form class="panel stack" style="gap:12px" id="nv-precos"><h3>Clube e Mural · preços</h3><div class="form2">' + campo("nv-pc", "Clube CoraçãoBR · mensalidade (R$)", c.precoClube || 15, 'type="number" min="1" step="0.01"') + campo("nv-pm", "Destaque no Mural · valor (R$)", c.precoMural || 10, 'type="number" min="1" step="0.01"') + campo("nv-dm", "Destaque no Mural · dias", c.diasMural || 30, 'type="number" min="1" max="90"') + '</div><label class="small"><input type="checkbox" id="nv-fds"' + (c.pushFds !== false ? " checked" : "") + '> Enviar aviso de eventos do fim de semana toda sexta</label><button class="btn sm" type="submit" style="justify-self:start">Salvar</button></form>' +
@@ -404,11 +412,72 @@
       '<div class="panel stack" style="gap:12px"><h3>Arte para o Instagram</h3><p class="small muted">Escolha um lugar ou evento e gere a imagem para postar no Instagram do CoraçãoBR.</p><div class="row" style="gap:8px"><select data-nv-arte style="flex:1;min-width:220px">' + lugares.map(function (l) { return '<option value="' + esc(l.id) + '">' + esc(l.nome) + "</option>"; }).join("") + '</select><button type="button" class="btn sm" data-nv-arte-go>' + ic("insta") + " Criar arte</button></div></div></div>";
     var ia = $("#nv-ia", el);
     if (ia) {
-      var infoIa = function () { Store.api("ia_info").then(function (j) { $("[data-ia-st]", ia).innerHTML = (j.ligado ? '<span class="pill ok">Ligado</span> Respondendo com IA' : '<span class="pill warn">Sem chave</span> Respondendo com a busca do guia') + (j.sdk ? "" : " · biblioteca da IA ausente no servidor") + " · " + j.mes + " perguntas neste mês"; $("[data-ia-mod]", ia).value = j.modelo; }).catch(function () { $("[data-ia-st]", ia).textContent = "Não foi possível consultar."; }); };
+      var CAMPO = { horario: "Horário", telefone: "Telefone", site: "Site", fechado: "Situação", evento: "Evento novo" };
+      var caixa = function (pv) { Array.prototype.forEach.call(ia.querySelectorAll("[data-ia-box]"), function (b) { b.hidden = b.dataset.iaBox !== pv; }); };
+      var sugestoes = function () {
+        var box = $("[data-ia-sug]", ia);
+        Store.api("ia_sugestoes").then(function (j) {
+          var it = j.itens || [];
+          box.innerHTML = '<div class="row" style="justify-content:space-between"><b>Sugestões da IA para aprovar (' + it.length + ")</b>" + (it.length ? '<button type="button" class="link" data-sg-todas>Ignorar todas</button>' : "") + "</div>" +
+            (it.length ? it.slice(0, 60).map(function (x) {
+              var e = x.evento || {}, fts = (x.fontes || []).map(function (f, i) { return '<a href="' + esc(f.url) + '" target="_blank" rel="noopener">' + esc(f.titulo || "fonte " + (i + 1)) + "</a>"; }).join(" · ");
+              return '<div class="ia-sg"><div><small class="muted">' + esc(CAMPO[x.campo] || x.campo) + "</small><b>" + esc(x.nome) + "</b>" +
+                (x.tipo === "evento" ? '<p class="small">' + esc([e.dataInicio, e.quando, e.local || e.endereco, e.cidade].filter(Boolean).join(" · ")) + (e.descricao ? "<br>" + esc(e.descricao) : "") + (e.link ? '<br><a href="' + esc(e.link) + '" target="_blank" rel="noopener">link do evento</a>' : "") + "</p>"
+                  : '<p class="small">' + (x.campo === "fechado" ? "A IA encontrou sinais de que o lugar <b>fechou definitivamente</b>. Aprovar tira o lugar do ar." : '<span class="ia-de">' + esc(x.atual || "(vazio)") + '</span> → <span class="ia-para">' + esc(x.novo) + "</span>") + "</p>") +
+                (x.obs ? '<p class="small muted">' + esc(x.obs) + "</p>" : "") + (fts ? '<p class="small muted">Fontes: ' + fts + "</p>" : '<p class="small muted">Sem fonte citada: confira antes de aprovar.</p>') +
+                '</div><div class="row" style="gap:6px"><button type="button" class="btn sm" data-sg-ok="' + esc(x.id) + '">' + (x.tipo === "evento" ? "Publicar" : "Aplicar") + '</button><button type="button" class="btn ghost sm" data-sg-no="' + esc(x.id) + '">Ignorar</button></div></div>';
+            }).join("") : '<p class="small muted">Nada pendente. Quando a IA achar algo diferente no guia, aparece aqui.</p>');
+        }).catch(function () { box.innerHTML = ""; });
+      };
+      var infoIa = function () {
+        Store.api("ia_info").then(function (j) {
+          var nome = j.provedor === "gemini" ? "Gemini (" + esc(j.modeloGemini) + ")" : j.provedor === "claude" ? "Claude (" + esc(j.modelo) + ")" : "";
+          $("[data-ia-st]", ia).innerHTML = (j.ligado ? '<span class="pill ok">Ligado</span> Respondendo com ' + nome : '<span class="pill warn">Sem chave</span> Respondendo com a busca do guia') + " · " + j.mes + " respostas com IA neste mês" +
+            (j.sugestoes ? ' · <b>' + j.sugestoes + " sugestões para aprovar</b>" : "") + (j.erro && j.erro.msg ? '<br><span class="muted">Último aviso (' + esc(String(j.erro.em || "").slice(0, 10)) + "): " + esc(j.erro.msg) + "</span>" : "") +
+            (j.robo && (j.robo.feito || []).length ? '<br><span class="muted">Última conferência: ' + esc(j.robo.feito.join(" · ")) + "</span>" : "");
+          var pv = j.escolhido || j.provedor || "gemini"; var r = ia.querySelector('[name=ia-prov][value="' + pv + '"]'); if (r) r.checked = true; caixa(pv);
+          $("[data-ia-mod]", ia).value = j.modelo; ia.querySelector("[data-ia-modg] [name=m]").value = j.modeloGemini === "gemini-flash-latest" ? "" : j.modeloGemini;
+          ia.querySelector("[data-ia-form=gemini] [name=chave]").placeholder = j.gemini ? "Chave salva ✓ (cole outra para trocar)" : "Cole a chave do Gemini (começa com AIza…)";
+          ia.querySelector("[data-ia-form=claude] [name=chave]").placeholder = j.claude ? "Chave salva ✓ (cole outra para trocar)" : "Chave da API da Anthropic (sk-ant-…)";
+          var f = $("[data-ia-cfg]", ia), c = j.cfg || {}; f.robo.checked = !!c.robo; f.porDia.value = c.porDia || 8; f.eventos.checked = !!c.eventos; f.aplicar.checked = !!c.aplicar;
+          var rst = $("[data-ia-robo-st]", ia); if (!j.gemini) rst.textContent = "As atualizações automáticas funcionam com a chave do Gemini."; else if (/funcionam com a chave/.test(rst.textContent)) rst.textContent = "";
+        }).catch(function () { $("[data-ia-st]", ia).textContent = "Não foi possível consultar."; });
+        sugestoes();
+      };
       infoIa();
-      $("[data-ia-form]", ia).onsubmit = function (ev) { ev.preventDefault(); var k = this.chave.value.trim(); if (!k) return; Store.api("chave_ia", { chave: k }).then(function (j) { G.toast(j.msg); ia.querySelector("[name=chave]").value = ""; infoIa(); }).catch(function (er) { G.toast(er.message); }); };
-      $("[data-ia-off]", ia).onclick = function () { Store.api("chave_ia", { chave: "", apagar: 1 }).then(function (j) { G.toast(j.msg); infoIa(); }); };
-      $("[data-ia-mod]", ia).onchange = function () { Store.api("chave_ia", { modelo: this.value }).then(function (j) { G.toast(j.msg); }); };
+      Array.prototype.forEach.call(ia.querySelectorAll("[name=ia-prov]"), function (r) { r.onchange = function () { caixa(this.value); Store.api("chave_ia", { usar: this.value }).then(function (j) { G.toast(j.msg); infoIa(); }).catch(function (er) { G.toast(er.message); }); }; });
+      Array.prototype.forEach.call(ia.querySelectorAll("[data-ia-form]"), function (f) {
+        f.onsubmit = function (ev) {
+          ev.preventDefault(); var k = this.chave.value.trim(), bt = this.querySelector("[type=submit]"); if (!k) { G.toast("Cole a chave primeiro."); return; }
+          bt.disabled = true; bt.textContent = "Testando…";
+          Store.api("chave_ia", { provedor: f.dataset.iaForm, chave: k }).then(function (j) { G.toast(j.msg); f.chave.value = ""; infoIa(); }).catch(function (er) { G.toast(er.message); })
+            .then(function () { bt.disabled = false; bt.textContent = f.dataset.iaForm === "gemini" ? "Salvar e testar" : "Salvar chave"; });
+        };
+      });
+      Array.prototype.forEach.call(ia.querySelectorAll("[data-ia-off]"), function (b) { b.onclick = function () { if (!confirm("Apagar a chave salva?")) return; Store.api("chave_ia", { provedor: b.dataset.iaOff, chave: "", apagar: 1 }).then(function (j) { G.toast(j.msg); infoIa(); }).catch(function (er) { G.toast(er.message); }); }; });
+      $("[data-ia-mod]", ia).onchange = function () { Store.api("chave_ia", { provedor: "claude", modelo: this.value }).then(function (j) { G.toast(j.msg); }); };
+      $("[data-ia-modg]", ia).onsubmit = function (ev) { ev.preventDefault(); Store.api("chave_ia", { provedor: "gemini", modeloGemini: this.m.value.trim() }).then(function (j) { G.toast(j.msg); infoIa(); }).catch(function (er) { G.toast(er.message); }); };
+      $("[data-ia-teste]", ia).onclick = function () {
+        var res = $("[data-ia-res]", ia), b = this; b.disabled = true; res.hidden = false; res.textContent = "Perguntando à IA…";
+        Store.api("ia_teste").then(function (j) { res.innerHTML = '<span class="pill ok">Funcionando</span> ' + esc(j.provedor + " · " + j.modelo) + (j.ms ? " · " + (j.ms / 1000).toFixed(1).replace(".", ",") + " s" : "") + "<br>“" + esc(j.texto) + "”"; })
+          .catch(function (er) { res.innerHTML = '<span class="pill warn">Não funcionou</span> ' + esc(er.message); }).then(function () { b.disabled = false; });
+      };
+      $("[data-ia-cfg]", ia).onsubmit = function (ev) { ev.preventDefault(); var f = this; Store.api("chave_ia", { cfg: { robo: f.robo.checked, porDia: Number(f.porDia.value) || 8, eventos: f.eventos.checked, aplicar: f.aplicar.checked } }).then(function (j) { G.toast(j.msg); }).catch(function (er) { G.toast(er.message); }); };
+      $("[data-ia-robo]", ia).onclick = function () {
+        var b = this, st = $("[data-ia-robo-st]", ia); b.disabled = true; st.textContent = "Conferindo com a IA e o Google… (até 1 minuto)";
+        Store.api("ia_robo", { quantos: 3 }).then(function (j) { st.textContent = (j.feito || []).concat(j.erros || []).join(" · ") || "Pronto."; if (Store.sincronizarAgora) Store.sincronizarAgora(); infoIa(); }).catch(function (er) { st.textContent = er.message; }).then(function () { b.disabled = false; });
+      };
+      $("[data-ia-ev]", ia).onclick = function () {
+        var b = this, st = $("[data-ia-robo-st]", ia); b.disabled = true; st.textContent = "Procurando eventos com a IA e o Google em cada cidade… (pode levar 1 minuto)";
+        Store.api("ia_robo", { quantos: 0, eventos: true }).then(function (j) { st.textContent = (j.feito || []).concat(j.erros || []).join(" · ") || "Nenhum evento novo encontrado agora."; infoIa(); }).catch(function (er) { st.textContent = er.message; }).then(function () { b.disabled = false; });
+      };
+      ia.addEventListener("click", function (ev) {
+        var ok = ev.target.closest("[data-sg-ok]"), no = ev.target.closest("[data-sg-no]"), todas = ev.target.closest("[data-sg-todas]");
+        if (!ok && !no && !todas) return;
+        if (todas && !confirm("Ignorar todas as sugestões pendentes?")) return;
+        var corpo = todas ? { acao: "ignorar_todas" } : { acao: ok ? "aplicar" : "ignorar", id: (ok || no).dataset[ok ? "sgOk" : "sgNo"] };
+        Store.api("ia_sugestao", corpo).then(function (j) { G.toast(j.msg); if (Store.sincronizarAgora) Store.sincronizarAgora(); infoIa(); }).catch(function (er) { G.toast(er.message); });
+      });
     }
     var pu = $("#nv-push", el);
     if (pu) {

@@ -1001,6 +1001,11 @@ case 'atualizar_diario': {
     }
     if ($fe) $rel['feito'][] = 'Fotos oficiais otimizadas: ' . $fe;
   } catch (Throwable $e) { $rel['erros'][] = 'Fotos oficiais: ' . $e->getMessage(); }
+  /* atualizações com IA (Gemini, gratuito): confere lugares todo dia e sugere eventos às segundas */
+  if (chaveGemini() !== '' && !empty(iaCfg()['robo'])) {
+    try { $ri = roboIA($hoje, (int)iaCfg()['porDia'], (int)$agoraD->format('N') === 1 && !empty(iaCfg()['eventos'])); $rel['feito'] = array_merge($rel['feito'], $ri['feito']); $rel['erros'] = array_merge($rel['erros'], $ri['erros']); }
+    catch (Throwable $e) { $rel['erros'][] = 'IA: ' . $e->getMessage(); }
+  }
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
   versao('lugares'); versao('config');
   sai(['ok' => true] + $rel);
@@ -1199,7 +1204,7 @@ case 'cron_info': {
   $c = trim((string)@file_get_contents($f)); $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
   sai(['ok' => true, 'url' => baseUrl() . 'api/index.php?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/index.php?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
 }
-/* ===== Assistente "Pergunte ao CoraçãoBR" (Claude, pela API oficial da Anthropic) =====
+/* ===== Assistente "Pergunte ao CoraçãoBR" (Gemini, do Google, no plano gratuito; ou Claude, da Anthropic) =====
    O servidor escolhe os lugares do guia que combinam com a pergunta e manda só esses para a IA, que responde citando os lugares.
    Sem a chave (Painel master → Novidades), responde com a busca do próprio guia. */
 case 'assistente': {
@@ -1212,8 +1217,8 @@ case 'assistente': {
   $nomeReg = ['dfw' => 'Dallas–Fort Worth', 'houston' => 'Houston', 'austin' => 'Austin', 'sanantonio' => 'San Antonio', 'spzl' => 'São Paulo · Zona Leste'][$reg];
   $cands = buscaLugares($perg, 30, $reg);
   $ids = array_map(fn($l) => $l['id'], array_slice($cands, 0, 8));
-  $key = chaveIA();
-  if ($key === '' || !is_file(__DIR__ . '/vendor/autoload.php')) sai(['ok' => true, 'modo' => 'busca', 'resposta' => '', 'ids' => $ids]);
+  $prov = provedorIA();
+  if ($prov === '') sai(['ok' => true, 'modo' => 'busca', 'resposta' => '', 'ids' => $ids]);
   $hist = [];
   foreach (array_slice((array)($corpo['historico'] ?? []), -6) as $h) {
     $r = ($h['role'] ?? '') === 'assistant' ? 'assistant' : 'user'; $t = trim(mb_substr((string)($h['content'] ?? ''), 0, 1500));
@@ -1234,8 +1239,21 @@ case 'assistente': {
     "Para recomendar lugares, eventos ou serviços, use SOMENTE os itens da lista enviada junto com a pergunta e cite cada um com o código entre colchetes duplos, por exemplo [[abc123]]; o site transforma o código em link.\n" .
     "Nunca invente telefone, preço, horário, endereço ou data que não esteja na lista. Se a lista não tiver o que a pessoa procura, diga isso e sugira procurar no Explorar do guia.\n" .
     "Para dúvidas práticas de imigrante (documentos, carteira de motorista, SSN, escola, saúde), dê uma orientação geral e indique o site oficial do órgão; não é assessoria jurídica, médica ou fiscal.\n" .
-    "Não responda a pedidos fora do tema do guia e da vida de brasileiros no Texas.";
+    "Não responda a pedidos fora do tema do guia e da vida de brasileiros no Texas e em São Paulo.";
   $msgs = $hist; $msgs[] = ['role' => 'user', 'content' => "Hoje é " . hojeDallas() . ". A pessoa está vendo o guia de " . $nomeReg . ".\nItens do guia que podem ajudar:\n" . ($linhas ? implode("\n", $linhas) : '(nenhum item encontrado)') . "\n\nPergunta: " . $perg];
+  $validos = array_map(fn($l) => $l['id'], $cands);
+  $responde = function (string $txt) use ($validos) {
+    $citados = []; if (preg_match_all('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', $txt, $mm)) $citados = array_values(array_unique($mm[1]));
+    $txt = preg_replace_callback('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', fn($x) => in_array($x[1], $validos, true) ? $x[0] : '', $txt);
+    iaConta(); sai(['ok' => true, 'modo' => 'ia', 'resposta' => trim($txt), 'ids' => array_values(array_intersect($citados, $validos))]);
+  };
+  if ($prov === 'gemini') {
+    $r = gemini($sistema, $msgs, ['max' => 2048, 'temp' => 0.5]);
+    if (!empty($r['recusa'])) sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'Não posso ajudar com isso aqui. Veja o que o guia encontrou:', 'ids' => $ids]);
+    if (isset($r['erro'])) { iaErro($r); sai(['ok' => true, 'modo' => 'busca', 'resposta' => ((int)($r['cod'] ?? 0) === 429 ? 'O assistente está com muita procura agora. Veja o que o guia encontrou:' : 'O assistente não respondeu agora. Veja o que o guia encontrou:'), 'ids' => $ids]); }
+    $responde($r['texto']);
+  }
+  $key = chaveIA();
   try {
     require_once __DIR__ . '/vendor/autoload.php';
     $cli = new \Anthropic\Client(apiKey: $key);
@@ -1245,11 +1263,7 @@ case 'assistente': {
     );
     if ($m->stopReason === 'refusal') sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'Não posso ajudar com isso aqui. Veja o que o guia encontrou:', 'ids' => $ids]);
     $txt = ''; foreach ($m->content as $b) if ($b->type === 'text') $txt .= $b->text;
-    $citados = []; if (preg_match_all('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', $txt, $mm)) $citados = array_values(array_unique($mm[1]));
-    $validos = array_map(fn($l) => $l['id'], $cands);
-    $txt = preg_replace_callback('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', fn($x) => in_array($x[1], $validos, true) ? $x[0] : '', $txt);
-    $k = 'ia:' . date('Y-m'); banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute([$k]);
-    sai(['ok' => true, 'modo' => 'ia', 'resposta' => trim($txt), 'ids' => array_values(array_intersect($citados, $validos))]);
+    $responde($txt);
   } catch (\Anthropic\Core\Exceptions\RateLimitException $e) {
     sai(['ok' => true, 'modo' => 'busca', 'resposta' => 'O assistente está com muita procura agora. Veja o que o guia encontrou:', 'ids' => $ids]);
   } catch (\Anthropic\Core\Exceptions\APIStatusException $e) {
@@ -1261,16 +1275,74 @@ case 'assistente': {
 }
 case 'chave_ia': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
-  $f = dirname($CFG['db']) . '/ANTHROPIC.key'; $k = trim((string)($corpo['chave'] ?? ''));
-  if (isset($corpo['modelo'])) { $mo = in_array($corpo['modelo'], ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $corpo['modelo'] : 'claude-opus-5-5'; @file_put_contents(dirname($CFG['db']) . '/ANTHROPIC.modelo', $mo); if ($k === '' && empty($corpo['apagar'])) sai(['ok' => true, 'msg' => 'Modelo salvo.']); }
-  if ($k === '' && !empty($corpo['apagar'])) { @unlink($f); sai(['ok' => true, 'msg' => 'Assistente com IA desligado. A busca do guia continua funcionando.']); }
+  $pv = ($corpo['provedor'] ?? 'claude') === 'gemini' ? 'gemini' : 'claude'; $k = trim((string)($corpo['chave'] ?? ''));
+  if (isset($corpo['usar'])) {
+    $u = $corpo['usar'] === 'claude' ? 'claude' : 'gemini'; file_put_contents(iaArq('IA.provedor'), $u);
+    sai(['ok' => true, 'msg' => $u === 'gemini' ? (chaveGemini() !== '' ? 'O site passa a responder com o Gemini.' : 'Gemini escolhido. Agora cole a chave do Gemini.') : (chaveIA() !== '' ? 'O site passa a responder com o Claude.' : 'Claude escolhido. Agora cole a chave da Anthropic.')]);
+  }
+  if (isset($corpo['cfg']) && is_array($corpo['cfg'])) {
+    $n = $corpo['cfg']; $c = ['robo' => !empty($n['robo']), 'porDia' => max(1, min(40, (int)($n['porDia'] ?? 8))), 'aplicar' => !empty($n['aplicar']), 'eventos' => !empty($n['eventos'])];
+    banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('ia:cfg', ?)")->execute([json_encode($c)]);
+    sai(['ok' => true, 'msg' => 'Configuração das atualizações com IA salva.']);
+  }
+  if (isset($corpo['modeloGemini'])) {
+    $m = trim((string)$corpo['modeloGemini']);
+    if ($m === '') @unlink(iaArq('GEMINI.modelo')); elseif (preg_match('/^gemini-[a-z0-9.\-]{2,60}$/', $m)) file_put_contents(iaArq('GEMINI.modelo'), $m); else erro('Nome de modelo inválido (exemplo: gemini-flash-latest).');
+    if ($k === '') sai(['ok' => true, 'msg' => 'Modelo do Gemini salvo: ' . modeloGemini() . '.']);
+  }
+  if ($pv === 'gemini') {
+    if ($k === '' && !empty($corpo['apagar'])) { @unlink(iaArq('GEMINI.key')); if (trim((string)@file_get_contents(iaArq('IA.provedor'))) === 'gemini') @unlink(iaArq('IA.provedor')); sai(['ok' => true, 'msg' => 'Chave do Gemini apagada.' . (provedorIA() === '' ? ' O assistente volta a responder com a busca do guia.' : '')]); }
+    if (!preg_match('/^[A-Za-z0-9_\-]{30,200}$/', $k)) erro('Isso não parece uma chave do Gemini (normalmente começa com AIza e tem 39 caracteres).');
+    $t = gemini('', [['role' => 'user', 'content' => 'Responda apenas: ok']], ['chave' => $k, 'max' => 256, 'timeout' => 25]);
+    if (isset($t['erro']) && empty($t['recusa']) && (int)($t['cod'] ?? 0) !== 429) erro(iaErroAmigavel($t));
+    file_put_contents(iaArq('GEMINI.key'), $k); @chmod(iaArq('GEMINI.key'), 0600); file_put_contents(iaArq('IA.provedor'), 'gemini');
+    sai(['ok' => true, 'msg' => (int)($t['cod'] ?? 0) === 429 ? 'Chave salva. O limite gratuito do Gemini está cheio agora; ele volta sozinho.' : 'Chave do Gemini salva e testada (' . ($t['modelo'] ?? modeloGemini()) . '). O assistente já responde com o Gemini.']);
+  }
+  $f = iaArq('ANTHROPIC.key');
+  if (isset($corpo['modelo'])) { $mo = in_array($corpo['modelo'], ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $corpo['modelo'] : 'claude-opus-5-5'; @file_put_contents(iaArq('ANTHROPIC.modelo'), $mo); if ($k === '' && empty($corpo['apagar'])) sai(['ok' => true, 'msg' => 'Modelo salvo.']); }
+  if ($k === '' && !empty($corpo['apagar'])) { @unlink($f); if (trim((string)@file_get_contents(iaArq('IA.provedor'))) === 'claude') @unlink(iaArq('IA.provedor')); sai(['ok' => true, 'msg' => 'Chave da Anthropic apagada.' . (provedorIA() === '' ? ' O assistente volta a responder com a busca do guia.' : '')]); }
   if (!preg_match('/^sk-ant-[A-Za-z0-9_\-]{20,300}$/', $k)) erro('Isso não parece uma chave da Anthropic (começa com sk-ant-).');
-  file_put_contents($f, $k); @chmod($f, 0600);
-  sai(['ok' => true, 'msg' => 'Chave salva no servidor. O assistente já responde com IA.']);
+  file_put_contents($f, $k); @chmod($f, 0600); file_put_contents(iaArq('IA.provedor'), 'claude');
+  sai(['ok' => true, 'msg' => 'Chave da Anthropic salva no servidor. O assistente já responde com o Claude.']);
 }
 case 'ia_info': {
-  exigeMaster();
-  sai(['ok' => true, 'ligado' => chaveIA() !== '', 'sdk' => is_file(__DIR__ . '/vendor/autoload.php'), 'modelo' => modeloIA(), 'mes' => (int)banco()->query("SELECT v FROM meta WHERE k = 'ia:" . date('Y-m') . "'")->fetchColumn()]);
+  exigeMaster(); $pdo = banco();
+  sai(['ok' => true, 'provedor' => provedorIA(), 'escolhido' => trim((string)@file_get_contents(iaArq('IA.provedor'))), 'ligado' => provedorIA() !== '', 'gemini' => chaveGemini() !== '', 'claude' => chaveIA() !== '',
+    'sdk' => is_file(__DIR__ . '/vendor/autoload.php'), 'modelo' => modeloIA(), 'modeloGemini' => modeloGemini(), 'cfg' => iaCfg(),
+    'mes' => (int)$pdo->query("SELECT v FROM meta WHERE k = 'ia:" . date('Y-m') . "'")->fetchColumn(),
+    'erro' => json_decode((string)$pdo->query("SELECT v FROM meta WHERE k = 'ia:erro'")->fetchColumn(), true),
+    'robo' => json_decode((string)$pdo->query("SELECT v FROM meta WHERE k = 'ia:robo'")->fetchColumn(), true),
+    'sugestoes' => count(array_filter(iaSugestoes(), fn($x) => ($x['status'] ?? '') === 'pendente'))]);
+}
+case 'ia_teste': {
+  exigeMaster(); $t0 = microtime(true); $pv = provedorIA();
+  if ($pv === '') erro('Nenhuma chave de IA cadastrada ainda.');
+  if ($pv === 'gemini') {
+    $r = gemini('', [['role' => 'user', 'content' => 'Em uma frase curta e simpática em português do Brasil, diga que o assistente do CoraçãoBR está funcionando.']], ['max' => 400, 'timeout' => 30]);
+    if (isset($r['erro'])) { iaErro($r); erro(iaErroAmigavel($r)); }
+    sai(['ok' => true, 'provedor' => 'Gemini', 'modelo' => $r['modelo'], 'texto' => $r['texto'], 'ms' => (int)((microtime(true) - $t0) * 1000)]);
+  }
+  sai(['ok' => true, 'provedor' => 'Claude', 'modelo' => modeloIA(), 'texto' => 'Chave da Anthropic cadastrada.', 'ms' => 0]);
+}
+/* Robô com IA, na hora (a equipe toca em "Conferir agora"): confere poucos lugares para mostrar o resultado sem esperar as 5h. */
+case 'ia_robo': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405); @set_time_limit(300);
+  if (chaveGemini() === '') erro('As atualizações com IA usam o Gemini. Cole a chave do Gemini primeiro.');
+  $r = roboIA(hojeDallas(), max(0, min(5, (int)($corpo['quantos'] ?? 3))), !empty($corpo['eventos']));
+  sai(['ok' => true] + $r);
+}
+case 'ia_sugestoes': { exigeMaster(); sai(['ok' => true, 'itens' => array_values(array_filter(iaSugestoes(), fn($x) => ($x['status'] ?? '') === 'pendente'))]); }
+case 'ia_sugestao': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  $acao = (string)($corpo['acao'] ?? ''); $lista = iaSugestoes(); $feitos = 0;
+  foreach ($lista as &$sg) {
+    if (($sg['status'] ?? '') !== 'pendente' || ($acao !== 'ignorar_todas' && ($sg['id'] ?? '') !== ($corpo['id'] ?? ''))) continue;
+    if ($acao === 'aplicar') { if (!iaAplica($sg)) erro('Não deu para aplicar: o lugar não existe mais.'); $sg['status'] = 'aplicada'; }
+    else { $sg['status'] = 'ignorada'; }
+    $sg['em'] = agora(); $feitos++;
+  }
+  unset($sg); iaGravaSugestoes($lista); if ($feitos) { versao('lugares'); }
+  sai(['ok' => true, 'msg' => $acao === 'aplicar' ? 'Aplicado no guia.' : ($acao === 'ignorar_todas' ? "$feitos sugestões ignoradas." : 'Sugestão ignorada.')]);
 }
 /* ===== Notificações no celular (Web Push com VAPID, sem conteúdo no envio: o aparelho busca a última mensagem) ===== */
 case 'push_chave': { sai(['ok' => true, 'chave' => vapid()['pub']]); }
@@ -1357,7 +1429,7 @@ case 'diagnostico': {
   $o['uploadsGravavel'] = is_dir($up) && is_writable($up);
   if (master()) {
     $g = (array)(configDoc('geral') ?? []); $mk = (array)($g['marketing'] ?? []);
-    $o['master'] = ['pixAuto' => mpToken() !== '', 'ia' => chaveIA() !== '', 'google' => (trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents($dir . '/GOOGLE-PLACES.key'))) !== '',
+    $o['master'] = ['pixAuto' => mpToken() !== '', 'ia' => provedorIA() !== '', 'iaProvedor' => provedorIA(), 'google' => (trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents($dir . '/GOOGLE-PLACES.key'))) !== '',
       'cron' => is_file($dir . '/CHAVE-CRON.txt'), 'push' => (int)banco()->query("SELECT COUNT(*) FROM docs WHERE col = 'push'")->fetchColumn(),
       'ga4' => !empty($mk['ga4']), 'gtm' => !empty($mk['gtm']), 'ads' => !empty($mk['ads']), 'pixel' => !empty($mk['pixel']), 'gsc' => (string)($mk['gsc'] ?? ''),
       'emailOficial' => (string)($CFG['email_oficial'] ?? ''), 'pixChave' => chavePix((string)((array)($g['pagamentos'] ?? []))['pix'] ?? '')];
@@ -1676,6 +1748,161 @@ function envia(string $para, string $assunto, string $miolo, string $token): boo
 }
 
 /* ---------- assistente: chave, modelo e busca dos lugares que combinam com a pergunta ---------- */
+/* ===== IA: Gemini (Google, plano gratuito) ou Claude (Anthropic). As chaves ficam só no servidor (pasta dados/), nunca no site. ===== */
+function iaArq(string $n): string { global $CFG; return dirname($CFG['db']) . '/' . $n; }
+function chaveGemini(): string { global $CFG; $k = trim((string)($CFG['gemini_key'] ?? '')); if ($k === '') $k = trim((string)@file_get_contents(iaArq('GEMINI.key'))); return $k; }
+function modeloGemini(): string { $m = trim((string)@file_get_contents(iaArq('GEMINI.modelo'))); return preg_match('/^gemini-[a-z0-9.\-]{2,60}$/', $m) ? $m : 'gemini-flash-latest'; }
+function provedorIA(): string {
+  $p = trim((string)@file_get_contents(iaArq('IA.provedor'))); $g = chaveGemini() !== ''; $c = chaveIA() !== '' && is_file(__DIR__ . '/vendor/autoload.php');
+  if ($p === 'claude' && $c) return 'claude'; if ($p === 'gemini' && $g) return 'gemini';
+  return $g ? 'gemini' : ($c ? 'claude' : '');
+}
+function iaCfg(): array { $j = json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'ia:cfg'")->fetchColumn(), true); return array_merge(['robo' => true, 'porDia' => 8, 'aplicar' => false, 'eventos' => true], is_array($j) ? $j : []); }
+function iaConta(): void { banco()->prepare("INSERT INTO meta (k, v) VALUES (?, '1') ON CONFLICT(k) DO UPDATE SET v = CAST(v AS INTEGER) + 1")->execute(['ia:' . date('Y-m')]); }
+function iaErro(array $r): void { error_log('[coracaobr] IA: ' . ($r['erro'] ?? '')); banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('ia:erro', ?)")->execute([json_encode(['msg' => iaErroAmigavel($r), 'em' => agora()], JSON_UNESCAPED_UNICODE)]); }
+/* Chamada à API do Gemini (REST). msgs: [['role' => 'user'|'assistant', 'content' => '...']]. op: busca (Google Search), max, temp, timeout, chave, modelo. */
+function gemini(string $sistema, array $msgs, array $op = []): array {
+  $k = (string)($op['chave'] ?? chaveGemini()); if ($k === '') return ['erro' => 'Sem chave do Gemini.', 'cod' => 0];
+  $conts = []; foreach ($msgs as $m) $conts[] = ['role' => ($m['role'] ?? '') === 'assistant' ? 'model' : 'user', 'parts' => [['text' => (string)$m['content']]]];
+  $corpo = ['contents' => $conts, 'generationConfig' => ['temperature' => $op['temp'] ?? 0.4, 'maxOutputTokens' => $op['max'] ?? 2048]];
+  if ($sistema !== '') $corpo['systemInstruction'] = ['parts' => [['text' => $sistema]]];
+  if (!empty($op['busca'])) $corpo['tools'] = [['google_search' => new stdClass()]];
+  $ult = ['erro' => 'Sem resposta do Gemini.', 'cod' => 0];
+  foreach (array_values(array_unique([(string)($op['modelo'] ?? modeloGemini()), 'gemini-flash-latest', 'gemini-2.5-flash'])) as $mo) {
+    $ctx = stream_context_create(['http' => ['method' => 'POST', 'timeout' => $op['timeout'] ?? 40, 'ignore_errors' => true, 'header' => "Content-Type: application/json\r\nx-goog-api-key: $k", 'content' => json_encode($corpo, JSON_UNESCAPED_UNICODE)]]);
+    $r = @file_get_contents(rtrim((string)($GLOBALS['CFG']['gemini_url'] ?? 'https://generativelanguage.googleapis.com'), '/') . '/v1beta/models/' . rawurlencode($mo) . ':generateContent', false, $ctx);
+    $hs = function_exists('http_get_last_response_headers') ? (http_get_last_response_headers() ?? []) : ($http_response_header ?? []);
+    $cod = 0; foreach ($hs as $h) if (preg_match('#^HTTP/\S+\s+(\d{3})#', (string)$h, $mm)) $cod = (int)$mm[1];
+    $j = $r ? json_decode($r, true) : null;
+    if (!is_array($j)) { $ult = ['erro' => 'Sem conexão com o Gemini.', 'cod' => $cod]; continue; }
+    if (isset($j['error'])) {
+      $ult = ['erro' => (string)($j['error']['message'] ?? 'erro'), 'cod' => (int)($j['error']['code'] ?? $cod), 'status' => (string)($j['error']['status'] ?? '')];
+      if ($ult['cod'] === 404 || $ult['status'] === 'NOT_FOUND') continue;   // modelo aposentado: tenta o próximo
+      return $ult;
+    }
+    $c = $j['candidates'][0] ?? null; $txt = '';
+    foreach (($c['content']['parts'] ?? []) as $pt) if (empty($pt['thought']) && isset($pt['text'])) $txt .= $pt['text'];
+    $fontes = []; foreach (($c['groundingMetadata']['groundingChunks'] ?? []) as $g) if (!empty($g['web']['uri'])) $fontes[] = ['url' => (string)$g['web']['uri'], 'titulo' => (string)($g['web']['title'] ?? '')];
+    $recusa = ($c['finishReason'] ?? '') === 'SAFETY' || isset($j['promptFeedback']['blockReason']);
+    if ($txt === '' && $recusa) return ['erro' => 'recusa', 'cod' => 200, 'recusa' => true];
+    return ['texto' => trim($txt), 'fontes' => $fontes, 'modelo' => $mo, 'fim' => (string)($c['finishReason'] ?? '')];
+  }
+  return $ult;
+}
+function iaErroAmigavel(array $r): string {
+  $c = (int)($r['cod'] ?? 0); $s = (string)($r['status'] ?? ''); $m = (string)($r['erro'] ?? '');
+  if (stripos($m, 'API key not valid') !== false || stripos($m, 'API_KEY_INVALID') !== false) return 'A chave do Gemini não é válida. Gere outra em aistudio.google.com/apikey e cole de novo.';
+  if ($c === 429 || $s === 'RESOURCE_EXHAUSTED') return 'O limite gratuito do Gemini acabou por agora. Ele volta sozinho (por minuto e por dia).';
+  if ($c === 403 || $s === 'PERMISSION_DENIED') return 'O Google recusou a chave (permissão). Confira se a Gemini API está ativa no projeto da chave.';
+  if ($s === 'FAILED_PRECONDITION') return 'O plano gratuito do Gemini não está disponível para esta conta ou região. Veja o aviso em aistudio.google.com.';
+  if ($m === 'Sem conexão com o Gemini.') return 'O servidor não conseguiu falar com o Gemini agora. Tente de novo em alguns minutos.';
+  return 'O Gemini não respondeu: ' . mb_substr($m, 0, 160);
+}
+/* ----- sugestões do robô com IA (só o master vê; ficam no banco, fora das coleções públicas) ----- */
+function iaSugestoes(): array { $j = json_decode((string)banco()->query("SELECT v FROM meta WHERE k = 'ia:sugestoes'")->fetchColumn(), true); return is_array($j) ? $j : []; }
+function iaGravaSugestoes(array $l): void {
+  $pend = array_values(array_filter($l, fn($x) => ($x['status'] ?? '') === 'pendente')); $resto = array_values(array_filter($l, fn($x) => ($x['status'] ?? '') !== 'pendente'));
+  $l = array_merge(array_slice($pend, -300), array_slice($resto, -400));
+  banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('ia:sugestoes', ?)")->execute([json_encode($l, JSON_UNESCAPED_UNICODE)]);
+}
+function iaNorm(string $c, string $v): string {
+  $v = mb_strtolower(trim($v));
+  if ($c === 'telefone') return preg_replace('/\D/', '', $v);
+  if ($c === 'site') return rtrim(preg_replace('#^https?://(www\.)?#', '', $v), '/');
+  return preg_replace('/[^a-z0-9]/', '', semAcento($v));
+}
+function iaJson(string $t) { if (preg_match('/```(?:json)?\s*([\s\S]*?)```/', $t, $m)) $t = $m[1]; $i = strcspn($t, '[{'); $t = substr($t, $i); $j = json_decode(trim($t), true); if ($j === null && preg_match('/[\[{][\s\S]*[\]}]/', $t, $m)) $j = json_decode($m[0], true); return $j; }
+function iaAplica(array $sg): bool {
+  $pdo = banco();
+  if (($sg['tipo'] ?? '') === 'evento') {
+    $e = $sg['evento'] ?? []; $id = 'ev-ia-' . preg_replace('/[^a-z0-9]/', '', (string)($sg['regiao'] ?? 'dfw')) . '-' . trim(substr(preg_replace('/[^a-z0-9]+/', '-', semAcento((string)($e['nome'] ?? 'evento'))), 0, 50), '-') . '-' . preg_replace('/\D/', '', (string)($e['dataInicio'] ?? ''));
+    $l = ['id' => $id, 'tipo' => 'atracao', 'categoria' => 'evento', 'regiaoGuia' => (string)($sg['regiao'] ?? 'dfw'), 'nome' => (string)($e['nome'] ?? ''), 'dataInicio' => (string)($e['dataInicio'] ?? ''), 'dataFim' => (string)($e['dataFim'] ?? ($e['dataInicio'] ?? '')),
+      'quando' => (string)($e['quando'] ?? ''), 'endereco' => (string)($e['endereco'] ?? ''), 'cidade' => (string)($e['cidade'] ?? ''), 'site' => (string)($e['link'] ?? ''), 'historia' => (string)($e['descricao'] ?? ''),
+      'fonteIA' => array_slice((array)($sg['fontes'] ?? []), 0, 3), 'fotos' => [], 'publicado' => true, 'atualizadoEm' => substr(hojeDallas(), 0, 7), 'origem' => 'ia'];
+    $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute(['lugares', $id, json_encode($l, JSON_UNESCAPED_UNICODE), agora()]);
+    return true;
+  }
+  $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $st->execute([(string)($sg['lugarId'] ?? '')]); $l = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($l)) return false;
+  $c = (string)($sg['campo'] ?? ''); $novo = (string)($sg['novo'] ?? ''); $hoje = hojeDallas();
+  if ($c === 'fechado') { $l['publicado'] = false; $l['fechadoIA'] = $hoje; }
+  elseif ($c === 'horario') { $l['horario'] = $novo; unset($l['horas']); $l['horarioFonte'] = 'IA (Gemini, com busca no Google) · ' . $hoje; }
+  elseif (in_array($c, ['telefone', 'site'], true)) $l[$c] = $novo;
+  $l['atualizadoEm'] = substr($hoje, 0, 7);
+  $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($l, JSON_UNESCAPED_UNICODE), agora(), (string)$sg['lugarId']]);
+  return true;
+}
+/* Robô com IA (Gemini + busca no Google): confere horário, telefone, site e se o lugar fechou; às segundas sugere eventos novos.
+   O que ele acha vira sugestão para o master aprovar (ou é aplicado sozinho, se a opção estiver ligada e houver fonte). Fechar um lugar sempre pede aprovação. */
+function roboIA(string $hoje, int $quantos, bool $eventos): array {
+  $pdo = banco(); $cfg = iaCfg(); $feito = []; $erros = []; $sug = iaSugestoes(); $novas = 0; $aplic = 0; $conf = 0;
+  $assin = []; foreach ($sug as $x) $assin[($x['lugarId'] ?? $x['evento']['nome'] ?? '') . '|' . ($x['campo'] ?? 'evento') . '|' . iaNorm((string)($x['campo'] ?? ''), (string)($x['novo'] ?? ($x['evento']['dataInicio'] ?? '')))] = 1;
+  $salvaL = function (string $id, array $l) use ($pdo) { $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($l, JSON_UNESCAPED_UNICODE), agora(), $id]); };
+  $fila = []; $nomes = [];
+  foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) {
+    $l = json_decode($row['data'], true); if (!is_array($l)) continue; $nomes[iaNorm('nome', (string)($l['nome'] ?? ''))] = 1;
+    if (($l['publicado'] ?? true) === false || !empty($l['demo']) || !empty($l['_dono']) || ($l['categoria'] ?? '') === 'evento') continue;
+    $fila[] = [$row['id'], $l, (string)($l['iaConferidoEm'] ?? '')];
+  }
+  usort($fila, fn($a, $b) => strcmp($a[2], $b[2]));
+  $sis = 'Você confere dados de lugares para um guia de viagem. Seja factual: use só o que encontrar em fontes confiáveis e atuais (site oficial, Google Maps, prefeitura). Nunca invente.';
+  foreach (array_slice($fila, 0, $quantos) as $i => [$id, $l]) {
+    if ($i) sleep(5);   // plano gratuito: poucas chamadas por minuto
+    $onde = trim((string)($l['endereco'] ?? '')) ?: trim(($l['bairro'] ?? '') . ', ' . ($l['cidade'] ?? '') . ', ' . ($l['estado'] ?? 'TX'), ', ');
+    $pr = "Pesquise as informações ATUAIS deste lugar:\nNome: " . ($l['nome'] ?? '') . "\nEndereço: $onde\nSite no guia: " . (($l['site'] ?? '') ?: '-') . "\nTelefone no guia: " . (($l['telefone'] ?? '') ?: '-') .
+      "\nHorário no guia: " . mb_substr((string)(($l['horario'] ?? '') ?: '-'), 0, 300) . "\n\nResponda SOMENTE com um JSON, sem nenhum texto fora dele:\n" .
+      '{"encontrado": true ou false, "fechadoDefinitivo": true ou false, "horario": "horário da semana em português, ex.: Seg a sex 9h–18h · Sáb 10h–14h · Dom fechado", "telefone": "", "site": "https://...", "observacao": "frase curta"}' .
+      "\nDeixe o campo vazio (texto vazio) quando não tiver certeza.";
+    $r = gemini($sis, [['role' => 'user', 'content' => $pr]], ['busca' => true, 'max' => 2048, 'temp' => 0.1, 'timeout' => 60]);
+    if (isset($r['erro'])) { if (empty($r['recusa'])) { iaErro($r); $erros[] = 'IA: ' . iaErroAmigavel($r); } if ((int)($r['cod'] ?? 0) === 429 || (int)($r['cod'] ?? 0) === 400 || (int)($r['cod'] ?? 0) === 403) break; continue; }
+    $conf++; $l['iaConferidoEm'] = $hoje; $j = iaJson($r['texto']); $fontes = array_slice($r['fontes'], 0, 3);
+    if (is_array($j) && !empty($j['encontrado'])) {
+      $mud = [];
+      if (!empty($j['fechadoDefinitivo'])) $mud['fechado'] = ['', 'Fechou definitivamente'];
+      foreach (['horario', 'telefone', 'site'] as $c) {
+        $v = trim((string)($j[$c] ?? '')); if ($v === '' || mb_strlen($v) > 400 || ($c === 'site' && !preg_match('#^https?://#i', $v))) continue;
+        $at = trim((string)($l[$c] ?? '')); if (iaNorm($c, $v) !== iaNorm($c, $at)) $mud[$c] = [$at, $v];
+      }
+      foreach ($mud as $c => [$at, $v]) {
+        $ass = $id . '|' . $c . '|' . iaNorm($c, $v); if (isset($assin[$ass])) continue; $assin[$ass] = 1;
+        $item = ['id' => 'sg' . bin2hex(random_bytes(5)), 'tipo' => 'lugar', 'lugarId' => $id, 'nome' => (string)($l['nome'] ?? ''), 'campo' => $c, 'atual' => $at, 'novo' => $v, 'obs' => mb_substr((string)($j['observacao'] ?? ''), 0, 200), 'fontes' => $fontes, 'criadoEm' => agora(), 'status' => 'pendente'];
+        $auto = !empty($cfg['aplicar']) && $fontes && $c !== 'fechado' && ($c !== 'horario' || (empty($l['horas']) && empty($l['horasManual'])));
+        if ($auto) { if ($c === 'horario') { $l['horario'] = $v; $l['horarioFonte'] = 'IA (Gemini, com busca no Google) · ' . $hoje; } else $l[$c] = $v; $item['status'] = 'aplicada'; $item['em'] = agora(); $aplic++; }
+        else $novas++;
+        $sug[] = $item;
+      }
+    }
+    $salvaL($id, $l);
+  }
+  if ($conf) $feito[] = "IA conferiu $conf lugares" . ($novas ? ": $novas sugestões para aprovar" : '') . ($aplic ? ", $aplic dados atualizados sozinhos" : '') . ($novas || $aplic ? '' : ' (nada mudou)');
+  /* eventos novos (toda segunda), uma pesquisa por região visível */
+  if ($eventos && !$erros) {
+    $g = json_decode((string)$pdo->query("SELECT data FROM docs WHERE col = 'config' AND id = 'geral'")->fetchColumn(), true); $ocultas = (array)($g['regioes']['ocultas'] ?? []);
+    $REG = ['dfw' => 'Dallas–Fort Worth, Texas (EUA)', 'houston' => 'Houston, Texas (EUA)', 'austin' => 'Austin, Texas (EUA)', 'sanantonio' => 'San Antonio, Texas (EUA)', 'spzl' => 'Zona Leste de São Paulo, SP (parques públicos e shoppings como Anália Franco, Tatuapé, Mooca)'];
+    $fim = (new DateTime($hoje))->modify('+45 days')->format('Y-m-d'); $nEv = 0;
+    foreach ($REG as $rg => $nomeR) {
+      if (in_array($rg, $ocultas, true)) continue; sleep(5);
+      $pr = "Hoje é $hoje. Pesquise eventos " . ($rg === 'spzl' ? 'gratuitos ou populares' : 'da comunidade brasileira ou de interesse de brasileiros') . " em $nomeR que acontecem entre $hoje e $fim.\n" .
+        "Liste até 5, só os que têm data e local confirmados em fonte. Responda SOMENTE com um JSON (lista), sem texto fora dele:\n" .
+        '[{"nome": "", "dataInicio": "AAAA-MM-DD", "dataFim": "AAAA-MM-DD", "quando": "ex.: sábado, 14h às 20h", "local": "", "endereco": "", "cidade": "", "link": "https://...", "descricao": "uma frase em português"}]';
+      $r = gemini($sis, [['role' => 'user', 'content' => $pr]], ['busca' => true, 'max' => 3000, 'temp' => 0.2, 'timeout' => 60]);
+      if (isset($r['erro'])) { if (empty($r['recusa'])) { iaErro($r); $erros[] = 'IA (eventos): ' . iaErroAmigavel($r); } break; }
+      $lst = iaJson($r['texto']); if (!is_array($lst) || isset($lst['nome'])) continue;
+      foreach (array_slice($lst, 0, 5) as $e) {
+        if (!is_array($e) || empty($e['nome']) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)($e['dataInicio'] ?? '')) || $e['dataInicio'] < $hoje || $e['dataInicio'] > $fim) continue;
+        if (isset($nomes[iaNorm('nome', (string)$e['nome'])])) continue;
+        $ass = (string)$e['nome'] . '|evento|' . iaNorm('', (string)$e['dataInicio']); if (isset($assin[$ass])) continue; $assin[$ass] = 1;
+        $e['endereco'] = trim((string)($e['endereco'] ?? '')) ?: (string)($e['local'] ?? '');
+        $sug[] = ['id' => 'sg' . bin2hex(random_bytes(5)), 'tipo' => 'evento', 'regiao' => $rg, 'nome' => (string)$e['nome'], 'campo' => 'evento', 'evento' => $e, 'fontes' => array_slice($r['fontes'], 0, 3), 'criadoEm' => agora(), 'status' => 'pendente']; $nEv++;
+      }
+    }
+    if ($nEv) $feito[] = "IA sugeriu $nEv eventos novos para aprovar";
+  }
+  iaGravaSugestoes($sug); if ($aplic) versao('lugares');
+  $rel = ['feito' => $feito, 'erros' => $erros, 'em' => agora()];
+  $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('ia:robo', ?)")->execute([json_encode($rel, JSON_UNESCAPED_UNICODE)]);
+  return $rel;
+}
 function chaveIA(): string { global $CFG; $k = trim((string)($CFG['anthropic_key'] ?? '')); if ($k === '') $k = trim((string)@file_get_contents(dirname($CFG['db']) . '/ANTHROPIC.key')); return $k; }
 function modeloIA(): string { global $CFG; $m = trim((string)@file_get_contents(dirname($CFG['db']) . '/ANTHROPIC.modelo')); return in_array($m, ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $m : 'claude-opus-5-5'; }
 function semAcento(string $t): string { $t = mb_strtolower($t); $t = strtr($t, ['á'=>'a','à'=>'a','â'=>'a','ã'=>'a','ä'=>'a','é'=>'e','ê'=>'e','è'=>'e','í'=>'i','ì'=>'i','ó'=>'o','ô'=>'o','õ'=>'o','ò'=>'o','ú'=>'u','ù'=>'u','ü'=>'u','ç'=>'c','ñ'=>'n']); return $t; }

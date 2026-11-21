@@ -9,4 +9,6 @@ return [
   'email_oficial' => 'coracaobr.oficial@gmail.com',
   // Quantos dias a pessoa fica conectada sem precisar entrar de novo
   'sessao_dias' => 30,
+  // Inteligência artificial: o mais simples é colar a chave no Painel master → Novidades e IA (fica em dados/GEMINI.key).
+  // Se preferir deixar aqui: 'gemini_key' => 'AIza...',   (grátis em aistudio.google.com/apikey)
 ];
