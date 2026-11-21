@@ -359,8 +359,44 @@
      Restaurantes: pesquisa no site da empresa (precoMin/precoMedio/precoMax) ou, quando a empresa cadastra o cardápio,
      calculado dos pratos (sem bebidas, sobremesas, acompanhamentos e menu infantil). Atrações e eventos: ingresso adulto. */
   var SEC_FORA = /bebida|drink|sobremesa|dessert|doce|acompanha|happy|libra|\blb\b|salad|salada|\bsides?\b|extra|adiciona|add-?on|kids|infantil|crian|molho|sauce|cerveja|beer|vinho|wine|coquetel|cocktail|caf[eé]s? e ch[aá]s?/i, ITEM_FORA = /crian|kids|infantil|\bchild|s[oó] (a )?[aá]rea de salada|salad (area|bar) only|s[oó] buf[eê]/i;
+  /* O que o negócio oferece decide os textos do anúncio (preço, cardápio/catálogo, notas). A empresa escolhe no cadastro;
+     sem escolha, o guia deduz pela categoria. */
+  var PERFIS = {
+    comida: { nome: "Comida e bebida", base: "prato principal", med: "Média por pessoa", medSub: "sem bebida", tabela: "Cardápio", busca: "cardápio", item: "prato", porPessoa: true, pmin: "Preço do prato mais barato", pmed: "Gasto médio por pessoa", ajuda: "O menor valor de um prato principal." },
+    produto: { nome: "Produtos (loja)", base: "produto", med: "Preço médio", medSub: "entre os produtos", tabela: "Produtos e preços", busca: "catálogo", item: "produto", pmin: "Produto mais barato", pmed: "Preço médio dos produtos", ajuda: "O menor valor de um produto que você vende." },
+    servico: { nome: "Serviços", base: "serviço", med: "Preço médio", medSub: "entre os serviços", tabela: "Serviços e preços", busca: "catálogo", item: "serviço", pmin: "Serviço mais barato", pmed: "Preço médio do serviço", ajuda: "O menor valor de um serviço. Se for por orçamento, deixe em branco." },
+    hospedagem: { nome: "Hospedagem", base: "diária", med: "Diária média", medSub: "entre os quartos", tabela: "Quartos e diárias", busca: "lista", item: "quarto", pmin: "Diária mais barata", pmed: "Diária média", ajuda: "O menor valor de uma diária." },
+    ingresso: { nome: "Ingressos e eventos", base: "entrada adulto", med: "Preço médio", medSub: "entre os ingressos", tabela: "Ingressos e preços", busca: "lista", item: "ingresso", pmin: "Ingresso mais barato", pmed: "Ingresso médio", ajuda: "O menor valor de um ingresso adulto." }
+  };
+  var CAT_COMIDA = /restaurante|churrascaria|padaria|confeitaria|salgados|marmitas|food-truck|acai|bbq|tex-mex|steakhouse|hamburguer|brunch|sulista|asiatico|pizza|^bar$|chef-particular|buffet/;
+  var CAT_PRODUTO = /^(mercado|mercado-brasileiro|compras|pet|moda|farmacia|venda-carros)$/;
+  function perfilNegocio(l) {
+    var o = l && l.oferta; if (o && PERFIS[o]) return o;
+    var c = String((l && l.categoria) || "");
+    if (CAT_COMIDA.test(c)) return "comida";
+    if (c === "hotel") return "hospedagem";
+    if (c === "evento" || c === "show" || (l && l.tipo === "atracao")) return "ingresso";
+    if (CAT_PRODUTO.test(c)) return "produto";
+    return "servico";
+  }
+  var UNIDADE = {"restaurante-brasileiro": ["prato", "m"], "churrascaria": ["prato", "m"], "bbq": ["prato", "m"], "tex-mex": ["prato", "m"], "steakhouse": ["prato", "m"], "comida-sulista": ["prato", "m"], "asiatico": ["prato", "m"], "chef-particular": ["prato", "m"], "padaria": ["item", "m"], "confeitaria": ["item", "m"], "salgados": ["item", "m"], "acai-cafe": ["item", "m"], "brunch-cafe": ["item", "m"], "marmitas": ["marmita", "f"], "food-truck": ["lanche", "m"], "hamburguer": ["hambúrguer", "m"], "pizza": ["pizza", "f"], "bar": ["drink", "m"], "buffet": ["pessoa", "f"], "mercado": ["produto", "m"], "mercado-brasileiro": ["produto", "m"], "compras": ["produto", "m"], "pet": ["produto", "m"], "farmacia": ["produto", "m"], "moda": ["peça", "f"], "venda-carros": ["automóvel", "m"], "mecanico": ["mão de obra", "f"], "funilaria": ["mão de obra", "f"], "auto-eletrica": ["mão de obra", "f"], "som-automotivo": ["mão de obra", "f"], "lava-jato": ["lavagem", "f"], "pneus": ["pneu", "m"], "guincho": ["reboque", "m"], "autoescola": ["aula", "f"], "aulas": ["aula", "f"], "aulas-ingles": ["aula", "f"], "aulas-musica": ["aula", "f"], "escolinha-esportes": ["aula", "f"], "artes-marciais": ["aula", "f"], "danca": ["aula", "f"], "personal-trainer": ["aula", "f"], "pilates-yoga": ["aula", "f"], "reforco-escolar": ["aula", "f"], "adestrador": ["aula", "f"], "advogado": ["consultoria", "f"], "imigracao": ["consultoria", "f"], "contador": ["consultoria", "f"], "consultoria": ["consultoria", "f"], "abertura-empresa": ["consultoria", "f"], "credito": ["consultoria", "f"], "hipoteca": ["consultoria", "f"], "tradutor": ["tradução", "f"], "notario": ["documento", "m"], "despachante": ["documento", "m"], "remessas": ["envio", "m"], "envio-brasil": ["envio", "m"], "seguros": ["apólice", "f"], "imoveis": ["imóvel", "m"], "cabeleireiro": ["corte", "m"], "barbearia": ["corte", "m"], "manicure": ["manicure", "f"], "beleza": ["procedimento", "m"], "estetica": ["procedimento", "m"], "sobrancelha-cilios": ["procedimento", "m"], "depilacao": ["sessão", "f"], "massagem": ["sessão", "f"], "psicologo": ["sessão", "f"], "fisioterapia": ["sessão", "f"], "fonoaudiologo": ["sessão", "f"], "maquiagem": ["maquiagem", "f"], "tatuagem": ["tatuagem", "f"], "trancas": ["trança", "f"], "medico": ["consulta", "f"], "dentista": ["consulta", "f"], "nutricionista": ["consulta", "f"], "saude-pt": ["consulta", "f"], "veterinario": ["consulta", "f"], "baba": ["hora", "f"], "cuidador-idosos": ["hora", "f"], "creche": ["mensalidade", "f"], "doula": ["acompanhamento", "m"], "pet-sitter": ["visita", "f"], "banho-tosa": ["banho", "m"], "limpeza": ["faxina", "f"], "diarista": ["faxina", "f"], "limpeza-comercial": ["faxina", "f"], "limpeza-pos-obra": ["faxina", "f"], "limpeza-carpete": ["faxina", "f"], "limpeza-janelas": ["faxina", "f"], "piscina": ["manutenção", "f"], "mudanca": ["frete", "m"], "fretes": ["frete", "m"], "caminhoneiro": ["frete", "m"], "motorista": ["corrida", "f"], "viagens": ["pacote", "m"], "fotografia": ["pacote", "m"], "filmagem": ["pacote", "m"], "decoracao-festas": ["pacote", "m"], "aluguel-festas": ["pacote", "m"], "cerimonialista": ["pacote", "m"], "marketing": ["projeto", "m"], "tecnologia": ["projeto", "m"], "design": ["projeto", "m"], "informatica": ["projeto", "m"], "dj": ["apresentação", "f"], "musico": ["apresentação", "f"], "animador": ["apresentação", "f"], "costureira": ["ajuste", "m"], "sapateiro": ["conserto", "m"], "hotel": ["diária", "f"], "evento": ["ingresso", "m"], "show": ["ingresso", "m"], "museu": ["ingresso", "m"], "parque": ["ingresso", "m"], "historico": ["ingresso", "m"], "mirante": ["ingresso", "m"], "bairro": ["ingresso", "m"], "esporte": ["ingresso", "m"], "familia": ["ingresso", "m"], "arte": ["ingresso", "m"], "natureza": ["ingresso", "m"]};
+  /* Unidade de preço de cada categoria ("corte", "consulta", "mão de obra"...). Se a empresa escolheu um tipo de oferta diferente do
+     da categoria, vale a palavra genérica desse tipo (produto, serviço, prato, diária, ingresso). */
+  function unidadeDe(l) {
+    var c = String((l && l.categoria) || ""), u = UNIDADE[c], pk = perfilNegocio(l);
+    var inferido = perfilNegocio({ categoria: c, tipo: l && l.tipo });
+    if (!u || (l && l.oferta && l.oferta !== inferido)) { var b = PERFIS[pk].item; u = [b === "quarto" ? "diária" : b, { "diária": "f" }[b === "quarto" ? "diária" : b] || "m"]; }
+    return { nome: u[0], de: (u[1] === "f" ? "da " : "do ") + u[0], mais: u[1] === "f" ? "mais barata" : "mais barato" };
+  }
+  function perfilDe(l) {
+    var p = Object.assign({}, PERFIS[perfilNegocio(l)]), u = unidadeDe(l);
+    p.base = u.nome; p.med = "Preço médio " + u.de; p.pmin = "Menor preço " + u.de; p.pmed = "Preço médio " + u.de;
+    p.medSub = perfilNegocio(l) === "comida" && u.nome === "prato" ? "sem bebida" : p.medSub;
+    return p;
+  }
   function precoDoMenu(l) {
-    var v = (l.menu || []).filter(function (it) { return Number(it.preco) > 0 && !SEC_FORA.test(String(it.secao || "")) && !ITEM_FORA.test(String(it.item || "")) && ["/kg", "/mês", "/hora"].indexOf(it.un || "") < 0; }).map(function (it) { return Number(it.preco); });
+    var comida = perfilNegocio(l) === "comida";
+    var v = (l.menu || []).filter(function (it) { return Number(it.preco) > 0 && (!comida || (!SEC_FORA.test(String(it.secao || "")) && !ITEM_FORA.test(String(it.item || "")))) && ["/kg", "/mês", "/hora"].indexOf(it.un || "") < 0; }).map(function (it) { return Number(it.preco); });
     if (v.length < 2) return null;
     return { min: Math.min.apply(null, v), med: Math.round(v.reduce(function (a, b) { return a + b; }, 0) / v.length), max: Math.max.apply(null, v) };
   }
@@ -372,7 +408,7 @@
     if (est && (l.anunciante || l._dono)) { var m = precoDoMenu(l); if (m) { min = m.min; med = m.med; max = m.max; menu = true; } }   // cardápio cadastrado pela própria empresa
     if (!(min > 0)) return null;
     if (med && med < min) med = min; if (max && max < min) max = 0; if (max && med > max) med = max;
-    return { min: min, med: med, max: max, base: l.precoBase || (est ? "prato principal" : "entrada adulto"), menu: menu,
+    return { min: min, med: med, max: max, base: l.precoBase || perfilDe(l).base, menu: menu,
       fonte: url(l.fontePreco) ? l.fontePreco : url(l.fonteMenu) ? l.fonteMenu : "", quando: menu ? (l.menuVerificadoEm || "") : (l.precoConferidoEm || l.atualizadoEm || ""), terceiros: !menu && l.fontePrecoTipo === "terceiros" };
   }
   /* Média de preço da categoria na cidade escolhida (só com 3 ou mais lugares com preço conferido). */
@@ -389,15 +425,15 @@
   }
   /* Bloco de preços da folha do lugar: a partir de, média por pessoa, até, comparação com a categoria e a fonte. */
   function blocoPrecos(l) {
-    var p = precos(l), est = l.tipo === "estabelecimento"; if (!p || p.gratis) return "";
+    var p = precos(l), est = l.tipo === "estabelecimento", pf = perfilDe(l), pk = perfilNegocio(l); if (!p || p.gratis) return "";
     var mc = mediaCategoria(l.categoria), ref = p.med || p.min, comp = "";
     if (mc && mc.n >= 3 && ref) { var dif = (ref - mc.med) / mc.med; comp = dif <= -0.12 ? "Abaixo da média" : dif >= 0.12 ? "Acima da média" : "Na média"; }
-    return '<div class="pz"><div class="pz-top"><span class="pz-k">' + ic("ticket") + (est ? " Quanto custa" : " Ingressos") + "</span>" + (comp ? '<span class="pz-cmp' + (comp === "Abaixo da média" ? " ok" : "") + '">' + comp + "</span>" : "") + "</div>" +
+    return '<div class="pz"><div class="pz-top"><span class="pz-k">' + ic("ticket") + (pk === "ingresso" ? " Ingressos" : " Quanto custa") + "</span>" + (comp ? '<span class="pz-cmp' + (comp === "Abaixo da média" ? " ok" : "") + '">' + comp + "</span>" : "") + "</div>" +
       '<div class="pz-g"><div><small>A partir de</small><b>' + usd(p.min) + "</b>" + brl(p.min) + "<i>" + esc(p.base) + "</i></div>" +
-      (p.med ? "<div><small>" + (est ? "Média por pessoa" : "Preço médio") + "</small><b>" + usd(p.med) + "</b>" + brl(p.med) + "<i>" + (est ? "sem bebida" : "entre os ingressos") + "</i></div>" : "") +
+      (p.med ? "<div><small>" + pf.med + "</small><b>" + usd(p.med) + "</b>" + brl(p.med) + "<i>" + pf.medSub + "</i></div>" : "") +
       (p.max ? "<div><small>Até</small><b>" + usd(p.max) + "</b>" + brl(p.max) + "<i>" + (est ? "maior valor" : "maior valor") + "</i></div>" : "") + "</div>" +
-      (mc ? '<p class="pz-cat">Média em ' + esc(CATS[l.categoria] || "lugares parecidos") + " · " + esc(cid().nome) + ": <b>" + usd(mc.med) + "</b> por pessoa (" + mc.n + " lugares com preço conferido)</p>" : "") +
-      '<p class="pz-f">' + (p.menu ? "Calculado do cardápio da empresa" : (l.anunciante || l._dono) ? "Informado pela empresa" : "Pesquisado no " + (p.terceiros ? "cardápio publicado na internet" : "site oficial")) + (p.quando ? " · conferido em " + esc(mesAno(p.quando)) : "") + (p.fonte ? ' · <a href="' + esc(p.fonte) + '" target="_blank" rel="noopener">ver fonte</a>' : "") + ". Valores sem taxas e gorjeta; podem mudar.</p></div>";
+      (mc ? '<p class="pz-cat">Média em ' + esc(CATS[l.categoria] || "lugares parecidos") + " · " + esc(cid().nome) + ": <b>" + usd(mc.med) + "</b>" + (pf.porPessoa ? " por pessoa" : "") + " (" + mc.n + " lugares com preço conferido)</p>" : "") +
+      '<p class="pz-f">' + (p.menu ? "Calculado " + (pk === "comida" ? "do cardápio" : "da tabela de preços") + " da empresa" : (l.anunciante || l._dono) ? "Informado pela empresa" : "Pesquisado no " + (p.terceiros ? (pk === "comida" ? "cardápio" : "catálogo") + " publicado na internet" : "site oficial")) + (p.quando ? " · conferido em " + esc(mesAno(p.quando)) : "") + (p.fonte ? ' · <a href="' + esc(p.fonte) + '" target="_blank" rel="noopener">ver fonte</a>' : "") + ". " + (pk === "comida" ? (ehBR() ? "Valores sem a taxa de serviço; podem mudar." : "Valores sem taxas e gorjeta; podem mudar.") : pk === "servico" ? "O valor final pode variar conforme o serviço; confirme com a empresa." : "Valores podem mudar; confirme com a empresa.") + "</p></div>";
   }
   function mesAno(s) { var m = /^(\d{4})-(\d{2})/.exec(String(s || "")); if (!m) return String(s || ""); return ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][Number(m[2]) - 1] + "/" + m[1]; }
   function precoHtml(l) {
@@ -1168,7 +1204,7 @@
     var im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.semFoto) return;
     im.dataset.semFoto = "1"; im.removeAttribute("srcset"); im.src = FOTO_VAZIA; im.classList.add("sem-foto");
   }, true);
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, ehBR: ehBR, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, ehBR: ehBR, PERFIS: PERFIS, perfilNegocio: perfilNegocio, perfilDe: perfilDe, unidadeDe: unidadeDe, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { sincCidade(); render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;

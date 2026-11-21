@@ -6,7 +6,8 @@
   var MAX_PAG = 16, MAX_ITENS = 80;
   var UN = [["", "Preço fixo"], ["de", "A partir de"], ["/hora", "Por hora"], ["/pessoa", "Por pessoa"], ["/unidade", "Por unidade"], ["/kg", "Por kg"], ["/mês", "Por mês"]];
   function precoNum(v) { var p = String(v == null ? "" : v).replace(/[^\d,.]/g, ""); if (/,\d{1,2}$/.test(p)) p = p.replace(/\./g, "").replace(",", "."); else p = p.replace(/,/g, ""); return p === "" || isNaN(Number(p)) ? null : Math.round(Number(p) * 100) / 100; }
-  function ehComida(l) { return /restaurante|churrascaria|padaria|acai|bbq|tex-mex|steakhouse|hamburguer|brunch|pizza|bar|cafe|lanch|comida/.test(String(l.categoria || "")); }
+  function ehComida(l) { return window.Guia && Guia.perfilNegocio ? Guia.perfilNegocio(l) === "comida" : /restaurante|churrascaria|padaria|acai|bbq|tex-mex|steakhouse|hamburguer|brunch|pizza|bar|cafe|lanch|comida/.test(String(l.categoria || "")); }
+  function pf(l) { return window.Guia && Guia.perfilDe ? Guia.perfilDe(l) : { tabela: ehComida(l) ? "Cardápio" : "Tabela de preços", busca: ehComida(l) ? "cardápio" : "catálogo" }; }
 
   /* ================= editor ================= */
   function linha(m) {
@@ -25,7 +26,7 @@
   function editor(D) {
     var pags = (D.cardapioPaginas || []).slice(0, MAX_PAG);
     return '<div class="cp-ed" data-pags="' + esc(JSON.stringify(pags)) + '">' +
-      '<div class="panel stack" style="gap:12px"><div><h3>Cardápio digital</h3><p class="small muted">Tem cardápio pronto? Importe o PDF ou as fotos das páginas, na ordem. No guia ele aparece como um livreto que o cliente folheia.</p></div>' +
+      '<div class="panel stack" style="gap:12px"><div><h3 data-cp-tit>' + (ehComida(D) ? "Cardápio digital" : "Catálogo digital") + '</h3><p class="small muted">Tem ' + (ehComida(D) ? "cardápio" : "catálogo ou tabela de preços") + ' pronto? Importe o PDF ou as fotos das páginas, na ordem. No guia ele aparece como um livreto que o cliente folheia.</p></div>' +
       '<div class="cp-pgs" data-cp-pgs>' + thumbs(pags) + '</div>' +
       '<div class="row"><label class="btn ghost sm cp-up">' + ic("doc") + ' Importar PDF ou imagens<input type="file" accept="application/pdf,image/*" multiple data-cp-arq hidden></label><span class="small muted" data-cp-st>Até ' + MAX_PAG + " páginas.</span></div>" +
       '<div class="field"><label for="cp-link">Ou link do cardápio (site ou PDF)</label><input id="cp-link" data-cp-link value="' + esc(D.cardapioLink || D.fonteMenu || "") + '" placeholder="https://"></div></div>' +
@@ -134,8 +135,8 @@
     var secs = [], por = {};
     m.forEach(function (it) { var s = it.secao || "Itens"; if (!por[s]) { por[s] = []; secs.push(s); } por[s].push(it); });
     var nav = secs.length > 1 ? '<nav class="cp-nav" aria-label="Seções">' + secs.map(function (s, i) { return '<button type="button" data-cp-sec="' + i + '">' + esc(s) + "<em>" + por[s].length + "</em></button>"; }).join("") + "</nav>" : "";
-    return '<div class="cp-tab"><div class="cp-th"><div><p class="eyebrow">' + (ehComida(l) ? "Cardápio" : "Tabela de preços") + '</p><h3>' + m.length + (m.length === 1 ? " item" : " itens") + "</h3></div>" + (l.menuVerificadoEm ? '<span class="pill ok">conferido em ' + esc(l.menuVerificadoEm) + "</span>" : "") + "</div>" +
-      (m.length > 10 ? '<div class="cp-busca">' + ic("search") + '<input type="search" data-cp-q placeholder="Procurar no ' + (ehComida(l) ? "cardápio" : "catálogo") + '" aria-label="Procurar"></div>' : "") + nav +
+    return '<div class="cp-tab"><div class="cp-th"><div><p class="eyebrow">' + esc(pf(l).tabela) + '</p><h3>' + m.length + (m.length === 1 ? " item" : " itens") + "</h3></div>" + (l.menuVerificadoEm ? '<span class="pill ok">conferido em ' + esc(l.menuVerificadoEm) + "</span>" : "") + "</div>" +
+      (m.length > 10 ? '<div class="cp-busca">' + ic("search") + '<input type="search" data-cp-q placeholder="Procurar no ' + esc(pf(l).busca) + '" aria-label="Procurar"></div>' : "") + nav +
       secs.map(function (s, i) {
         return '<section class="cp-sec" data-cp-i="' + i + '"><h4>' + esc(s) + "</h4>" + por[s].map(function (it) {
           return '<div class="cp-it' + (it.dest ? " dest" : "") + '" data-cp-txt="' + esc((it.item + " " + (it.descricao || "")).toLowerCase()) + '"><div class="cp-n"><b>' + esc(it.item) + "</b>" + (it.dest ? '<span class="cp-badge">Mais pedido</span>' : "") + (it.descricao ? "<p>" + esc(it.descricao) + "</p>" : "") + '</div><div class="cp-p">' + precoTxt(it) + "</div></div>";

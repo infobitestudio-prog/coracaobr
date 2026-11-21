@@ -96,6 +96,7 @@
         '<div class="ae-g2">' + fld("n-nome", "Nome da empresa", D.nome, 'required maxlength="80" autocomplete="organization"') +
         '<div class="field cat-f"><label for="n-cat">Categoria</label><div class="cat-busca"><input type="search" id="n-cat-q" placeholder="Pesquisa rápida: babá, handyman, eletricista, piscina…" autocomplete="off" aria-label="Pesquisar categoria" aria-controls="n-cat-res"><div class="cat-res" id="n-cat-res" role="listbox" hidden></div></div>' +
           '<select id="n-cat" required>' + (D.categoria ? "" : '<option value="" selected disabled>Ou escolha na lista</option>') + catOpcoes(D.categoria) + "</select></div></div>" +
+        '<div class="field"><label for="n-oferta">O que você oferece?</label><select id="n-oferta"' + (D.oferta ? ' data-manual="1"' : "") + ">" + Object.keys(G.PERFIS || {}).map(function (k) { return '<option value="' + k + '"' + ((G.perfilNegocio ? G.perfilNegocio(D) : "servico") === k ? " selected" : "") + ">" + esc(G.PERFIS[k].nome) + "</option>"; }).join("") + '</select><small class="muted">Escolhido pela categoria; troque se não combinar. Define como o preço e a lista de itens aparecem no anúncio (ex.: “produto” em vez de “prato principal”).</small></div>' +
         '<div class="field"><label for="n-desc">O que você faz</label><textarea id="n-desc" maxlength="900" rows="5" required placeholder="Conte o que você oferece, há quanto tempo, para quem e o diferencial.">' + esc(D.historia || "") + '</textarea><small class="muted"><span id="n-dc">' + String(D.historia || "").length + "</span>/900</small></div>" +
         fld("n-cupom", "Oferta para quem vem pelo CoraçãoBR (opcional)", D.cupom, 'maxlength="90" placeholder="Ex.: 10% de desconto na primeira visita"') +
         fld("n-clube", "Desconto para membros do Clube CoraçãoBR (opcional)", D.descontoClube, 'maxlength="90" placeholder="Ex.: 15% para membros do Clube"') +
@@ -114,11 +115,11 @@
       sec(prox(), "endereco", "Endereço e horário", "Quem atende em domicílio pode deixar o endereço em branco.",
         '<div class="ae-g2">' + fld("n-cep", "CEP (Brasil) ou ZIP code (EUA)", D.cep || "", 'data-cep placeholder="CEP (Brasil) ou ZIP (EUA)"', "Digite e o endereço aparece sozinho. Depois é só completar o número.") +
         fld("n-end", "Endereço", D.endereco, 'autocomplete="street-address" placeholder="Rua, número, bairro, cidade"') +
-        '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).filter(function (rg) { return rg === D.regiaoGuia || !G.regiaoVisivel || G.regiaoVisivel(rg); }).map(function (rg) { var padrao = (D.bairro && CIDADES.some(function (p) { return p[4] && p[0] === D.bairro; }) ? D.bairro : D.cidade) || (G.cid ? (G.cid().pais === "BR" ? "Anália Franco" : G.cid().principal) : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
+        '<div class="field"><label for="n-reg">Cidade</label><select id="n-reg">' + Object.keys(NOME_REG).filter(function (rg) { return rg === D.regiaoGuia || !G.regiaoVisivel || G.regiaoVisivel(rg); }).map(function (rg) { var padrao = (D.bairro && CIDADES.some(function (p) { return p[4] && p[0] === D.bairro; }) ? D.bairro : CIDADES.some(function (p) { return p[0] === D.cidade; }) ? D.cidade : "") || (G.cid ? (G.cid().pais === "BR" ? "Anália Franco" : G.cid().principal) : "Dallas"); return '<optgroup label="' + NOME_REG[rg] + '">' + CIDADES.filter(function (p) { return p[3] === rg; }).map(function (p) { return "<option" + (p[0] === padrao ? " selected" : "") + ">" + esc(p[0]) + "</option>"; }).join("") + "</optgroup>"; }).join("") + "</select></div></div>" +
         '<div class="field"><span>Horário de atendimento</span>' + Horario.editor(D) + "</div>") +
-      sec(prox(), "cardapio", "Cardápio, catálogo e preços", "Cardápio em livreto, tabela de preços ou o link do seu catálogo.",
+      sec(prox(), "cardapio", '<span data-oferta-tit>Cardápio, catálogo e preços</span>', "Livreto com as páginas, tabela de preços ou o link do seu catálogo.",
         '<div class="ae-g2">' + fld("n-cat-link", "Link do catálogo, portfólio ou loja", D.catalogo, 'placeholder="https://"') + fld("n-cat-nome", "Nome do botão", D.catalogoNome, 'maxlength="24" placeholder="Catálogo"') + "</div>" +
-        '<div class="ae-g2">' + fld("n-pmin", "Preço a partir de (US$)", D.precoMin, 'inputmode="decimal" placeholder="Ex.: 12"', "O menor valor de um prato, serviço ou ingresso. Aparece como \"a partir de\" no anúncio.") + fld("n-pmed", "Gasto médio por pessoa (US$)", D.precoMedio, 'inputmode="decimal" placeholder="Ex.: 25"', "Se você preencher o cardápio com preços, o guia calcula sozinho.") + "</div>" + (window.Cardapio ? Cardapio.editor(D) : ""));
+        '<div class="ae-g2">' + fld("n-pmin", "Preço a partir de", D.precoMin, 'inputmode="decimal" placeholder="Ex.: 12"', "O menor valor. Aparece como \"a partir de\" no anúncio.") + fld("n-pmed", "Preço médio", D.precoMedio, 'inputmode="decimal" placeholder="Ex.: 25"', "Se você preencher a lista de itens com preços, o guia calcula sozinho.") + "</div>" + (window.Cardapio ? Cardapio.editor(D) : ""));
     var nav = ["empresa", "fotos", "banner", "contato", "endereco", "cardapio"], nomes = ["Empresa", "Fotos", "Banner", "Contato", "Endereço", "Cardápio"];
     var situ = existente ? (noArDe(existente) ? '<span class="pill ok">No ar</span>' : '<span class="pill warn">Prévia</span>') : '<span class="pill xp">Novo</span>';
     G.app.innerHTML = '<section class="block ae"><div class="wrap"><form id="f-an" novalidate>' +
@@ -172,6 +173,23 @@
     });
     $("#n-ban").addEventListener("click", function (e) { if (e.target.closest("#n-btira")) { if (D.banner && D.banner.src) removidas.push(D.banner.src); D.banner = null; $("#n-ban").innerHTML = bannerHtml(); } });
     if (dupInfo) dupInfo.regSel = v("n-reg");
+    /* "O que você oferece?": sugerido pela categoria, ajusta os rótulos de preço, o título da lista e a moeda (R$ no Brasil, US$ nos EUA) */
+    var ajustaOferta = function () {
+      var so = $("#n-oferta"); if (!so || !G.PERFIS) return; var alvo = { categoria: v("n-cat"), oferta: so.value, tipo: "estabelecimento" }, pf = G.perfilDe ? G.perfilDe(alvo) : (G.PERFIS[so.value] || G.PERFIS.servico), un = G.unidadeDe ? G.unidadeDe(alvo) : { de: "" };
+      pf.ajuda = "O menor valor " + un.de + ".";
+      var rg = (CIDADES.filter(function (p) { return p[0] === v("n-reg"); })[0] || [])[3] || "dfw", moeda = ((G.CIDADES_GUIA || {})[rg] || {}).pais === "BR" ? "R$" : "US$";
+      var l1 = document.querySelector('label[for="n-pmin"]'), l2 = document.querySelector('label[for="n-pmed"]'), a1 = l1 && l1.parentNode.querySelector("small");
+      if (l1) l1.textContent = pf.pmin + " (" + moeda + ")"; if (l2) l2.textContent = pf.pmed + " (" + moeda + ")"; if (a1) a1.textContent = pf.ajuda + ' Aparece como "a partir de" no anúncio.';
+      var tt = document.querySelector("[data-oferta-tit]"); if (tt) tt.textContent = pf.tabela;
+      var ct = document.querySelector("[data-cp-tit]"); if (ct) ct.textContent = so.value === "comida" ? "Cardápio digital" : "Catálogo digital";
+      var nv = document.querySelector('.ae-nav [data-ae-ir="cardapio"]'); if (nv && nv.lastChild && nv.lastChild.nodeType === 3) nv.lastChild.textContent = so.value === "comida" ? "Cardápio" : "Preços";
+    };
+    f.addEventListener("change", function (e) {
+      if (e.target.id === "n-oferta") { e.target.dataset.manual = "1"; ajustaOferta(); }
+      if (e.target.id === "n-cat") { var so = $("#n-oferta"); if (so && !so.dataset.manual && G.perfilNegocio) so.value = G.perfilNegocio({ categoria: e.target.value, tipo: "estabelecimento" }); ajustaOferta(); }
+      if (e.target.id === "n-reg") ajustaOferta();
+    });
+    ajustaOferta();
     /* CEP/ZIP: preenche o endereço e escolhe a cidade na lista */
     var nc = $("#n-cep"); if (nc) nc.addEventListener("cep", function (e) {
       var o = e.detail, end = $("#n-end"), sel = $("#n-reg"), nn = G.norm || function (s) { return String(s || "").toLowerCase(); };
@@ -186,7 +204,7 @@
       if (!v("n-cat")) { G.toast("Escolha a categoria do seu negócio."); var sc = $("#n-cat"); if (sc) { sc.scrollIntoView({ behavior: "smooth", block: "center" }); sc.focus(); } return; }
       if (!v("n-nome") || !v("n-desc")) { G.toast("Preencha o nome da empresa e o que você faz."); var s = $("#ae-empresa"); if (s) s.scrollIntoView({ behavior: "smooth" }); return; }
       var reg = CIDADES.filter(function (p) { return p[0] === v("n-reg"); })[0] || CIDADES[0];
-      D.nome = v("n-nome"); D.categoria = v("n-cat"); D.historia = v("n-desc"); D.cupom = v("n-cupom");  D.descontoClube = v("n-clube"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
+      D.nome = v("n-nome"); D.categoria = v("n-cat"); D.oferta = v("n-oferta") || ""; D.historia = v("n-desc"); D.cupom = v("n-cupom");  D.descontoClube = v("n-clube"); D.brasileiro = $("#n-br").checked; D.falaPortugues = $("#n-pt").checked;
       if (window.Cardapio) Cardapio.ler(document, D); D.menuVerificadoEm = (D.menu || []).length ? G.hojeISO().slice(0, 7) : "";
       var pn = function (id) { var x = String(v(id) || "").replace(/[^\d,.]/g, "").replace(",", "."); return x === "" || isNaN(Number(x)) || Number(x) <= 0 ? null : Math.round(Number(x) * 100) / 100; };
       D.precoMin = pn("n-pmin"); D.precoMedio = pn("n-pmed"); if (D.precoMedio && D.precoMin && D.precoMedio < D.precoMin) D.precoMedio = D.precoMin; D.precoConferidoEm = D.precoMin ? G.hojeISO().slice(0, 7) : ""; D.precoBase = D.precoMin ? "informado pela empresa" : "";
