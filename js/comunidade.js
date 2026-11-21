@@ -251,7 +251,7 @@
   function qrSvg(txt) { if (!window.qrcode) return ""; try { var q = window.qrcode(0, "M"); q.addData(txt); q.make(); return q.createSvgTag({ cellSize: 4, margin: 1, scalable: true }); } catch (er) { return ""; } }
   function cupomHtml(l, cod) {
     return '<div class="cupom"><a class="qr" href="' + esc(linkResgate(cod)) + '" aria-label="Abrir a página de resgate do cupom">' + qrSvg(linkResgate(cod)) + '</a><div><small>Seu código</small><b class="num">' + cod + '</b><span class="small">No balcão, o atendente aponta a câmera para o QR e confirma o desconto na hora.</span>' +
-      (window.Wallet ? Wallet.botao("cupom", cod) : "") + "</div></div>";
+      (window.Wallet ? '<div class="tk-acoes">' + Wallet.botao("cupom", cod, { nome: l.nome, linha: l.cupom || "Desconto do guia" }) + "</div>" : "") + "</div></div>";
   }
   function botaoCupom(l) { var c = meusCupons()[l.id]; return c ? cupomHtml(l, c) : '<button type="button" class="btn sm" data-cupom="' + esc(l.id) + '" style="margin-top:8px">' + ic("ticket") + " Gerar meu código</button>"; }
   function nomeCurto() { var n = String((Store.conta && Store.conta() && Store.conta().nome) || "").trim().split(/\s+/); return n[0] ? n[0] + (n.length > 1 ? " " + n[n.length - 1].charAt(0).toUpperCase() + "." : "") : ""; }

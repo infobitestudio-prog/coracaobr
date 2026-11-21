@@ -54,7 +54,7 @@ session_name('CBRSESS');
 session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
 /* Fotos, sitemap, robots, aviso do Mercado Pago e tarefas automáticas não usam sessão: assim não mexem no cookie de login
    (antes, uma foto carregando enquanto a pessoa entrava na conta podia trocar o cookie e "deslogar"). */
-$SEM_SESSAO = ['recibo', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
+$SEM_SESSAO = ['recibo', 'wallet', 'wallet_cfg', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
 if (in_array((string)($_GET['acao'] ?? ''), $SEM_SESSAO, true)) {
   $_SESSION = ['csrf' => '', 'visitante' => ''];
 } else {
@@ -1020,6 +1020,34 @@ case 'pix_status': {
   if (!is_array($c) || ($c['uid'] !== $quem && !($u && $c['uid'] === $_SESSION['visitante']) && !master())) erro('Cobrança não encontrada.', 404);
   $r = processaPagamento($id); sai(['ok' => true, 'status' => $r['status'], 'pacote' => $r['cobranca']['pacote'] ?? null]);
 }
+case 'wallet_cfg': { $c = walletCfg(); sai(['ok' => true, 'apple' => $c['apple'], 'google' => $c['google']]); }
+case 'wallet': {
+  $tipo = (string)($_GET['tipo'] ?? ''); $id = (string)($_GET['id'] ?? ''); $fmt = (string)($_GET['fmt'] ?? 'apple');
+  if (!in_array($tipo, ['cupom', 'clube'], true) || $id === '' || strlen($id) > 80) erro('Pedido inválido.');
+  $w = walletDados($tipo, $tipo === 'cupom' ? strtoupper($id) : $id); if (!$w) erro($tipo === 'cupom' ? 'Cupom não encontrado.' : 'Carteirinha não encontrada ou vencida.', 404);
+  $cfg = walletCfg();
+  if ($fmt === 'google') { if (!$cfg['google']) erro('Google Wallet ainda não configurado.', 503); $u = walletGoogle($w, $cfg); if (!$u) erro('Não deu para gerar agora.', 500); header('Location: ' . $u, true, 302); exit; }
+  if (!$cfg['apple']) erro('Apple Wallet ainda não configurada.', 503);
+  $bin = walletApple($w, $cfg); if ($bin === null) erro('Não deu para gerar o passe agora. Confira o certificado no Painel master.', 500);
+  header('Content-Type: application/vnd.apple.pkpass'); header('Content-Disposition: attachment; filename="' . $w['serial'] . '.pkpass"'); header('Content-Length: ' . strlen($bin)); echo $bin; exit;
+}
+case 'wallet_salvar': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
+  $d = walletDir(); $feito = [];
+  if (isset($corpo['apple']) && is_array($corpo['apple'])) {
+    $a = $corpo['apple']; $atual = json_decode((string)@file_get_contents($d . '/apple.json'), true) ?: [];
+    $novo = ['passTypeId' => trim((string)($a['passTypeId'] ?? $atual['passTypeId'] ?? '')), 'teamId' => trim((string)($a['teamId'] ?? $atual['teamId'] ?? '')), 'senha' => array_key_exists('senha', $a) && $a['senha'] !== '' ? (string)$a['senha'] : (string)($atual['senha'] ?? '')];
+    if (!empty($a['p12'])) { $bin = base64_decode((string)$a['p12'], true); if ($bin === false || strlen($bin) > 200000) erro('Certificado inválido.'); if (!openssl_pkcs12_read($bin, $x, $novo['senha'])) erro('Não abri o certificado .p12: confira a senha.'); file_put_contents($d . '/apple.p12', $bin); $feito[] = 'certificado'; }
+    file_put_contents($d . '/apple.json', json_encode($novo)); $feito[] = 'Apple';
+  }
+  if (isset($corpo['google']) && is_array($corpo['google'])) {
+    $g = $corpo['google'];
+    if (!empty($g['issuer'])) file_put_contents($d . '/google-issuer.txt', preg_replace('/[^0-9]/', '', (string)$g['issuer']));
+    if (!empty($g['conta'])) { $j = json_decode((string)$g['conta'], true); if (!is_array($j) || empty($j['client_email']) || empty($j['private_key'])) erro('Arquivo da conta de serviço inválido (precisa ter client_email e private_key).'); file_put_contents($d . '/google.json', json_encode(['client_email' => $j['client_email'], 'private_key' => $j['private_key']])); }
+    $feito[] = 'Google';
+  }
+  $c = walletCfg(); sai(['ok' => true, 'feito' => $feito, 'apple' => $c['apple'], 'google' => $c['google']]);
+}
 case 'recibo': {
   $st = banco()->prepare("SELECT data FROM docs WHERE col = 'recibos' AND id = ?"); $st->execute([preg_replace('/[^A-Z0-9]/', '', strtoupper((string)($_GET['n'] ?? '')))]); $r = json_decode((string)$st->fetchColumn(), true);
   if (!is_array($r) || !hash_equals((string)$r['k'], (string)($_GET['k'] ?? ''))) { http_response_code(404); header('Content-Type: text/plain; charset=utf-8'); echo 'Recibo não encontrado.'; exit; }
@@ -1488,6 +1516,73 @@ function reciboHtml(array $r, string $link, bool $email): string {
   if ($email) return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:18px 0;background:#EEF2F0">' . $doc . '</body></html>';
   return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Recibo ' . $e($r['n']) . ' · CoraçãoBR</title><link rel="icon" href="../favicon.ico">'
     . '<style>body{margin:0;padding:24px 12px;background:#EEF2F0}.bt{display:block;max-width:720px;margin:0 auto 14px;text-align:right}.bt button{font:700 15px Arial,sans-serif;background:#0B7A3B;color:#fff;border:0;border-radius:999px;padding:12px 20px;cursor:pointer}@media print{body{background:#fff;padding:0}.bt{display:none}}</style></head><body><div class="bt"><button onclick="print()">Imprimir ou salvar em PDF</button></div>' . $doc . '</body></html>';
+}
+/* ---------- Wallet: cupom do guia e carteirinha do Clube na Apple Wallet (.pkpass) e no Google Wallet ----------
+   As credenciais ficam em dados/wallet/ (fora do alcance do navegador) e são cadastradas no Painel master. */
+function walletDir(): string { global $CFG; $d = dirname($CFG['db']) . '/wallet'; if (!is_dir($d)) { @mkdir($d, 0750, true); @file_put_contents($d . '/.htaccess', "Require all denied\nDeny from all\n"); } return $d; }
+function walletCfg(): array {
+  $d = walletDir(); $a = json_decode((string)@file_get_contents($d . '/apple.json'), true) ?: []; $g = json_decode((string)@file_get_contents($d . '/google.json'), true) ?: [];
+  return ['apple' => !empty($a['passTypeId']) && !empty($a['teamId']) && is_file($d . '/apple.p12'), 'google' => !empty($g['client_email']) && !empty($g['private_key']) && trim((string)@file_get_contents($d . '/google-issuer.txt')) !== '', 'a' => $a, 'g' => $g];
+}
+function walletDados(string $tipo, string $id): ?array {
+  $pdo = banco();
+  if ($tipo === 'cupom') {
+    $cod = preg_replace('/[^A-Z0-9]/', '', $id); $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'cupons' AND data LIKE ?"); $st->execute(['%"codigo":"' . $cod . '"%']); $doc = json_decode((string)$st->fetchColumn(), true); $c = null;
+    if (is_array($doc)) { if (($doc['codigo'] ?? '') === $cod) $c = $doc; else foreach ((array)($doc['itens'] ?? []) as $it) if (is_array($it) && ($it['codigo'] ?? '') === $cod) { $c = $it; break; } }   // cupons ficam agrupados por conta
+    if (!is_array($c)) return null;
+    $l = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $l->execute([(string)($c['lugarId'] ?? '')]); $l = json_decode((string)$l->fetchColumn(), true) ?: [];
+    return ['serial' => 'cupom-' . $c['codigo'], 'titulo' => 'Cupom do guia CoraçãoBR', 'nome' => (string)($l['nome'] ?? $c['anuncio'] ?? 'Anúncio'), 'oferta' => (string)($l['cupom'] ?? $c['oferta'] ?? 'Desconto do guia'),
+      'codigo' => (string)$c['codigo'], 'cliente' => (string)($c['nome'] ?? ''), 'link' => baseUrl() . '#resgate-' . $c['codigo'], 'cor' => '#087A36', 'texto' => '#FFFFFF', 'estilo' => 'coupon', 'rodape' => 'Mostre no balcão: o atendente aponta a câmera para o QR e confirma o desconto.'];
+  }
+  if ($tipo === 'clube') {
+    $pg = pagamentoDe($id); $cl = (array)($pg['clube'] ?? []); if (empty($cl['ate'])) return null;
+    $num = (string)($cl['numero'] ?? strtoupper(substr(hash('sha256', $id), 0, 8)));
+    return ['serial' => 'clube-' . $num, 'titulo' => 'Clube CoraçãoBR', 'nome' => (string)($cl['nome'] ?? 'Membro'), 'oferta' => 'Válido até ' . date('d/m/Y', strtotime($cl['ate'])), 'codigo' => $num, 'cliente' => (string)($cl['nome'] ?? ''),
+      'link' => baseUrl() . '#clube-validar-' . rawurlencode($id), 'cor' => '#FFC20E', 'texto' => '#111111', 'estilo' => 'storeCard', 'validade' => $cl['ate'], 'rodape' => 'Mostre a carteirinha nos parceiros do Clube. O atendente confere pelo QR.'];
+  }
+  return null;
+}
+function rgbCss(string $hex): string { $h = ltrim($hex, '#'); return 'rgb(' . hexdec(substr($h, 0, 2)) . ',' . hexdec(substr($h, 2, 2)) . ',' . hexdec(substr($h, 4, 2)) . ')'; }
+function walletApple(array $w, array $cfg): ?string {
+  $d = walletDir(); $a = $cfg['a'];
+  if (!openssl_pkcs12_read((string)@file_get_contents($d . '/apple.p12'), $certs, (string)($a['senha'] ?? ''))) return null;
+  $wwdr = $d . '/wwdr.pem';
+  if (!is_file($wwdr)) { $der = @file_get_contents('https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer'); if ($der) @file_put_contents($wwdr, "-----BEGIN CERTIFICATE-----\n" . chunk_split(base64_encode($der), 64, "\n") . "-----END CERTIFICATE-----\n"); }
+  $campo = function ($k, $l, $v) { return ['key' => $k, 'label' => $l, 'value' => $v]; };
+  $corpo = ['primaryFields' => [$campo('oferta', $w['estilo'] === 'coupon' ? 'OFERTA' : 'MEMBRO', $w['estilo'] === 'coupon' ? $w['oferta'] : $w['nome'])],
+    'secondaryFields' => [$campo('nome', $w['estilo'] === 'coupon' ? 'ANÚNCIO' : 'VALIDADE', $w['estilo'] === 'coupon' ? $w['nome'] : $w['oferta'])],
+    'auxiliaryFields' => array_values(array_filter([$campo('codigo', $w['estilo'] === 'coupon' ? 'CÓDIGO' : 'Nº', $w['codigo']), $w['cliente'] && $w['estilo'] === 'coupon' ? $campo('cliente', 'CLIENTE', $w['cliente']) : null])),
+    'backFields' => [$campo('como', 'Como usar', $w['rodape']), $campo('site', 'CoraçãoBR', baseUrl()), $campo('sac', 'Atendimento', emailOficial() . ' · WhatsApp (11) 98357-3266')]];
+  $pass = ['formatVersion' => 1, 'passTypeIdentifier' => $a['passTypeId'], 'teamIdentifier' => $a['teamId'], 'serialNumber' => $w['serial'], 'organizationName' => 'CoraçãoBR', 'description' => $w['titulo'],
+    'logoText' => 'CoraçãoBR', 'foregroundColor' => rgbCss($w['texto']), 'labelColor' => rgbCss($w['texto']), 'backgroundColor' => rgbCss($w['cor']),
+    'barcodes' => [['format' => 'PKBarcodeFormatQR', 'message' => $w['link'], 'messageEncoding' => 'iso-8859-1', 'altText' => $w['codigo']]], $w['estilo'] => $corpo];
+  if (!empty($w['validade'])) $pass['expirationDate'] = date('c', strtotime($w['validade'] . ' 23:59:59'));
+  $raiz = dirname(__DIR__); $arqs = ['pass.json' => json_encode($pass, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)];
+  foreach (['icon.png' => 'icon-192.png', 'icon@2x.png' => 'icon-192.png', 'logo.png' => 'icon-192.png', 'logo@2x.png' => 'icon-512.png'] as $n => $o) if (is_file($raiz . '/' . $o)) $arqs[$n] = file_get_contents($raiz . '/' . $o);
+  $man = []; foreach ($arqs as $n => $c) $man[$n] = sha1($c); $arqs['manifest.json'] = json_encode($man);
+  $tmp = tempnam(sys_get_temp_dir(), 'cbr'); file_put_contents($tmp . '.m', $arqs['manifest.json']);
+  $ok = openssl_pkcs7_sign($tmp . '.m', $tmp . '.s', $certs['cert'], $certs['pkey'], [], PKCS7_BINARY | PKCS7_DETACHED, is_file($wwdr) ? $wwdr : null);
+  if (!$ok) { @unlink($tmp . '.m'); return null; }
+  $smime = (string)file_get_contents($tmp . '.s'); @unlink($tmp . '.m'); @unlink($tmp . '.s');
+  if (!preg_match('/filename="?smime\.p7s"?\s*\r?\n\r?\n([A-Za-z0-9+\/=\r\n]+?)\r?\n\r?\n/s', $smime, $m)) return null;
+  $arqs['signature'] = base64_decode(preg_replace('/\s+/', '', $m[1]));
+  $zip = new ZipArchive(); $zf = $tmp . '.pkpass'; if ($zip->open($zf, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) return null;
+  foreach ($arqs as $n => $c) $zip->addFromString($n, $c); $zip->close(); $bin = (string)file_get_contents($zf); @unlink($zf); @unlink($tmp);
+  return $bin;
+}
+function b64url(string $s): string { return rtrim(strtr(base64_encode($s), '+/', '-_'), '='); }
+function walletGoogle(array $w, array $cfg): ?string {
+  $g = $cfg['g']; $iss = preg_replace('/[^0-9]/', '', (string)@file_get_contents(walletDir() . '/google-issuer.txt'));
+  $cls = $iss . '.coracaobr_' . ($w['estilo'] === 'coupon' ? 'cupom' : 'clube'); $obj = $iss . '.' . preg_replace('/[^A-Za-z0-9_.-]/', '_', $w['serial']);
+  $t = function ($v) { return ['defaultValue' => ['language' => 'pt-BR', 'value' => (string)$v]]; };
+  $o = ['id' => $obj, 'classId' => $cls, 'state' => 'ACTIVE', 'hexBackgroundColor' => $w['cor'], 'logo' => ['sourceUri' => ['uri' => baseUrl() . 'icon-512.png']],
+    'cardTitle' => $t('CoraçãoBR'), 'subheader' => $t($w['titulo']), 'header' => $t($w['estilo'] === 'coupon' ? $w['oferta'] : $w['nome']),
+    'barcode' => ['type' => 'QR_CODE', 'value' => $w['link'], 'alternateText' => $w['codigo']],
+    'textModulesData' => [['id' => 'a', 'header' => $w['estilo'] === 'coupon' ? 'Anúncio' : 'Validade', 'body' => $w['estilo'] === 'coupon' ? $w['nome'] : $w['oferta']], ['id' => 'b', 'header' => 'Como usar', 'body' => $w['rodape']]]];
+  $claims = ['iss' => $g['client_email'], 'aud' => 'google', 'typ' => 'savetowallet', 'iat' => time(), 'origins' => [rtrim(baseUrl(), '/')], 'payload' => ['genericClasses' => [['id' => $cls]], 'genericObjects' => [$o]]];
+  $ent = b64url(json_encode(['alg' => 'RS256', 'typ' => 'JWT'])) . '.' . b64url(json_encode($claims, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+  if (!openssl_sign($ent, $sig, (string)$g['private_key'], OPENSSL_ALGO_SHA256)) return null;
+  return 'https://pay.google.com/gp/v/save/' . $ent . '.' . b64url($sig);
 }
 function emailOficial(): string {
   global $CFG; $e = trim((string)($CFG['email_oficial'] ?? ''));
