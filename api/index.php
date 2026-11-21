@@ -110,6 +110,13 @@ function importaBase(PDO $pdo, bool $novo): void {
         $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($d, JSON_UNESCAPED_UNICODE), agora(), $id]);
       }
     }
+    if (!empty($l['revisao'])) {   // revisão da pesquisa (fotos e dados novos): substitui lugares do guia já existentes; anúncios de empresas nunca
+      $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $st->execute([$id]); $d = json_decode((string)$st->fetchColumn(), true);
+      if (is_array($d) && empty($d['anunciante']) && empty($d['donoUid']) && (string)($d['revisao'] ?? '') < (string)$l['revisao']) {
+        foreach (['notaExterna', 'fotosGoogle', 'googlePlaceId', 'fotoSite', 'precoMin', 'precoMedio', 'precoMax', 'precoBase', 'fontePreco', 'precoConferidoEm'] as $k) if (isset($d[$k]) && !isset($l[$k])) $l[$k] = $d[$k];
+        $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($l, JSON_UNESCAPED_UNICODE), agora(), $id]);
+      }
+    }
     if (!empty($l['fotoSite']['src'])) {   // imagem oficial do site: completa lugares já existentes, sem mexer no resto
       $st = $pdo->prepare("SELECT data FROM docs WHERE col = 'lugares' AND id = ?"); $st->execute([$id]); $d = json_decode((string)$st->fetchColumn(), true);
       if (is_array($d) && empty($d['fotoSite']['src'])) { $d['fotoSite'] = $l['fotoSite']; $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($d, JSON_UNESCAPED_UNICODE), agora(), $id]); }

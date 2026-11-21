@@ -1121,7 +1121,30 @@ section.block { padding-block: 22px 10px }
 .head h2 .dot { vertical-align: middle; margin-right: 6px }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body:not(.home) .brand > span { color: #EEF2F0 } }
 :root[data-theme="dark"] body:not(.home) .brand > span { color: #EEF2F0 }
+/* card legível: corpo com categoria, resumo, chips e rodapé */
+.ocard .n { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; flex: 1 }
+.ocard .n b { font: 650 1.12rem/1.25 var(--body); -webkit-line-clamp: 2; color: var(--ink) }
+.ocard .c-k { font: 600 .78rem/1.2 var(--body); color: var(--brand, #00843D); text-transform: none; letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.ocard .c-d { font: 400 .9rem/1.42 var(--body); color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.ocard .c-ch { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px }
+.ocard .c-ch > span { display: inline-flex; align-items: center; gap: 5px; font: 600 .8rem/1 var(--body); padding: 6px 9px; border-radius: 99px; background: var(--surface-2); color: var(--ink); white-space: nowrap }
+.ocard .c-ch i { font-style: normal; font-weight: 500; color: var(--muted) }
+.ocard .c-nt { background: #FFF4D6 !important; color: #6B4A00 !important }
+.ocard .c-pr.free { background: #E3F4EA !important; color: #0B6B35 !important }
+.ocard .c-pt { background: linear-gradient(90deg, #009C3B, #00843D) !important; color: #FFDF00 !important }
+.ocard .c-ab i { width: 7px; height: 7px; border-radius: 50%; background: #C2452D } .ocard .c-ab.ok i { background: #2E8B57 }
+.ocard .c-f { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--line) }
+.ocard .c-lo { display: inline-flex; align-items: center; gap: 4px; min-width: 0; font: 500 .82rem/1.3 var(--body); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.ocard .c-lo .i { width: 14px; height: 14px; flex: none }
+.ocard .c-cta { flex: none; font: 700 .8rem/1 var(--body); padding: 8px 12px; border-radius: 99px; background: var(--sponsor, #F5C400); color: var(--sponsor-ink, #1B1400) }
+.ocard .m span { font-size: .76rem !important; padding: 6px 10px !important }
+.ocard small { font: 500 .82rem var(--body) }
+html[data-theme="dark"] .ocard .c-nt { background: #3A2E0B !important; color: #FFD66B !important }
+html[data-theme="dark"] .ocard .c-pr.free { background: #0F3320 !important; color: #7BE0A3 !important }
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .ocard .c-nt { background: #3A2E0B !important; color: #FFD66B !important } html:not([data-theme="light"]) .ocard .c-pr.free { background: #0F3320 !important; color: #7BE0A3 !important } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr !important; gap: 16px } .grid .ocard img, .grid .ocard .ph0 { aspect-ratio: 16 / 9 } .ocard .n b { font-size: 1.15rem } }
 .ocard .ph0 { display: grid; place-items: center; aspect-ratio: 4 / 3; background: var(--surface-2); color: var(--muted); font: 600 2rem var(--mono) }
+.ocard .ph0 { background: linear-gradient(135deg, #0B6B35, #00843D 55%, #F5C400) !important; color: rgba(255,255,255,.92) !important; font: 700 3rem var(--display, var(--body)) !important; letter-spacing: -.02em }
 
 /* ===== barra de ícones (substitui botões em carrossel) ===== */
 .menubar { display: grid; grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); gap: 4px; padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); margin: 0 0 22px }
@@ -1173,7 +1196,8 @@ section.block { padding-block: 22px 10px }
   .xp-side { position: sticky; top: 96px; max-height: calc(100vh - 110px); overflow: auto; scrollbar-width: none }
   .xp-main .grid { grid-template-columns: repeat(3, minmax(0, 1fr)) }
 }
-@media (min-width: 1200px) { .xp-main .grid { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
+@media (min-width: 1200px) { .xp-main .grid { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
+@media (min-width: 1560px) { .xp-main .grid { grid-template-columns: repeat(4, minmax(0, 1fr)) } }
 @media (max-width: 959px) { .xp-side { grid-template-columns: 1fr } .xp-side .xp-box:first-child { grid-template-columns: 1fr 1fr } .xp-side .xp-box:first-child .xp-t { grid-column: 1 / -1 } }
 
 /* ===== Ranking ===== */
