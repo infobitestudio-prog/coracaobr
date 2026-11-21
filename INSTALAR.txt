@@ -42,7 +42,20 @@ CoraçãoBR · Como instalar na hospedagem (Hostinger ou outra com PHP 8)
    - O código vai minificado e com aviso de direitos autorais em cada arquivo.
    IMPORTANTE: envie também os arquivos ocultos (.htaccess e a pasta .well-known).
 
-6. PRONTO
+6. ROBÔ DIÁRIO (5h de Dallas) — no coracaobr.com.br já está agendado
+   hPanel → Avançado → Cron Jobs, de hora em hora (o robô só trabalha às 5h de Dallas):
+     /usr/bin/php /home/SEU_USUARIO/domains/SEU-SITE/public_html/api/index.php acao=atualizar_diario
+   Atualiza dólar, metrô, fotos, avisos e (com a chave do Google Places, opcional) notas e horários.
+
+7. RECIBO E WALLET
+   - Recibo de pagamento: sai sozinho por e-mail para quem pagou e para o e-mail oficial, no Pix
+     automático e quando você confirma um Pix no painel (link para imprimir ou salvar em PDF).
+   - Wallet (cupom do guia e carteirinha do Clube no celular): Painel master → Wallet no celular.
+     Apple: conta Apple Developer → Pass Type ID → "gerar o pedido de certificado" no painel →
+     envie para a Apple → suba o pass.cer no painel. Google: Issuer ID + chave JSON da conta de serviço.
+     Sem isso, o botão salva o cartão como imagem no celular.
+
+8. PRONTO
    - Visitantes navegam sem conta.
    - Uma conta só para todo mundo (e-mail, senha e CEP americano/ZIP obrigatório). Com ela a pessoa
      curte, comenta, avalia, salva roteiros e recebe avisos do que está perto do CEP dela.
