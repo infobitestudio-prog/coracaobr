@@ -866,7 +866,7 @@ case 'atualizar_diario': {
     $fila = [];
     foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) { $l = json_decode($row['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo'])) continue; $fila[] = [$row['id'], $l, (string)($l['notaExterna']['em'] ?? '')]; }
     usort($fila, fn($a, $b) => strcmp($a[2], $b[2]));
-    $ok = 0; $lim = !empty($_GET['todos']) && master() ? 600 : (int)($CFG['google_por_dia'] ?? 60);   // &todos=1: a equipe atualiza o guia inteiro de uma vez
+    $ok = 0; $lim = !empty($_GET['todos']) && master() ? 600 : googlePorDia();   // &todos=1: a equipe atualiza o guia inteiro de uma vez
     foreach (array_slice($fila, 0, $lim) as [$id, $l]) {
       if (!empty($l['googlePlaceId'])) $p = $http('https://places.googleapis.com/v1/places/' . rawurlencode($l['googlePlaceId']) . '?languageCode=pt-BR', null, ['X-Goog-Api-Key: ' . $gk, 'X-Goog-FieldMask: ' . $mask]);
       else {
@@ -1196,16 +1196,24 @@ case 'foto_google': {
 case 'chave_google': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
   $k = trim((string)($corpo['chave'] ?? '')); $f = dirname($CFG['db']) . '/GOOGLE-PLACES.key';
-  if ($k === '') { @unlink($f); sai(['ok' => true, 'msg' => 'Chave removida.']); }
-  if (!preg_match('/^[A-Za-z0-9_\-]{20,80}$/', $k)) erro('Chave inválida.');
-  file_put_contents($f, $k); @chmod($f, 0600); sai(['ok' => true, 'msg' => 'Chave salva no servidor.']);
+  if (isset($corpo['porDia'])) { $n = max(0, min(200, (int)$corpo['porDia'])); banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('google:porDia', ?)")->execute([(string)$n]); if ($k === '' && empty($corpo['apagar'])) sai(['ok' => true, 'msg' => $n ? "Pronto: o robô atualiza $n lugares por dia pelo Google." : 'Atualização pelo Google pausada.']); }
+  if ($k === '') { if (empty($corpo['apagar'])) erro('Cole a chave da Google Places API.'); @unlink($f); sai(['ok' => true, 'msg' => 'Chave removida.']); }
+  if (!preg_match('/^[A-Za-z0-9_\-]{20,80}$/', $k)) erro('Isso não parece uma chave do Google (normalmente começa com AIza e tem 39 caracteres).');
+  /* testa antes de salvar, com a busca mais barata do Google (só o código do lugar) */
+  $ctx = stream_context_create(['http' => ['method' => 'POST', 'timeout' => 20, 'ignore_errors' => true, 'header' => "Content-Type: application/json\r\nX-Goog-Api-Key: $k\r\nX-Goog-FieldMask: places.id", 'content' => json_encode(['textQuery' => 'Klyde Warren Park Dallas TX', 'maxResultCount' => 1])]]);
+  $t = json_decode((string)@file_get_contents('https://places.googleapis.com/v1/places:searchText', false, $ctx), true);
+  if (!is_array($t)) erro('O servidor não conseguiu falar com o Google agora. Tente de novo em alguns minutos.');
+  if (isset($t['error'])) erro(googleErro($t['error']));
+  if (empty($t['places'][0]['id'])) erro('O Google aceitou a chave, mas não devolveu o lugar de teste. Tente de novo.');
+  file_put_contents($f, $k); @chmod($f, 0600);
+  sai(['ok' => true, 'msg' => 'Chave testada e salva. O robô das 5h já usa o Google; para atualizar agora, toque em Rodar agora.']);
 }
 case 'cron_info': {
   exigeMaster();
   $f = dirname($CFG['db']) . '/CHAVE-CRON.txt';
   if (!is_file($f)) @file_put_contents($f, bin2hex(random_bytes(12)) . "\n");
   $c = trim((string)@file_get_contents($f)); $gk = trim((string)($CFG['google_places_key'] ?? '')) ?: trim((string)@file_get_contents(dirname($CFG['db']) . '/GOOGLE-PLACES.key'));
-  sai(['ok' => true, 'url' => baseUrl() . 'api/index.php?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/index.php?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
+  sai(['ok' => true, 'cmd' => '/usr/bin/php ' . __DIR__ . '/index.php acao=atualizar_diario', 'porDia' => googlePorDia(), 'url' => baseUrl() . 'api/index.php?acao=newsletter_cron&chave=' . $c, 'diario' => baseUrl() . 'api/index.php?acao=atualizar_diario&chave=' . $c, 'google' => $gk !== '', 'ultimo' => (string)banco()->query("SELECT v FROM meta WHERE k = 'diario'")->fetchColumn()]);
 }
 /* ===== Assistente "Pergunte ao CoraçãoBR" (Gemini, do Google, no plano gratuito; ou Claude, da Anthropic) =====
    O servidor escolhe os lugares do guia que combinam com a pergunta e manda só esses para a IA, que responde citando os lugares.
@@ -2043,6 +2051,21 @@ function enviaPush(string $titulo, string $texto, string $url, string $tema = ''
     if ($st >= 200 && $st < 300) $env++; else { $fal++; if ($st === 404 || $st === 410) $pdo->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([$row['id']]); }
   }
   return ['enviados' => $env, 'falhas' => $fal];
+}
+
+/* ---------- Google Places ---------- */
+/* Quantos lugares o robô atualiza por dia pelo Google (Painel → Atualização diária). Padrão 30: cerca de 900 consultas no mês. */
+function googlePorDia(): int { global $CFG; $v = banco()->query("SELECT v FROM meta WHERE k = 'google:porDia'")->fetchColumn(); return $v !== false && $v !== null && $v !== '' ? (int)$v : (int)($CFG['google_por_dia'] ?? 30); }
+function googleErro(array $e): string {
+  $m = (string)($e['message'] ?? ''); $st = (string)($e['status'] ?? ''); $r = ''; foreach ((array)($e['details'] ?? []) as $d) if (!empty($d['reason'])) $r = (string)$d['reason'];
+  if ($r === 'API_KEY_INVALID' || stripos($m, 'API key not valid') !== false) return 'A chave não é válida. Confira se copiou inteira (começa com AIza) ou crie outra em Google Cloud → Credenciais.';
+  if ($r === 'SERVICE_DISABLED' || stripos($m, 'has not been used') !== false || stripos($m, 'is disabled') !== false) return 'A "Places API (New)" não está ativada no projeto desta chave. No Google Cloud: APIs e serviços → Biblioteca → Places API (New) → Ativar. Espere 2 minutos e salve de novo.';
+  if ($r === 'BILLING_DISABLED' || stripos($m, 'billing') !== false) return 'O projeto desta chave está sem faturamento. No Google Cloud: Faturamento → vincule uma conta (o Google exige cartão, mesmo dentro da cota gratuita).';
+  if ($r === 'API_KEY_SERVICE_BLOCKED' || stripos($m, 'blocked') !== false) return 'A chave está restrita e não libera a Places API (New). Em Credenciais → sua chave → Restrições de API, marque "Places API (New)".';
+  if ($r === 'API_KEY_HTTP_REFERRER_BLOCKED' || stripos($m, 'referer') !== false) return 'A chave está restrita a sites (referenciadores HTTP) e o servidor não consegue usar. Em Restrições do aplicativo, escolha "Nenhuma" ou "Endereços IP".';
+  if ($r === 'API_KEY_IP_ADDRESS_BLOCKED' || stripos($m, 'IP address') !== false) return 'A chave está restrita a outros endereços IP. Em Restrições do aplicativo, escolha "Nenhuma" (a restrição por API já protege a chave).';
+  if ($st === 'RESOURCE_EXHAUSTED') return 'A cota diária desta chave acabou. Ela volta amanhã; confira os limites em APIs e serviços → Places API (New) → Cotas.';
+  return 'O Google recusou a chave: ' . mb_substr($m, 0, 180);
 }
 
 /* ---------- aviso "perto de você" ---------- */
