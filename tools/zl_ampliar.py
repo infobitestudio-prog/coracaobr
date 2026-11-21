@@ -95,6 +95,12 @@ def coords(o, q):
     if o.get("lat") and o.get("lng"):
         return
     la, lo = geocode(q)
+    if la is None:   # endereço com complementos: tenta só "rua, número, São Paulo" e depois o CEP
+        rua = re.split(r"\s[–-]\s|\(", q)[0].strip(" ,")
+        la, lo = geocode(rua + ", São Paulo")
+        m = re.search(r"\d{5}-?\d{3}", q)
+        if la is None and m:
+            la, lo = geocode(m.group(0) + ", São Paulo")
     if la is not None and -24.2 < la < -23.2 and -47.0 < lo < -46.2:
         o["lat"], o["lng"] = la, lo
 
@@ -253,7 +259,7 @@ def main():
         for a, b in (("endereco", endereco(e)), ("site", e.get("site")), ("local", e.get("local")), ("quando", e.get("quando"))):
             if b:
                 l[a] = str(b).strip()
-        grat = bool(e.get("gratuito")) or bool(re.search(r"gr[aá]tis|gratuito|livre", str(e.get("preco") or ""), re.I))
+        grat = e.get("gratuito") is True or (e.get("gratuito") is None and bool(re.match(r"\s*(gr[aá]tis|gratuito|entrada (gratuita|livre))", str(e.get("preco") or ""), re.I)))
         l["gratuito"] = grat
         l["preco"] = "Grátis" if grat else str(e.get("preco") or "").strip()
         if not grat:

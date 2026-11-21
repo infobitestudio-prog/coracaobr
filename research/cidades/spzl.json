@@ -560,5 +560,2815 @@
    }
   ],
   "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-temperani-cucina",
+  "regiaoGuia": "spzl",
+  "nome": "Temperani Cucina",
+  "categoria": "italiano",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Cândido Lacerda, 33 – Jardim Anália Franco, São Paulo – SP (Complexo Vila Anália), 03336-010",
+  "telefone": "(11) 2674-0843",
+  "site": "https://vilaanalia.com.br/gastronomia/temperani/",
+  "horario": "Seg a qui 12h–15h e 19h–23h (qua e qui até 23h30); sex 12h–16h e 19h–0h; sáb 12h–0h; dom 12h–22h",
+  "instagram": "grupovilaanalia",
+  "historia": "Restaurante italiano na esquina do complexo gastronômico Vila Anália, com cardápio do chef Antonio Maiolica. Segundo o grupo, o Temperani Cucina recebeu o prêmio Due Spicchi do Gambero Rosso em 2022.",
+  "fontes": [
+   "https://vilaanalia.com.br/gastronomia/temperani/",
+   "https://www.baressp.com.br/restaurantes/italianos/temperani-cucina",
+   "https://gamberorossointernational.com/?p=472078"
+  ],
+  "lat": -23.553829,
+  "lng": -46.565147,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-temperani-cucina/spzl-temperani-cucina-1.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/grupo/temperani/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-temperani-cucina/spzl-temperani-cucina-2.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/grupo/temperani/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-temperani-cucina/spzl-temperani-cucina-3.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/temperani/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-temperani-cucina/spzl-temperani-cucina-4.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/temperani/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-temperani-cucina/spzl-temperani-cucina-5.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/temperani/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-temperani-cucina/spzl-temperani-cucina-6.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/temperani/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-merci-brasserie",
+  "regiaoGuia": "spzl",
+  "nome": "Merci Brasserie",
+  "categoria": "restaurante",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Cândido Lacerda, 33 – Jardim Anália Franco, São Paulo – SP (Complexo Vila Anália), 03336-010",
+  "telefone": "(11) 2674-0843",
+  "site": "https://vilaanalia.com.br/gastronomia/merci/",
+  "horario": "Seg a qui 12h–15h e 19h–23h (qua e qui até 23h30); sex 12h–16h e 19h–0h; sáb 12h–0h (cozinha pausa 17h–19h); dom 12h–22h",
+  "instagram": "grupovilaanalia",
+  "historia": "Brasserie de inspiração parisiense no complexo Vila Anália, com cozinha aberta ao público e clássicos franceses como escargot e steak tartare.",
+  "fontes": [
+   "https://vilaanalia.com.br/gastronomia/merci/",
+   "https://www.baressp.com.br/restaurantes/franceses/merci-brasserie",
+   "https://blog.espaces.com.br/melhores-restaurantes-tatuape/"
+  ],
+  "lat": -23.553829,
+  "lng": -46.565147,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-merci-brasserie/spzl-merci-brasserie-1.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/merci/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-merci-brasserie/spzl-merci-brasserie-2.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/merci/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-merci-brasserie/spzl-merci-brasserie-3.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/merci/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-merci-brasserie/spzl-merci-brasserie-4.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/merci/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-merci-brasserie/spzl-merci-brasserie-5.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/merci/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-merci-brasserie/spzl-merci-brasserie-6.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/merci/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-mii-rooftop",
+  "regiaoGuia": "spzl",
+  "nome": "MII Rooftop",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Cândido Lacerda, 33 – Jardim Anália Franco, São Paulo – SP (último andar do Complexo Vila Anália), 03336-010",
+  "telefone": "(11) 2674-0843",
+  "site": "https://vilaanalia.com.br/gastronomia/mii-rooftop/",
+  "horario": "Seg a qui 12h–15h e 19h–23h (qua e qui até 23h30); sex 12h–16h e 19h–0h; sáb 12h–0h; dom 12h–22h (horário do complexo)",
+  "instagram": "grupovilaanalia",
+  "historia": "Bar-restaurante de inspiração grega no último andar do complexo Vila Anália, com arquitetura que remete a Mykonos e cardápio do chef Antonio Maiolica.",
+  "fontes": [
+   "https://vilaanalia.com.br/gastronomia/mii-rooftop/",
+   "https://www.guiadasemana.com.br/gastronomia/noticia/complexo-gastronomico-vila-analia-inaugura-na-zona-leste-de-sao-paulo",
+   "https://saopaulosecreto.com/en/rooftops-in-sao-paulo-en/"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-mii-rooftop/spzl-mii-rooftop-1.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/mii-rooftop/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mii-rooftop/spzl-mii-rooftop-2.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/mii-rooftop/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mii-rooftop/spzl-mii-rooftop-3.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/mii-rooftop/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mii-rooftop/spzl-mii-rooftop-4.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/mii-rooftop/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mii-rooftop/spzl-mii-rooftop-5.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/mii-rooftop/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mii-rooftop/spzl-mii-rooftop-6.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/mii-rooftop/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.553829,
+  "lng": -46.565147
+ },
+ {
+  "id": "spzl-marettimo",
+  "regiaoGuia": "spzl",
+  "nome": "Marettimo",
+  "categoria": "restaurante",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Curupá, 580 – Jardim Anália Franco, São Paulo – SP, 03355-010",
+  "telefone": "(11) 2749-0938",
+  "site": "https://www.marettimo.com.br/",
+  "horario": "Ter a sex 12h–15h e 19h–23h; sáb 12h–23h; dom 12h–17h; seg fechado",
+  "instagram": "marettimorestaurante",
+  "historia": "Restaurante de frutos do mar à beira de um parque na região do Tatuapé, com pratos como paella, polvo, bacalhau e lagosta à thermidor. O Guia da Semana o descreve como uma casa de dois andares com capacidade para 250 pessoas.",
+  "notaExterna": {
+   "fonte": "Tripadvisor",
+   "media": 4.6,
+   "total": 34,
+   "link": "https://www.tripadvisor.com/Restaurant_Review-g303631-d15316729-Reviews-Restaurante_Marettimo-Sao_Paulo_State_of_Sao_Paulo.html",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://www.marettimo.com.br/",
+   "https://www.tripadvisor.com/Restaurant_Review-g303631-d15316729-Reviews-Restaurante_Marettimo-Sao_Paulo_State_of_Sao_Paulo.html",
+   "https://www.guiadasemana.com.br/restaurantes/galeria/conheca-o-marettimo-o-maior-restaurante-de-gastronomia-mediterranea-do-tatuape"
+  ],
+  "lat": -23.561967,
+  "lng": -46.554369,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-marettimo/spzl-marettimo-1.jpg",
+    "credito": "Divulgação Marettimo",
+    "licenca": "",
+    "pagina": "https://www.marettimo.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-marettimo/spzl-marettimo-2.jpg",
+    "credito": "Divulgação Marettimo",
+    "licenca": "",
+    "pagina": "https://www.marettimo.com.br/galeria"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-marettimo/spzl-marettimo-3.jpg",
+    "credito": "Divulgação Marettimo",
+    "licenca": "",
+    "pagina": "https://www.marettimo.com.br/galeria"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-marettimo/spzl-marettimo-4.jpg",
+    "credito": "Divulgação Marettimo",
+    "licenca": "",
+    "pagina": "https://www.marettimo.com.br/galeria"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-marettimo/spzl-marettimo-5.jpg",
+    "credito": "Divulgação Marettimo",
+    "licenca": "",
+    "pagina": "https://www.marettimo.com.br/galeria"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-marettimo/spzl-marettimo-6.jpg",
+    "credito": "Divulgação Marettimo",
+    "licenca": "",
+    "pagina": "https://www.marettimo.com.br/galeria"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-coco-bambu-analia-franco",
+  "regiaoGuia": "spzl",
+  "nome": "Coco Bambu Anália Franco",
+  "categoria": "restaurante",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Azevedo Soares, 2150 – Tatuapé, São Paulo – SP, 03322-002",
+  "telefone": "(11) 4304-6221",
+  "site": "https://www.cocobambu.com/unidades/cb-analia-franco",
+  "horario": "Todos os dias, 11h–0h; happy hour 17h–20h",
+  "instagram": "cocobambuoficial",
+  "historia": "Unidade da rede Coco Bambu especializada em frutos do mar, com cardápio que tem pratos à base de camarão. Tem espaço kids e menu infantil, segundo o guia São Paulo para Crianças.",
+  "notaExterna": {
+   "fonte": "Tripadvisor",
+   "media": 4.8,
+   "total": 16880,
+   "link": "https://www.tripadvisor.com.br/RestaurantsNear-g303631-d4126672-oa120-Shopping_Analia_Franco-Sao_Paulo_State_of_Sao_Paulo.html",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://www.cocobambu.com/unidades/cb-analia-franco",
+   "https://www.tripadvisor.com.br/RestaurantsNear-g303631-d4126672-oa120-Shopping_Analia_Franco-Sao_Paulo_State_of_Sao_Paulo.html",
+   "https://redirect.foursquare.com/luanagcorreaa/list/tatuap%C3%A9",
+   "https://saopauloparacriancas.com.br/?p=100679"
+  ],
+  "lat": -23.546849,
+  "lng": -46.555994,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-coco-bambu-analia-franco/spzl-coco-bambu-analia-franco-1.jpg",
+    "credito": "Divulgação Coco Bambu",
+    "licenca": "",
+    "pagina": "https://www.cocobambu.com/unidades/cb-analia-franco"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-coco-bambu-analia-franco/spzl-coco-bambu-analia-franco-2.jpg",
+    "credito": "Divulgação Coco Bambu",
+    "licenca": "",
+    "pagina": "https://www.cocobambu.com/unidades/cb-analia-franco"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-coco-bambu-analia-franco/spzl-coco-bambu-analia-franco-3.jpg",
+    "credito": "Divulgação Coco Bambu",
+    "licenca": "",
+    "pagina": "https://www.cocobambu.com/unidades/cb-analia-franco"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-coco-bambu-analia-franco/spzl-coco-bambu-analia-franco-4.jpg",
+    "credito": "Divulgação Coco Bambu",
+    "licenca": "",
+    "pagina": "https://www.cocobambu.com/unidades/cb-analia-franco"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-coco-bambu-analia-franco/spzl-coco-bambu-analia-franco-5.jpg",
+    "credito": "Divulgação Coco Bambu",
+    "licenca": "",
+    "pagina": "https://www.cocobambu.com/unidades/cb-analia-franco"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-la-pergoletta",
+  "regiaoGuia": "spzl",
+  "nome": "La Pergoletta",
+  "categoria": "italiano",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Itapura, 1478 – Vila Gomes Cardim, São Paulo – SP, 03310-000",
+  "telefone": "(11) 2092-3330",
+  "site": "https://www.lapergoletta.com.br/",
+  "horario": "Restaurante: seg a sex 12h–15h e 18h–23h; sáb 12h–23h; dom e feriados 12h–17h",
+  "historia": "Casa de massas aberta em 2002 pelo chef milanês Elia Seganti, que depois virou restaurante, rotisseria e espaço de eventos na Rua Itapura. Segundo o restaurante, tem o selo Ospitalità Italiana.",
+  "notaExterna": {
+   "fonte": "Google (via Espaces)",
+   "media": 4.5,
+   "total": 7400,
+   "link": "https://espaces.com.br/em/sao-paulo/tatuape",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://www.lapergoletta.com.br/",
+   "https://espaces.com.br/em/sao-paulo/tatuape",
+   "https://blog.espaces.com.br/melhores-restaurantes-tatuape/",
+   "https://catracalivre.com.br/gira/roteiro-pelo-tatuape-onde-comer-beber-e-passear-em-um-dia-perfeito/",
+   "https://www.guiadasemana.com.br/sao-paulo/restaurantes/estabelecimento/la-pergoletta"
+  ],
+  "lat": -23.55152,
+  "lng": -46.56489,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-la-pergoletta/spzl-la-pergoletta-1.jpg",
+    "credito": "Divulgação La Pergoletta",
+    "licenca": "",
+    "pagina": "https://www.lapergoletta.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-la-pergoletta/spzl-la-pergoletta-2.jpg",
+    "credito": "Divulgação La Pergoletta",
+    "licenca": "",
+    "pagina": "https://www.lapergoletta.com.br/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-la-braciera-pizza-napoletana-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "La Braciera Pizza Napoletana – Tatuapé",
+  "categoria": "pizza",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Demétrio Ribeiro, 578 – Tatuapé, São Paulo – SP, 03332-000",
+  "site": "https://labraciera.com.br/unidades/tatuape",
+  "horario": "Todos os dias a partir das 18h; seg a qui e dom até 23h, sex e sáb até 0h",
+  "historia": "Unidade da pizzaria napolitana La Braciera, que se apresenta como a 19ª melhor rede de pizzarias artesanais do mundo no ranking 50 Top Pizza 2025. Usa massa de fermentação longa e forno a lenha; aceita reservas de segunda a quinta.",
+  "notaExterna": {
+   "fonte": "Tripadvisor",
+   "media": 4.7,
+   "total": 109,
+   "link": "https://www.tripadvisor.com.br/RestaurantsNear-g303631-d4126672-oa120-Shopping_Analia_Franco-Sao_Paulo_State_of_Sao_Paulo.html",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://labraciera.com.br/unidades/tatuape",
+   "https://www.guiadasemana.com.br/restaurantes/galeria/melhores-restaurantes-tatuape-sao-paulo",
+   "https://comerciosaopaulo.com.br/10-melhores-pizzarias-no-tatuape-sp/"
+  ],
+  "lat": -23.552598,
+  "lng": -46.573721,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-la-braciera-pizza-napoletana-tatuape/spzl-la-braciera-pizza-napoletana-tatuape-1.jpg",
+    "credito": "Divulgação La Braciera",
+    "licenca": "",
+    "pagina": "https://labraciera.com.br/unidades/tatuape"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-dck-burger-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "DCK Burger – Tatuapé",
+  "categoria": "hamburguer",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Itapeti, 421 – Tatuapé, São Paulo – SP",
+  "site": "https://dckburger.com.br/",
+  "horario": "Terça a domingo (segunda fechado)",
+  "instagram": "dckburger",
+  "historia": "Hamburgueria comandada pelo chef Renato Fecchio. O Guia da Semana diz que a casa tem o título de melhor hambúrguer de São Paulo pela revista Comer & Beber, da Veja.",
+  "notaExterna": {
+   "fonte": "Google (via Espaces)",
+   "media": 4.7,
+   "total": 4700,
+   "link": "https://espaces.com.br/em/sao-paulo/tatuape",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://dckburger.com.br/",
+   "https://espaces.com.br/em/sao-paulo/tatuape",
+   "https://www.guiadasemana.com.br/restaurantes/noticia/dck-burger-inaugura-segunda-unidade-na-zona-leste"
+  ],
+  "lat": -23.551187,
+  "lng": -46.567295,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-dck-burger-tatuape/spzl-dck-burger-tatuape-1.jpg",
+    "credito": "Divulgação DCK Burger",
+    "licenca": "",
+    "pagina": "https://dckburger.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-dck-burger-tatuape/spzl-dck-burger-tatuape-2.jpg",
+    "credito": "Divulgação DCK Burger",
+    "licenca": "",
+    "pagina": "https://dckburger.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-dck-burger-tatuape/spzl-dck-burger-tatuape-3.jpg",
+    "credito": "Divulgação DCK Burger",
+    "licenca": "",
+    "pagina": "https://dckburger.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-dck-burger-tatuape/spzl-dck-burger-tatuape-4.jpg",
+    "credito": "Divulgação DCK Burger",
+    "licenca": "",
+    "pagina": "https://dckburger.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-dck-burger-tatuape/spzl-dck-burger-tatuape-5.jpg",
+    "credito": "Divulgação DCK Burger",
+    "licenca": "",
+    "pagina": "https://dckburger.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-dck-burger-tatuape/spzl-dck-burger-tatuape-6.jpg",
+    "credito": "Divulgação DCK Burger",
+    "licenca": "",
+    "pagina": "https://dckburger.com.br/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-bracia-parrilla",
+  "regiaoGuia": "spzl",
+  "nome": "Bracia Parrilla",
+  "categoria": "churrascaria",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Azevedo Soares, 1008 – Vila Gomes Cardim, São Paulo – SP, 03322-001",
+  "instagram": "braciaparrilla",
+  "historia": "Parrilla inaugurada em 2001 numa casa ampla da Rua Azevedo Soares, especializada em cortes argentinos e uruguaios grelhados na brasa, como bife de chorizo e vacío.",
+  "fontes": [
+   "https://catracalivre.com.br/gira/roteiro-pelo-tatuape-onde-comer-beber-e-passear-em-um-dia-perfeito/",
+   "https://visitesaopaulo.com/restaurantes-no-tatuape-confira-3-locais-deliciosos/",
+   "https://www.baressp.com.br/restaurantes/argentinos/bracia-parrilla",
+   "https://tatuapebairro.com.br/conheca-o-bracia-parrilla/",
+   "https://comerciosaopaulo.com.br/10-melhores-restaurantes-em-tatuape-o-guia-definitivo-da-gastronomia-na-zona-leste/"
+  ],
+  "lat": -23.548981,
+  "lng": -46.56696,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-tatu-bola-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "Tatu Bola – Tatuapé",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Emília Marengo, 534 – Tatuapé, São Paulo – SP, 03336-000",
+  "site": "https://tatubolabar.com.br/",
+  "instagram": "tatubola.bar",
+  "historia": "Unidade da rede de bares Tatu Bola, com comanda individual, música ao vivo (samba, pagode, sertanejo e pop rock), petiscos de boteco, chope e caipirinhas.",
+  "notaExterna": {
+   "fonte": "Google (via Espaces)",
+   "media": 4.5,
+   "total": 3700,
+   "link": "https://espaces.com.br/em/sao-paulo/tatuape",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://tatubolabar.com.br/",
+   "https://espaces.com.br/em/sao-paulo/tatuape",
+   "https://www.espaces.com.br/tatu-bola-tatuape",
+   "https://baressp.com.br/bares/tatu-bola-tatuape"
+  ],
+  "lat": -23.553496,
+  "lng": -46.561541,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-tatu-bola-tatuape/spzl-tatu-bola-tatuape-1.jpg",
+    "credito": "Divulgação Tatu Bola",
+    "licenca": "",
+    "pagina": "https://tatubolabar.com.br/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-jordao-bar",
+  "regiaoGuia": "spzl",
+  "nome": "Jordão Bar",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Apucarana, 1452 – Tatuapé, São Paulo – SP, 03311-000",
+  "telefone": "(11) 2671-0668",
+  "horario": "Dom a ter 12h–23h; qua e qui 12h–0h; sex e sáb 12h–1h",
+  "instagram": "jordaobar",
+  "historia": "Bar com drinks autorais, pratos e sobremesas em ambiente simples e elegante, com área externa. Em outubro de 2026 promoveu, com o vizinho Martin Bar, a 3ª Semana da Coquetelaria do Tatuapé.",
+  "fontes": [
+   "https://www.baressp.com.br/eventos/jordao-e-martin-bar-promovem-3a-semana-da-coquetelaria-com-drinques-a-r-40-no-tatuape",
+   "https://www.baressp.com.br/bares-no-tatuape",
+   "https://catracalivre.com.br/gira/roteiro-pelo-tatuape-onde-comer-beber-e-passear-em-um-dia-perfeito/",
+   "https://www.tripadvisor.com.br/ShowUserReviews-g303631-d2652207-r515355945-Jordao_Bar-Sao_Paulo_State_of_Sao_Paulo.html"
+  ],
+  "lat": -23.551067,
+  "lng": -46.562353,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-martin-bar",
+  "regiaoGuia": "spzl",
+  "nome": "Martin Bar",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Apucarana, 1490 – Tatuapé, São Paulo – SP",
+  "telefone": "(11) 3592-2466",
+  "horario": "Seg e ter 16h–23h; qua e qui 16h–0h; sex e sáb 12h–1h; dom 12h–23h",
+  "instagram": "martinbaroficial",
+  "historia": "Bar da Rua Apucarana conhecido pelos drinks e pela comida caseira brasileira bem executada, segundo o Catraca Livre.",
+  "notaExterna": {
+   "fonte": "Google (via Espaces)",
+   "media": 4.6,
+   "total": 986,
+   "link": "https://espaces.com.br/em/sao-paulo/tatuape",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://www.baressp.com.br/eventos/jordao-e-martin-bar-promovem-3a-semana-da-coquetelaria-com-drinques-a-r-40-no-tatuape",
+   "https://espaces.com.br/em/sao-paulo/tatuape",
+   "https://catracalivre.com.br/gira/roteiro-pelo-tatuape-onde-comer-beber-e-passear-em-um-dia-perfeito/"
+  ],
+  "lat": -23.551409,
+  "lng": -46.562266,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-st-john-s-irish-pub",
+  "regiaoGuia": "spzl",
+  "nome": "St. John's Irish Pub",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Itapura, 1308 – Tatuapé, São Paulo – SP, 03310-000",
+  "telefone": "(11) 2295-0677",
+  "site": "https://stjohns.com.br/",
+  "horario": "Qua 18h–1h; qui 18h–3h; sex e sáb 18h–5h; dom 18h–0h (seg e ter fechado)",
+  "instagram": "stjohnspub",
+  "historia": "Pub irlandês fundado em 2004 no Tatuapé, com rock ao vivo de quarta a domingo, mais de 40 rótulos de cerveja (incluindo Guinness) e cardápio com fish and chips e burgers.",
+  "precoMin": 20.0,
+  "precoMax": 45.0,
+  "precoBase": "por pessoa",
+  "fontePreco": "https://stjohns.com.br/",
+  "fontePrecoTipo": "terceiros",
+  "precoConferidoEm": "2026-11-21",
+  "fontes": [
+   "https://stjohns.com.br/",
+   "https://www.baressp.com.br/bares-no-tatuape",
+   "https://www.tripadvisor.com.br/ShowUserReviews-g303631-d5760778-r290069035-St_Johns_Bar-Sao_Paulo_State_of_Sao_Paulo.html",
+   "https://www.guiadasemana.com.br/bares-drinks/galeria/pubs-incriveis-para-conhecer-em-sao-paulo"
+  ],
+  "lat": -23.550064,
+  "lng": -46.565215,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-st-john-s-irish-pub/spzl-st-john-s-irish-pub-1.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://stjohns.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-st-john-s-irish-pub/spzl-st-john-s-irish-pub-2.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://stjohns.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-st-john-s-irish-pub/spzl-st-john-s-irish-pub-3.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://stjohns.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-st-john-s-irish-pub/spzl-st-john-s-irish-pub-4.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://stjohns.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-st-john-s-irish-pub/spzl-st-john-s-irish-pub-5.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://stjohns.com.br/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-quintal-do-espeto-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "Quintal do Espeto – Tatuapé",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Serra de Botucatu, 1933 – Tatuapé, São Paulo – SP, 03317-001",
+  "historia": "Unidade da rede de espetarias Quintal do Espeto, com mais de 50 tipos de espetinho, música ao vivo, TVs para esportes e espaço kids.",
+  "fontes": [
+   "https://www.baressp.com.br/bares-no-tatuape",
+   "https://baressp.com.br/bares/quintal-do-espeto-tatuape",
+   "https://blog.espaces.com.br/melhores-restaurantes-tatuape/",
+   "https://www.guiadasemana.com.br/na-cidade/noticia/com-musica-ao-vivo-e-diversos-sabores-de-espetinhos-quintal-do-espeto-tatuape-e-opcao-animada-para-comemorar-aniversario"
+  ],
+  "lat": -23.540928,
+  "lng": -46.553114,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-fish-wan",
+  "regiaoGuia": "spzl",
+  "nome": "Fish-Wan",
+  "categoria": "japones",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Cândido Lacerda, 33 – Jardim Anália Franco, São Paulo – SP (Complexo Vila Anália), 03336-010",
+  "telefone": "(11) 2674-0843",
+  "site": "https://vilaanalia.com.br/gastronomia/fish-wan/",
+  "horario": "Seg a qui 12h–15h e 19h–23h (qua e qui até 23h30); sex 12h–16h e 19h–0h; sáb 12h–0h; dom 12h–22h",
+  "instagram": "grupovilaanalia",
+  "historia": "Restaurante japonês contemporâneo do complexo Vila Anália, comandado pelo chef Luigi Pauletto, que trabalha com o conceito de peixe maturado (dry-aged fish) e recebe DJs.",
+  "fontes": [
+   "https://vilaanalia.com.br/gastronomia/fish-wan/",
+   "https://www.guiadasemana.com.br/gastronomia/noticia/complexo-gastronomico-vila-analia-inaugura-na-zona-leste-de-sao-paulo"
+  ],
+  "lat": -23.553829,
+  "lng": -46.565147,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-fish-wan/spzl-fish-wan-1.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/fish-wan/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-fish-wan/spzl-fish-wan-2.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/fish-wan/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-fish-wan/spzl-fish-wan-3.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/fish-wan/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-fish-wan/spzl-fish-wan-4.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/fish-wan/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-fish-wan/spzl-fish-wan-5.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/fish-wan/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-fish-wan/spzl-fish-wan-6.jpg",
+    "credito": "Divulgação Vila Anália",
+    "licenca": "",
+    "pagina": "https://vilaanalia.com.br/gastronomia/fish-wan/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-uru-mar-y-parrilla",
+  "regiaoGuia": "spzl",
+  "nome": "Uru Mar y Parrilla",
+  "categoria": "churrascaria",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Emília Marengo, 109 – Jardim Anália Franco, São Paulo – SP, 03336-000",
+  "historia": "Casa dedicada à culinária uruguaia, com carnes na parrilla e frutos do mar, criada pelo mesmo grupo do Macaxeira e do complexo Vila Anália; ocupa um quarteirão inteiro da Rua Emília Marengo.",
+  "notaExterna": {
+   "fonte": "Tripadvisor",
+   "media": 4.3,
+   "total": 0,
+   "link": "https://www.tripadvisor.com.br/RestaurantsNear-g303631-d4126672-oa120-Shopping_Analia_Franco-Sao_Paulo_State_of_Sao_Paulo.html",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://vilaanalia.com.br/grupo/uru/",
+   "https://www.baressp.com.br/restaurantes/cozinha-de-carnes/uru-mar-y-parrilla",
+   "https://www.guiadasemana.com.br/restaurantes/galeria/restaurantes-para-comer-carnes-na-parrilla-em-sao-paulo"
+  ],
+  "lat": -23.554978,
+  "lng": -46.558951,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-dutch-food-beer",
+  "regiaoGuia": "spzl",
+  "nome": "Dutch Food & Beer",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Av. Vereador Abel Ferreira, 1080 – Jardim Anália Franco, São Paulo – SP, 03340-000",
+  "instagram": "dutchfoodbeer",
+  "historia": "Bar e restaurante com pista de boliche e fliperama, cardápio de porções, hambúrgueres e pratos executivos, além de drinks autorais. Aberto em 2019, segundo publicação local.",
+  "precoMin": 29.9,
+  "precoMax": 135.0,
+  "precoBase": "por pessoa",
+  "fontePreco": "https://saopauloparacriancas.com.br/dutch-food-beer-analia-franco/",
+  "fontePrecoTipo": "terceiros",
+  "precoConferidoEm": "2026-11-21",
+  "fontes": [
+   "https://saopauloparacriancas.com.br/dutch-food-beer-analia-franco/",
+   "https://www.guiadasemana.com.br/gastronomia/noticia/bar-com-pista-de-boliche-fliperama-drinks-e-burgers-analia-franco",
+   "https://www.guiadasemana.com.br/na-cidade/galeria/onde-jogar-boliche-em-sao-paulo"
+  ],
+  "lat": -23.558733,
+  "lng": -46.567583,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-resenha-sports-bar",
+  "regiaoGuia": "spzl",
+  "nome": "Resenha Sports Bar",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Emília Marengo, 383 – Tatuapé, São Paulo – SP, 03336-000",
+  "telefone": "(11) 2673-9551",
+  "horario": "Ter a sex 18h–1h; sáb 15h–1h; dom 15h–23h (BaresSP, 2023)",
+  "instagram": "resenhasportsbar",
+  "historia": "Bar esportivo criado pelo jornalista Bruno Leitão, com 13 telas para transmissões simultâneas de futebol, NBA, NFL e surfe, hambúrgueres e drinks como moscow mule e negroni envelhecido.",
+  "fontes": [
+   "https://baressp.com.br/bares/resenha-sports-bar",
+   "https://www.baressp.com.br/bares-no-tatuape"
+  ],
+  "lat": -23.553496,
+  "lng": -46.561541,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-pizzaria-flor-de-vila-formosa",
+  "regiaoGuia": "spzl",
+  "nome": "Pizzaria Flor de Vila Formosa",
+  "categoria": "pizza",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Formosa",
+  "endereco": "Av. Flor de Vila Formosa, 531 – Vila Formosa, São Paulo – SP, 03366-010",
+  "telefone": "(11) 2783-0171",
+  "site": "https://pizzariaflor.com.br/",
+  "horario": "Ter a qui e dom 18h–23h30; sex e sáb 18h–0h; seg fechado",
+  "instagram": "pizzariaflordevilaformosa",
+  "historia": "Pizzaria fundada em 1995 no coração da Vila Formosa, com pizzas assadas em forno a lenha, molho artesanal, esfihas, calzones e fogazzas; também faz entregas na região.",
+  "notaExterna": {
+   "fonte": "Restaurant Guru",
+   "media": 4.4,
+   "total": 1043,
+   "link": "https://restaurantguru.com/Pizzaria-Flor-De-Vila-Formosa-Sao-Paulo",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://pizzariaflor.com.br/",
+   "https://restaurantguru.com/Pizzaria-Flor-De-Vila-Formosa-Sao-Paulo",
+   "https://www.tripadvisor.com.br/Restaurant_Review-g303631-d5373271-Reviews-Pizzaria_Flor_De_Vila_Formosa-Sao_Paulo_State_of_Sao_Paulo.html"
+  ],
+  "lat": -23.565821,
+  "lng": -46.53248,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-pizzaria-flor-de-vila-formosa/spzl-pizzaria-flor-de-vila-formosa-1.jpg",
+    "credito": "Divulgação Pizzaria Flor de Vila Formosa",
+    "licenca": "",
+    "pagina": "https://pizzariaflor.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-pizzaria-flor-de-vila-formosa/spzl-pizzaria-flor-de-vila-formosa-2.jpg",
+    "credito": "Divulgação Pizzaria Flor de Vila Formosa",
+    "licenca": "",
+    "pagina": "https://pizzariaflor.com.br/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-vovo-do-chopp",
+  "regiaoGuia": "spzl",
+  "nome": "Vovô do Chopp",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Formosa",
+  "endereco": "Praça das Canárias, s/n – Box 39, Mercado Municipal da Vila Formosa, São Paulo – SP",
+  "telefone": "(11) 2691-6533",
+  "site": "https://mercadaodavilaformosa.com.br/lojas-dos-clientes/vovo-do-chopp/",
+  "instagram": "vovodochopp",
+  "historia": "Choperia dentro do Mercado Municipal da Vila Formosa, com chope Brahma, porções, feijoada às quartas e sábados e música ao vivo nos fins de semana.",
+  "notaExterna": {
+   "fonte": "Restaurant Guru",
+   "media": 4.7,
+   "total": 184,
+   "link": "https://restaurantguru.com/Vovo-do-chopp-Sao-Paulo",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://mercadaodavilaformosa.com.br/lojas-dos-clientes/vovo-do-chopp/",
+   "https://restaurantguru.com/Vovo-do-chopp-Sao-Paulo",
+   "https://www.desbravasp.com.br/restaurante/zona-leste/bar-e-grill/vovo-do-chopp--bar-e-restaurante-na-vila-formosa"
+  ],
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.566477,
+  "lng": -46.545606
+ },
+ {
+  "id": "spzl-santo-bar",
+  "regiaoGuia": "spzl",
+  "nome": "Santo Bar",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Formosa",
+  "endereco": "Praça Santo Atanásio, 20 – Vila Formosa, São Paulo – SP, 03355-030",
+  "site": "http://santobarvilaformosa.com.br/",
+  "horario": "Todos os dias, 9h–0h",
+  "historia": "Bar e restaurante de praça com música ambiente e ao vivo, porções e petiscos; serve almoço self-service nos dias úteis e feijoada às quartas e sábados.",
+  "fontes": [
+   "http://santobarvilaformosa.com.br/",
+   "https://www.facebook.com/santobarvilaformosa/",
+   "https://www.benditoguia.com.br/empresa/santo-bar-e-restaurante-vila-formosa-sao-paulo-sp"
+  ],
+  "lat": -23.562327,
+  "lng": -46.553422,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-adega-boteco-vila-formosa",
+  "regiaoGuia": "spzl",
+  "nome": "Adega & Boteco – Vila Formosa",
+  "categoria": "bar",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Formosa",
+  "endereco": "Rua Arapaçu, 276 – Vila Formosa, São Paulo – SP, 03358-000",
+  "telefone": "(11) 97770-0778",
+  "historia": "Adega e boteco de bairro com petiscos e bebidas na Vila Formosa.",
+  "notaExterna": {
+   "fonte": "Restaurant Guru",
+   "media": 4.9,
+   "total": 16,
+   "link": "https://restaurantguru.com.br/Adega-and-Boteco-Vila-Formosa-Butecaria-and-Petiscaria-12x8-Sao-Paulo",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://restaurantguru.com.br/Adega-and-Boteco-Vila-Formosa-Butecaria-and-Petiscaria-12x8-Sao-Paulo",
+   "https://www.benditoguia.com.br/empresa/adega-boteco-vila-formosa-sao-paulo"
+  ],
+  "lat": -23.563863,
+  "lng": -46.549721,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-coco-bambu-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "Coco Bambu Tatuapé",
+  "categoria": "restaurante",
+  "tipo": "estabelecimento",
+  "oferta": "comida",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Domingos Agostim, 91 – Piso Térreo do Shopping Metrô Tatuapé, São Paulo – SP",
+  "telefone": "(11) 95558-7478",
+  "site": "https://www.cocobambu.com/unidades/cb-tatuape",
+  "horario": "Seg a qui 11h30–23h; sex e sáb 11h30–0h; dom 11h30–22h; happy hour diário 17h–20h",
+  "instagram": "cocobambuoficial",
+  "historia": "91ª unidade da rede Coco Bambu, no térreo do Shopping Metrô Tatuapé, com 723 m², salão para mais de 250 pessoas, salas de eventos e adega; cardápio especializado em frutos do mar.",
+  "notaExterna": {
+   "fonte": "Tripadvisor",
+   "media": 4.9,
+   "total": 94,
+   "link": "https://www.tripadvisor.com/RestaurantsNear-g303631-d9576107-Tatuape-Sao_Paulo_State_of_Sao_Paulo.html",
+   "em": "2026-11-21"
+  },
+  "fontes": [
+   "https://www.cocobambu.com/unidades/cb-tatuape",
+   "https://www.tripadvisor.com/RestaurantsNear-g303631-d9576107-Tatuape-Sao_Paulo_State_of_Sao_Paulo.html",
+   "https://mercadoeconsumo.com.br/24/05/2025/noticias/shopping-tatuape-tera-espaco-gourmet-com-restaurantes-como-coco-bambu-outback-e-madero/"
+  ],
+  "lat": -23.541689,
+  "lng": -46.577046,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-boogarins-1121",
+  "regiaoGuia": "spzl",
+  "nome": "Boogarins",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-11-21",
+  "dataFim": "2026-11-21",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/programacao/boogarins-17/",
+  "local": "Sesc Belenzinho",
+  "quando": "Sábado, 21/11, às 20h (Comedoria)",
+  "gratuito": false,
+  "preco": "R$ 60 (inteira) / R$ 30 (meia) / R$ 18 (Credencial Plena)",
+  "precoMin": 18.0,
+  "precoMax": 60.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sescsp.org.br/programacao/boogarins-17/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "A banda goiana de rock psicodélico, premiada pela APCA em 2024, apresenta show de carreira com sucessos, faixas do EP “DIFERENCIADO vol.1” e prévias do próximo álbum. Classificação 14 anos; limite de 2 ingressos por pessoa.",
+  "fontes": [
+   "https://www.sescsp.org.br/programacao/boogarins-17/",
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-boogarins-1121/spzl-ev-boogarins-1121-1.jpg",
+    "credito": "Divulgação Sesc São Paulo",
+    "licenca": "",
+    "pagina": "https://www.sescsp.org.br/programacao/boogarins-17/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-taina-santos-1121",
+  "regiaoGuia": "spzl",
+  "nome": "Tainá Santos",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-11-21",
+  "dataFim": "2026-11-21",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/programacao/taina-santos/",
+  "local": "Sesc Belenzinho",
+  "quando": "Sábado, 21/11, às 20h30",
+  "gratuito": false,
+  "preco": "R$ 60 (inteira) / R$ 30 (meia) / R$ 18 (Credencial Plena)",
+  "precoMin": 18.0,
+  "precoMax": 60.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sescsp.org.br/programacao/taina-santos/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Cantora, percussionista e filha de terreiro, Tainá Santos revisita sua trajetória entre “Tambores que Cantam” e “ADÊ”, unindo tambores, melodias e referências do axé. Classificação 12 anos.",
+  "fontes": [
+   "https://www.sescsp.org.br/programacao/taina-santos/",
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-taina-santos-1121/spzl-ev-taina-santos-1121-1.jpg",
+    "credito": "Divulgação Sesc São Paulo",
+    "licenca": "",
+    "pagina": "https://www.sescsp.org.br/programacao/taina-santos/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-diego-estevam-caminhos-abertos-jazz-clube-1122",
+  "regiaoGuia": "spzl",
+  "nome": "Diego Estevam – Caminhos Abertos (Jazz Clube)",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-11-22",
+  "dataFim": "2026-11-22",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/unidades/belenzinho/",
+  "local": "Sesc Belenzinho",
+  "quando": "Domingo, 22/11, às 18h",
+  "gratuito": false,
+  "preco": "R$ 60 (inteira) / R$ 30 (meia) / R$ 18 (Credencial Plena)",
+  "precoMin": 18.0,
+  "precoMax": 60.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sescsp.org.br/unidades/belenzinho/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Dentro da série Jazz Clube, o músico apresenta o show “Caminhos Abertos”, que aproxima jazz contemporâneo e hip-hop, com participação de MC Marechal.",
+  "fontes": [
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-leci-brandao-bem-brasil-1122",
+  "regiaoGuia": "spzl",
+  "nome": "Leci Brandão – Bem Brasil",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "dataInicio": "2026-11-22",
+  "dataFim": "2026-11-22",
+  "endereco": "Av. Fernando do Espírito Santo Alves de Mattos, 1000 – Itaquera, São Paulo – SP, 08265-045",
+  "site": "https://www.sescsp.org.br/programacao/leci-brandao-20/",
+  "local": "Sesc Itaquera",
+  "quando": "Domingo, 22/11, às 12h (Palco da Orquestra Mágica, área aberta)",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Gravação do programa Bem Brasil (TV Cultura e Sesc) com Leci Brandão, que canta clássicos como “Isso é Fundo de Quintal” e “Zé do Caroço” e celebra 51 anos de carreira. Show em área aberta, em pé.",
+  "fontes": [
+   "https://www.sescsp.org.br/programacao/leci-brandao-20/"
+  ],
+  "lat": -23.58095,
+  "lng": -46.468638,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-leci-brandao-bem-brasil-1122/spzl-ev-leci-brandao-bem-brasil-1122-1.jpg",
+    "credito": "Divulgação Sesc São Paulo / Foto: Rafael Botas",
+    "licenca": "",
+    "pagina": "https://www.sescsp.org.br/programacao/leci-brandao-20/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-o-ceu-de-durvalina-1029",
+  "regiaoGuia": "spzl",
+  "nome": "O Céu de Durvalina",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-10-29",
+  "dataFim": "2026-12-13",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/programacao/o-ceu-de-durvalina/",
+  "local": "Sesc Belenzinho",
+  "quando": "Quintas a sábados, 21h; domingos, 17h (Libras em 05/12 às 21h e 13/12 às 17h)",
+  "gratuito": false,
+  "preco": "R$ 50 (inteira) / R$ 25 (meia) / R$ 15 (Credencial Plena)",
+  "precoMin": 15.0,
+  "precoMax": 50.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sescsp.org.br/programacao/o-ceu-de-durvalina/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Espetáculo com Geni Salomão e direção de Ronaldo Aguiar sobre uma mulher que deixa o interior de Minas rumo a São Paulo para presentear a mãe com uma máquina de costura; homenagem a Rolando Boldrin e aos migrantes. 70 min, 12 anos.",
+  "fontes": [
+   "https://www.sescsp.org.br/programacao/o-ceu-de-durvalina/",
+   "https://infoteatro.com.br/peca/o-ceu-de-durvalina/",
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-o-ceu-de-durvalina-1029/spzl-ev-o-ceu-de-durvalina-1029-1.jpg",
+    "credito": "Divulgação Justas Produções / Foto: Ariane Artioli",
+    "licenca": "",
+    "pagina": "https://infoteatro.com.br/peca/o-ceu-de-durvalina/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-planeta-pelucia-1024",
+  "regiaoGuia": "spzl",
+  "nome": "Planeta Pelúcia",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-10-24",
+  "dataFim": "2026-11-28",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/programacao/planeta-pelucia-5/",
+  "local": "Sesc Belenzinho",
+  "quando": "Sábados, domingos e feriados, às 12h",
+  "gratuito": false,
+  "preco": "R$ 40 (inteira) / R$ 20 (meia) / R$ 12 (Credencial Plena)",
+  "precoMin": 12.0,
+  "precoMax": 40.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sescsp.org.br/programacao/planeta-pelucia-5/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Espetáculo do CASCA Coletivo de Criação em que uma criança deseja crescer antes do tempo e descobre um mundo adulto peculiar, unindo humor e poesia. 60 min.",
+  "fontes": [
+   "https://www.sescsp.org.br/programacao/planeta-pelucia-5/",
+   "https://infoteatro.com.br/peca/planeta-pelucia-2/",
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-planeta-pelucia-1024/spzl-ev-planeta-pelucia-1024-1.jpg",
+    "credito": "Divulgação Sesc São Paulo / Foto: Rodolfo Amorim",
+    "licenca": "",
+    "pagina": "https://www.sescsp.org.br/programacao/planeta-pelucia-5/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-planeta-pelucia-1024/spzl-ev-planeta-pelucia-1024-2.jpg",
+    "credito": "Divulgação CASCA Coletivo / Foto: Rodolfo Amorim",
+    "licenca": "",
+    "pagina": "https://infoteatro.com.br/peca/planeta-pelucia-2/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-do-pranto-o-oceano-e-nadamos-no-amor-zeh-palito-1110",
+  "regiaoGuia": "spzl",
+  "nome": "Do Pranto o Oceano, e Nadamos no Amor – Zéh Palito",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-11-10",
+  "dataFim": "2027-06-27",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/programacao/do-pranto-o-oceano-e-nadamos-no-amor/",
+  "local": "Sesc Belenzinho",
+  "quando": "Terça a sábado, 10h às 20h; domingos e feriados, 10h às 18h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Mostra individual do artista visual e muralista Zéh Palito, de Limeira (SP), com curadoria de Daniel Rangel.",
+  "fontes": [
+   "https://www.sescsp.org.br/programacao/do-pranto-o-oceano-e-nadamos-no-amor/",
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-do-pranto-o-oceano-e-nadamos-no-amor-zeh-palito-1110/spzl-ev-do-pranto-o-oceano-e-nadamos-no-amor-zeh-palito-1110-1.jpg",
+    "credito": "Divulgação Sesc São Paulo",
+    "licenca": "",
+    "pagina": "https://www.sescsp.org.br/programacao/do-pranto-o-oceano-e-nadamos-no-amor/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-cinema-mambembe-fabio-meira-1126",
+  "regiaoGuia": "spzl",
+  "nome": "Cinema: Mambembe (Fábio Meira)",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-11-26",
+  "dataFim": "2026-11-26",
+  "endereco": "Rua Padre Adelino, 1000 – Belenzinho, São Paulo – SP, 03303-000",
+  "site": "https://www.sescsp.org.br/unidades/belenzinho/",
+  "local": "Sesc Belenzinho",
+  "quando": "Quinta, 26/11, às 16h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Exibição de “Mambembe” (Brasil, 2023, 97 min), filme que retoma uma produção interrompida e acompanha um topógrafo errante e seu encontro com três mulheres de um circo mambembe. Classificação 12 anos.",
+  "fontes": [
+   "https://www.sescsp.org.br/wp-content/uploads/2026/10/V13_Em-Cartaz_2026_novembro_VF.pdf"
+  ],
+  "lat": -23.545147,
+  "lng": -46.588881,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-fabrica-dos-sonhos-de-natal-o-musical-1121",
+  "regiaoGuia": "spzl",
+  "nome": "Fábrica dos Sonhos de Natal – O Musical",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-11-21",
+  "dataFim": "2026-12-13",
+  "endereco": "Rua Domingos Agostim, 91 (Shopping Metrô Tatuapé) – Tatuapé, São Paulo – SP, 03314-030",
+  "site": "https://infoteatro.com.br/peca/fabrica-dos-sonhos-de-natal/",
+  "local": "Teatro Shopping Metrô Tatuapé – Sala Léa Garcia",
+  "quando": "Sábados e domingos, 15h e 17h30",
+  "gratuito": false,
+  "preco": "R$ 100 (inteira) / R$ 50 (meia) / R$ 60 (promocional)",
+  "precoMin": 50.0,
+  "precoMax": 100.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://infoteatro.com.br/peca/fabrica-dos-sonhos-de-natal/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Musical natalino de 60 minutos em que Nina, Bia, Théo e Gael precisam preparar todos os sonhos de Natal antes da meia-noite, com efeitos especiais e participação da plateia. Classificação livre.",
+  "fontes": [
+   "https://infoteatro.com.br/peca/fabrica-dos-sonhos-de-natal/",
+   "https://www.baressp.com.br/eventos/fabrica-dos-sonhos-de-natal-chega-ao-teatro-shopping-metro-tatuape-"
+  ],
+  "lat": -23.541689,
+  "lng": -46.577046,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-fabrica-dos-sonhos-de-natal-o-musical-1121/spzl-ev-fabrica-dos-sonhos-de-natal-o-musical-1121-1.jpg",
+    "credito": "Divulgação Fábrica dos Sonhos de Natal",
+    "licenca": "",
+    "pagina": "https://infoteatro.com.br/peca/fabrica-dos-sonhos-de-natal/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-o-arquiteto-e-o-imperador-da-assiria-1106",
+  "regiaoGuia": "spzl",
+  "nome": "O Arquiteto e o Imperador da Assíria",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca",
+  "dataInicio": "2026-11-06",
+  "dataFim": "2026-11-22",
+  "endereco": "Av. Paes de Barros, 955 – Alto da Mooca, São Paulo – SP, 03115-020",
+  "site": "https://infoteatro.com.br/peca/o-arquiteto-e-o-imperador-da-assiria-2/",
+  "local": "Teatro Arthur Azevedo",
+  "quando": "Quinta a sábado, 21h; domingo, 18h (últimos dias)",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "O Grupo Egrégora apresenta o clássico do Teatro do Absurdo de Fernando Arrabal, um jogo insano de poder e dominação. 100 min, 16 anos.",
+  "fontes": [
+   "https://infoteatro.com.br/peca/o-arquiteto-e-o-imperador-da-assiria-2/",
+   "https://infoteatro.com.br/teatro/teatro-arthur-azevedo/"
+  ],
+  "lat": -23.563117,
+  "lng": -46.596926,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-o-arquiteto-e-o-imperador-da-assiria-1106/spzl-ev-o-arquiteto-e-o-imperador-da-assiria-1106-1.jpg",
+    "credito": "Divulgação Grupo Egrégora",
+    "licenca": "",
+    "pagina": "https://infoteatro.com.br/peca/o-arquiteto-e-o-imperador-da-assiria-2/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-cartas-da-prisao-1125",
+  "regiaoGuia": "spzl",
+  "nome": "Cartas da Prisão",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca",
+  "dataInicio": "2026-11-25",
+  "dataFim": "2026-11-29",
+  "endereco": "Av. Paes de Barros, 955 – Alto da Mooca, São Paulo – SP, 03115-020",
+  "site": "https://infoteatro.com.br/peca/cartas-da-prisao-2/",
+  "local": "Teatro Arthur Azevedo",
+  "quando": "Quarta (25) a sábado, 21h; domingo, 18h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Peça de Nanna de Castro sobre mulheres que se correspondem com criminosos presos, transitando entre depoimentos reais e ficção. Realização do Coletivo À Meia Luz com a Secretaria Municipal de Cultura; 50 min, 14 anos.",
+  "fontes": [
+   "https://infoteatro.com.br/peca/cartas-da-prisao-2/"
+  ],
+  "lat": -23.563117,
+  "lng": -46.596926,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-cartas-da-prisao-1125/spzl-ev-cartas-da-prisao-1125-1.jpg",
+    "credito": "Divulgação Coletivo À Meia Luz / Foto: Rafael Salvador",
+    "licenca": "",
+    "pagina": "https://infoteatro.com.br/peca/cartas-da-prisao-2/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-reina-karla-jacobina-cia-de-danca-1216",
+  "regiaoGuia": "spzl",
+  "nome": "REINA – Karla Jacobina Cia de Dança",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca",
+  "dataInicio": "2026-12-16",
+  "dataFim": "2026-12-16",
+  "endereco": "Av. Paes de Barros, 955 – Alto da Mooca, São Paulo – SP, 03115-020",
+  "site": "https://www.sympla.com.br/evento/reina-espetaculo-da-karla-jacobina-cia-de-danca/3610800",
+  "local": "Teatro Arthur Azevedo",
+  "quando": "Quarta, 16/12, às 20h",
+  "gratuito": false,
+  "preco": "R$ 100 (ingresso único)",
+  "precoMin": 100.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/reina-espetaculo-da-karla-jacobina-cia-de-danca/3610800",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Espetáculo de dança e música que homenageia a mulher que lidera a si mesma, combinando danças árabes e flamenco.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/reina-espetaculo-da-karla-jacobina-cia-de-danca/3610800"
+  ],
+  "lat": -23.563117,
+  "lng": -46.596926,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-reina-karla-jacobina-cia-de-danca-1216/spzl-ev-reina-karla-jacobina-cia-de-danca-1216-1.jpg",
+    "credito": "Divulgação Karla Jacobina Cia de Dança",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/reina-espetaculo-da-karla-jacobina-cia-de-danca/3610800"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-igor-guimaraes-stand-up-de-humor-1128",
+  "regiaoGuia": "spzl",
+  "nome": "Igor Guimarães – Stand-up de Humor",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-11-28",
+  "dataFim": "2026-11-28",
+  "endereco": "Rua Padre Estevão Pernet, 588 – Tatuapé, São Paulo – SP, 03315-000",
+  "site": "https://teatrofernandotorres.com.br/384-igor-guimaraes--stand-up-de-humor.html.html",
+  "local": "Teatro Fernando Torres",
+  "quando": "Sábado, 28/11, às 20h",
+  "gratuito": false,
+  "preco": "R$ 100 (inteira) / R$ 50 (meia)",
+  "precoMin": 50.0,
+  "precoMax": 100.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://teatrofernandotorres.com.br/384-igor-guimaraes--stand-up-de-humor.html.html",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Lançamento do novo show solo do humorista Igor Guimarães, com piadas, improviso e repertório musical autoral. Classificação 16 anos.",
+  "fontes": [
+   "https://teatrofernandotorres.com.br/384-igor-guimaraes--stand-up-de-humor.html.html",
+   "https://bileto.sympla.com.br/event/120790"
+  ],
+  "lat": -23.542368,
+  "lng": -46.569136,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-igor-guimaraes-stand-up-de-humor-1128/spzl-ev-igor-guimaraes-stand-up-de-humor-1128-1.jpg",
+    "credito": "Divulgação Teatro Fernando Torres",
+    "licenca": "",
+    "pagina": "https://teatrofernandotorres.com.br/384-igor-guimaraes--stand-up-de-humor.html.html"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-lacos-eternos-de-zibia-gasparetto-0115",
+  "regiaoGuia": "spzl",
+  "nome": "Laços Eternos, de Zíbia Gasparetto",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2027-01-15",
+  "dataFim": "2027-01-15",
+  "endereco": "Rua Padre Estevão Pernet, 588 – Tatuapé, São Paulo – SP, 03315-000",
+  "site": "https://teatrofernandotorres.com.br/393-lacos-eternos-de-zibia-gasparetto.html.html",
+  "local": "Teatro Fernando Torres",
+  "quando": "Sexta, 15/01/2027, às 20h30",
+  "gratuito": false,
+  "preco": "Ingressos pagos – valores não publicados na página do teatro (consultar Bileto/Sympla); promoção com 1 kg de alimento",
+  "precoConfirmado": false,
+  "historia": "Adaptação de Annamaria Dias do romance psicografado por Zíbia Gasparetto, sobre um triângulo amoroso que atravessa vidas entre os dias atuais e o século XVIII. 110 min, 16 anos.",
+  "fontes": [
+   "https://teatrofernandotorres.com.br/393-lacos-eternos-de-zibia-gasparetto.html.html"
+  ],
+  "lat": -23.542368,
+  "lng": -46.569136,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-lacos-eternos-de-zibia-gasparetto-0115/spzl-ev-lacos-eternos-de-zibia-gasparetto-0115-1.jpg",
+    "credito": "Divulgação Teatro Fernando Torres",
+    "licenca": "",
+    "pagina": "https://teatrofernandotorres.com.br/393-lacos-eternos-de-zibia-gasparetto.html.html"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-meno-male-0206",
+  "regiaoGuia": "spzl",
+  "nome": "Meno Male",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2027-02-06",
+  "dataFim": "2027-03-07",
+  "endereco": "Rua Padre Estevão Pernet, 588 – Tatuapé, São Paulo – SP, 03315-000",
+  "site": "https://teatrofernandotorres.com.br/392-meno-male.html.html",
+  "local": "Teatro Fernando Torres",
+  "quando": "Sábados, 20h; domingos, 18h",
+  "gratuito": false,
+  "preco": "Ingressos pagos – valores não publicados na página do teatro (consultar Bileto/Sympla)",
+  "precoConfirmado": false,
+  "historia": "Nova montagem da comédia de Juca de Oliveira, dirigida por Léo Stefanini, com Nuno Leal Maia, Suzy Rêgo e Joaquim Lopes, sobre o choque entre a Mooca italiana e os bastidores do poder.",
+  "fontes": [
+   "https://teatrofernandotorres.com.br/392-meno-male.html.html"
+  ],
+  "lat": -23.542368,
+  "lng": -46.569136,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-meno-male-0206/spzl-ev-meno-male-0206-1.jpg",
+    "credito": "Divulgação Teatro Fernando Torres",
+    "licenca": "",
+    "pagina": "https://teatrofernandotorres.com.br/392-meno-male.html.html"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-nosso-lar-a-noite-em-que-andre-chegou-0226",
+  "regiaoGuia": "spzl",
+  "nome": "Nosso Lar – A Noite em que André Chegou",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2027-02-26",
+  "dataFim": "2027-02-26",
+  "endereco": "Rua Padre Estevão Pernet, 588 – Tatuapé, São Paulo – SP, 03315-000",
+  "site": "https://teatrofernandotorres.com.br/394-nosso-lar--a-noite-em-que-andre-chegou.html.html",
+  "local": "Teatro Fernando Torres",
+  "quando": "Sexta, 26/02/2027, às 20h30",
+  "gratuito": false,
+  "preco": "R$ 50 a R$ 100",
+  "precoMin": 50.0,
+  "precoMax": 100.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://teatrofernandotorres.com.br/394-nosso-lar--a-noite-em-que-andre-chegou.html.html",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Espetáculo de Edu Rodrigues e Cristiane Marques inspirado na obra psicografada por Chico Xavier, sobre a noite em que o espírito André Luiz começa a ditar seu relato.",
+  "fontes": [
+   "https://teatrofernandotorres.com.br/394-nosso-lar--a-noite-em-que-andre-chegou.html.html",
+   "https://bileto.sympla.com.br/event/120113"
+  ],
+  "lat": -23.542368,
+  "lng": -46.569136,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-nosso-lar-a-noite-em-que-andre-chegou-0226/spzl-ev-nosso-lar-a-noite-em-que-andre-chegou-0226-1.jpg",
+    "credito": "Divulgação ER Arte Produções",
+    "licenca": "",
+    "pagina": "https://teatrofernandotorres.com.br/394-nosso-lar--a-noite-em-que-andre-chegou.html.html"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-natal-2026-no-shopping-analia-franco-1111",
+  "regiaoGuia": "spzl",
+  "nome": "Natal 2026 no Shopping Anália Franco",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco / Tatuapé",
+  "dataInicio": "2026-11-11",
+  "dataFim": "2026-12-31",
+  "endereco": "Av. Regente Feijó, 1739 – Tatuapé, São Paulo – SP, 03342-900",
+  "site": "https://www.shoppinganaliafranco.com.br/",
+  "local": "Shopping Anália Franco",
+  "quando": "Decoração e Papai Noel (piso Lírio): seg–sáb 10h–22h, dom/feriados 14h–20h (24/12: 9h–18h); Oficina Solidária até 06/12, 14h–22h; teatro de Natal 10–13 e 17–23/12, às 16h, 18h e 20h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Decoração com cerca de 460 mil lâmpadas de LED, árvores de 12 e 15 metros e o Carrossel do Anália, além de Papai Noel com espaço para fotos com pets, oficina solidária de bonecos de neve e espetáculo teatral em dezembro.",
+  "fontes": [
+   "https://www.jwave.com.br/2026/11/shopping-analia-franco-inaugura-natal-com-460-mil-luzes-carrossel-e-programacao-infantil/",
+   "https://www.shoppinganaliafranco.com.br/"
+  ],
+  "lat": -23.56146,
+  "lng": -46.56016,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-natal-2026-no-shopping-analia-franco-1111/spzl-ev-natal-2026-no-shopping-analia-franco-1111-1.jpg",
+    "credito": "Divulgação Shopping Anália Franco",
+    "licenca": "",
+    "pagina": "https://www.shoppinganaliafranco.com.br/"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-natal-2026-no-shopping-analia-franco-1111/spzl-ev-natal-2026-no-shopping-analia-franco-1111-2.jpg",
+    "credito": "Divulgação Shopping Anália Franco",
+    "licenca": "",
+    "pagina": "https://www.jwave.com.br/2026/11/shopping-analia-franco-inaugura-natal-com-460-mil-luzes-carrossel-e-programacao-infantil/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-natal-hello-kitty-and-friends-complexo-tatuape-1031",
+  "regiaoGuia": "spzl",
+  "nome": "Natal Hello Kitty and Friends – Complexo Tatuapé",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-10-31",
+  "dataFim": "2027-01-03",
+  "endereco": "Rua Domingos Agostim, 91 (Metrô Tatuapé) e Rua Gonçalves Crespo/Tuiuti (Boulevard) – Tatuapé, São Paulo – SP, 03314-030",
+  "site": "https://www.complexotatuape.com.br/pt-BR",
+  "local": "Shopping Metrô Tatuapé e Shopping Metrô Boulevard Tatuapé",
+  "quando": "Horário dos shoppings (seg–sáb 10h–22h; dom/feriados 12h–20h no Boulevard e 14h–20h no Metrô Tatuapé); trono do Noel até 24/12, seg–sáb 12h–21h, dom/feriados 14h–20h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Primeira decoração de Natal em shopping do Brasil com a Hello Kitty e amigos (My Melody, Kuromi, Keroppi), com árvores de 9 metros, xícaras giratórias, tobogã e jogos, além de tronos do Papai Noel nos dois shoppings.",
+  "fontes": [
+   "https://catracalivre.com.br/vila-mundo/natal-do-complexo-tatuape-tera-a-primeira-decoracao-hello-kitty-and-friends-do-brasil/",
+   "https://www.complexotatuape.com.br/pt-BR"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-natal-hello-kitty-and-friends-complexo-tatuape-1031/spzl-ev-natal-hello-kitty-and-friends-complexo-tatuape-1031-1.jpg",
+    "credito": "Divulgação Complexo Tatuapé",
+    "licenca": "",
+    "pagina": "https://catracalivre.com.br/vila-mundo/natal-do-complexo-tatuape-tera-a-primeira-decoracao-hello-kitty-and-friends-do-brasil/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.541689,
+  "lng": -46.577046
+ },
+ {
+  "id": "spzl-ev-natal-disney-no-mooca-plaza-shopping-1112",
+  "regiaoGuia": "spzl",
+  "nome": "Natal Disney+ no Mooca Plaza Shopping",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca / Vila Prudente",
+  "dataInicio": "2026-11-12",
+  "dataFim": "2027-01-03",
+  "endereco": "Rua Capitão Pacheco e Chaves, 313 – Vila Prudente, São Paulo – SP, 03126-000",
+  "site": "https://www.moocaplaza.com.br/",
+  "local": "Mooca Plaza Shopping – Praça de Eventos (Acesso D)",
+  "quando": "Seg–sáb 10h–22h; domingos e feriados a partir das 12h ou 14h até 20h (confirmar com o shopping)",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Decoração com seis universos Disney, Pixar, Marvel e Lucasfilm (Divertida Mente, X-Men ’97, Star Wars, Toy Story, Lilo & Stitch e Frozen), árvore de 8 metros com brinquedão interno e games temáticos.",
+  "fontes": [
+   "https://www.trambicast.com.br/2026/11/natal-disney-plus-mooca-plaza-shopping-2026.html"
+  ],
+  "lat": -23.57974,
+  "lng": -46.594246,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-fighting-games-2026-1213",
+  "regiaoGuia": "spzl",
+  "nome": "Fighting Games 2026",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "dataInicio": "2026-12-13",
+  "dataFim": "2026-12-13",
+  "endereco": "Av. Miguel Ignácio Curi, 111 – Vila Carmosina (Itaquera), São Paulo – SP, 08295-005",
+  "site": "https://sucodemanga.com.br/fighting-games-2026-neo-quimica-arena-fielzone-torneios-luta/",
+  "local": "Neo Química Arena – Camarote Fielzone",
+  "quando": "Domingo, 13/12, das 10h às 22h",
+  "gratuito": false,
+  "preco": "Lote 2 (até 29/11): R$ 150 (inteira) / R$ 75 (meia) / R$ 70 + 1 kg de alimento (solidária)",
+  "precoMin": 70.0,
+  "precoMax": 150.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://sucodemanga.com.br/fighting-games-2026-neo-quimica-arena-fielzone-torneios-luta/",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Campeonatos de Street Fighter 6, Fatal Fury, Guilty Gear -Strive- e EA Sports FC 27 com R$ 12 mil em prêmios, além de free play, arcades, Artist Alley e desfile de cosplay.",
+  "fontes": [
+   "https://sucodemanga.com.br/fighting-games-2026-neo-quimica-arena-fielzone-torneios-luta/"
+  ],
+  "lat": -23.545312,
+  "lng": -46.474306,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-fighting-games-2026-1213/spzl-ev-fighting-games-2026-1213-1.jpg",
+    "credito": "Divulgação Fighting Games",
+    "licenca": "",
+    "pagina": "https://sucodemanga.com.br/fighting-games-2026-neo-quimica-arena-fielzone-torneios-luta/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-corinthians-x-gremio-brasileirao-2026-37a-rodada-1129",
+  "regiaoGuia": "spzl",
+  "nome": "Corinthians x Grêmio – Brasileirão 2026 (37ª rodada)",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "dataInicio": "2026-11-29",
+  "dataFim": "2026-11-29",
+  "endereco": "Av. Miguel Ignácio Curi, 111 – Vila Carmosina (Itaquera), São Paulo – SP, 08295-005",
+  "site": "https://www.corinthians.com.br/",
+  "local": "Neo Química Arena",
+  "quando": "Domingo, 29/11, às 18h30",
+  "gratuito": false,
+  "preco": "Ingressos pagos – valores ainda não divulgados (venda pelo Fiel Torcedor/site oficial)",
+  "precoConfirmado": false,
+  "historia": "Último jogo do Corinthians em casa no Campeonato Brasileiro de 2026, contra o Grêmio, pela 37ª rodada.",
+  "fontes": [
+   "https://en.wikipedia.org/wiki/2026_SC_Corinthians_Paulista_season"
+  ],
+  "lat": -23.545312,
+  "lng": -46.474306,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-corrida-de-natal-5-km-1224",
+  "regiaoGuia": "spzl",
+  "nome": "Corrida de Natal 5 km",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Engenheiro Goulart (Penha)",
+  "dataInicio": "2026-12-24",
+  "dataFim": "2026-12-24",
+  "endereco": "Rua Guirá-Acangatara, 70 – Engenheiro Goulart, São Paulo – SP, 03718-090",
+  "site": "https://www.sympla.com.br/evento/corrida-de-natal-5km/3632630",
+  "local": "Parque Ecológico do Tietê",
+  "quando": "Quinta, 24/12, largada às 8h30 (corrida e caminhada de 5 km)",
+  "gratuito": false,
+  "preco": "R$ 69,99 (kit medalha) / R$ 119,99 (kit camiseta) + taxa",
+  "precoMin": 69.99,
+  "precoMax": 119.99,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/corrida-de-natal-5km/3632630",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Corrida e caminhada natalina de 5 km no Parque Ecológico do Tietê, com retirada de kit na véspera em loja na Penha.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/corrida-de-natal-5km/3632630"
+  ],
+  "lat": -23.499127,
+  "lng": -46.527569,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-corrida-de-natal-5-km-1224/spzl-ev-corrida-de-natal-5-km-1224-1.jpg",
+    "credito": "Divulgação Corrida de Natal",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/corrida-de-natal-5km/3632630"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-exposicao-reatar-0731",
+  "regiaoGuia": "spzl",
+  "nome": "Exposição Reatar",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca",
+  "dataInicio": "2026-07-31",
+  "dataFim": "2027-02-28",
+  "endereco": "Rua Visconde de Parnaíba, 1316 – Mooca, São Paulo – SP, 03164-300",
+  "site": "https://museudaimigracao.org.br/exposicoes/temporarias/reatar",
+  "local": "Museu da Imigração do Estado de São Paulo",
+  "quando": "Terça a sábado, 9h–18h; domingo, 10h–18h (bilheteria até 17h)",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Mostra com cerca de 40 objetos – artefatos, indumentárias, fotos e ferramentas de costura – sobre como migrantes constroem territórios por meio do fazer manual e da moda, com obras de Alexandre Herchcovitch, Amir Slama e outros.",
+  "fontes": [
+   "https://museudaimigracao.org.br/exposicoes/temporarias/reatar",
+   "https://museudaimigracao.org.br/visite-o-museu"
+  ],
+  "lat": -23.549595,
+  "lng": -46.612754,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-exposicao-reatar-0731/spzl-ev-exposicao-reatar-0731-1.jpg",
+    "credito": "Divulgação Museu da Imigração",
+    "licenca": "",
+    "pagina": "https://museudaimigracao.org.br/exposicoes/temporarias/reatar"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-ensaio-aberto-grupo-maracatu-bloco-de-pedra-cons-1122",
+  "regiaoGuia": "spzl",
+  "nome": "Ensaio Aberto – Grupo Maracatu Bloco de Pedra (Consciência Negra)",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca",
+  "dataInicio": "2026-11-22",
+  "dataFim": "2026-11-22",
+  "endereco": "Rua Visconde de Parnaíba, 1316 – Mooca, São Paulo – SP, 03164-300",
+  "site": "https://museudaimigracao.org.br/eventos/presencial/consciencia-negra-ensaio-aberto-grupo-maracatu-bloco-de-pedra",
+  "local": "Museu da Imigração do Estado de São Paulo",
+  "quando": "Domingo, 22/11, das 10h às 13h (jardim do museu)",
+  "gratuito": false,
+  "preco": "Entrada do museu: R$ 16 (inteira)",
+  "precoMin": 16.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://museudaimigracao.org.br/eventos/presencial/consciencia-negra-ensaio-aberto-grupo-maracatu-bloco-de-pedra",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "O grupo de maracatu de baque virado, com cerca de 100 brincantes, ocupa o jardim do museu em ensaio de preparação para o Carnaval de 2027.",
+  "fontes": [
+   "https://museudaimigracao.org.br/eventos/presencial/consciencia-negra-ensaio-aberto-grupo-maracatu-bloco-de-pedra"
+  ],
+  "lat": -23.549595,
+  "lng": -46.612754,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-ensaio-aberto-grupo-maracatu-bloco-de-pedra-cons-1122/spzl-ev-ensaio-aberto-grupo-maracatu-bloco-de-pedra-cons-1122-1.jpg",
+    "credito": "Divulgação Museu da Imigração / Foto: Felipe Fontoura",
+    "licenca": "",
+    "pagina": "https://museudaimigracao.org.br/eventos/presencial/consciencia-negra-ensaio-aberto-grupo-maracatu-bloco-de-pedra"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-feira-cultural-leste-europeia-ultima-edicao-de-2-1206",
+  "regiaoGuia": "spzl",
+  "nome": "Feira Cultural Leste Europeia (última edição de 2026)",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Prudente",
+  "dataInicio": "2026-12-06",
+  "dataFim": "2026-12-06",
+  "endereco": "Rua Aracati Mirim (ao lado do Parque Ecológico da Vila Prudente) – Vila Prudente, São Paulo – SP",
+  "site": "https://www.acidadedesaopaulo.com.br/locais/feira-cultural-leste-europeia-de-sao-paulo/",
+  "local": "Rua Aracati Mirim, ao lado do Parque Ecológico da Vila Prudente",
+  "quando": "Domingo, 06/12, das 10h às 17h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Feira ao ar livre com gastronomia (varêniki, pelmeni, burekas), artesanato e música de comunidades da Ucrânia, Polônia, Lituânia, Hungria e outros países do Leste Europeu, perto da Vila Zelina.",
+  "fontes": [
+   "https://www.acidadedesaopaulo.com.br/o-que-fazer-em-sp/o-que-fazer-em-sao-paulo-em-dezembro-de-2026/",
+   "https://www.acidadedesaopaulo.com.br/locais/feira-cultural-leste-europeia-de-sao-paulo/"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-feira-cultural-leste-europeia-ultima-edicao-de-2-1206/spzl-ev-feira-cultural-leste-europeia-ultima-edicao-de-2-1206-1.jpg",
+    "credito": "Divulgação Feira Cultural Leste Europeia",
+    "licenca": "",
+    "pagina": "https://www.acidadedesaopaulo.com.br/locais/feira-cultural-leste-europeia-de-sao-paulo/"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.585515,
+  "lng": -46.567755
+ },
+ {
+  "id": "spzl-ev-porpetone-epidemia-de-risos-1128",
+  "regiaoGuia": "spzl",
+  "nome": "Porpetone – Epidemia de Risos",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-11-28",
+  "dataFim": "2026-11-28",
+  "endereco": "Rua Domingos Agostim, 91 (Shopping Metrô Tatuapé) – Tatuapé, São Paulo – SP, 03314-030",
+  "site": "https://www.sympla.com.br/evento/show-porpetone-epidemia-de-risos/3639628",
+  "local": "Teatro Shopping Metrô Tatuapé",
+  "quando": "Sábado, 28/11, às 21h",
+  "gratuito": false,
+  "preco": "R$ 100 (inteira) / R$ 50 (meia) / R$ 60 (promocional) + taxa",
+  "precoMin": 50.0,
+  "precoMax": 100.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/show-porpetone-epidemia-de-risos/3639628",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Stand-up do humorista e imitador Porpetone, há 20 anos em “A Praça é Nossa” (SBT) e conhecido pelo personagem Cabrito Teves.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/show-porpetone-epidemia-de-risos/3639628"
+  ],
+  "lat": -23.541689,
+  "lng": -46.577046,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-porpetone-epidemia-de-risos-1128/spzl-ev-porpetone-epidemia-de-risos-1128-1.jpg",
+    "credito": "Divulgação Porpetone",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/show-porpetone-epidemia-de-risos/3639628"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-freaks-korn-tribute-brasil-lady-in-hell-1204",
+  "regiaoGuia": "spzl",
+  "nome": "Freaks Korn Tribute Brasil + Lady in Hell",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-12-04",
+  "dataFim": "2026-12-04",
+  "endereco": "Rua Serra de Japi, 758 – Tatuapé, São Paulo – SP, 03309-000",
+  "site": "https://www.sympla.com.br/evento/freaks-korn-tribute-brasil-lady-in-hell/3577719",
+  "local": "St. Patrick Pub Tatuapé",
+  "quando": "Sexta, 04/12, a partir das 20h",
+  "gratuito": false,
+  "preco": "R$ 25 + taxa",
+  "precoMin": 25.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/freaks-korn-tribute-brasil-lady-in-hell/3577719",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Noite de nu metal com o tributo Freaks Korn Tribute Brasil e abertura da banda Lady in Hell.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/freaks-korn-tribute-brasil-lady-in-hell/3577719"
+  ],
+  "lat": -23.543753,
+  "lng": -46.569399,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-concerto-luis-silva-atardecer-llanero-1213",
+  "regiaoGuia": "spzl",
+  "nome": "Concerto Luís Silva – Atardecer Llanero",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Carrão / Tatuapé",
+  "dataInicio": "2026-12-13",
+  "dataFim": "2026-12-13",
+  "endereco": "Rua Serra de Botucatu, 1933 – Vila Carrão, São Paulo – SP, 03317-001",
+  "site": "https://www.sympla.com.br/evento/concerto-luis-silva-atardecer-llanero/3631056",
+  "local": "Quintal do Espeto Tatuapé",
+  "quando": "Domingo, 13/12, das 12h às 19h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Primeira apresentação em São Paulo do cantor venezuelano Luís Silva, referência da música llanera.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/concerto-luis-silva-atardecer-llanero/3631056"
+  ],
+  "lat": -23.540928,
+  "lng": -46.553114,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-concerto-luis-silva-atardecer-llanero-1213/spzl-ev-concerto-luis-silva-atardecer-llanero-1213-1.jpg",
+    "credito": "Divulgação Concerto Luís Silva",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/concerto-luis-silva-atardecer-llanero/3631056"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-comedia-stand-up-ca-entre-nos-1128",
+  "regiaoGuia": "spzl",
+  "nome": "Comédia Stand-up – Cá Entre Nós",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Prudente",
+  "dataInicio": "2026-11-28",
+  "dataFim": "2026-11-28",
+  "endereco": "Rua Capitão Pacheco e Chaves, 981 – Vila Prudente, São Paulo – SP, 03126-001",
+  "site": "https://www.sympla.com.br/evento/comedia-stand-up-ca-entre-nos-sabado/3661199",
+  "local": "Lilith Comedy Club",
+  "quando": "Sábado, 28/11, às 19h",
+  "gratuito": false,
+  "preco": "R$ 20 (individual) / R$ 30 (duplo) + taxa; opções com caipirinha",
+  "precoMin": 20.0,
+  "precoMax": 30.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/comedia-stand-up-ca-entre-nos-sabado/3661199",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Sessão de stand-up no Lilith Comedy Club, casa de comédia próxima ao metrô Vila Prudente e ao Shopping Mooca.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/comedia-stand-up-ca-entre-nos-sabado/3661199"
+  ],
+  "lat": -23.581798,
+  "lng": -46.587629,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-comedia-stand-up-ca-entre-nos-1128/spzl-ev-comedia-stand-up-ca-entre-nos-1128-1.jpg",
+    "credito": "Divulgação Lilith Comedy Club",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/comedia-stand-up-ca-entre-nos-sabado/3661199"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-o-esquadrao-do-riso-stand-up-gratuito-1126",
+  "regiaoGuia": "spzl",
+  "nome": "O Esquadrão do Riso – stand-up gratuito",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Prudente",
+  "dataInicio": "2026-11-26",
+  "dataFim": "2026-12-10",
+  "endereco": "Rua Capitão Pacheco e Chaves, 981 – Vila Prudente, São Paulo – SP, 03126-001",
+  "site": "https://www.sympla.com.br/evento/show-gratuito-comedia-stand-up-no-lilith-comedy-o-esquadrao-do-riso-quinta-feira/3655772",
+  "local": "Lilith Comedy Club",
+  "quando": "Quintas, 26/11, 03/12 e 10/12, às 21h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Show em que humoristas testam piadas novas e quadros de improviso para gravação na internet.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/show-gratuito-comedia-stand-up-no-lilith-comedy-o-esquadrao-do-riso-quinta-feira/3655772"
+  ],
+  "lat": -23.581798,
+  "lng": -46.587629,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-o-esquadrao-do-riso-stand-up-gratuito-1126/spzl-ev-o-esquadrao-do-riso-stand-up-gratuito-1126-1.jpg",
+    "credito": "Divulgação Lilith Comedy Club",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/show-gratuito-comedia-stand-up-no-lilith-comedy-o-esquadrao-do-riso-quinta-feira/3655772"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-reggae-white-festa-do-branco-1218",
+  "regiaoGuia": "spzl",
+  "nome": "Reggae White – Festa do Branco",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Penha",
+  "dataInicio": "2026-12-18",
+  "dataFim": "2026-12-18",
+  "endereco": "Av. Governador Carvalho Pinto, 2603 – Penha, São Paulo – SP, 03601-000",
+  "site": "https://www.sympla.com.br/evento/reggae-white-festa-do-branco-filosofia-reggae-ducasco-e-dj-cleiton-rasta-na-zona-leste/3660470",
+  "local": "Praia da Tiquatira Beach Club",
+  "quando": "Sexta, 18/12, a partir das 20h",
+  "gratuito": false,
+  "preco": "R$ 20 (pista, 1º lote) + taxa; camarotes para até 10 pessoas de R$ 400 a R$ 500",
+  "precoMin": 20.0,
+  "precoMax": 500.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/reggae-white-festa-do-branco-filosofia-reggae-ducasco-e-dj-cleiton-rasta-na-zona-leste/3660470",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Noite de reggae com Filosofia Reggae, Ducasco e DJ Cleiton Rasta, com dress code branco.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/reggae-white-festa-do-branco-filosofia-reggae-ducasco-e-dj-cleiton-rasta-na-zona-leste/3660470"
+  ],
+  "lat": -23.514597,
+  "lng": -46.549127,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-reggae-white-festa-do-branco-1218/spzl-ev-reggae-white-festa-do-branco-1218-1.jpg",
+    "credito": "Divulgação Praia da Tiquatira",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/reggae-white-festa-do-branco-filosofia-reggae-ducasco-e-dj-cleiton-rasta-na-zona-leste/3660470"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-festa-do-branco-especial-pagode-90-1219",
+  "regiaoGuia": "spzl",
+  "nome": "Festa do Branco – Especial Pagode 90",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Jardim Lisboa (Penha)",
+  "dataInicio": "2026-12-19",
+  "dataFim": "2026-12-19",
+  "endereco": "Rua José Garcia Terra, 285 – Jardim Lisboa, São Paulo – SP, 03675-000",
+  "site": "https://www.sympla.com.br/evento/festa-do-branco-especial-pagode-90-bar-do-juiz-imperador-sab-19-12/3649522",
+  "local": "Chopperia e Espetinhos do Juiz – Unidade Imperador",
+  "quando": "Sábado, 19/12, a partir das 21h",
+  "gratuito": false,
+  "preco": "R$ 30 (1º lote, somente show) + taxa",
+  "precoMin": 30.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/festa-do-branco-especial-pagode-90-bar-do-juiz-imperador-sab-19-12/3649522",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Festa de fim de ano dedicada aos sucessos do pagode dos anos 90, com traje branco.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/festa-do-branco-especial-pagode-90-bar-do-juiz-imperador-sab-19-12/3649522"
+  ],
+  "lat": -23.516271,
+  "lng": -46.497387,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-festa-do-branco-especial-pagode-90-1219/spzl-ev-festa-do-branco-especial-pagode-90-1219-1.jpg",
+    "credito": "Divulgação Bar do Juiz Imperador",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/festa-do-branco-especial-pagode-90-bar-do-juiz-imperador-sab-19-12/3649522"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-reveillon-2027-praia-da-radial-1231",
+  "regiaoGuia": "spzl",
+  "nome": "Réveillon 2027 Praia da Radial",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Aricanduva",
+  "dataInicio": "2026-12-31",
+  "dataFim": "2027-01-01",
+  "endereco": "Rua Guaperuvu, 56 – Vila Aricanduva, São Paulo – SP, 03504-010",
+  "site": "https://www.sympla.com.br/evento/reveillon-2027-praia-da-radial/3636002",
+  "local": "Praia da Radial",
+  "quando": "Quinta, 31/12, das 20h às 4h",
+  "gratuito": false,
+  "preco": "R$ 300 (2º lote) / R$ 150 (7 a 14 anos)",
+  "precoMin": 150.0,
+  "precoMax": 300.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/reveillon-2027-praia-da-radial/3636002",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Virada “pé na areia” com open food, shows de sertanejo e samba, DJ e sorteios.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/reveillon-2027-praia-da-radial/3636002"
+  ],
+  "lat": -23.539701,
+  "lng": -46.537906,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-reveillon-2027-praia-da-radial-1231/spzl-ev-reveillon-2027-praia-da-radial-1231-1.jpg",
+    "credito": "Divulgação Praia da Radial",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/reveillon-2027-praia-da-radial/3636002"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-reveillon-com-muito-rock-no-st-john-s-1231",
+  "regiaoGuia": "spzl",
+  "nome": "Réveillon com muito Rock no St. John's",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-12-31",
+  "dataFim": "2027-01-01",
+  "endereco": "Rua Itapura, 1308 – Vila Gomes Cardim (Tatuapé), São Paulo – SP, 03310-000",
+  "site": "https://www.sympla.com.br/evento/reveillon-com-muito-rock-no-st-johns-pub-5-bandas-em-uma-virada-de-ano-historica/3650625",
+  "local": "St. John's Irish Pub",
+  "quando": "Quinta, 31/12, das 17h às 5h",
+  "gratuito": false,
+  "preco": "R$ 97 (individual, 1º lote) / R$ 184 (duplo) + taxa",
+  "precoMin": 97.0,
+  "precoMax": 184.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/reveillon-com-muito-rock-no-st-johns-pub-5-bandas-em-uma-virada-de-ano-historica/3650625",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Cinco atrações de rock ao vivo, incluindo tributos a Foo Fighters e outras bandas, com contagem regressiva para 2027.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/reveillon-com-muito-rock-no-st-johns-pub-5-bandas-em-uma-virada-de-ano-historica/3650625"
+  ],
+  "lat": -23.550064,
+  "lng": -46.565215,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-reveillon-com-muito-rock-no-st-john-s-1231/spzl-ev-reveillon-com-muito-rock-no-st-john-s-1231-1.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/reveillon-com-muito-rock-no-st-johns-pub-5-bandas-em-uma-virada-de-ano-historica/3650625"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-1-noite-2-tributos-cpm-22-e-charlie-brown-jr-1126",
+  "regiaoGuia": "spzl",
+  "nome": "1 Noite, 2 Tributos: CPM 22 e Charlie Brown Jr.",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-11-26",
+  "dataFim": "2026-11-26",
+  "endereco": "Rua Itapura, 1308 – Vila Gomes Cardim (Tatuapé), São Paulo – SP, 03310-000",
+  "site": "https://www.sympla.com.br/evento/1-noite-2-tributos-cpm-22-e-charlie-brown-jr-no-st-john-s/3656630",
+  "local": "St. John's Irish Pub",
+  "quando": "Quinta, 26/11, das 18h às 3h",
+  "gratuito": false,
+  "preco": "R$ 49,90 (1º lote) / R$ 59,90 (2º lote) + taxa",
+  "precoMin": 49.9,
+  "precoMax": 59.9,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/1-noite-2-tributos-cpm-22-e-charlie-brown-jr-no-st-john-s/3656630",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Tributos a CPM 22 e Charlie Brown Jr. em uma noite dedicada ao rock nacional dos anos 2000.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/1-noite-2-tributos-cpm-22-e-charlie-brown-jr-no-st-john-s/3656630"
+  ],
+  "lat": -23.550064,
+  "lng": -46.565215,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-1-noite-2-tributos-cpm-22-e-charlie-brown-jr-1126/spzl-ev-1-noite-2-tributos-cpm-22-e-charlie-brown-jr-1126-1.jpg",
+    "credito": "Divulgação St. John's Irish Pub",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/1-noite-2-tributos-cpm-22-e-charlie-brown-jr-no-st-john-s/3656630"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-christmas-metal-queens-1205",
+  "regiaoGuia": "spzl",
+  "nome": "Christmas Metal Queens",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Formosa",
+  "dataInicio": "2026-12-05",
+  "dataFim": "2026-12-05",
+  "endereco": "Rua Arapoca, 86 (fundos) – Vila Formosa, São Paulo – SP, 03362-000",
+  "site": "https://www.sympla.com.br/evento/christmas-metal-queens/3644016",
+  "local": "NVS Studio Pub",
+  "quando": "Sábado, 05/12, a partir das 19h",
+  "gratuito": false,
+  "preco": "R$ 15 (antecipado) + taxa",
+  "precoMin": 15.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/christmas-metal-queens/3644016",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Encontro de metal sinfônico e gothic metal com três tributos, entre eles a estreia do Ravencode (Lacuna Coil Tribute).",
+  "fontes": [
+   "https://www.sympla.com.br/evento/christmas-metal-queens/3644016"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-christmas-metal-queens-1205/spzl-ev-christmas-metal-queens-1205-1.jpg",
+    "credito": "Divulgação Comunidade Sinfônica",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/christmas-metal-queens/3644016"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.565114,
+  "lng": -46.54225
+ },
+ {
+  "id": "spzl-ev-quintal-dos-prettos-1206",
+  "regiaoGuia": "spzl",
+  "nome": "Quintal dos Prettos",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-12-06",
+  "dataFim": "2026-12-06",
+  "endereco": "Rua José Pinheiro Bezerra, 100 – Vila Maria Zélia (Belenzinho), São Paulo – SP, 03021-140",
+  "site": "https://www.sympla.com.br/evento/quintal-dos-prettos/3647679",
+  "local": "Espaço Maria Zélia",
+  "quando": "Domingo, 06/12, das 14h às 20h",
+  "gratuito": false,
+  "preco": "R$ 55 (individual, lote 3) / R$ 40 (grupo, lote 2) + taxa; venda somente on-line",
+  "precoMin": 40.0,
+  "precoMax": 55.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/quintal-dos-prettos/3647679",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Última roda de samba do ano do Quintal dos Prettos, roda acústica com amplificação 360º e ambiente familiar.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/quintal-dos-prettos/3647679"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-quintal-dos-prettos-1206/spzl-ev-quintal-dos-prettos-1206-1.jpg",
+    "credito": "Divulgação Quintal dos Prettos",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/quintal-dos-prettos/3647679"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.530863,
+  "lng": -46.597385
+ },
+ {
+  "id": "spzl-ev-terreiro-de-crioulo-canta-reinaldo-1128",
+  "regiaoGuia": "spzl",
+  "nome": "Terreiro de Crioulo canta Reinaldo",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belenzinho",
+  "dataInicio": "2026-11-28",
+  "dataFim": "2026-11-28",
+  "endereco": "Rua José Pinheiro Bezerra, 100 – Brás/Belenzinho, São Paulo – SP, 03021-052",
+  "site": "https://www.sympla.com.br/evento/terreiro-de-crioulo-canta-reinaldo/3652940",
+  "local": "Espaço Maria Zélia",
+  "quando": "Sábado, 28/11, das 13h às 21h30",
+  "gratuito": false,
+  "preco": "R$ 35 (individual) + taxa",
+  "precoMin": 35.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/terreiro-de-crioulo-canta-reinaldo/3652940",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Tarde de samba em homenagem à obra de Reinaldo, o “Príncipe do Pagode”.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/terreiro-de-crioulo-canta-reinaldo/3652940"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-terreiro-de-crioulo-canta-reinaldo-1128/spzl-ev-terreiro-de-crioulo-canta-reinaldo-1128-1.jpg",
+    "credito": "Divulgação Terreiro de Crioulo",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/terreiro-de-crioulo-canta-reinaldo/3652940"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.530863,
+  "lng": -46.597385
+ },
+ {
+  "id": "spzl-ev-pagode-do-restaura-itaquera-1205",
+  "regiaoGuia": "spzl",
+  "nome": "Pagode do Restaura – Itaquera",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "dataInicio": "2026-12-05",
+  "dataFim": "2026-12-05",
+  "endereco": "Rua Harry Dannenberg, 800 – Itaquera, São Paulo – SP, 08270-010",
+  "site": "https://www.sympla.com.br/evento/pagode-do-restaura-itaquera-sp/3574935",
+  "local": "Arena Mega Sports",
+  "quando": "Sábado, 05/12, a partir das 17h",
+  "gratuito": false,
+  "preco": "R$ 60 (pista, 3º lote) / R$ 120 (camarote) + taxa",
+  "precoMin": 60.0,
+  "precoMax": 120.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/pagode-do-restaura-itaquera-sp/3574935",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Show de pagode gospel com proposta de comunhão e louvor, voltado a famílias.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/pagode-do-restaura-itaquera-sp/3574935"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-pagode-do-restaura-itaquera-1205/spzl-ev-pagode-do-restaura-itaquera-1205-1.jpg",
+    "credito": "Divulgação Pagode do Restaura",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/pagode-do-restaura-itaquera-sp/3574935"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.551152,
+  "lng": -46.462395
+ },
+ {
+  "id": "spzl-ev-37o-mega-baile-samba-rock-1129",
+  "regiaoGuia": "spzl",
+  "nome": "37º Mega Baile Samba Rock",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "dataInicio": "2026-11-29",
+  "dataFim": "2026-11-29",
+  "endereco": "Rua Harry Dannenberg, 800 – Itaquera, São Paulo – SP, 08270-010",
+  "site": "https://www.sympla.com.br/evento/37o-mega-baile-samba-rock-arena-mega-sports/3646919",
+  "local": "Arena Mega Sports",
+  "quando": "Domingo, 29/11, das 15h às 21h",
+  "gratuito": false,
+  "preco": "R$ 10 (somente baile) / R$ 20 (mesa com 4 cadeiras) + taxa",
+  "precoMin": 10.0,
+  "precoMax": 20.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/37o-mega-baile-samba-rock-arena-mega-sports/3646919",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Baile com três DJs, apresentações de dança e aula de samba rock e gafieira.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/37o-mega-baile-samba-rock-arena-mega-sports/3646919"
+  ],
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "lat": -23.551152,
+  "lng": -46.462395
+ },
+ {
+  "id": "spzl-ev-butiquim-samba-clube-1206",
+  "regiaoGuia": "spzl",
+  "nome": "Butiquim Samba Clube",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "dataInicio": "2026-12-06",
+  "dataFim": "2026-12-06",
+  "endereco": "Rua Itubera, 22 – Jardim Regina, Itaquera, São Paulo – SP, 08220-550",
+  "site": "https://www.sympla.com.br/evento/butiquim-samba-clube/3605815",
+  "local": "Escola de Samba Fruta 90 (antigo Pessegueiro)",
+  "quando": "Domingo, 06/12, das 14h às 22h",
+  "gratuito": false,
+  "preco": "R$ 25 (pista, 2º lote) / R$ 75 (duplo + bistrô) + taxa",
+  "precoMin": 25.0,
+  "precoMax": 75.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/butiquim-samba-clube/3605815",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Confraternização que une o Samba do Marcio e as festas do Carrossel Futsal, com samba de raiz e clima de boteco.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/butiquim-samba-clube/3605815"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-butiquim-samba-clube-1206/spzl-ev-butiquim-samba-clube-1206-1.jpg",
+    "credito": "Divulgação Butiquim Samba Clube",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/butiquim-samba-clube/3605815"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-le-capene-e-os-explodidos-stand-up-1212",
+  "regiaoGuia": "spzl",
+  "nome": "Lê Capene e os Explodidos – stand-up",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Parque Paineiras (Aricanduva)",
+  "dataInicio": "2026-12-12",
+  "dataFim": "2026-12-12",
+  "endereco": "Av. Águia de Haia, 1337 – Parque Paineiras, São Paulo – SP, 03889-000",
+  "site": "https://www.sympla.com.br/evento/le-capene-e-os-explodidos-stand-up-comedy-itaquera/3659217",
+  "local": "Hamsa Comedy",
+  "quando": "Sábado, 12/12, às 20h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Três comediantes de estilos diferentes em show autoral no Hamsa Comedy, clube de comédia da zona leste.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/le-capene-e-os-explodidos-stand-up-comedy-itaquera/3659217"
+  ],
+  "lat": -23.534251,
+  "lng": -46.473872,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-le-capene-e-os-explodidos-stand-up-1212/spzl-ev-le-capene-e-os-explodidos-stand-up-1212-1.jpg",
+    "credito": "Divulgação Hamsa Comedy",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/le-capene-e-os-explodidos-stand-up-comedy-itaquera/3659217"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-portas-abertas-stand-up-gratis-1122",
+  "regiaoGuia": "spzl",
+  "nome": "Portas Abertas – stand-up grátis",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Parque Paineiras (Aricanduva)",
+  "dataInicio": "2026-11-22",
+  "dataFim": "2026-11-22",
+  "endereco": "Av. Águia de Haia, 1337 – Parque Paineiras, São Paulo – SP, 03889-000",
+  "site": "https://www.sympla.com.br/evento/portas-abertas-stand-up-gratis-itaquera/3639400",
+  "local": "Hamsa Comedy",
+  "quando": "Domingo, 22/11, às 20h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Noite de stand-up com entrada gratuita no Hamsa Comedy; consumo de bebidas e porções à parte.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/portas-abertas-stand-up-gratis-itaquera/3639400"
+  ],
+  "lat": -23.534251,
+  "lng": -46.473872,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-portas-abertas-stand-up-gratis-1122/spzl-ev-portas-abertas-stand-up-gratis-1122-1.jpg",
+    "credito": "Divulgação Hamsa Comedy",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/portas-abertas-stand-up-gratis-itaquera/3639400"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-kera-andu-quando-a-floresta-sonha-entre-mitos-e--1203",
+  "regiaoGuia": "spzl",
+  "nome": "Kera Andu: quando a floresta sonha entre mitos e raízes",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Penha",
+  "dataInicio": "2026-12-03",
+  "dataFim": "2026-12-03",
+  "endereco": "Rua Francisco Coimbra, 403 – Penha, São Paulo – SP, 03639-000",
+  "site": "https://www.sympla.com.br/evento/kera-andu-quando-a-floresta-sonha-entre-mitos-e-raizes/3633223",
+  "local": "Senac Penha",
+  "quando": "Quinta, 03/12, das 19h30 às 22h",
+  "gratuito": true,
+  "preco": "Grátis",
+  "historia": "Evento que transforma a unidade em uma floresta de sonhos, mitos e ancestralidade amazônica.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/kera-andu-quando-a-floresta-sonha-entre-mitos-e-raizes/3633223"
+  ],
+  "lat": -23.526181,
+  "lng": -46.540113,
+  "fotos": [],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-ev-reveillon-no-novedad-melia-tatuape-1231",
+  "regiaoGuia": "spzl",
+  "nome": "Réveillon no Novedad – Meliá Tatuapé",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-12-31",
+  "dataFim": "2027-01-01",
+  "endereco": "Rua Serra de Juréa, 351 – Cidade Mãe do Céu (Tatuapé), São Paulo – SP, 03323-020",
+  "site": "https://www.sympla.com.br/evento/ceia-de-reveillon-novedad-tatuape-by-melia/3593389",
+  "local": "Novedad – São Paulo Tatuapé Affiliated by Meliá",
+  "quando": "Quinta, 31/12, das 20h à 1h",
+  "gratuito": false,
+  "preco": "R$ 737 (adulto, 2º lote) / R$ 368,50 (7 a 12 anos) + taxa; até 12 meses grátis",
+  "historia": "Festa de Ano Novo com open food assinado pelo chef do restaurante, open bar e DJ ao vivo.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/ceia-de-reveillon-novedad-tatuape-by-melia/3593389"
+  ],
+  "lat": -23.547174,
+  "lng": -46.571107,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-reveillon-no-novedad-melia-tatuape-1231/spzl-ev-reveillon-no-novedad-melia-tatuape-1231-1.jpg",
+    "credito": "Divulgação Novedad Tatuapé by Meliá",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/ceia-de-reveillon-novedad-tatuape-by-melia/3593389"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11",
+  "precoMin": 368.5,
+  "precoMax": 737,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/ceia-de-reveillon-novedad-tatuape-by-melia/3593389",
+  "precoConferidoEm": "2026-11-21"
+ },
+ {
+  "id": "spzl-ev-ceia-de-natal-no-novedad-melia-tatuape-1224",
+  "regiaoGuia": "spzl",
+  "nome": "Ceia de Natal no Novedad – Meliá Tatuapé",
+  "categoria": "evento",
+  "tipo": "atracao",
+  "oferta": "ingresso",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "dataInicio": "2026-12-24",
+  "dataFim": "2026-12-24",
+  "endereco": "Rua Serra de Juréa, 351 – Cidade Mãe do Céu (Tatuapé), São Paulo – SP, 03323-020",
+  "site": "https://www.sympla.com.br/evento/natal-2026-alegria-de-estar-juntos/3587925",
+  "local": "Novedad – São Paulo Tatuapé Affiliated by Meliá",
+  "quando": "Quinta, 24/12, das 19h às 22h",
+  "gratuito": false,
+  "preco": "R$ 429 (adulto) / R$ 214,50 (7 a 12 anos) + taxa",
+  "precoMin": 214.5,
+  "precoMax": 429.0,
+  "precoBase": "ingresso",
+  "fontePreco": "https://www.sympla.com.br/evento/natal-2026-alegria-de-estar-juntos/3587925",
+  "precoConferidoEm": "2026-11-21",
+  "historia": "Ceia de Natal com bufê completo, bebidas inclusas e música ao vivo.",
+  "fontes": [
+   "https://www.sympla.com.br/evento/natal-2026-alegria-de-estar-juntos/3587925"
+  ],
+  "lat": -23.547174,
+  "lng": -46.571107,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-ev-ceia-de-natal-no-novedad-melia-tatuape-1224/spzl-ev-ceia-de-natal-no-novedad-melia-tatuape-1224-1.jpg",
+    "credito": "Divulgação Novedad Tatuapé by Meliá",
+    "licenca": "",
+    "pagina": "https://www.sympla.com.br/evento/natal-2026-alegria-de-estar-juntos/3587925"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
  }
 ]
