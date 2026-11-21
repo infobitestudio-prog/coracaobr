@@ -37,7 +37,7 @@
   }
   function viewClube() {
     var uid = Store.uid(), ok = uid && membro(uid), ps = parceirosClube(), c = clubeDe(uid);
-    var lista = ps.length ? '<div class="clb-ps">' + ps.slice(0, 40).map(function (l) { return '<a class="clb-p" href="#lugar-' + esc(l.id) + '"><b>' + esc(l.nome) + "</b><span>" + esc(l.descontoClube) + "</span><small>" + esc(G.regiao(l)) + "</small></a>"; }).join("") + "</div>"
+    var lista = ps.length ? '<div class="clb-ps">' + ps.slice(0, 40).map(function (l) { var f = G.foto ? G.foto(l) : ""; return '<a class="clb-p' + (f ? " com-foto" : "") + '" href="#lugar-' + esc(l.id) + '">' + (f ? '<span class="clb-pf"><img src="' + esc(f) + '" alt="" loading="lazy"><em>' + esc(l.descontoClube) + "</em></span>" : "") + '<span class="clb-pt"><b>' + esc(l.nome) + "</b>" + (f ? "" : "<span>" + esc(l.descontoClube) + "</span>") + "<small>" + esc((G.CATS[l.categoria] ? G.CATS[l.categoria] + " · " : "") + G.regiao(l)) + "</small></span></a>"; }).join("") + "</div>"
       : '<div class="dk-card dk-flat"><p class="muted">Os primeiros negócios parceiros estão entrando agora. Anunciantes podem oferecer um desconto para membros direto no painel.</p></div>';
     var comprar = "";
     if (!uid) comprar = '<div class="clb-cta"><p>Entre na sua conta para assinar.</p><a class="btn" href="#entrar">Entrar ou criar conta</a></div>';

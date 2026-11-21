@@ -512,6 +512,39 @@ footer.fcom .brand-f > span { color: #fff }
 .cat-res button small { color: var(--muted); font-size: .72rem; white-space: nowrap }
 .cat-res p { margin: 6px 8px }
 #n-cat.cat-ok { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-mid) 30%, transparent); transition: box-shadow .3s }
+/* roteiros: abas de cidade, estilos e linha do tempo com horário, tempo, preço, trajeto e dica */
+.rt-cids { display: flex; flex-wrap: wrap; gap: 8px }
+.rt-cids button { padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 600 .9rem var(--body); cursor: pointer }
+.rt-cids button[aria-selected="true"] { background: var(--accent-mid); border-color: var(--accent-mid); color: #fff }
+.rt-cids small { opacity: .7; font-weight: 700; margin-left: 4px }
+.rt-card .m { display: flex; gap: 6px; flex-wrap: wrap }
+.rt-meta { display: block; margin-top: 6px; font-size: .74rem; color: var(--muted) }
+.rt-res { grid-template-columns: repeat(4, minmax(0, 1fr)) }
+@media (max-width: 640px) { .rt-res { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+.rt-linha { display: grid; gap: 0 }
+.rt-st { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px }
+.rt-h { display: grid; justify-items: center; align-content: start; gap: 6px; position: relative }
+.rt-h::after { content: ""; position: absolute; top: 58px; bottom: -8px; width: 2px; background: color-mix(in srgb, var(--accent-mid) 30%, transparent) }
+.rt-hora { font: 800 .9rem/1 var(--display); color: var(--accent-mid) }
+.rt-n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-mid); color: #fff; font: 800 .85rem var(--body) }
+.rt-c { display: grid; gap: 8px; padding: 14px; margin-bottom: 4px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow) }
+.rt-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; text-decoration: none; color: var(--ink) }
+.rt-top img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover }
+.rt-top b { display: block; font-size: 1.02rem; line-height: 1.25 } .rt-top small { display: block; color: var(--muted); font-size: .8rem; margin: 2px 0 4px }
+.rt-tags { display: flex; flex-wrap: wrap; gap: 6px } .rt-tags span { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 999px; background: var(--surface-2); font-size: .78rem; font-weight: 600 }
+.rt-tags span .i { width: 14px; height: 14px } .rt-tags .ok { color: #0B7A3B } .rt-tags .no { color: #B3261E }
+.rt-dica { margin: 0; font-size: .88rem; line-height: 1.5 } .rt-sub { margin: 0; font-size: .8rem; color: var(--muted) }
+.rt-leg { margin: 6px 0 10px 76px; display: flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--muted) } .rt-leg .i { width: 14px; height: 14px } .rt-leg a { margin-left: 4px }
+.rt-dia { margin: 14px 0 10px; font: 800 1.05rem var(--display); color: var(--accent-mid) }
+.rt-dicas { padding: 16px 18px; border-radius: 16px; background: #FFF6D6; color: #3D2F00 } .rt-dicas ul { margin: 8px 0 0; padding-left: 18px; line-height: 1.6 }
+@media (max-width: 480px) { .rt-st { grid-template-columns: 52px minmax(0, 1fr); gap: 8px } .rt-leg { margin-left: 60px } }
+/* Clube: parceiros com a foto do anúncio e o desconto em destaque */
+.clb-p.com-foto { padding: 0; overflow: hidden; display: grid; grid-template-rows: auto 1fr }
+.clb-pf { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--surface-2) }
+.clb-pf img { width: 100%; height: 100%; object-fit: cover; display: block }
+.clb-pf em { position: absolute; left: 10px; bottom: 10px; padding: 6px 12px; border-radius: 999px; background: #FFC20E; color: #111; font: 800 .9rem/1 var(--body); font-style: normal; box-shadow: 0 6px 16px -6px rgba(0,0,0,.4) }
+.clb-p.com-foto .clb-pt { display: grid; gap: 4px; padding: 12px 14px 14px }
+.clb-p.com-foto .clb-pt { color: var(--ink); font-weight: 400 } .clb-p.com-foto .clb-pt b { font-weight: 700 } .clb-p.com-foto .clb-pt small { color: var(--muted) }
 .rbars i { display: block; height: 100%; background: var(--sun); border-radius: 9px; transform-origin: left; animation: barx .7s cubic-bezier(.2,.7,.2,1) both }
 /* ---------- reações (❤️ 👍 😐 😢 😡 no lugar das estrelas) ---------- */
 .rx-i { width: 1em; height: 1em; display: inline-block; vertical-align: -.16em; flex: none; overflow: visible }
@@ -2487,6 +2520,7 @@ body.home .top .nav .nav-dd a:hover, body.home .top .nav .nav-dd a[aria-current=
 <script src="js/metro.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="js/anunciante.js"></script>
+<script src="js/roteiros-dados.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/checklist.js"></script>
 <script src="js/diferenciais.js"></script>

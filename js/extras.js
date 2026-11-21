@@ -53,37 +53,77 @@
     var lp = $("#limpar"); if (lp) lp.onclick = function () { if (!lp.dataset.ok) { lp.dataset.ok = "1"; lp.textContent = "Confirmar"; return; } salva([]); viewLista(); };
   }
 
-  /* ---------- roteiros prontos ---------- */
-  var ROTEIROS = [
-    { id: "dallas-em-1-dia", nome: "Dallas em 1 dia", sub: "O essencial do centro, a pé e de carro", texto: "Comece pela história de Kennedy, atravesse o centro pelos bois de bronze, almoce churrasco texano em Deep Ellum e feche com o pôr do sol do alto da torre.", paradas: ["sixth-floor-museum", "dealey-plaza", "pioneer-plaza", "pecan-lodge", "klyde-warren-park", "dallas-museum-of-art", "reunion-tower"] },
-    { id: "dallas-de-graca", nome: "Dallas sem gastar com entrada", sub: "Um dia inteiro só com lugares gratuitos", texto: "Praças históricas, um museu de arte de primeira linha, o parque sobre a rodovia e um fim de tarde no bairro mais charmoso da cidade.", paradas: ["dealey-plaza", "jfk-memorial-plaza", "thanks-giving-square", "dallas-museum-of-art", "klyde-warren-park", "katy-trail", "bishop-arts-district"] },
-    { id: "com-criancas", nome: "Fim de semana com crianças", sub: "Ciência, bichos e parque", texto: "Dois dias pensados para os pequenos: museu interativo e parque no primeiro, aquário e zoológico no segundo.", paradas: ["perot-museum", "klyde-warren-park", "dallas-world-aquarium", "dallas-zoo", "dallas-arboretum"] },
-    { id: "fort-worth-em-1-dia", nome: "Fort Worth em 1 dia", sub: "Cowboys de manhã, museus à tarde", texto: "Chegue cedo para ver o desfile do gado no Stockyards, almoce Tex-Mex no pátio mais famoso da cidade e passe a tarde entre arte e jardins.", paradas: ["fort-worth-stockyards", "joe-t-garcias", "kimbell-art-museum", "fort-worth-botanic-garden", "fort-worth-water-gardens"] },
-    { id: "dia-de-compras", nome: "Dia de compras", sub: "Shoppings e outlet", texto: "Do shopping com obras de arte ao outlet com as marcas mais procuradas pelos brasileiros. Leve o passaporte para pedir os cupons de visitante.", paradas: ["northpark-center", "highland-park-village", "galleria-dallas", "allen-premium-outlets"] }
-  ];
-  function stops(r) { return r.paradas.map(function (id) { return Store.obter("lugares", id); }).filter(function (l) { return l && l.publicado !== false; }); }
+  /* ---------- roteiros prontos ----------
+     Os dados vêm de js/roteiros-dados.js (tools/roteiros.py monta a partir da base: paradas perto umas das outras,
+     horário de chegada e tempo em cada lugar). Aqui a tela junta o resto: trajeto, preço, horário, dica e rota no mapa. */
+  var TEMAS_R = { essencial: "1 dia", gratis: "Grátis", criancas: "Com crianças", brasil: "Sabor do Brasil", arte: "Arte e museus", natureza: "Ao ar livre", historia: "História", compras: "Compras", noite: "À noite", texas: "Raiz texana", cafe: "Café e brunch" };
+  var ROTEIROS = (window.ROTEIROS_DADOS || []).map(function (r) { return Object.assign({}, r, { paradasIds: r.paradas.map(function (p) { return p.id; }) }); });
+  var filtroR = { cid: null, tema: "" };
+  function stops(r) { return r.paradas.map(function (p) { var l = Store.obter("lugares", p.id); return l && l.publicado !== false ? l : null; }).filter(Boolean); }
+  function miles(a, b) { var k = G.dist(a, b); return k == null ? null : k * 0.621371; }
+  function carroMin(d) { return d == null ? null : Math.round(d * 1.35 / 24 * 60 + 4); }
+  function custoR(r) {
+    var ls = stops(r), entrada = 0, comida = 0;
+    var LEVE = ["padaria", "acai-cafe", "mercado-brasileiro", "brunch-cafe", "mercado", "bar"], refeicoes = 0;
+    ls.forEach(function (l) {
+      var pz = G.precos ? G.precos(l) : null, eComida = G.COMIDA && G.COMIDA.indexOf(l.categoria) >= 0, leve = LEVE.indexOf(l.categoria) >= 0;
+      if (eComida || leve) { if (!pz || pz.gratis) return; if (!leve && refeicoes < 2) { refeicoes++; comida += pz.med || pz.min || 0; } else comida += pz.min || 0; return; }   // até 2 refeições completas; o resto conta como lanche
+      entrada += pz && !pz.gratis ? (pz.min || pz.med || 0) : (!l.gratuito && l.tipo !== "estabelecimento" ? Number(l.precoMin) || 0 : 0);
+    });
+    return { entrada: entrada, comida: comida, total: entrada + comida };
+  }
   function cardRoteiro(r) {
-    var ls = stops(r), f = ls.map(G.foto).filter(Boolean)[0];
-    return '<a class="ocard" href="#roteiro-' + r.id + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") + '<span class="m"><span>' + ls.length + ' paradas</span></span><span class="n"><b>' + esc(r.nome) + "</b><small>" + esc(r.sub) + "</small></span></a>";
+    var ls = stops(r), f = ls.map(G.foto).filter(Boolean)[0], c = custoR(r);
+    return '<a class="ocard rt-card" href="#roteiro-' + r.id + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") +
+      '<span class="m"><span>' + ls.length + " paradas</span>" + (r.tema && TEMAS_R[r.tema] ? "<span>" + esc(TEMAS_R[r.tema]) + "</span>" : "") + "</span>" +
+      '<span class="n"><b>' + esc(r.nome) + "</b><small>" + esc(r.sub) + '</small><span class="rt-meta">' + esc((r.inicio || "") + (r.fim ? "–" + r.fim : "")) + " · " + String(r.distMi || 0).replace(".", ",") + " mi de carro · " + (c.total ? "≈ " + G.usd(c.total) + "/pessoa" : "grátis") + "</span></span></a>";
   }
   function viewRoteiros() {
-    G.app.innerHTML = '<section class="block"><div class="wrap stack in"><div><p class="eyebrow">Prontos para seguir</p><h1 class="page-h" style="margin-top:4px">Roteiros</h1><p class="muted" style="margin-top:6px;max-width:56ch">Sequências de visita já montadas, com o tempo de carro entre uma parada e outra.</p></div><div class="grid">' + ROTEIROS.filter(function (r) { return stops(r).length > 1; }).map(cardRoteiro).join("") + "</div></div></section>";
+    var cid = filtroR.cid || (G.cidadeAtual ? G.cidadeAtual() : "dfw"), CS = G.CIDADES_GUIA || {};
+    var daCid = ROTEIROS.filter(function (r) { return (r.regiao || "dfw") === cid && stops(r).length > 1; });
+    var temas = Object.keys(TEMAS_R).filter(function (k) { return daCid.some(function (r) { return r.tema === k; }); });
+    var lista = daCid.filter(function (r) { return !filtroR.tema || r.tema === filtroR.tema; }).sort(function (a, b) { return (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0) || Object.keys(TEMAS_R).indexOf(a.tema) - Object.keys(TEMAS_R).indexOf(b.tema); });
+    G.app.innerHTML = '<section class="block"><div class="wrap stack in"><div><p class="eyebrow">Prontos para seguir</p><h1 class="page-h" style="margin-top:4px">Roteiros</h1><p class="muted" style="margin-top:6px;max-width:62ch">' + ROTEIROS.length + " roteiros com paradas perto umas das outras, horário de chegada, tempo em cada lugar, preço e trajeto de carro. Escolha a cidade e o estilo do passeio.</p></div>" +
+      '<div class="rt-cids" role="tablist">' + Object.keys(CS).map(function (k) { var n = ROTEIROS.filter(function (r) { return (r.regiao || "dfw") === k; }).length; return '<button type="button" role="tab" data-rt-cid="' + k + '" aria-selected="' + (k === cid) + '">' + esc(CS[k].nome) + " <small>" + n + "</small></button>"; }).join("") + "</div>" +
+      '<div class="chips rt-temas"><button type="button" class="chip' + (!filtroR.tema ? " on" : "") + '" data-rt-tema="">Todos</button>' + temas.map(function (k) { return '<button type="button" class="chip' + (filtroR.tema === k ? " on" : "") + '" data-rt-tema="' + k + '">' + esc(TEMAS_R[k]) + "</button>"; }).join("") + "</div>" +
+      (lista.length ? '<div class="grid">' + lista.map(cardRoteiro).join("") + "</div>" : '<p class="muted">Nenhum roteiro com esse estilo nesta cidade ainda.</p>') + "</div></section>";
+    G.app.querySelector("section").onclick = function (e) {
+      var c = e.target.closest("[data-rt-cid]"), tm = e.target.closest("[data-rt-tema]");
+      if (c) { filtroR.cid = c.dataset.rtCid; filtroR.tema = ""; viewRoteiros(); } else if (tm) { filtroR.tema = tm.dataset.rtTema; viewRoteiros(); }
+    };
   }
+  function horaTxt(h) { return String(h || "").replace(/h$/, "h00"); }
   function viewRoteiro(rota) {
     var r = ROTEIROS.filter(function (x) { return "roteiro-" + x.id === rota; })[0];
     if (!r) { viewRoteiros(); return; }
-    var ls = stops(r), p = paradas(ls, false), custo = ls.reduce(function (s, l) { return s + (l.tipo !== "estabelecimento" && !l.gratuito ? Number(l.precoMin) || 0 : 0); }, 0);
-    G.app.innerHTML = '<section class="block"><div class="wrap stack in" style="max-width:720px"><div><a class="more" href="#roteiros">← roteiros</a><p class="eyebrow" style="margin-top:10px">' + esc(r.sub) + '</p><h1 class="page-h" style="margin-top:4px">' + esc(r.nome) + '</h1><p class="muted" style="margin-top:8px">' + esc(r.texto) + '</p></div>' +
-      '<div class="attrs" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div>' + ic("pin") + "<b>" + ls.length + "</b><small>paradas</small></div><div>" + ic("clock") + "<b>" + dur(p.total) + "</b><small>de carro no total</small></div><div>" + ic("ticket") + "<b>" + (custo ? G.usd(custo) : "Grátis") + "</b><small>" + (custo ? "em entradas, por adulto" : "sem entrada paga") + "</small></div></div>" +
-      '<div class="list">' + p.html + '</div><div class="row">' + (window.Jornada ? Jornada.botaoQuero(r.nome, ls.map(function (l) { return l.id; }), "pronto") : "") + '<a class="btn ghost" href="' + esc(mapsRota(ls)) + '" target="_blank" rel="noopener">' + ic("pin") + ' Abrir rota no Maps</a><button type="button" class="btn ghost" id="copiar-rot">Salvar na minha lista</button></div><p class="small muted">Tempos estimados pela distância, sem trânsito. Confira horários e preços na página de cada lugar.</p></div></section>';
+    var info = {}; r.paradas.forEach(function (p) { info[p.id] = p; });
+    var ls = stops(r), c = custoR(r), totMin = 0, totMi = 0, CS = G.CIDADES_GUIA || {}, html = "", diaAtual = 0;
+    ls.forEach(function (l, i) {
+      var p = info[l.id] || {}, f = G.foto(l), pz = G.precos ? G.precos(l) : null, aberto = window.Extras && Extras.aberto ? Extras.aberto(l) : null;
+      if (p.dia && p.dia !== diaAtual) { diaAtual = p.dia; html += '<div class="rt-dia">Dia ' + p.dia + "</div>"; }
+      else if (i) { var d = miles(ls[i - 1], l), m = carroMin(d); if (m != null) { totMin += m; totMi += d; html += '<div class="rt-leg">' + ic("car") + " " + m + " min de carro · " + d.toFixed(1).replace(".", ",") + ' mi <a href="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' + ls[i - 1].lat + "," + ls[i - 1].lng + "&destination=" + l.lat + "," + l.lng + '" target="_blank" rel="noopener">ver trajeto</a></div>'; } }
+      var dica = String(l.dica || "").trim() || String(l.historia || "").split(/(?<=[.!?])\s/)[0];
+      html += '<article class="rt-st"><div class="rt-h"><span class="rt-hora">' + esc(horaTxt(p.chega)) + '</span><span class="rt-n">' + (i + 1) + "</span></div>" +
+        '<div class="rt-c"><a class="rt-top" href="#lugar-' + esc(l.id) + '">' + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "") + "<span><b>" + esc(l.nome) + "</b><small>" + esc((G.CATS[l.categoria] || "") + " · " + G.regiao(l)) + "</small>" + (G.notas && G.notas(l).guia != null && window.Reacoes ? Reacoes.selo(G.notas(l).guia, { num: true, cls: "rx-mini" }) : "") + "</span></a>" +
+        '<div class="rt-tags"><span>' + ic("clock") + " fique " + dur(p.fica || 60) + "</span><span>" + ic("ticket") + " " + (pz ? (pz.gratis ? "Grátis" : "a partir de " + G.usd(pz.min || pz.med || 0)) : (l.gratuito ? "Grátis" : esc(l.preco || "ver preço"))) + "</span>" +
+          (aberto != null ? '<span class="' + (aberto ? "ok" : "no") + '">' + (aberto ? "aberto agora" : "fechado agora") + "</span>" : "") + "</div>" +
+        (dica ? '<p class="rt-dica">' + esc(dica.slice(0, 220)) + "</p>" : "") +
+        (l.horario ? '<p class="rt-sub"><b>Horário:</b> ' + esc(String(l.horario).slice(0, 140)) + "</p>" : "") + (l.endereco ? '<p class="rt-sub"><b>Endereço:</b> ' + esc(l.endereco) + "</p>" : "") + "</div></article>";
+    });
+    var visitas = r.paradas.reduce(function (s, p) { return s + (p.fica || 0); }, 0);
+    G.app.innerHTML = '<section class="block"><div class="wrap stack in rt-pg" style="max-width:780px"><div><a class="more" href="#roteiros">← roteiros</a><p class="eyebrow" style="margin-top:10px">' + esc((TEMAS_R[r.tema] || "Roteiro") + " · " + ((CS[r.regiao] || {}).nome || "")) + '</p><h1 class="page-h" style="margin-top:4px">' + esc(r.nome) + '</h1><p class="muted" style="margin-top:8px">' + esc(r.texto) + "</p></div>" +
+      '<div class="attrs rt-res"><div>' + ic("pin") + "<b>" + ls.length + "</b><small>paradas</small></div><div>" + ic("clock") + "<b>" + esc((r.inicio || "") + "–" + (r.fim || "")) + "</b><small>" + dur(visitas) + " nos lugares</small></div><div>" + ic("car") + "<b>" + (totMi ? totMi.toFixed(1).replace(".", ",") + " mi" : "–") + "</b><small>" + dur(totMin) + " de carro</small></div><div>" + ic("ticket") + "<b>" + (c.total ? "≈ " + G.usd(c.total) : "Grátis") + "</b><small>" + (c.total ? "por pessoa" + (c.comida ? " (" + G.usd(c.comida) + " em refeições)" : "") : "sem entrada paga") + "</small></div></div>" +
+      '<div class="rt-linha">' + html + "</div>" +
+      (r.dicas && r.dicas.length ? '<div class="rt-dicas"><b>Dicas para este roteiro</b><ul>' + r.dicas.map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul></div>" : "") +
+      '<div class="row">' + (window.Jornada ? Jornada.botaoQuero(r.nome, ls.map(function (l) { return l.id; }), "pronto") : "") + '<a class="btn ghost" href="' + esc(mapsRota(ls)) + '" target="_blank" rel="noopener">' + ic("pin") + ' Abrir rota no Maps</a><button type="button" class="btn ghost" id="copiar-rot">Salvar na minha lista</button></div>' +
+      '<p class="small muted">Horários sugeridos e tempos de carro estimados pela distância, sem trânsito. Preços e horários vêm da página de cada lugar; confirme antes de sair.</p></div></section>';
     $("#copiar-rot").onclick = function () { var a = lista(); ls.forEach(function (l) { if (a.indexOf(l.id) < 0) a.push(l.id); }); salva(a); G.toast("Roteiro salvo na sua lista."); location.hash = "lista"; };
   }
-
   /* ---------- blocos da página inicial ---------- */
   function secoes(ls) {
     var hoje = G.hojeISO();
     var ev = ls.filter(function (l) { return l.categoria === "evento" && (!l.dataFim || l.dataFim >= hoje); }).sort(function (a, b) { return (a.dataInicio || "9999") < (b.dataInicio || "9999") ? -1 : 1; });
-    var rs = ROTEIROS.filter(function (r) { return stops(r).length > 1; });
+    var cidR = G.cidadeAtual ? G.cidadeAtual() : "dfw", rs = ROTEIROS.filter(function (r) { return (r.regiao || "dfw") === cidR && stops(r).length > 1; }).sort(function (a, b) { return (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0); }).slice(0, 10);
     return {
       eventos: ev.length ? '<section class="block reveal"><div class="head"><h2>Próximos eventos</h2><a class="more" href="#explorar" data-grupo="eventos">ver todos</a></div><div class="hscroll">' + G.unificaEventos(G.primeiro(ev)).slice(0, 8).map(G.card).join("") + "</div></section>" : "",
       roteiros: rs.length ? '<section class="block reveal"><div class="head"><h2>Roteiros prontos</h2><a class="more" href="#roteiros">ver todos</a></div><div class="hscroll">' + rs.map(cardRoteiro).join("") + "</div></section>" : "",
