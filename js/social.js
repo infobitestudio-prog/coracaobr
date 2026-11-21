@@ -173,7 +173,7 @@
   /* ---------- rodízio de banners ----------
      Fila única: patrocinadores oficiais + anunciantes com plano (1 banner por conta). A cada intervalo (30 min)
      entra o próximo grupo da fila, sem repetir dentro da rodada, e o ciclo recomeça sozinho, sem pausa.
-     Todos os visitantes veem a mesma rodada. O banner principal mostra a rodada atual; o carrossel, a seguinte. */
+     Todos os visitantes veem a mesma rodada. O banner principal mostra a rodada atual; a faixa de baixo mostra todos os patrocinadores oficiais + os anunciantes da rodada seguinte. */
   function cfgVitrine() { var c = Object.assign({ minutos: 30, limite: 3 }, G.config().vitrine || {}); c.minutos = Math.max(5, Number(c.minutos) || 30); c.limite = Math.max(1, Math.min(10, Number(c.limite) || 3)); return c; }
   function rodada() { return Math.floor(Date.now() / (cfgVitrine().minutos * 60000)); }
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
@@ -201,13 +201,17 @@
     for (var i = 0; i < lim; i++) { var x = f[(ini + i) % N]; out.push(x.it || itemAnuncio(x.an.ls[Math.floor(k / Math.max(1, Math.ceil(N / lim))) % x.an.ls.length])); }
     return out;
   }
+  /* faixa abaixo das categorias: TODOS os patrocinadores oficiais, sempre, mais os anunciantes da próxima rodada.
+     (o banner principal do topo segue a regra dos 30 minutos com a rodada atual) */
   function montaRodada(k) {
-    var it = rodadaItens(k == null ? rodada() + 1 : k), c = cfgVitrine();
+    var ofs = window.Oficiais ? Oficiais.lista().map(function (o) { return Oficiais.item(o); }) : [];
+    var ans = rodadaItens(k == null ? rodada() + 1 : k).filter(function (x) { return x.k === "an"; });
+    var it = ofs.concat(ans), c = cfgVitrine();
     if (it.length < c.limite) {
       var hj = G.hojeISO(), R = window.Recursos;
       var evs = G.lugares().filter(function (l) { return (l.categoria === "evento" || l.categoria === "show") && (l.gratuito || Number(l.precoMin) === 0) && G.foto(l) && !(R && (R.encerrado(l) || l.cancelado)) && (!l.dataFim || l.dataFim >= hj); })
         .sort(function (a, b) { return (a.dataInicio || "9999") < (b.dataInicio || "9999") ? -1 : 1; });
-      for (var j = 0; j < evs.length && it.length < c.limite; j++) it.push(itemEvento(evs[(rodada() + j) % evs.length]));
+      for (var j2 = 0; j2 < evs.length && it.length < c.limite; j2++) it.push(itemEvento(evs[(rodada() + j2) % evs.length]));
     }
     return it;
   }
