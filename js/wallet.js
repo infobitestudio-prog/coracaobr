@@ -10,7 +10,7 @@
   function botao(tipo, id, info) {
     info = info || {}; var p = plataforma();
     return '<button type="button" class="btn sm wl-bt" data-wallet="' + esc(tipo) + '" data-wallet-id="' + esc(id) + '" data-wl-nome="' + esc(info.nome || "") + '" data-wl-linha="' + esc(info.linha || "") + '">' + IC +
-      (p === "apple" ? "Adicionar à Apple Wallet" : p === "google" ? "Salvar no Google Wallet" : "Salvar no celular") + "</button>";
+      ((p === "apple" && cfg && cfg.apple) ? "Adicionar à Apple Wallet" : (p === "google" && cfg && cfg.google) ? "Salvar no Google Wallet" : (tipo === "clube" ? "Salvar carteirinha no celular" : "Salvar cupom no celular")) + "</button>";
   }
   function carregaCfg() {
     if (cfg) return Promise.resolve(cfg);
@@ -53,5 +53,7 @@
       imagem(tipo, id, b);
     });
   });
+  /* já pergunta ao servidor se a Wallet está ligada, para o botão mostrar o texto certo */
+  setTimeout(function () { carregaCfg().then(function (c) { if (!(c && (c.apple || c.google))) return; Array.prototype.forEach.call(document.querySelectorAll("[data-wallet]"), function (b) { var p = plataforma(); if ((p === "apple" && c.apple) || (p === "google" && c.google)) b.lastChild.textContent = p === "apple" ? "Adicionar à Apple Wallet" : "Salvar no Google Wallet"; }); }); }, 800);
   window.Wallet = { botao: botao, plataforma: plataforma };
 })();

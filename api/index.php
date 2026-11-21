@@ -1031,12 +1031,28 @@ case 'wallet': {
   $bin = walletApple($w, $cfg); if ($bin === null) erro('Não deu para gerar o passe agora. Confira o certificado no Painel master.', 500);
   header('Content-Type: application/vnd.apple.pkpass'); header('Content-Disposition: attachment; filename="' . $w['serial'] . '.pkpass"'); header('Content-Length: ' . strlen($bin)); echo $bin; exit;
 }
+case 'wallet_csr': {
+  exigeMaster(); $d = walletDir();
+  $k = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]); if (!$k) erro('Não deu para gerar a chave agora.', 500);
+  $csr = openssl_csr_new(['commonName' => 'CoracaoBR Wallet', 'emailAddress' => emailOficial(), 'countryName' => 'US', 'organizationName' => 'CoracaoBR'], $k, ['digest_alg' => 'sha256']);
+  if (!$csr || !openssl_pkey_export($k, $pem) || !openssl_csr_export($csr, $out)) erro('Não deu para gerar o pedido agora.', 500);
+  file_put_contents($d . '/apple.key', $pem); @chmod($d . '/apple.key', 0600); @unlink($d . '/apple-cert.pem');
+  sai(['ok' => true, 'csr' => $out]);
+}
 case 'wallet_salvar': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
   $d = walletDir(); $feito = [];
   if (isset($corpo['apple']) && is_array($corpo['apple'])) {
     $a = $corpo['apple']; $atual = json_decode((string)@file_get_contents($d . '/apple.json'), true) ?: [];
     $novo = ['passTypeId' => trim((string)($a['passTypeId'] ?? $atual['passTypeId'] ?? '')), 'teamId' => trim((string)($a['teamId'] ?? $atual['teamId'] ?? '')), 'senha' => array_key_exists('senha', $a) && $a['senha'] !== '' ? (string)$a['senha'] : (string)($atual['senha'] ?? '')];
+    if (!empty($a['cer'])) {   // certificado .cer baixado da Apple, assinado a partir do pedido gerado aqui
+      if (!is_file($d . '/apple.key')) erro('Gere primeiro o pedido de certificado (CSR) aqui no painel.');
+      $bin = base64_decode((string)$a['cer'], true); if ($bin === false || strlen($bin) > 20000) erro('Arquivo .cer inválido.');
+      $pemC = strpos($bin, '-----BEGIN CERTIFICATE-----') !== false ? $bin : "-----BEGIN CERTIFICATE-----\n" . chunk_split(base64_encode($bin), 64, "\n") . "-----END CERTIFICATE-----\n";
+      if (!@openssl_x509_parse($pemC)) erro('Esse arquivo não parece um certificado da Apple.');
+      if (!openssl_x509_check_private_key($pemC, (string)file_get_contents($d . '/apple.key'))) erro('Esse certificado não é do pedido gerado aqui. Gere o pedido de novo e use o .cer novo.');
+      file_put_contents($d . '/apple-cert.pem', $pemC); @unlink($d . '/apple.json'); $c = walletCfg(); sai(['ok' => true, 'feito' => ['certificado'], 'apple' => $c['apple'], 'google' => $c['google'], 'passTypeId' => $c['a']['passTypeId'] ?? '', 'teamId' => $c['a']['teamId'] ?? '']);
+    }
     if (!empty($a['p12'])) { $bin = base64_decode((string)$a['p12'], true); if ($bin === false || strlen($bin) > 200000) erro('Certificado inválido.'); if (!openssl_pkcs12_read($bin, $x, $novo['senha'])) erro('Não abri o certificado .p12: confira a senha.'); file_put_contents($d . '/apple.p12', $bin); $feito[] = 'certificado'; }
     file_put_contents($d . '/apple.json', json_encode($novo)); $feito[] = 'Apple';
   }
@@ -1522,7 +1538,8 @@ function reciboHtml(array $r, string $link, bool $email): string {
 function walletDir(): string { global $CFG; $d = dirname($CFG['db']) . '/wallet'; if (!is_dir($d)) { @mkdir($d, 0750, true); @file_put_contents($d . '/.htaccess', "Require all denied\nDeny from all\n"); } return $d; }
 function walletCfg(): array {
   $d = walletDir(); $a = json_decode((string)@file_get_contents($d . '/apple.json'), true) ?: []; $g = json_decode((string)@file_get_contents($d . '/google.json'), true) ?: [];
-  return ['apple' => !empty($a['passTypeId']) && !empty($a['teamId']) && is_file($d . '/apple.p12'), 'google' => !empty($g['client_email']) && !empty($g['private_key']) && trim((string)@file_get_contents($d . '/google-issuer.txt')) !== '', 'a' => $a, 'g' => $g];
+  if (is_file($d . '/apple-cert.pem') && is_file($d . '/apple.key')) { $x = @openssl_x509_parse((string)file_get_contents($d . '/apple-cert.pem')); if ($x) { $a['passTypeId'] = $a['passTypeId'] ?? ($x['subject']['UID'] ?? ''); $a['teamId'] = $a['teamId'] ?? ($x['subject']['OU'] ?? ''); $a['viaCsr'] = true; } }
+  return ['apple' => !empty($a['passTypeId']) && !empty($a['teamId']) && (is_file($d . '/apple.p12') || !empty($a['viaCsr'])), 'google' => !empty($g['client_email']) && !empty($g['private_key']) && trim((string)@file_get_contents($d . '/google-issuer.txt')) !== '', 'a' => $a, 'g' => $g];
 }
 function walletDados(string $tipo, string $id): ?array {
   $pdo = banco();
@@ -1545,7 +1562,8 @@ function walletDados(string $tipo, string $id): ?array {
 function rgbCss(string $hex): string { $h = ltrim($hex, '#'); return 'rgb(' . hexdec(substr($h, 0, 2)) . ',' . hexdec(substr($h, 2, 2)) . ',' . hexdec(substr($h, 4, 2)) . ')'; }
 function walletApple(array $w, array $cfg): ?string {
   $d = walletDir(); $a = $cfg['a'];
-  if (!openssl_pkcs12_read((string)@file_get_contents($d . '/apple.p12'), $certs, (string)($a['senha'] ?? ''))) return null;
+  if (!empty($a['viaCsr'])) $certs = ['cert' => (string)file_get_contents($d . '/apple-cert.pem'), 'pkey' => (string)file_get_contents($d . '/apple.key')];
+  elseif (!openssl_pkcs12_read((string)@file_get_contents($d . '/apple.p12'), $certs, (string)($a['senha'] ?? ''))) return null;
   $wwdr = $d . '/wwdr.pem';
   if (!is_file($wwdr)) { $der = @file_get_contents('https://www.apple.com/certificateauthority/AppleWWDRCAG4.cer'); if ($der) @file_put_contents($wwdr, "-----BEGIN CERTIFICATE-----\n" . chunk_split(base64_encode($der), 64, "\n") . "-----END CERTIFICATE-----\n"); }
   $campo = function ($k, $l, $v) { return ['key' => $k, 'label' => $l, 'value' => $v]; };
