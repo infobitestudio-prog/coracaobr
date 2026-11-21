@@ -649,6 +649,8 @@ case 'apagar': {
     $antes = null; $antesPg = null;
     if (master() && $col === 'pagamentos') { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antesPg = json_decode((string)$st->fetchColumn(), true) ?: []; }
     if (!master() && $col === 'avisos') { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antes = json_decode((string)$st->fetchColumn(), true) ?: []; }
+    $antesAn = null;
+    if (in_array($col, ['anunciantes', 'lugares'], true)) { $st = $pdo->prepare('SELECT data FROM docs WHERE col = ? AND id = ?'); $st->execute([$col, $id]); $antesAn = json_decode((string)$st->fetchColumn(), true) ?: []; }
     $pdo->prepare('INSERT INTO docs (col, id, data, em) VALUES (?, ?, ?, ?) ON CONFLICT(col, id) DO UPDATE SET data = excluded.data, em = excluded.em')->execute([$col, $id, $json, agora()]);
     if (master() && $col === 'pagamentos') premiaIndicacao($id);
     if ($antesPg !== null) {   // pacote, Clube ou mural liberado à mão (Pix pela chave): recibo para o cliente e o e-mail oficial
@@ -670,6 +672,11 @@ case 'apagar': {
     }
   }
   versao($col);
+  /* anúncio ou lugar que acabou de entrar no ar: avisa no celular quem mora perto (pelo CEP), sem esperar o robô das 5h */
+  if ($acao === 'gravar' && isset($antesAn)) {
+    $novos = lugaresQueEntraram($col, $id, (array)$antesAn, (array)$data);
+    if ($novos) respondeDepois(['ok' => true], function () use ($novos, $col, $id) { pushPerto($novos, $col === 'anunciantes' ? $id : ''); });
+  }
   sai(['ok' => true]);
 }
 case 'foto': {
@@ -960,14 +967,10 @@ case 'atualizar_diario': {
   }
   // relatório
   $robo = configDoc('robo'); $robo['servidor'] = $rel; $robo['ultimaExecucaoServidor'] = $rel['data']; $salva('config', 'robo', $robo);
-  // novos lugares e eventos publicados nas últimas 24 h: avisa no celular quem mora perto (pelo CEP)
+  // novos lugares e eventos publicados nas últimas 24 h: avisa no celular quem mora perto (pelo CEP); quem já foi avisado na hora não recebe de novo
   if (($geral['pushPerto'] ?? true) !== false) {
-    $novos = [];
-    foreach ($pdo->query("SELECT id, data FROM docs WHERE col IN ('lugares', 'anunciantes')") as $r0) { $d0 = json_decode($r0['data'], true); $it = isset($d0['itens']) ? (array)$d0['itens'] : [$r0['id'] => $d0]; foreach ($it as $k0 => $l0) { if (!is_array($l0) || empty($l0['nome']) || !isset($l0['lat']) || ($l0['publicado'] ?? true) === false) continue; if (!empty($l0['criadoEm']) && strtotime($l0['criadoEm']) > time() - 86400) { $l0['id'] = isset($d0['itens']) ? $r0['id'] . '~' . $k0 : $r0['id']; $novos[] = $l0; } } }
-    if ($novos) { try { $r = enviaPush('Novidade perto de você', 'Tem lugar novo no CoraçãoBR perto de você.', './#explorar', '', function ($sub) use ($novos) {
-      $reg = !empty($sub['uid']) ? regiaoDoUsuario($sub['uid']) : null; if (!$reg) return null;
-      foreach ($novos as $l) if (kmEntre($reg['lat'], $reg['lng'], (float)$l['lat'], (float)$l['lng']) <= 30) return ['Novo perto de você: ' . mb_substr((string)$l['nome'], 0, 40), 'Acabou de entrar no CoraçãoBR, perto de ' . ($reg['cidade'] ?: 'você') . '. Toque para ver.', './#lugar-' . ($l['id'] ?? '')];
-      return null; }); $rel['feito'][] = 'Novidades perto do CEP: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push perto: ' . $e->getMessage(); } }
+    $novos = array_values(array_filter(lugaresPublicados(), fn($l) => !empty($l['criadoEm']) && strtotime((string)$l['criadoEm']) > time() - 86400));
+    if ($novos) { try { $r = pushPerto($novos, ''); $rel['feito'][] = 'Novidades perto do CEP: ' . $r['enviados'] . ' aparelhos'; } catch (Throwable $e) { $rel['erros'][] = 'Push perto: ' . $e->getMessage(); } }
   }
   // newsletter semanal (toda quinta, com eventos do fim de semana e cupons) e aviso no celular na sexta
   $dow = (int)$agoraD->format('N');
@@ -1387,6 +1390,27 @@ case 'push_teste': {
   $r = pushUm($sub, $id, $m[0], $m[1], $m[2]);
   if (!$r['ok']) erro('O serviço de notificações do celular recusou o envio (código ' . $r['status'] . '). Desative e ative as notificações de novo.', 502);
   sai(['ok' => true, 'status' => $r['status']]);
+}
+/* Teste do aviso "perto de você" para a própria conta (Minha conta): liga o aparelho à conta, procura o lugar publicado
+   mais perto do CEP e manda a notificação de verdade para este celular. */
+case 'push_perto_teste': {
+  if ($metodo !== 'POST') erro('Use POST.', 405);
+  $u = exigeLogin();
+  if (!limite('pp-teste:' . $u['id'], 10, 600)) erro('Muitos testes seguidos. Aguarde alguns minutos.', 429); marca('pp-teste:' . $u['id']);
+  $ep = (string)($corpo['endpoint'] ?? ''); $sid = hash('sha256', $ep);
+  $st = banco()->prepare("SELECT data FROM docs WHERE col = 'push' AND id = ?"); $st->execute([$sid]); $sub = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($sub) || empty($sub['endpoint'])) erro('Este celular ainda não está inscrito. Toque em "Ativar notificações" e depois teste de novo.', 409);
+  if (($sub['uid'] ?? '') !== $u['id']) { $sub['uid'] = $u['id']; banco()->prepare("UPDATE docs SET data = ? WHERE col = 'push' AND id = ?")->execute([json_encode($sub, JSON_UNESCAPED_UNICODE), $sid]); }
+  $reg = regiaoDoUsuario($u['id']);
+  if (!$reg) erro('Cadastre seu CEP (Brasil) ou ZIP code (EUA) em Minha conta → Dados para receber avisos do que fica perto.', 409);
+  $mp = null;
+  foreach (lugaresPublicados() as $l) { $km = kmEntre($reg['lat'], $reg['lng'], (float)$l['lat'], (float)$l['lng']); if (!$mp || $km < $mp['km']) $mp = ['nome' => (string)$l['nome'], 'id' => (string)$l['id'], 'km' => $km]; }
+  if ($mp && $mp['km'] <= 30) $m = ['Novidade perto de você', 'Teste: ' . mb_substr($mp['nome'], 0, 40) . ' fica a ' . number_format($mp['km'], 1, ',', '') . ' km do seu CEP. É assim que chega o aviso de lugar novo.', './#lugar-' . $mp['id']];
+  else $m = ['Avisos perto de você ligados', 'Teste: tudo certo neste celular. Ainda não há lugares a até 30 km do seu CEP' . ($mp ? ' (o mais perto fica a ' . number_format($mp['km'], 0, ',', '.') . ' km)' : '') . '.', './#explorar'];
+  $r = pushUm($sub, $sid, $m[0], $m[1], $m[2]);
+  if (!$r['ok']) erro('O serviço de notificações do celular recusou o envio (código ' . $r['status'] . '). Desative e ative as notificações de novo.', 502);
+  $n = 0; foreach (banco()->query("SELECT data FROM docs WHERE col = 'push'") as $row) { $x = json_decode($row['data'], true); if (($x['uid'] ?? '') === $u['id']) $n++; }
+  sai(['ok' => true, 'regiao' => $reg['cidade'], 'perto' => $mp ? ['nome' => $mp['nome'], 'km' => round($mp['km'], 1)] : null, 'aparelhos' => $n, 'titulo' => $m[0], 'texto' => $m[1]]);
 }
 case 'email_teste': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
@@ -2019,6 +2043,62 @@ function enviaPush(string $titulo, string $texto, string $url, string $tema = ''
     if ($st >= 200 && $st < 300) $env++; else { $fal++; if ($st === 404 || $st === 410) $pdo->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([$row['id']]); }
   }
   return ['enviados' => $env, 'falhas' => $fal];
+}
+
+/* ---------- aviso "perto de você" ---------- */
+/* Responde ao navegador e só depois faz o trabalho demorado (avisos no celular), para salvar o anúncio sem esperar. */
+function respondeDepois(array $o, callable $fn): never {
+  ignore_user_abort(true); @set_time_limit(300); if (session_status() === PHP_SESSION_ACTIVE) session_write_close();
+  $b = json_encode($o, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); http_response_code(200); header('Content-Length: ' . strlen($b)); header('Connection: close'); echo $b;
+  if (function_exists('litespeed_finish_request')) litespeed_finish_request(); elseif (function_exists('fastcgi_finish_request')) fastcgi_finish_request(); else { while (ob_get_level()) @ob_end_flush(); @flush(); }
+  try { $fn(); } catch (Throwable $e) { error_log('[coracaobr] depois: ' . $e->getMessage()); }
+  exit;
+}
+/* Todos os lugares publicados com coordenadas: os do guia e os anúncios (cada item do documento da conta vira "uid~chave"). */
+function lugaresPublicados(): array {
+  $out = [];
+  foreach (banco()->query("SELECT col, id, data FROM docs WHERE col IN ('lugares', 'anunciantes')") as $r) {
+    $d = json_decode($r['data'], true); if (!is_array($d)) continue;
+    $its = $r['col'] === 'anunciantes' ? (array)($d['itens'] ?? []) : [$r['id'] => $d];
+    foreach ($its as $k => $l) {
+      if (!is_array($l) || empty($l['nome']) || !isset($l['lat'], $l['lng']) || $l['lat'] === '' || ($l['publicado'] ?? true) === false || !empty($l['demo'])) continue;
+      if ($r['col'] === 'anunciantes' && !temPlano((string)$r['id'])) continue;   // anúncio em prévia (sem pacote) não aparece no guia
+      $l['id'] = $r['col'] === 'anunciantes' ? $r['id'] . '~' . $k : $r['id']; $l['_dono'] = $r['col'] === 'anunciantes' ? $r['id'] : (string)($l['donoUid'] ?? '');
+      $out[] = $l;
+    }
+  }
+  return $out;
+}
+/* O que acabou de entrar no ar nesta gravação: item novo (ou que saiu da pausa), com coordenadas e publicado. */
+function lugaresQueEntraram(string $col, string $id, array $antes, array $depois): array {
+  if ($col === 'anunciantes') { if (!temPlano($id)) return []; $a = (array)($antes['itens'] ?? []); $d = (array)($depois['itens'] ?? []); }
+  else { if (!master() || !empty($depois['demo'])) return []; $a = $antes ? [$id => $antes] : []; $d = [$id => $depois]; }
+  $out = [];
+  foreach ($d as $k => $l) {
+    if (!is_array($l) || empty($l['nome']) || !isset($l['lat'], $l['lng']) || $l['lat'] === '' || ($l['publicado'] ?? true) === false) continue;
+    $era = $a[$k] ?? null; if (is_array($era) && ($era['publicado'] ?? true) !== false) continue;
+    $l['id'] = $col === 'anunciantes' ? $id . '~' . $k : $id; $out[] = $l;
+  }
+  return $out;
+}
+/* Manda o aviso para cada celular cuja conta tem CEP a até 30 km do lugar. Cada lugar avisa uma vez só (marca no banco). */
+function pushPerto(array $lugares, string $dono = ''): array {
+  $pdo = banco(); $novos = [];
+  foreach ($lugares as $l) {
+    $k = 'pp:' . (string)$l['id']; $st = $pdo->prepare('SELECT 1 FROM meta WHERE k = ?'); $st->execute([$k]); if ($st->fetchColumn()) continue;
+    $pdo->prepare('INSERT OR REPLACE INTO meta (k, v) VALUES (?, ?)')->execute([$k, gmdate('c')]); $novos[] = $l;
+  }
+  if (!$novos) return ['enviados' => 0, 'falhas' => 0];
+  return enviaPush('Novidade perto de você', 'Tem lugar novo no CoraçãoBR perto de você.', './#explorar', '', function ($sub) use ($novos, $dono) {
+    $reg = !empty($sub['uid']) ? regiaoDoUsuario((string)$sub['uid']) : null; if (!$reg) return null;
+    foreach ($novos as $l) {
+      $km = kmEntre($reg['lat'], $reg['lng'], (float)$l['lat'], (float)$l['lng']); if ($km > 30) continue;
+      $donoL = (string)($l['_dono'] ?? ($dono ?: (strpos((string)$l['id'], '~') ? explode('~', (string)$l['id'])[0] : '')));
+      if ($donoL !== '' && $donoL === (string)$sub['uid']) return ['Seu anúncio está no ar', mb_substr((string)$l['nome'], 0, 40) . ' já aparece no CoraçãoBR e foi avisado para quem mora perto. Toque para ver.', './#lugar-' . $l['id']];
+      return ['Novo perto de você: ' . mb_substr((string)$l['nome'], 0, 40), 'Acabou de entrar no CoraçãoBR, a ' . number_format($km, 1, ',', '') . ' km de você. Toque para ver.', './#lugar-' . $l['id']];
+    }
+    return null;
+  });
 }
 
 /* ---------- região do usuário (CEP) ---------- */

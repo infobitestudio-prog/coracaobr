@@ -48,6 +48,8 @@
       .sort(function (a, b) { return String(a.criadoEm || a.id) < String(b.criadoEm || b.id) ? -1 : 1; });
   }
   function dono(l) { return donoDe(l) || Store.uid(); }
+  /* a mesma foto pode estar no original e na cópia: o arquivo só é apagado quando nenhum outro lugar usa */
+  function fotoEmUso(src, excetoId) { return Store.lista("lugares").some(function (l) { return l.id !== excetoId && ((l.fotos || []).some(function (f) { return f && f.src === src; }) || (l.banner && l.banner.src === src)); }); }
   function vagas() { return window.Pag ? Pag.vagas(Store.uid()) : LIMITE; }
   function maximo() { return Math.max(LIMITE, vagas()); }                       /* até 3 em prévia, sem pagar; acima disso, pelos pacotes */
   function noArDe(l) { return l.publicado !== false && (!window.Pag || Pag.visivel(l)); }
@@ -65,14 +67,28 @@
   }
   function bannerHtml() { return D.banner && D.banner.src ? '<figure class="ban-prev"><img src="' + esc(Store.urlFoto(D.banner.src)) + '" alt=""><button type="button" id="n-btira" aria-label="Remover banner">×</button></figure>' : '<label class="ae-ban0" for="n-bfile"><b>Enviar banner</b><small>1600 × 640 px · JPG ou PNG</small></label>'; }
   function sec(n, id, titulo, sub, corpo) { return '<section class="ae-sec" id="ae-' + id + '"><header><span class="ae-n">' + n + '</span><div><h2>' + titulo + "</h2>" + (sub ? "<p>" + sub + "</p>" : "") + "</div></header>" + corpo + "</section>"; }
-  function viewAnunciar(id) {
+  /* Duplicar: novo anúncio com tudo do original (fotos, contatos, redes, horário, cardápio, cupom, endereço);
+     ficam de fora o que é só do original: estatísticas, avaliações e fotos do Google, selo/destaque pagos e o banner se não houver vaga. */
+  var SO_DO_ORIGINAL = ["id", "_dono", "donoUid", "criadoEm", "assinatura", "googlePlaceId", "notaExterna", "avaliacoesExternas", "fotosGoogle", "horarioFonte", "fechadoGoogle", "fechadoIA", "iaConferidoEm",
+    "destaque", "destaqueAte", "impulso", "impulsoAte", "verificado", "verificadoEm", "selo", "visualizacoes", "metricas", "publicado", "pausadoEm"];
+  var dupInfo = null;
+  function copiaDe(src) {
+    var c = JSON.parse(JSON.stringify(src)); SO_DO_ORIGINAL.forEach(function (k) { delete c[k]; });
+    var avisoBanner = false; if (c.banner && c.banner.src && bannersLivres(null) <= 0) { delete c.banner; avisoBanner = true; }
+    dupInfo = { de: src.id, nome: src.nome, cep: src.cep || "", lat: src.lat, lng: src.lng, aprox: !!src.coordsAprox, semBanner: avisoBanner };
+    return c;
+  }
+  function viewAnunciar(id, dupId) {
     var existente = id ? Store.obter("lugares", id) : null;
     if (existente && !ehMeu(existente)) { G.toast("Esse anúncio não é da sua conta."); location.replace("#conta"); return; }
+    var origem = !existente && dupId ? Store.obter("lugares", dupId) : null;
+    if (origem && !ehMeu(origem)) { G.toast("Esse anúncio não é da sua conta."); location.replace("#conta"); return; }
+    dupInfo = null;
     if (!existente && meusLugares().length >= maximo()) {
       G.app.innerHTML = '<section class="block"><div class="wrap narrow stack" style="text-align:center;justify-items:center;padding-block:30px"><h1 class="page-h">Você usou todos os seus anúncios</h1><p class="muted">Seu plano libera ' + maximo() + ' anúncios. Cada pacote de ' + G.reais(window.Pag ? Pag.preco() : 50) + " soma mais " + (window.Pag ? Pag.porPacote() : 3) + ' anúncios.</p><a class="btn" href="#pagar">Contratar mais anúncios</a><a class="more" href="#anunciante">Voltar ao painel</a></div></section>';
       return;
     }
-    D = existente ? JSON.parse(JSON.stringify(existente)) : { id: "", tipo: "estabelecimento", nome: "", categoria: "", brasileiro: true, cidade: G.cid ? G.cid().principal : "Dallas", fotos: [], menu: [] };
+    D = existente ? JSON.parse(JSON.stringify(existente)) : origem ? copiaDe(origem) : { id: "", tipo: "estabelecimento", nome: "", categoria: "", brasileiro: true, cidade: G.cid ? G.cid().principal : "Dallas", fotos: [], menu: [] };
     D.fotos = D.fotos || []; removidas = [];
     var podeBanner = (D.banner && D.banner.src) || bannersLivres(existente && existente.id) > 0, n = 0, prox = function () { return ++n; };
     var corpo =
@@ -106,7 +122,7 @@
     var nav = ["empresa", "fotos", "banner", "contato", "endereco", "cardapio"], nomes = ["Empresa", "Fotos", "Banner", "Contato", "Endereço", "Cardápio"];
     var situ = existente ? (noArDe(existente) ? '<span class="pill ok">No ar</span>' : '<span class="pill warn">Prévia</span>') : '<span class="pill xp">Novo</span>';
     G.app.innerHTML = '<section class="block ae"><div class="wrap"><form id="f-an" novalidate>' +
-      '<header class="ae-hd"><a class="more" href="#anunciante">← Meu negócio</a><div class="ae-ti"><h1 class="page-h">' + (existente ? "Editar anúncio" : "Novo anúncio") + "</h1>" + situ + '</div><p class="muted">O que ficar vazio não aparece. Você pode editar quando quiser.</p>' +
+      '<header class="ae-hd"><a class="more" href="#anunciante">← Meu negócio</a><div class="ae-ti"><h1 class="page-h">' + (existente ? "Editar anúncio" : dupInfo ? "Duplicar anúncio" : "Novo anúncio") + "</h1>" + situ + '</div>' + (dupInfo ? '<div class="ae-dup">' + Dash.ic("plus") + '<span><b>Cópia de “' + esc(dupInfo.nome) + '”.</b> Já vem com fotos, contatos, redes, horário, cardápio e cupom. Altere só o que for diferente (nome, endereço, CEP, horário…) e salve: o anúncio original continua igual.' + (dupInfo.semBanner ? " O banner não foi copiado porque seu plano não tem outra vaga de banner." : "") + "</span></div>" : "") + '<p class="muted">O que ficar vazio não aparece. Você pode editar quando quiser.</p>' +
       '<nav class="ae-nav" aria-label="Seções do anúncio">' + nav.map(function (s, i) { return '<a href="#ae-' + s + '" data-ae-ir="' + s + '"><b>' + (i + 1) + "</b>" + nomes[i] + "</a>"; }).join("") + "</nav></header>" +
       '<div class="ae-grid"><div class="ae-main">' + corpo + '</div><aside class="ae-side"><div class="ae-prev" id="ae-prev"></div><div class="ae-info">' +
       '<p><b>' + meusLugares().length + (existente ? "" : " + 1") + " de " + maximo() + "</b> anúncios da conta" + (vagas() ? " · " + vagas() + " liberados pelo plano" : " · em prévia até o pagamento") + '</p><a class="more" href="#pagar">Contratar mais anúncios</a></div></aside></div>' +
@@ -155,6 +171,7 @@
       e.target.value = "";
     });
     $("#n-ban").addEventListener("click", function (e) { if (e.target.closest("#n-btira")) { if (D.banner && D.banner.src) removidas.push(D.banner.src); D.banner = null; $("#n-ban").innerHTML = bannerHtml(); } });
+    if (dupInfo) dupInfo.regSel = v("n-reg");
     /* CEP/ZIP: preenche o endereço e escolhe a cidade na lista */
     var nc = $("#n-cep"); if (nc) nc.addEventListener("cep", function (e) {
       var o = e.detail, end = $("#n-end"), sel = $("#n-reg"), nn = G.norm || function (s) { return String(s || "").toLowerCase(); };
@@ -176,10 +193,11 @@
       D.whatsapp = v("n-wa"); D.telefone = v("n-tel"); D.instagram = v("n-ig"); D.facebook = v("n-fb"); D.telegram = v("n-tg"); D.x = v("n-x"); D.linkedin = v("n-li"); D.site = v("n-site");
       var cl = v("n-cat-link"); D.catalogo = /^https?:\/\//i.test(cl) ? cl.slice(0, 400) : ""; D.catalogoNome = v("n-cat-nome").slice(0, 24);
       D.endereco = v("n-end"); D.regiaoGuia = reg[3] || "dfw"; if (reg[4]) { D.cidade = reg[4]; D.bairro = reg[0]; D.pais = "Brasil"; D.estado = "SP"; } else D.cidade = reg[0];
-      var sem = Horario.lerEditor($("#f-an .hed")); if (sem) sem = sem.map(function (x) { return x || []; }); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; D.horario = sem ? Horario.texto(sem) : (existente ? D.horario : "");
+      var sem = Horario.lerEditor($("#f-an .hed")); if (sem) sem = sem.map(function (x) { return x || []; }); delete D.semana; D.horas = sem ? Horario.paraObj(sem) : null; D.horario = sem ? Horario.texto(sem) : (existente || dupInfo ? D.horario : "");
       D.cep = window.Cep ? Cep.normal(v("n-cep")) : v("n-cep");
       var ach = ($("#n-cep") || {})._cep;
-      if (ach && ach.lat != null && D.cep === ach.cep) { D.lat = ach.lat; D.lng = ach.lng; D.coordsAprox = !ach.rua; if (ach.pais === "BR" && ach.bairro && !D.bairro) D.bairro = ach.bairro; }
+      if (!existente && dupInfo && dupInfo.lat != null && (D.cep || "") === (dupInfo.cep || "") && v("n-reg") === (dupInfo.regSel || v("n-reg"))) { D.lat = dupInfo.lat; D.lng = dupInfo.lng; D.coordsAprox = dupInfo.aprox; }   /* cópia no mesmo endereço: localização exata do original */
+      else if (ach && ach.lat != null && D.cep === ach.cep) { D.lat = ach.lat; D.lng = ach.lng; D.coordsAprox = !ach.rua; if (ach.pais === "BR" && ach.bairro && !D.bairro) D.bairro = ach.bairro; }
       else if (!existente || !D.lat || D.coordsAprox) { D.lat = reg[1]; D.lng = reg[2]; D.coordsAprox = true; }
       if (document.querySelector("[data-an-etq]")) D.etiquetas = Array.from(document.querySelectorAll("[data-an-etq]")).filter(function (x) { return x.checked; }).map(function (x) { return x.dataset.anEtq; });
       if (D.banner && D.banner.src) D.banner.texto = v("n-btxt");
@@ -189,7 +207,7 @@
       if (novo) { nid = Store.idProprio((D.nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 44) || "empresa") + "-" + Date.now().toString(36).slice(-4)); D.donoUid = Store.uid() || ""; D.criadoEm = new Date().toISOString(); }
       ocupado = true; $("#ae-st").textContent = "Salvando…";
       Store.gravar("lugares", nid, D).then(function () {
-        ocupado = false; removidas.forEach(Store.apagarFoto); D.id = nid; perfil = nid;
+        ocupado = false; removidas.filter(function (src) { return !fotoEmUso(src, nid); }).forEach(Store.apagarFoto); D.id = nid; perfil = nid;
         if (novo) { guardaMeu(nid); aviso("novo-anuncio", D, 0); }
         var liberado = window.Pag ? Pag.vagas(Store.uid()) > meusLugares().length - 1 : true;
         G.toast(novo ? (liberado && vagas() ? "Anúncio publicado." : "Anúncio salvo em prévia. Ele entra no ar quando o pacote for confirmado.") : "Anúncio atualizado.");
@@ -246,7 +264,8 @@
       return '<div class="ad-an' + (x.id === perfil ? " on" : "") + (on ? "" : " off") + '"><span class="ad-anf">' + (fx ? '<img src="' + esc(Store.urlFoto(fx.src)) + '" alt="">' : "<b>Sem foto</b>") + '<span class="pill ' + s.c + '">' + esc(s.t) + "</span></span>" +
         '<div class="ad-ant"><b>' + esc(x.nome) + "</b><small>" + esc(G.CATS[x.categoria] || "Sem categoria") + " · " + (x.fotos || []).length + " fotos" + (x.banner && x.banner.src ? " · banner" : "") + (lib ? " · " + soma(x.id, 30).v + " visualizações" : "") + "</small>" + (s.why ? '<small class="ad-why">' + esc(s.why) + "</small>" : "") + "</div>" +
         '<div class="ad-ana">' + (s.pagar && !mst ? '<a class="btn sm" href="#pagar">' + s.pagar + "</a>" : "") + '<button type="button" class="btn ' + (s.pagar && !mst ? "ghost " : "") + 'sm" data-editar-id="' + esc(x.id) + '">Editar</button><a class="btn ghost sm" href="#lugar-' + esc(x.id) + '">' + (on ? "Ver" : "Prévia") + "</a>" +
-        (on || pausado ? '<button type="button" class="btn ghost sm" data-pausa-an="' + esc(x.id) + '">' + (pausado ? "Retomar" : "Pausar") + "</button>" : "") + "</div></div>";
+        (on || pausado ? '<button type="button" class="btn ghost sm" data-pausa-an="' + esc(x.id) + '">' + (pausado ? "Retomar" : "Pausar") + "</button>" : "") +
+        (mst ? "" : '<button type="button" class="btn ghost sm" data-duplica-an="' + esc(x.id) + '" title="Cria um anúncio novo com os mesmos dados, fotos, contatos e horário">' + Dash.ic("plus") + " Duplicar</button>") + "</div></div>";
     };
     var novoCard = mst ? "" : usados < lim ? '<a class="ad-novo" href="#anunciar" data-novo-anuncio>' + Dash.ic("plus") + "<b>Criar anúncio</b><small>" + (lib ? (lim - usados) + (lim - usados === 1 ? " vaga disponível" : " vagas disponíveis") : "fica guardado até o pagamento") + "</small></a>"
       : '<a class="ad-novo ad-mais" href="#pagar">' + Dash.ic("plus") + "<b>Mais " + npk + " anúncios</b><small>por " + preco + " · contratar pacote</small></a>";
@@ -314,6 +333,12 @@
     var cp = ev.target.closest("[data-copia]");
     if (cp) { var tx = document.getElementById("dv-texto"); if (!tx) return; (navigator.clipboard ? navigator.clipboard.writeText(tx.value) : Promise.reject()).then(function () { G.toast("Texto copiado. Cole no Facebook ou no grupo."); }).catch(function () { tx.select(); G.toast("Selecione e copie o texto."); }); return; }
     var ed = ev.target.closest("[data-editar-id]"); if (ed) { editar = ed.dataset.editarId; location.hash = "anunciar"; return; }
+    var dp = ev.target.closest("[data-duplica-an]");
+    if (dp) {
+      var o = Store.obter("lugares", dp.dataset.duplicaAn); if (!o || !ehMeu(o)) { G.toast("Esse anúncio não é da sua conta."); return; }
+      if (meusLugares().length >= maximo()) { G.toast("Seu plano libera " + maximo() + " anúncios. Contrate mais um pacote para duplicar."); location.hash = "pagar"; return; }
+      editar = null; duplicar = o.id; location.hash = "anunciar"; return;
+    }
     var tg = ev.target.closest("[data-pausa-an]");
     if (tg) { var x = Store.obter("lugares", tg.dataset.pausaAn); if (!x) return; if (!ehMeu(x)) { G.toast("Esse anúncio não é da sua conta."); return; } x.publicado = x.publicado === false; Store.gravar("lugares", x.id, x).then(function () { G.toast(x.publicado ? "Anúncio retomado." : "Anúncio pausado."); rerender(); }).catch(falha); }
   });
@@ -361,9 +386,9 @@
   }
   G.views.anunciante = viewAnunciante;
 
-  var editar = null;
-  document.addEventListener("click", function (e) { if (e.target.closest("[data-novo-anuncio]")) editar = null; });
-  G.views.anunciar = function () { var id = editar; editar = null; viewAnunciar(id); };
+  var editar = null, duplicar = null;
+  document.addEventListener("click", function (e) { if (e.target.closest("[data-novo-anuncio]")) { editar = null; duplicar = null; } });
+  G.views.anunciar = function () { var id = editar, dp = duplicar; editar = null; duplicar = null; viewAnunciar(id, dp); };
   function temPlano() { return temPlanoDe(Store.uid()); }
   window.Anunciante = { temPlano: temPlano, temPlanoDe: temPlanoDe, negocio: negocio, lugaresDe: lugaresDe, ehMeu: ehMeu, LIMITE: LIMITE, soma: soma, carrega: carrega,
     abrirPerfil: function (id) { var l = Store.obter("lugares", id); perfil = id; master = true; uidVisto = (l && (l._dono || l.donoUid)) || "~" + id; contaVista = null; viewAnunciante.buscou = false; location.hash = "anunciante"; },

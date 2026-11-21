@@ -154,7 +154,25 @@
     var sub = await reg.pushManager.getSubscription(); if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uBytes(k.chave) });
     var temas = []; try { temas = JSON.parse(localStorage.getItem("temas") || "[]"); } catch (e) { /* ok */ }
     await Store.api("push_inscrever", { endpoint: sub.endpoint, temas: ["eventos"].concat(temas) });
-    try { localStorage.setItem("push-ok", "1"); } catch (e) { /* ok */ }
+    try { localStorage.setItem("push-ok", "1"); localStorage.setItem("push-uid", Store.uid() || ""); } catch (e) { /* ok */ }
+    return sub;
+  }
+  /* O aparelho fica ligado à conta que está logada (para o aviso pelo CEP): se a pessoa ativou antes de entrar ou trocou de conta, reinscreve sozinho. */
+  async function pushSincroniza() {
+    if (!pushSuportado() || Notification.permission !== "granted" || !Store.uid()) return;
+    var ult = ""; try { ult = localStorage.getItem("push-uid") || ""; } catch (e) { /* ok */ }
+    if (ult === Store.uid()) return;
+    var reg = await navigator.serviceWorker.getRegistration(); var sub = reg && await reg.pushManager.getSubscription(); if (!sub) return;
+    var temas = []; try { temas = JSON.parse(localStorage.getItem("temas") || "[]"); } catch (e) { /* ok */ }
+    await Store.api("push_inscrever", { endpoint: sub.endpoint, temas: ["eventos"].concat(temas) });
+    try { localStorage.setItem("push-ok", "1"); localStorage.setItem("push-uid", Store.uid()); } catch (e) { /* ok */ }
+  }
+  (function espera(n) { if (window.Store && Store.estado && Store.estado.pronto) { pushSincroniza().catch(function () { /* tenta na próxima visita */ }); return; } if (n < 40) setTimeout(function () { espera(n + 1); }, 500); })(0);
+  /* Teste do aviso "perto de você" neste celular (qualquer conta) */
+  async function pushTestePerto() {
+    var sub = null; try { var reg = await navigator.serviceWorker.getRegistration(); sub = reg && await reg.pushManager.getSubscription(); } catch (e) { sub = null; }
+    if (!sub || Notification.permission !== "granted") sub = await pushLigar();
+    return Store.api("push_perto_teste", { endpoint: sub.endpoint });
   }
   async function pushDesligar() {
     try { var reg = await navigator.serviceWorker.getRegistration(); var sub = reg && await reg.pushManager.getSubscription(); if (sub) { await Store.api("push_sair", { endpoint: sub.endpoint }); await sub.unsubscribe(); } } catch (e) { /* ok */ }
@@ -505,5 +523,5 @@
     if (temas && !temas._push) { G.views.temas = function (r) { temas(r); var w = G.app.querySelector(".wrap"); if (w && !w.querySelector(".push-box")) { var bx = blocoPush(); if (bx) w.children[0].insertAdjacentHTML("afterend", bx); } }; G.views.temas._push = true; }
   }, 0);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", botaoCidade); else botaoCidade();
-  window.Novidades = { pushLigar: pushLigar, pushSuportado: pushSuportado, pushLigado: pushLigado, patrocinio: patrocinio, muralDestaque: muralDestaque, membro: membro, arte: arte, botaoArte: botaoArte, blocoPush: blocoPush, abaReceita: abaReceita, abaNovidades: abaNovidades, seletorCidade: seletorCidade, CIDADES: CIDADES };
+  window.Novidades = { pushLigar: pushLigar, pushSuportado: pushSuportado, pushLigado: pushLigado, pushTestePerto: pushTestePerto, pushSincroniza: pushSincroniza, patrocinio: patrocinio, muralDestaque: muralDestaque, membro: membro, arte: arte, botaoArte: botaoArte, blocoPush: blocoPush, abaReceita: abaReceita, abaNovidades: abaNovidades, seletorCidade: seletorCidade, CIDADES: CIDADES };
 })();

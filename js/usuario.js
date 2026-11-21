@@ -64,7 +64,19 @@
       if (on && "Notification" in window && Notification.permission === "default") { try { Notification.requestPermission(); } catch (er) { /* ok */ } }
     }
     if (c) { var l = Store.obter("lugares", c.dataset.ics); if (l) baixaIcs(l); }
-    if (n) { try { Notification.requestPermission().then(function (p) { G.toast(p === "granted" ? "Notificações ativadas." : "O navegador não liberou as notificações; os avisos aparecem dentro do site."); }); } catch (er) { G.toast("Este navegador não permite notificações aqui."); } }
+    if (n) {
+      /* liga de verdade: permissão + inscrição no servidor ligada a esta conta (antes só pedia a permissão e o servidor não tinha como avisar) */
+      if (!(window.Novidades && Novidades.pushSuportado && Novidades.pushSuportado())) { G.toast(/iPhone|iPad/.test(navigator.userAgent) ? "No iPhone, instale o app na tela inicial (Compartilhar → Adicionar à Tela de Início) e ative por lá." : "Este navegador não recebe notificações. Use o Chrome ou instale o app."); return; }
+      n.disabled = true;
+      Novidades.pushLigar().then(function () { G.toast("Notificações ligadas neste celular. Toque em Testar para conferir."); viewConta(); }).catch(function (er) { n.disabled = false; G.toast(er.message || "Não foi possível ligar agora."); });
+    }
+    var pt = e.target.closest("[data-perto-teste]");
+    if (pt) {
+      var res = document.querySelector("[data-perto-res]"); pt.disabled = true; if (res) res.textContent = "Enviando um teste para este celular…";
+      Novidades.pushTestePerto().then(function (j) {
+        if (res) res.innerHTML = "✓ Enviado. Deve chegar em segundos: <b>" + esc(j.titulo) + "</b> — " + esc(j.texto) + (j.aparelhos > 1 ? " (" + j.aparelhos + " aparelhos ligados à sua conta)" : "");
+      }).catch(function (er) { if (res) res.textContent = er.message || "Não foi possível testar agora."; }).then(function () { pt.disabled = false; });
+    }
   });
 
   /* ---------- minhas avaliações ---------- */
@@ -90,7 +102,7 @@
     if (neg && neg.liberado) cartaoNeg = '<button type="button" class="dk-card dk-neg ok" data-dk-ir="negocio"><span class="dk-neg-i">' + Dash.ic("store") + '</span><span class="dk-neg-t"><small>Meu negócio</small><b>' + (ehMaster && !neg.estado.vagas ? "Ferramentas liberadas (master)" : "Anunciante ativo") + "</b><span>" + neg.ls.filter(function (l) { return l.publicado !== false && (!window.Pag || Pag.visivel(l)); }).length + " no ar · " + esc(neg.estado.txt || "") + '</span></span><span class="dk-cta">Abrir painel ' + Dash.ic("arrow") + "</span></button>";
     else if (neg) cartaoNeg = '<button type="button" class="dk-card dk-neg" data-dk-ir="negocio"><span class="dk-neg-i">' + Dash.ic("lock") + '</span><span class="dk-neg-t"><small>Meu negócio</small><b>' + (neg.estado.fase === "vencido" ? "Plano vencido · anúncios ocultos" : neg.ls.length ? "Anúncio pronto · falta o pagamento" : "Tem um negócio? Anuncie aqui") + "</b><span>" + (neg.estado.fase === "vencido" ? "Pague um pacote e tudo volta ao ar como estava." : "As ferramentas de anúncio liberam com o pagamento por Pix.") + '</span></span><span class="dk-cta">' + (neg.estado.fase === "vencido" ? "Reativar" : "Começar") + " " + Dash.ic("arrow") + "</span></button>";
     else cartaoNeg = '<a class="dk-card dk-neg" href="#entrar"><span class="dk-neg-i">' + Dash.ic("user") + '</span><span class="dk-neg-t"><small>Sua conta CoraçãoBR</small><b>Entre ou crie sua conta grátis</b><span>Salvos em qualquer aparelho, avisos perto de você e, se tiver um negócio, anúncios.</span></span><span class="dk-cta">Entrar ' + Dash.ic("arrow") + "</span></a>";
-    var cartaoPerto = logado && cta.zip ? '<div class="dk-card dk-flat dk-perto"><div class="dk-ch"><h3>Perto de você</h3><span class="pill ok">' + Dash.ic("pin") + esc(cta.zipCidade || cta.zip) + '</span></div><p class="small muted">Avisamos quando surgem eventos e lugares novos na sua região (' + (/-/.test(cta.zip || "") ? "CEP " : "ZIP ") + esc(cta.zip) + ').</p><div class="row" style="gap:8px"><button type="button" class="btn sm" data-notif>' + Dash.ic("bell") + 'Ativar notificações</button><button type="button" class="btn ghost sm" data-dk-ir="perfil">Trocar CEP</button></div></div>' : "";
+    var cartaoPerto = logado && cta.zip ? '<div class="dk-card dk-flat dk-perto"><div class="dk-ch"><h3>Perto de você</h3><span class="pill ok">' + Dash.ic("pin") + esc(cta.zipCidade || cta.zip) + '</span></div><p class="small muted">Avisamos quando surgem eventos e lugares novos na sua região (' + (/-/.test(cta.zip || "") ? "CEP " : "ZIP ") + esc(cta.zip) + ').</p><div class="row" style="gap:8px">' + (window.Novidades && Novidades.pushLigado && Novidades.pushLigado() ? '<span class="pill ok">' + Dash.ic("bell") + ' Ligadas neste celular</span>' : '<button type="button" class="btn sm" data-notif>' + Dash.ic("bell") + "Ativar notificações</button>") + '<button type="button" class="btn ghost sm" data-perto-teste>Testar neste celular</button><button type="button" class="btn ghost sm" data-dk-ir="perfil">Trocar CEP</button></div><p class="small muted" data-perto-res role="status"></p></div>' : "";
     var geral = cartaoZip + cartaoNeg + '<div class="dk-grid">' +
       '<a class="dk-card dk-dark dk-span2" href="#lista"><small>Seu roteiro</small><b class="dk-big">' + salvos.length + '</b><span>' + (salvos.length === 1 ? "lugar salvo" : "lugares salvos") + '</span><span class="dk-cta">Abrir roteiro ' + Dash.ic("route") + "</span></a>" +
       '<button type="button" class="dk-card" data-dk-ir="eventos"><small>Eventos</small><b class="dk-big">' + lem.length + '</b><span>com lembrete</span>' + Dash.ic("cal") + '</button>' +
