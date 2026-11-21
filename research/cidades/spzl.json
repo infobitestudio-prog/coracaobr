@@ -201,18 +201,35 @@
   "pais": "Brasil",
   "estado": "SP",
   "cidade": "São Paulo",
-  "bairro": "Itaquera",
-  "endereco": "Rua Murmúrios da Tarde 211, José Bonifácio, São Paulo - SP, 08250-610",
-  "lat": -23.5527,
-  "lng": -46.4436,
-  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "bairro": "COHAB José Bonifácio",
+  "endereco": "Rua Murmúrios da Tarde, 211 – COHAB 2, Itaquera, São Paulo – SP, 08253-580",
+  "lat": -23.55278,
+  "lng": -46.44354,
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/47006",
   "historia": "Parque de bairro em Itaquera com área verde, playground, quadras e espaço para caminhada, muito usado pelas famílias da região.",
   "dica": "Programa leve para uma manhã com as crianças. Fica perto do Shopping Metrô Itaquera.",
-  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "horario": "Todos os dias, das 6h às 18h",
   "gratuito": true,
   "preco": "Entrada gratuita",
   "fotos": [],
-  "atualizadoEm": "2026-11"
+  "atualizadoEm": "2026-11",
+  "subprefeitura": "Itaquera",
+  "estrutura": [
+   "playground",
+   "lago",
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "churrasqueiras",
+   "quiosques",
+   "bicicletário",
+   "acessibilidade"
+  ],
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/47006",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a"
  },
  {
   "id": "spzl-parque-chico-mendes",
@@ -223,18 +240,35 @@
   "pais": "Brasil",
   "estado": "SP",
   "cidade": "São Paulo",
-  "bairro": "São Miguel Paulista",
-  "endereco": "Rua Cembira 1201, Vila Curuçá, São Paulo - SP, 08030-000",
-  "lat": -23.5073,
-  "lng": -46.4274,
-  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "bairro": "Vila Curuçá",
+  "endereco": "Rua Cembira, 1201 – Vila Curuçá Velha, São Paulo – SP, 08032-010",
+  "lat": -23.50724,
+  "lng": -46.42726,
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5739",
   "historia": "Parque arborizado no extremo leste, com lago, trilhas, viveiro e muitas espécies de árvores. Um respiro verde para quem mora na região de São Miguel Paulista e Vila Curuçá.",
   "dica": "Ótimo para observar aves logo cedo. Leve repelente perto do lago.",
-  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "horario": "Todos os dias, das 7h às 18h",
   "gratuito": true,
   "preco": "Entrada gratuita",
   "fotos": [],
-  "atualizadoEm": "2026-11"
+  "atualizadoEm": "2026-11",
+  "subprefeitura": "Itaim Paulista",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "lago",
+   "quadras",
+   "banheiros",
+   "churrasqueiras",
+   "quiosques",
+   "trilhas",
+   "acessibilidade"
+  ],
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5739",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a"
  },
  {
   "id": "spzl-parque-belem",
@@ -3366,6 +3400,1992 @@
     "credito": "Divulgação Novedad Tatuapé by Meliá",
     "licenca": "",
     "pagina": "https://www.sympla.com.br/evento/natal-2026-alegria-de-estar-juntos/3587925"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-das-aguas",
+  "regiaoGuia": "spzl",
+  "nome": "Parque das Águas",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cidade Kemel",
+  "endereco": "Rua Desembargador Mário Guimarães, s/n – Cidade Kemel, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/47005",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.50947,
+  "lng": -46.37223,
+  "historia": "Parque de 70 mil m² no extremo leste, com bosques, brejo e remanescentes de Mata Atlântica em regeneração. Tem pistas de caminhada, trilhas com pontes de madeira, deck de contemplação, campo de futebol e playground.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "trilhas",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, banheiros, trilhas, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/47005",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-aricanduva",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Aricanduva",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Aricanduva",
+  "endereco": "Rua Dr. Alarico Silveira, 586 – Jardim Aricanduva, São Paulo – SP, 03502-040",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23074",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Aricanduva/Formosa/Carrão",
+  "lat": -23.53602,
+  "lng": -46.54906,
+  "historia": "Parque linear às margens do Rio Aricanduva, aberto 24 horas, implantado com contenção das margens e plantio de espécies nativas. Oferece quadras poliesportivas, playgrounds, pista de skate e estacionamento gratuito.",
+  "estrutura": [
+   "playground",
+   "quadras",
+   "pista de skate",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, quadras, pista de skate, estacionamento, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23074",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-benemerito-jose-bras",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Benemérito José Brás",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Brás",
+  "endereco": "Rua Piratininga, 365 – Brás, São Paulo – SP, 03042-001",
+  "site": "https://capital.sp.gov.br/web/meio_ambiente/w/parques/regiao_centrooeste/24493",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Mooca",
+  "lat": -23.5477,
+  "lng": -46.617,
+  "historia": "Parque de cerca de 20 mil m² junto à saída da estação Brás do Metrô, criado a pedido da comunidade onde antes havia uma praça. Tem quadras, cachorródromo, pista de caminhada, playground, mesas de xadrez e minibiblioteca.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "bicicletário",
+   "cachorródromo",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, aparelhos de ginástica, banheiros, bicicletário, cachorródromo, acessibilidade.",
+  "fontes": [
+   "https://capital.sp.gov.br/web/meio_ambiente/w/parques/regiao_centrooeste/24493",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-benemerito-jose-bras/spzl-parque-benemerito-jose-bras-1.jpg",
+    "credito": "Dornicke / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Benem%C3%A9rito_Jos%C3%A9_Br%C3%A1s_01.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-benemerito-jose-bras/spzl-parque-benemerito-jose-bras-2.jpg",
+    "credito": "Dornicke / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Benem%C3%A9rito_Jos%C3%A9_Br%C3%A1s_02.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-benemerito-jose-bras/spzl-parque-benemerito-jose-bras-3.jpg",
+    "credito": "Divulgação Prefeitura de São Paulo / SVMA",
+    "licenca": "Imagem de divulgação oficial (sem licenç",
+    "pagina": "https://capital.sp.gov.br/web/meio_ambiente/w/parques/regiao_centrooeste/24493"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-do-carmo-olavo-egydio-setubal",
+  "regiaoGuia": "spzl",
+  "nome": "Parque do Carmo – Olavo Egydio Setúbal",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Parque do Carmo / Itaquera",
+  "endereco": "Av. Afonso de Sampaio e Sousa, 951 – Itaquera, São Paulo – SP, 08275-025",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5734",
+  "horario": "Todos os dias, das 5h30 às 20h",
+  "subprefeitura": "Itaquera",
+  "lat": -23.57495,
+  "lng": -46.46537,
+  "historia": "Um dos maiores parques da cidade, com quase 1,5 milhão de m² na antiga fazenda de Oscar Americano. Famoso pelo Bosque das Cerejeiras e pela Festa das Cerejeiras, reúne lagos, ciclovia, Planetário, Viveiro Arthur Etzel, Museu do Meio Ambiente e núcleo esportivo.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "ciclovia",
+   "lago",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "churrasqueiras",
+   "quiosques",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, ciclovia, lago, quadras, campo de futebol, aparelhos de ginástica, banheiros.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5734",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo-olavo-egydio-setubal/spzl-parque-do-carmo-olavo-egydio-setubal-1.jpg",
+    "credito": "Adriano Makoto Suzuki / Wikimedia Commons",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Bosque_das_Cerejeiras,_Parque_do_Carmo,_S%C3%A3o_Paulo_-_SP.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo-olavo-egydio-setubal/spzl-parque-do-carmo-olavo-egydio-setubal-2.jpg",
+    "credito": "rodrigodemarque / Wikimedia Commons",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lago_no_Parque_do_Carmo_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo-olavo-egydio-setubal/spzl-parque-do-carmo-olavo-egydio-setubal-3.jpg",
+    "credito": "Adriano Makoto Suzuki / Wikimedia Commons",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Festa_das_Cerejeiras_2014_do_Parque_do_Carmo.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo-olavo-egydio-setubal/spzl-parque-do-carmo-olavo-egydio-setubal-4.jpg",
+    "credito": "Icleao / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_do_Carmo_Sao_Paulo.JPG"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo-olavo-egydio-setubal/spzl-parque-do-carmo-olavo-egydio-setubal-5.jpg",
+    "credito": "Lucas Molina / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Trilhas_do_Parque_do_Carmo.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-ecologico-central-do-itaim-paulista",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Ecológico Central do Itaim Paulista",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Itaim Paulista",
+  "endereco": "Rua Antônio João de Medeiros, 226 – Itaim Paulista, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/224474",
+  "horario": "Todos os dias, das 7h às 17h",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.50443,
+  "lng": -46.39915,
+  "historia": "Instalado na antiga \"Chácara do Seu Antonio\", uma das últimas chácaras do Itaim Paulista, o parque preserva vegetação de Mata Atlântica reivindicada pela comunidade. Tem trilhas, playground, Biblioteca do Verde e um casarão antigo que abriga a administração.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "aparelhos de ginástica",
+   "banheiros",
+   "trilhas",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, aparelhos de ginástica, banheiros, trilhas, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/224474",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-chacara-das-flores",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Chácara das Flores",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Nazaré",
+  "endereco": "Estrada Dom João Nery, 3551 – Jardim Nazaré, São Paulo – SP, 08151-000",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5737",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.52306,
+  "lng": -46.39869,
+  "historia": "Criado para preservar mata nativa em regeneração, lagos e nascentes em uma antiga fazenda, cujas edificações e a velha olaria foram restauradas. Tem trilhas, mirante, deck, pista de caminhada, quadra e uma unidade da EMIA.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "trilhas",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, aparelhos de ginástica, banheiros, trilhas, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5737",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-chacara-das-flores/spzl-parque-chacara-das-flores-1.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Olaria_no_parque_ch%C3%A1cara_das_flores.JPG"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-da-ciencia",
+  "regiaoGuia": "spzl",
+  "nome": "Parque da Ciência",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cidade Tiradentes",
+  "endereco": "Rua dos Têxteis, 1352 – Cidade Tiradentes, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/26018",
+  "horario": "Segunda a quinta, das 6h às 18h; sextas-feiras, das 6h às 22h (conforme página oficial)",
+  "subprefeitura": "Cidade Tiradentes",
+  "lat": -23.5942,
+  "lng": -46.40368,
+  "historia": "Parque de 180 mil m² conquistado por associações e escolas da região, voltado ao lazer e à educação ambiental, com remanescentes de Mata Atlântica. Oferece campo de futebol, quadras, pista de caminhada, playground e bicicletário.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "bicicletário",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, banheiros, bicicletário, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/26018",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-da-consciencia-negra",
+  "regiaoGuia": "spzl",
+  "nome": "Parque da Consciência Negra",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cidade Tiradentes",
+  "endereco": "Rua José Francisco Brandão, 330 – Cidade Tiradentes, São Paulo – SP, 08470-790",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/17396",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Cidade Tiradentes",
+  "lat": -23.59542,
+  "lng": -46.39306,
+  "historia": "Criado para proteger as nascentes do Córrego Itaquera, homenageia a população afrodescendente da região e tem espaços dedicados à cultura negra, como um grande terreiro e a Trilha do Baobá. É um dos parques mais biodiversos da Zona Leste.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "aparelhos de ginástica",
+   "banheiros",
+   "quiosques",
+   "trilhas",
+   "estacionamento",
+   "bicicletário",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, aparelhos de ginástica, banheiros, quiosques, trilhas, estacionamento, bicicletário.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/17396",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-corrego-rapadura",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Córrego Rapadura",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Têxtil",
+  "endereco": "Rua do Zodíaco, 368 – Jardim Têxtil, São Paulo – SP, 03413-050",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23084",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Aricanduva/Formosa/Carrão",
+  "lat": -23.5575,
+  "lng": -46.54759,
+  "historia": "Parque linear inaugurado em 2008 ao longo do Córrego Rapadura, afluente do Rio Aricanduva, aberto 24 horas. Tem quadras poliesportivas, pista de skate, áreas de estar, aparelhos de ginástica e estacionamento gratuito.",
+  "estrutura": [
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: quadras, aparelhos de ginástica, banheiros, pista de skate, estacionamento, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23084",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-corrego-agua-vermelha",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Córrego Água Vermelha",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Miragaia",
+  "endereco": "Av. Euclides Fonseca (altura do nº 1200 da Av. Marechal Tito) – Jardim Miragaia, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46666",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.49521,
+  "lng": -46.41781,
+  "historia": "Parque linear de 125 mil m² ao longo do Córrego Água Vermelha, no extremo leste, aberto 24 horas. Tem campo de futebol, miniquadra, pista de caminhada, arena aberta, aparelhos de ginástica e pista de skate.",
+  "estrutura": [
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "pista de skate"
+  ],
+  "dica": "Estrutura: pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, pista de skate.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46666",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-corrego-itaquera",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Córrego Itaquera",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cidade Tiradentes",
+  "endereco": "Rua Milagre dos Peixes, s/n (esquina com a Av. Souza Ramos) – Cidade Tiradentes, São Paulo – SP",
+  "site": "https://capital.sp.gov.br/web/meio_ambiente/w/parque-linear-c%C3%B3rrego-itaquera%C2%A0",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Itaquera",
+  "lat": -23.579,
+  "lng": -46.4006,
+  "historia": "Inaugurado em 2024, o parque linear tem 1,4 km de extensão em área que sofria com alagamentos e recebeu canalização e contenção do córrego. Inclui quadras, campo de futebol, pista de skate, quadra de streetball, ciclovia e área infantil.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "ciclovia",
+   "quadras",
+   "campo de futebol",
+   "banheiros",
+   "pista de skate",
+   "estacionamento"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, ciclovia, quadras, campo de futebol, banheiros, pista de skate, estacionamento.",
+  "fontes": [
+   "https://capital.sp.gov.br/web/meio_ambiente/w/parque-linear-c%C3%B3rrego-itaquera%C2%A0",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-das-nebulosas",
+  "regiaoGuia": "spzl",
+  "nome": "Parque das Nebulosas",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "São Mateus",
+  "endereco": "Rua Libra, 152 – São Mateus, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143111",
+  "horario": "Todos os dias, das 6h às 20h",
+  "subprefeitura": "São Mateus",
+  "lat": -23.61413,
+  "lng": -46.46266,
+  "historia": "Criado em 2011 para preservar as nascentes do Córrego Caguaçu e mata em regeneração, com várzeas de taboas mantidas no projeto. Tem áreas de estar, playground, anfiteatro, campo de futebol e aparelhos de ginástica.",
+  "estrutura": [
+   "playground",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, campo de futebol, aparelhos de ginástica, banheiros, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143111",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-do-corrego-do-rio-verde",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear do Córrego do Rio Verde",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Itaquera",
+  "endereco": "Av. Itaquera, 7691 – Itaquera, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143110",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Itaquera",
+  "lat": -23.54349,
+  "lng": -46.4602,
+  "historia": "Parque linear que recupera a mata ciliar do Córrego do Rio Verde, afluente do Rio Jacu, implantado em etapas. Tem pistas de caminhada, grande marquise para atividades, pista de skate, equipamentos de ginástica e estacionamento gratuito.",
+  "estrutura": [
+   "pista de caminhada",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: pista de caminhada, aparelhos de ginástica, banheiros, pista de skate, estacionamento, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143110",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-ecologico-profa-lydia-natalizio-diogo",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Ecológico Profª Lydia Natalizio Diogo",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Vila Prudente",
+  "endereco": "Rua João Pedro Lecor, s/n – Vila Prudente, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143112",
+  "horario": "Todos os dias, das 6h às 22h",
+  "subprefeitura": "Vila Prudente",
+  "lat": -23.58589,
+  "lng": -46.56629,
+  "historia": "Inaugurado em 1996 como Parque Ecológico de Vila Prudente, em região densa e carente de áreas verdes. Tem jardim japonês com lago, cascata e carpas, pista de Cooper, playground, viveiro e aparelhos de ginástica; abre até as 22h.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "lago",
+   "aparelhos de ginástica",
+   "banheiros",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, lago, aparelhos de ginástica, banheiros, estacionamento, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143112",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-profa-lydia-natalizio-diogo/spzl-parque-ecologico-profa-lydia-natalizio-diogo-1.jpg",
+    "credito": "Fernando Salvio / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Vila_Prudente.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-ermelino-matarazzo-dom-paulo-evaristo-arns",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Ermelino Matarazzo – Dom Paulo Evaristo Arns",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Ermelino Matarazzo",
+  "endereco": "Av. Abel Tavares, 1564 – Ermelino Matarazzo, São Paulo – SP, 03807-240",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46980",
+  "horario": "Todos os dias, das 07h às 19h",
+  "subprefeitura": "Ermelino Matarazzo",
+  "lat": -23.4864,
+  "lng": -46.47092,
+  "historia": "Pequeno parque instalado na chácara remanescente da casa de veraneio da família Matarazzo, hoje sede da administração e de um telecentro. Tem bosque, horta, churrasqueiras e equipamentos de ginástica acessíveis.",
+  "estrutura": [
+   "banheiros",
+   "churrasqueiras",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: banheiros, churrasqueiras, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46980",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-fazenda-da-juta",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Fazenda da Juta",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Sapopemba",
+  "endereco": "Rua André Thevet, 151 – Sapopemba, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/fazenda-da-juta",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Sapopemba",
+  "lat": -23.61448,
+  "lng": -46.48986,
+  "historia": "Parque de 66 mil m² inaugurado em 2026 em Sapopemba, com área de mata que abriga papagaios e periquitos. Conta com parquinhos, passarela, mirantes acessíveis, academia da terceira idade e sanitários.",
+  "estrutura": [
+   "playground",
+   "aparelhos de ginástica",
+   "banheiros",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, aparelhos de ginástica, banheiros, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/fazenda-da-juta",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-guabirobeira-mombaca",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Guabirobeira Mombaça",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "São Mateus",
+  "endereco": "Av. Jacu-Pêssego, s/n – São Mateus, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142904",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "São Mateus",
+  "historia": "Parque de relevo acentuado com nascentes de afluentes do Córrego Mombaça, eucaliptal e remanescentes de Mata Atlântica onde já foram registrados veado-catingueiro e ouriço-cacheiro. Tem playground, quiosques, áreas de estar e aparelhos de ginástica.",
+  "estrutura": [
+   "playground",
+   "aparelhos de ginástica",
+   "banheiros",
+   "quiosques",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, aparelhos de ginástica, banheiros, quiosques, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142904"
+  ],
+  "lat": -23.645642,
+  "lng": -46.524642,
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-guaratiba",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Guaratiba",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Guaianases",
+  "endereco": "Rua Salvador Gianetti, 305 – Guaianases, São Paulo – SP, 08410-000",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/47044",
+  "horario": "Todos os dias, das 6h às 22h",
+  "subprefeitura": "Guaianases",
+  "lat": -23.54138,
+  "lng": -46.42015,
+  "historia": "Parque linear ao longo do Ribeirão Guaratiba, perto da estação Guaianases da CPTM; o nome vem da revoada de guarás. Tem quadras poliesportivas, playgrounds, pista de Cooper, pergolado e quiosque, e abre até as 22h.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "banheiros",
+   "quiosques",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, banheiros, quiosques, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/47044",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-ipiranguinha",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Ipiranguinha",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Cotching",
+  "endereco": "Av. Cipriano Rodrigues / Rua Cantiga do Amor, 02 – Jardim Cotching, São Paulo – SP, 03463-120",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23079",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Aricanduva/Formosa/Carrão",
+  "lat": -23.57464,
+  "lng": -46.53023,
+  "historia": "Parque linear aberto 24 horas que qualifica as margens do Córrego Ipiranguinha, afluente do Rio Aricanduva. Tem playgrounds, caminhos, gramados, áreas de estar e equipamentos de ginástica.",
+  "estrutura": [
+   "playground",
+   "aparelhos de ginástica",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, aparelhos de ginástica, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23079",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-itaim-paulista",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Itaim Paulista",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Itaim Paulista",
+  "endereco": "Rua Marechal Tito / Rua Estevão Ribeiro Garcia / Rua Bento Gil de Oliveira – Itaim Paulista, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23080",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.50275,
+  "lng": -46.3875,
+  "historia": "Com 3,5 km de extensão ao longo do Córrego Itaim, o parque linear protege áreas de preservação permanente e ajuda na drenagem urbana. Tem pista de skate, quadra poliesportiva, playgrounds, caminhos e gramados.",
+  "estrutura": [
+   "playground",
+   "quadras",
+   "pista de skate"
+  ],
+  "dica": "Estrutura: playground, quadras, pista de skate.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23080",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-jardim-da-conquista",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Jardim da Conquista",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim da Conquista",
+  "endereco": "Av. Nova Conquista, 1900 – Jardim da Conquista, São Paulo – SP, 08346-370",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142906",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "São Mateus",
+  "lat": -23.62071,
+  "lng": -46.44637,
+  "historia": "Parque de cerca de 249 mil m² que preserva nascentes do Córrego Caguaçu e remanescentes de mata nativa em meio a área densamente ocupada. Tem miniquadras, campo society, pista poliesportiva, churrasqueiras e áreas de piquenique.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "churrasqueiras",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, banheiros, pista de skate, churrasqueiras.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142906",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-jardim-primavera",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Jardim Primavera",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Vila Jacuí",
+  "endereco": "Rua Perpétua do Campo, 481 x Av. Antônio Louzada Antunes, 671 – São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parque-jardim-primavera",
+  "horario": "Das 6h às 18h",
+  "subprefeitura": "São Miguel",
+  "lat": -23.5026,
+  "lng": -46.45994,
+  "historia": "Implantado sobre o antigo Aterro Sanitário do Jacuí, desativado em 1989, para proteger as margens do Rio Jacu e do Córrego do Limoeiro. A primeira fase tem caminhos, quiosques e sanitários; a segunda está em implantação.",
+  "estrutura": [
+   "banheiros",
+   "quiosques"
+  ],
+  "dica": "Estrutura: banheiros, quiosques.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parque-jardim-primavera",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-jardim-sao-francisco-piratininga",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Jardim São Francisco – Piratininga",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cangaíba",
+  "endereco": "Rua Guirá Acangatara, s/n – Jardim São Francisco/Piratininga, São Paulo – SP, 03718-090",
+  "site": "https://capital.sp.gov.br/web/meio_ambiente/w/parque-linear-jd.-s%C3%A3o-francisco",
+  "horario": "Todos os dias, 24 horas",
+  "subprefeitura": "Penha",
+  "lat": -23.49913,
+  "lng": -46.52757,
+  "historia": "Parque linear de 24 mil m² inaugurado em 2024 no distrito de Cangaíba, aberto 24 horas. Tem complexo com quatro quadras, pista de pump track (BMX), pista de skate street e half, playground lúdico e academia ao ar livre.",
+  "estrutura": [
+   "playground",
+   "quadras",
+   "banheiros",
+   "pista de skate"
+  ],
+  "dica": "Estrutura: playground, quadras, banheiros, pista de skate.",
+  "fontes": [
+   "https://capital.sp.gov.br/web/meio_ambiente/w/parque-linear-jd.-s%C3%A3o-francisco",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-jardim-sao-francisco-piratininga/spzl-parque-linear-jardim-sao-francisco-piratininga-1.jpg",
+    "credito": "Divulgação Prefeitura de São Paulo / SVMA",
+    "licenca": "Imagem de divulgação oficial (sem licenç",
+    "pagina": "https://capital.sp.gov.br/web/meio_ambiente/w/parque-linear-jd.-s%C3%A3o-francisco"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-jardim-sapopemba-maria-de-fatima-diniz-carrera",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Jardim Sapopemba – Maria de Fátima Diniz Carrera",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Sapopemba",
+  "endereco": "Rua Senador Nilo Coelho, 220 – Jardim Sapopemba, São Paulo – SP, 03929-100",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/271136",
+  "horario": "Todos os dias, das 06h às 18h",
+  "subprefeitura": "São Mateus",
+  "lat": -23.60521,
+  "lng": -46.48938,
+  "historia": "Parque implantado na antiga Praça Linear Nilo Coelho, ao longo da faixa da Adutora do Rio Claro. Tem quiosque, playgrounds, pista de caminhada, mesas para jogos, quadra e pista de skate.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "quiosques",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, aparelhos de ginástica, banheiros, pista de skate, quiosques, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/271136",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-lajeado-izaura-pereira-de-souza-franzolin",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Lajeado – Izaura Pereira de Souza Franzolin",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Lajeado",
+  "endereco": "Rua Antônio Thadeo, 712 – Guaianases, São Paulo – SP, 08450-160",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142920",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Guaianases",
+  "lat": -23.53847,
+  "lng": -46.405,
+  "historia": "Instalado na antiga Chácara Santa Rosa, preserva toda a mata nativa da área, que ficou visível à comunidade com a troca do muro por gradil. Tem trilhas, pista de caminhada, playground, espaço de piquenique e Bosque da Leitura; é gerido em concessão pela Urbia.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "aparelhos de ginástica",
+   "banheiros",
+   "trilhas",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, aparelhos de ginástica, banheiros, trilhas, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142920",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)",
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/338174"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-mongagua-francisco-menegolo",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Mongaguá – Francisco Menegolo",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Parque Boturussu",
+  "endereco": "Rua Prof. Antônio de Castro Lopes, 1240 – Parque Boturussu, São Paulo – SP, 03805-080",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46951",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Ermelino Matarazzo",
+  "lat": -23.5003,
+  "lng": -46.47768,
+  "historia": "Parque linear de quase 2 km às margens do Córrego Mongaguá, afluente do Tietê, aberto 24 horas. Tem pista de caminhada, quadra poliesportiva, pista de skate, playground e área para ginástica, dança e ioga.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, aparelhos de ginástica, banheiros, pista de skate, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46951",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-nair-bello",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Nair Bello",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Santa Terezinha",
+  "endereco": "Rua Japaraná, 200 – Itaquera, São Paulo – SP, 03572-310",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/300234",
+  "horario": "Todos os dias, das 06h às 18h",
+  "subprefeitura": "Itaquera",
+  "lat": -23.57358,
+  "lng": -46.4921,
+  "historia": "Parque linear inaugurado em 2020 no Jardim Santa Terezinha, com plantio de mais de mil árvores nativas da Mata Atlântica. Tem passarela elevada, mirantes, playground, aparelhos de ginástica e vestiários; bicicletas e skates não são permitidos.",
+  "estrutura": [
+   "playground",
+   "aparelhos de ginástica",
+   "banheiros",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, aparelhos de ginástica, banheiros, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/300234",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-do-piqueri-vereador-toninho-paiva",
+  "regiaoGuia": "spzl",
+  "nome": "Parque do Piqueri – Vereador Toninho Paiva",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Tuiuti, 515 – Tatuapé, São Paulo – SP, 03081-003",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5761",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Mooca",
+  "lat": -23.52839,
+  "lng": -46.57367,
+  "historia": "Aberto em 1978 na antiga Chácara do Piqueri, o nome lembra a tribo indígena que vivia na confluência do Ribeirão Tatuapé com o Tietê. Tem lago, pista de Cooper, quadras, campo de areia, playgrounds, canchas de bocha e palco para apresentações.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "lago",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "bicicletário"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, lago, quadras, campo de futebol, aparelhos de ginástica, banheiros, bicicletário.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5761",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-piqueri-vereador-toninho-paiva/spzl-parque-do-piqueri-vereador-toninho-paiva-1.jpg",
+    "credito": "Gean Bilch / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque-Piqueri-3.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-piqueri-vereador-toninho-paiva/spzl-parque-do-piqueri-vereador-toninho-paiva-2.jpg",
+    "credito": "Gean Bilch / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque-Piqueri-2.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-piqueri-vereador-toninho-paiva/spzl-parque-do-piqueri-vereador-toninho-paiva-3.jpg",
+    "credito": "Gean Bilch / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque-Piqueri-4.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-piqueri-vereador-toninho-paiva/spzl-parque-do-piqueri-vereador-toninho-paiva-4.jpg",
+    "credito": "Gean Bilch / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Administracao-Parque-Piqueri.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-natural-municipal-cabeceiras-do-aricanduva",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Natural Municipal Cabeceiras do Aricanduva",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cidade Tiradentes / Iguatemi",
+  "endereco": "Rua Conde de Casal Ribeiro, s/n – Cidade Tiradentes, São Paulo – SP, 08471-690",
+  "site": "https://capital.sp.gov.br/web/meio_ambiente/w/pnm-parque-natural-municipal-cabeceiras-do-aricanduva",
+  "horario": "Todos os dias, das 8h às 17h, exceto segundas-feiras (fechado para manutenção)",
+  "subprefeitura": "São Mateus (parte em Cidade Tiradentes)",
+  "lat": -23.61372,
+  "lng": -46.39858,
+  "historia": "Unidade de conservação de mais de 2,2 milhões de m² que protege as nascentes do Rio Aricanduva; cerca de 100 mil m² foram abertos à visitação em 2026. Pode ser fechado temporariamente em caso de clima extremo.",
+  "estrutura": [
+   "trilhas"
+  ],
+  "dica": "Estrutura: trilhas.",
+  "fontes": [
+   "https://capital.sp.gov.br/web/meio_ambiente/w/pnm-parque-natural-municipal-cabeceiras-do-aricanduva",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-cabeceiras-do-aricanduva/spzl-parque-natural-municipal-cabeceiras-do-aricanduva-1.jpg",
+    "credito": "Diego de Oliveira Pires / Acervo DGUC – SVMA, Prefeitura de São Paulo",
+    "licenca": "Imagem de divulgação oficial (sem licenç",
+    "pagina": "https://capital.sp.gov.br/web/meio_ambiente/w/pnm-parque-natural-municipal-cabeceiras-do-aricanduva"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-cabeceiras-do-aricanduva/spzl-parque-natural-municipal-cabeceiras-do-aricanduva-2.jpg",
+    "credito": "Divulgação Prefeitura de São Paulo / SVMA",
+    "licenca": "Imagem de divulgação oficial (sem licenç",
+    "pagina": "https://capital.sp.gov.br/web/meio_ambiente/w/pnm-parque-natural-municipal-cabeceiras-do-aricanduva"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-natural-municipal-fazenda-do-carmo",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Natural Municipal Fazenda do Carmo",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Itaquera",
+  "endereco": "Estrada da Fazenda do Carmo, 350 – Itaquera, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/unid_de_conservacao/parques_naturais/42141",
+  "horario": "Todos os dias, das 8h às 17h, exceto segundas-feiras (fechado para manutenção)",
+  "subprefeitura": "Itaquera",
+  "historia": "Unidade de conservação de cerca de 5,4 milhões de m² vizinha ao Parque do Carmo e ao Sesc Itaquera, criada em 2003. Protege um dos maiores remanescentes de Mata Atlântica da Zona Leste e pode ser fechada em caso de clima extremo.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/unid_de_conservacao/parques_naturais/42141"
+  ],
+  "lat": -23.581535,
+  "lng": -46.472935,
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-fazenda-do-carmo/spzl-parque-natural-municipal-fazenda-do-carmo-1.jpg",
+    "credito": "Lucas.mpo2 / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lago_do_Parque_Natural_Municipal_Fazenda_do_Carmo.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-fazenda-do-carmo/spzl-parque-natural-municipal-fazenda-do-carmo-2.jpg",
+    "credito": "Ryubs / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Natural_Municipal_Fazenda_do_Carmo_-_Robson_Batista_(03).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-fazenda-do-carmo/spzl-parque-natural-municipal-fazenda-do-carmo-3.jpg",
+    "credito": "Ryubs / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Natural_Municipal_Fazenda_do_Carmo_-_Robson_Batista_(01).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-fazenda-do-carmo/spzl-parque-natural-municipal-fazenda-do-carmo-4.jpg",
+    "credito": "Renato Machado de Sobral / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Natural_Municipal_Fazenda_do_Carmo_-_Renato_Machado_de_Sobral_(01).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-natural-municipal-fazenda-do-carmo/spzl-parque-natural-municipal-fazenda-do-carmo-5.jpg",
+    "credito": "Renato Machado de Sobral / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Natural_Municipal_Fazenda_do_Carmo_-_Renato_Machado_de_Sobral_(02).jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-quississana-reserva",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Quississana (Reserva)",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Nazaré / Itaim Paulista",
+  "endereco": "Rua Capitão Enéas dos Santos Pinto – Itaim Paulista, São Paulo – SP, 08151-050",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23088",
+  "horario": "Fechado ao público (apenas visitas científicas agendadas pelo tel. (11) 5187-0255)",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.52381,
+  "lng": -46.40292,
+  "historia": "Reserva criada para preservar um fragmento de Mata Atlântica em regeneração. É fechada ao público e recebe apenas visitas científicas agendadas.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23088",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-ribeirao-oratorio",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Ribeirão Oratório",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim São Roberto",
+  "endereco": "Rua Plínio Dionísio de Freitas, 280 – Jardim São Roberto, São Paulo – SP, 03978-780",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/225130",
+  "horario": "Todos os dias, das 6h às 21h",
+  "subprefeitura": "Sapopemba",
+  "lat": -23.62453,
+  "lng": -46.50218,
+  "historia": "Parque de topografia plana próximo ao Ribeirão do Oratório, afluente do Rio Tamanduateí. Tem quadras, quadra de areia, campo de futebol, playground, pista de caminhada e aparelhos de ginástica, e abre até as 21h.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, banheiros, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/225130",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-santa-amelia",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Santa Amélia",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim das Oliveiras",
+  "endereco": "Rua Timóteo Correa de Góes, 30 – Jardim das Oliveiras, São Paulo – SP, 08122-490",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5768",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Itaim Paulista",
+  "historia": "Antiga praça transformada em parque em 1992 com participação dos moradores, no extremo leste da cidade. Tem pista de Cooper, quadras, minicampo, playground, Bosque da Leitura e um domo geodésico.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, banheiros, estacionamento, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5768"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-sapopemba",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Sapopemba",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Sapopemba / São Rafael",
+  "endereco": "Estrada do Rio Claro – Sapopemba, São Paulo – SP, 08395-320",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142855",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "São Mateus",
+  "lat": -23.62501,
+  "lng": -46.462,
+  "historia": "Parque esportivo de 272 mil m² que substituiu o Aterro Sanitário Sapopemba, desativado em 1986, inaugurado em 2013. Tem dois campos de futebol, quadras, praça central, equipamentos de ginástica e estacionamento gratuito.",
+  "estrutura": [
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "estacionamento",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: quadras, campo de futebol, aparelhos de ginástica, banheiros, estacionamento, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/142855",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-sapopemba/spzl-parque-sapopemba-1.jpg",
+    "credito": "Fernandosalvio / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Aterro_Sapopemba.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-area-de-conservacao-savoy",
+  "regiaoGuia": "spzl",
+  "nome": "Área de Conservação Savoy",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Cidade Líder",
+  "endereco": "Rua Plácido Nunes c/ Rua Vicente José Luchetti – Cidade Líder, São Paulo – SP, 03570-360",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/225857",
+  "horario": "Fechado ao público (apenas visitas científicas agendadas pelo tel. (11) 5187-0255)",
+  "subprefeitura": "Itaquera",
+  "lat": -23.56767,
+  "lng": -46.48806,
+  "historia": "Área de preservação cercada que protege uma nascente formadora do Córrego Mandy, na bacia do Aricanduva. É fechada ao público e recebe apenas visitas científicas agendadas.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/225857",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-do-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "Parque do Tatuapé",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Tatuapé",
+  "endereco": "Rua São Felipe, 730 – Tatuapé, São Paulo – SP, 03085-010",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/270937",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Mooca",
+  "lat": -23.53264,
+  "lng": -46.56923,
+  "historia": "Parque de bairro criado em 2015, com cerca de 14 mil m² abertos ao público entre bosque e jardins. Tem pista de caminhada, playground e equipamentos de ginástica, e permite cães com coleira e guia.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "aparelhos de ginástica",
+   "pet-friendly (cães com guia)"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, aparelhos de ginástica, pet-friendly (cães com guia).",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/270937",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Tiquatira – Eng. Werner Eugênio Zulauf",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Penha / Cangaíba",
+  "endereco": "Av. Governador Carvalho Pinto – Vila São Geraldo, São Paulo – SP, 03732-160",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46995",
+  "horario": "Aberto 24 horas",
+  "subprefeitura": "Penha",
+  "lat": -23.51461,
+  "lng": -46.53381,
+  "historia": "Considerado o primeiro parque linear de São Paulo, acompanha o Córrego Tiquatira por mais de 3 km e fica aberto 24 horas. Tem pista de Cooper, skate e bicicross, quadras, campo de futebol, playground e anfiteatro aberto.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "quiosques",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, banheiros, pista de skate, quiosques.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/46995",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf-1.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf-2.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_4.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf-3.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_12.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf-4.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_3.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf-5.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_2.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf/spzl-parque-linear-tiquatira-eng-werner-eugenio-zulauf-6.jpg",
+    "credito": "Albert Carlos S Domingos / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Linear_Tiquarira.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-verde-da-mooca-vereador-jose-indio",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Verde da Mooca – Vereador José Índio",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Mooca",
+  "endereco": "Rua Dianópolis, 431 – Mooca, São Paulo – SP, 03125-100",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/da-mooca",
+  "horario": "Todos os dias, das 7h às 18h",
+  "subprefeitura": "Mooca",
+  "lat": -23.57983,
+  "lng": -46.59203,
+  "historia": "Inaugurado em 2026 no terreno que abrigou por 57 anos instalações da Esso, reabilitado com a CETESB após mobilização dos moradores. Tem parquinhos inclusivos, cachorródromo, academia ao ar livre, bosques e clareira em forma de anfiteatro.",
+  "estrutura": [
+   "playground",
+   "aparelhos de ginástica",
+   "banheiros",
+   "cachorródromo"
+  ],
+  "dica": "Estrutura: playground, aparelhos de ginástica, banheiros, cachorródromo.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/da-mooca",
+   "OpenStreetMap/Nominatim (coordenadas aproximadas, geocodificadas a partir do endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-vila-do-rodeio",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Vila do Rodeio",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Inácio Monteiro / Cidade Tiradentes",
+  "endereco": "Rua Igarapé da Bela Aurora, 342 – Inácio Monteiro, São Paulo – SP, 08472-200",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5775",
+  "horario": "Todos os dias, das 6h às 20h",
+  "subprefeitura": "Cidade Tiradentes",
+  "lat": -23.57466,
+  "lng": -46.40519,
+  "historia": "Parque de 590 mil m² criado para preservar nascentes do Córrego do Rodeio e mata em regeneração, um dos principais pontos de lazer da Cidade Tiradentes. Tem ciclovia, pista de Cooper, campo sintético, quadras, pista de skate, churrasqueiras e trilha.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "ciclovia",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "churrasqueiras",
+   "quiosques",
+   "trilhas",
+   "bicicletário",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, ciclovia, quadras, campo de futebol, aparelhos de ginástica, banheiros, pista de skate.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/5775",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-vila-do-rodeio/spzl-parque-vila-do-rodeio-1.jpg",
+    "credito": "kaio gracco / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:PARQUE_do_Rodeio_1_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-vila-do-rodeio/spzl-parque-vila-do-rodeio-2.jpg",
+    "credito": "kaio gracco / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_do_Rodeio_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-vila-do-rodeio/spzl-parque-vila-do-rodeio-3.jpg",
+    "credito": "kaio gracco / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_do_Rodeio_2_-_panoramio.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-vila-silvia-izaias-wingter",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Vila Sílvia – Izaias Wingter",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Vila Sílvia",
+  "endereco": "Rua Carlos Barbosa, 365 – Vila Sílvia, São Paulo – SP, 03820-100",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23089",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Penha",
+  "historia": "Parque em área verde de conjunto habitacional, com mirante para a várzea do Rio Tietê. Tem quadra poliesportiva, playground, pista de caminhada e espaço coberto para atividades socioambientais.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "quadras",
+   "aparelhos de ginástica",
+   "banheiros",
+   "bicicletário",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, quadras, aparelhos de ginástica, banheiros, bicicletário, acessibilidade.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/23089"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-linear-zilda-arns-neumann",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Zilda Arns Neumann",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Vila Ema / Sapopemba",
+  "endereco": "Rua Manoel Quirino de Matos, 1895 – Vila Ema, São Paulo – SP, 03969-000",
+  "site": "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143068",
+  "horario": "Aberto 24 horas, todos os dias",
+  "subprefeitura": "Vila Prudente / Sapopemba / São Mateus",
+  "lat": -23.60135,
+  "lng": -46.50457,
+  "historia": "Parque linear aberto e sem grades, com 6,3 km sobre a adutora Rio Claro da Sabesp, cruzando Vila Prudente, Sapopemba e São Mateus. Tem ciclovia, pista para pedestres, quadras, campos de futebol, pista de skate e canchas de bocha.",
+  "estrutura": [
+   "playground",
+   "pista de caminhada",
+   "ciclovia",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "banheiros",
+   "pista de skate",
+   "bicicletário",
+   "acessibilidade"
+  ],
+  "dica": "Estrutura: playground, pista de caminhada, ciclovia, quadras, campo de futebol, aparelhos de ginástica, banheiros, pista de skate.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/meio_ambiente/w/parques/regiao_leste/143068",
+   "OpenStreetMap/Nominatim (coordenadas do objeto do parque no OSM)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-linear-zilda-arns-neumann/spzl-parque-linear-zilda-arns-neumann-1.jpg",
+    "credito": "Henrique Boney / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ciclovia_da_Adutora_Rio_Claro.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-estadual-do-belem-manoel-pitta",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Estadual do Belém – Manoel Pitta",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Belém",
+  "endereco": "Av. Celso Garcia, 2593 – Belém, São Paulo – SP",
+  "site": "https://semil.sp.gov.br/sma/parques-urbanos/",
+  "horario": "Todos os dias, das 6h às 18h",
+  "subprefeitura": "Mooca",
+  "lat": -23.53429,
+  "lng": -46.58832,
+  "historia": "Parque estadual de 210 mil m² inaugurado em 2012 no terreno da antiga FEBEM Tatuapé, originalmente a Chácara Belém. O projeto paisagístico de Raul Pereira preservou mais de 650 árvores existentes no local.",
+  "fontes": [
+   "https://semil.sp.gov.br/sma/parques-urbanos/",
+   "OpenStreetMap (coordenadas do objeto do parque)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Ecológico do Tietê – Núcleo Engenheiro Goulart",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Engenheiro Goulart / Vila Santo Henrique",
+  "endereco": "Rodovia Parque, 8055 – Vila Santo Henrique, São Paulo – SP",
+  "site": "https://semil.sp.gov.br/sma/parques-urbanos/",
+  "horario": "Todos os dias, das 6h às 17h",
+  "subprefeitura": "Penha",
+  "lat": -23.50215,
+  "lng": -46.5363,
+  "historia": "Parque estadual de mais de 3 milhões de m² às margens do Rio Tietê, inaugurado em 1982 com projeto do escritório Ruy Ohtake para proteger as várzeas do rio. Integra a Reserva da Biosfera do Cinturão Verde e abriga espécies ameaçadas; tem lago com pedalinhos, trilhas e o Museu do Tietê.",
+  "estrutura": [
+   "campo de futebol",
+   "churrasqueiras",
+   "lago",
+   "trilhas"
+  ],
+  "dica": "Estrutura: campo de futebol, churrasqueiras, lago, trilhas.",
+  "fontes": [
+   "https://semil.sp.gov.br/sma/parques-urbanos/",
+   "OpenStreetMap (coordenadas do objeto do parque)",
+   "Wikimedia Commons (lago com pedalinhos, trilhas e Museu do Tietê documentados em fotos)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart-1.jpg",
+    "credito": "Renan.R.Mattos / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Lago_do_Parque_Ecol%C3%B3gico_Tiet%C3%AA.JPG"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart-2.jpg",
+    "credito": "rodrigodemarque / Wikimedia Commons",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Pedalinhos_no_Parque_Ecologico_do_Tiete_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart-3.jpg",
+    "credito": "rodrigodemarque / Wikimedia Commons",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Trilha_no_Pq_Ecologico_Tiete_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart-4.jpg",
+    "credito": "rodrigodemarque / Wikimedia Commons",
+    "licenca": "CC BY 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Entrada_principal_do_Pq_Ecologico_do_Tiete_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart-5.jpg",
+    "credito": "Lukaaz / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Museu_do_Tiet%C3%AA_em_S%C3%A3o_Paulo.JPG"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart/spzl-parque-ecologico-do-tiete-nucleo-engenheiro-goulart-6.jpg",
+    "credito": "Lukaaz / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Ecol%C3%B3gico_do_Tiet%C3%AA.JPG"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete",
+  "regiaoGuia": "spzl",
+  "nome": "Núcleo de Lazer Itaim Biacica (Parque Várzeas do Tietê)",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Vila Seabra",
+  "endereco": "Estrada da Biacica, 756 – Vila Seabra, São Paulo – SP",
+  "site": "https://semil.sp.gov.br/sma/parques-urbanos/",
+  "horario": "Todos os dias, das 7h às 18h",
+  "subprefeitura": "Itaim Paulista",
+  "lat": -23.49156,
+  "lng": -46.40656,
+  "historia": "Núcleo do Parque Várzeas do Tietê inaugurado em 2018 às margens do rio. Abriga o casarão da Chácara dos Fontoura, antiga sede da Fazenda Biacica construída a partir de uma capela do século XVII e tombada pelo Conpresp; tem campo society e churrasqueiras.",
+  "estrutura": [
+   "campo de futebol",
+   "churrasqueiras"
+  ],
+  "dica": "Estrutura: campo de futebol, churrasqueiras.",
+  "fontes": [
+   "https://semil.sp.gov.br/sma/parques-urbanos/",
+   "Nominatim (coordenadas aproximadas pelo endereço)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete/spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete-1.jpg",
+    "credito": "ExAstra / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ch%C3%A1cara_dos_Fontoura_(ou_Ch%C3%A1cara_Biacica),_S%C3%A3o_Paulo_-_SP,_Brasil._Casar%C3%A3o,_vista_frontal,_setembro_de_2024.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete/spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete-2.jpg",
+    "credito": "ExAstra / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ch%C3%A1cara_dos_Fontoura_(ou_Ch%C3%A1cara_Biacica),_S%C3%A3o_Paulo_-_SP,_Brasil._Casar%C3%A3o,_vista_obl%C3%ADqua,_setembro_de_2024.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete/spzl-parque-nucleo-de-lazer-itaim-biacica-parque-varzeas-do-tiete-3.jpg",
+    "credito": "ExAstra / Wikimedia Commons",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ch%C3%A1cara_dos_Fontoura_(ou_Ch%C3%A1cara_Biacica),_S%C3%A3o_Paulo_-_SP,_Brasil._Casar%C3%A3o,_varanda_e_azulejaria,_setembro_de_2024.jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-nucleo-de-lazer-jardim-helena-maria-cristina-hellmeister-de-",
+  "regiaoGuia": "spzl",
+  "nome": "Núcleo de Lazer Jardim Helena – Maria Cristina Hellmeister de Abreu",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Helena",
+  "endereco": "Av. Kumaki Aoki, 1389 – Jardim Helena, São Paulo – SP",
+  "site": "https://semil.sp.gov.br/sma/parques-urbanos/",
+  "horario": "Todos os dias, das 7h às 18h",
+  "subprefeitura": "São Miguel",
+  "lat": -23.4793,
+  "lng": -46.41875,
+  "historia": "Núcleo do Parque Várzeas do Tietê inaugurado em 2019 em área que era um lixão, recuperada para o lazer às margens do rio. Tem campos de futebol e churrasqueiras.",
+  "estrutura": [
+   "campo de futebol",
+   "churrasqueiras"
+  ],
+  "dica": "Estrutura: campo de futebol, churrasqueiras.",
+  "fontes": [
+   "https://semil.sp.gov.br/sma/parques-urbanos/",
+   "Nominatim (coordenadas aproximadas pelo endereço)"
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-antonio-arnaldo-queiroz-e-silva-nucleo-de-lazer-vila-jacui",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Antônio Arnaldo Queiroz e Silva – Núcleo de Lazer Vila Jacuí",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Vila Jacuí",
+  "endereco": "Rua Catléias, 911 – São Miguel Paulista, São Paulo – SP",
+  "site": "https://semil.sp.gov.br/sma/parques-urbanos/",
+  "horario": "Todos os dias, das 7h às 18h",
+  "subprefeitura": "São Miguel",
+  "lat": -23.48599,
+  "lng": -46.45485,
+  "historia": "Núcleo do Parque Várzeas do Tietê inaugurado em 2010 como compensação ambiental da obra da Avenida Jacu-Pêssego. Tem campos de futebol com sorteio de uso e churrasqueiras.",
+  "estrutura": [
+   "campo de futebol",
+   "churrasqueiras"
+  ],
+  "dica": "Estrutura: campo de futebol, churrasqueiras.",
+  "fontes": [
+   "https://semil.sp.gov.br/sma/parques-urbanos/",
+   "OpenStreetMap (coordenadas do objeto do parque)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-antonio-arnaldo-queiroz-e-silva-nucleo-de-lazer-vila-jacui/spzl-parque-antonio-arnaldo-queiroz-e-silva-nucleo-de-lazer-vila-jacui-1.jpg",
+    "credito": "CORRETOR-CARVALHO / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Vila_Jacu%C3%AD_Unidade_de_Lazer_Engenheiro_Antonio_Arnaldo_de_Queiroz_e_Silva_-_Rua_Catl%C3%A9ias,_911_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-antonio-arnaldo-queiroz-e-silva-nucleo-de-lazer-vila-jacui/spzl-parque-antonio-arnaldo-queiroz-e-silva-nucleo-de-lazer-vila-jacui-2.jpg",
+    "credito": "CORRETOR-CARVALHO / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Vila_Jacu%C3%AD_Unidade_de_Lazer_Engenheiro_Antonio_Arnaldo_de_Queiroz_e_Silva_-_Rua_Catl%C3%A9ias,_911_-_panoramio_(2).jpg"
+   }
+  ],
+  "revisao": "2026-11-21a",
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador",
+  "regiaoGuia": "spzl",
+  "nome": "CERET – Centro Esportivo, Recreativo e Educativo do Trabalhador",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "oferta": "ingresso",
+  "bairro": "Jardim Anália Franco / Tatuapé",
+  "endereco": "Rua Canuto de Abreu, s/n – Tatuapé, São Paulo – SP",
+  "site": "https://prefeitura.sp.gov.br/web/esportes/w/ceret/8631",
+  "horario": "Segunda a sexta, das 6h às 22h; fins de semana e feriados, das 6h às 20h (piscinas: terça a domingo, 8h–12h e 13h–17h)",
+  "subprefeitura": "Aricanduva/Formosa/Carrão",
+  "lat": -23.55847,
+  "lng": -46.55678,
+  "historia": "Parque e centro esportivo municipal de 286 mil m² entre Tatuapé, Vila Formosa e Anália Franco, gerido pela Secretaria de Esportes desde 2008. Tem a maior piscina pública da América Latina (100 x 50 m), pista de atletismo, campos, quadras, tênis, academias ao ar livre, espaço pet e pipódromo.",
+  "estrutura": [
+   "pista de caminhada",
+   "quadras",
+   "campo de futebol",
+   "aparelhos de ginástica",
+   "playground",
+   "piscinas",
+   "pista de atletismo",
+   "quadras de tênis",
+   "pipódromo",
+   "espaço pet"
+  ],
+  "dica": "Estrutura: pista de caminhada, quadras, campo de futebol, aparelhos de ginástica, playground, piscinas, pista de atletismo, quadras de tênis.",
+  "fontes": [
+   "https://prefeitura.sp.gov.br/web/esportes/w/ceret/8631",
+   "OpenStreetMap (coordenadas do objeto do parque)"
+  ],
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador-1.jpg",
+    "credito": "Roger cassi / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ceret_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador-2.jpg",
+    "credito": "FernandoSantos / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ceret_-_SP_-_panoramio_(1).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador-3.jpg",
+    "credito": "FernandoSantos / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ceret_-_SP_-_panoramio_(3).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador-4.jpg",
+    "credito": "FernandoSantos / Wikimedia Commons",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ceret_-_SP_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador-5.jpg",
+    "credito": "mauroguanandi / Wikimedia Commons",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ceiba_speciosa_in_Ceret_Park_S%C3%A3o_Paulo_005.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador/spzl-parque-ceret-centro-esportivo-recreativo-e-educativo-do-trabalhador-6.jpg",
+    "credito": "mauroguanandi / Wikimedia Commons",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tibouchina_granulosa_in_Park_Ceret_S%C3%A3o_Paulo_002.jpg"
    }
   ],
   "revisao": "2026-11-21a",

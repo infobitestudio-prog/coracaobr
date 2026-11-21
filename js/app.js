@@ -496,7 +496,7 @@
       '<span class="n">' + (cat ? '<span class="c-k">' + esc(cat) + "</span>" : "") + "<b>" + esc(l.nome) + "</b>" +
       (resumo ? '<span class="c-d">' + esc(resumo) + "</span>" : "") +
       (chips ? '<span class="c-ch">' + chips + "</span>" : "") +
-      '<span class="c-f"><span class="c-lo">' + ic("pin") + esc(onde) + (t ? " · " + t + " de carro" : "") + "</span>" + (l.anunciante ? '<span class="c-cta">Ver anúncio</span>' : "") + "</span></span></a>";
+      '<span class="c-f"><span class="c-lo">' + ic("pin") + esc(onde) + (t ? " · " + t + (l.anunciante ? "" : " de carro") : "") + "</span>" + (l.anunciante ? '<span class="c-cta">Ver anúncio</span>' : "") + "</span></span></a>";
   }
   function linha(l) {
     var f = foto(l), t = tempo(l, "carro");
