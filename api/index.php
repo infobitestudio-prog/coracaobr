@@ -1008,7 +1008,7 @@ case 'atualizar_diario': {
   } catch (Throwable $e) { $rel['erros'][] = 'Fotos oficiais: ' . $e->getMessage(); }
   /* atualizações com IA (Gemini, gratuito): confere lugares todo dia e sugere eventos às segundas */
   if (chaveGemini() !== '' && !empty(iaCfg()['robo'])) {
-    try { $ri = roboIA($hoje, (int)iaCfg()['porDia'], (int)$agoraD->format('N') === 1 && !empty(iaCfg()['eventos'])); $rel['feito'] = array_merge($rel['feito'], $ri['feito']); $rel['erros'] = array_merge($rel['erros'], $ri['erros']); }
+    try { $ri = roboIA($hoje, (int)iaCfg()['porDia'], (int)$agoraD->format('N') === 1 && !empty(iaCfg()['eventos'])); if (!empty($ri['pulado'])) $rel['feito'][] = 'IA: ' . $ri['pulado']; $rel['feito'] = array_merge($rel['feito'], $ri['feito']); $rel['erros'] = array_merge($rel['erros'], $ri['erros']); }
     catch (Throwable $e) { $rel['erros'][] = 'IA: ' . $e->getMessage(); }
   }
   $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('diario', ?)")->execute([$hoje]);
@@ -1206,7 +1206,7 @@ case 'chave_google': {
   $k = trim((string)($corpo['chave'] ?? '')); $f = dirname($CFG['db']) . '/GOOGLE-PLACES.key';
   if (isset($corpo['porDia'])) { $n = max(0, min(200, (int)$corpo['porDia'])); banco()->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('google:porDia', ?)")->execute([(string)$n]); if ($k === '' && empty($corpo['apagar'])) sai(['ok' => true, 'msg' => $n ? "Pronto: o robô atualiza $n lugares por dia pelo Google." : 'Atualização pelo Google pausada.']); }
   if ($k === '') { if (empty($corpo['apagar'])) erro('Cole a chave da Google Places API.'); @unlink($f); sai(['ok' => true, 'msg' => 'Chave removida.']); }
-  if (!preg_match('/^[A-Za-z0-9_\-]{20,80}$/', $k)) erro('Isso não parece uma chave do Google (normalmente começa com AIza e tem 39 caracteres).');
+  if (!preg_match('/^[A-Za-z0-9_.\-]{20,200}$/', $k)) erro('Isso não parece uma chave do Google (começa com AIza ou AQ.).');
   /* testa antes de salvar, com a busca mais barata do Google (só o código do lugar) */
   $ctx = stream_context_create(['http' => ['method' => 'POST', 'timeout' => 20, 'ignore_errors' => true, 'header' => "Content-Type: application/json\r\nX-Goog-Api-Key: $k\r\nX-Goog-FieldMask: places.id", 'content' => json_encode(['textQuery' => 'Klyde Warren Park Dallas TX', 'maxResultCount' => 1])]]);
   $t = json_decode((string)@file_get_contents('https://places.googleapis.com/v1/places:searchText', false, $ctx), true);
@@ -1311,11 +1311,13 @@ case 'chave_ia': {
   }
   if ($pv === 'gemini') {
     if ($k === '' && !empty($corpo['apagar'])) { @unlink(iaArq('GEMINI.key')); if (trim((string)@file_get_contents(iaArq('IA.provedor'))) === 'gemini') @unlink(iaArq('IA.provedor')); sai(['ok' => true, 'msg' => 'Chave do Gemini apagada.' . (provedorIA() === '' ? ' O assistente volta a responder com a busca do guia.' : '')]); }
-    if (!preg_match('/^[A-Za-z0-9_\-]{30,200}$/', $k)) erro('Isso não parece uma chave do Gemini (normalmente começa com AIza e tem 39 caracteres).');
-    $t = gemini('', [['role' => 'user', 'content' => 'Responda apenas: ok']], ['chave' => $k, 'max' => 256, 'timeout' => 25]);
-    if (isset($t['erro']) && empty($t['recusa']) && (int)($t['cod'] ?? 0) !== 429) erro(iaErroAmigavel($t));
+    if (!preg_match('/^[A-Za-z0-9_.\-]{30,200}$/', $k)) erro('Isso não parece uma chave do Gemini. As chaves do Google AI Studio começam com AIza (antigas) ou AQ. (novas).');
+    /* testa e escolhe sozinho o modelo que esta chave pode usar (o Google aposenta modelos e alguns ficam lotados) */
+    $t = geminiEscolheModelo($k);
+    if (isset($t['erro']) && empty($t['recusa']) && !in_array((int)($t['cod'] ?? 0), [429, 503], true)) erro(iaErroAmigavel($t));
     file_put_contents(iaArq('GEMINI.key'), $k); @chmod(iaArq('GEMINI.key'), 0600); file_put_contents(iaArq('IA.provedor'), 'gemini');
-    sai(['ok' => true, 'msg' => (int)($t['cod'] ?? 0) === 429 ? 'Chave salva. O limite gratuito do Gemini está cheio agora; ele volta sozinho.' : 'Chave do Gemini salva e testada (' . ($t['modelo'] ?? modeloGemini()) . '). O assistente já responde com o Gemini.']);
+    if (!empty($t['modelo'])) file_put_contents(iaArq('GEMINI.auto'), $t['modelo']);
+    sai(['ok' => true, 'msg' => isset($t['erro']) ? 'Chave salva. Os modelos do Gemini estão lotados ou no limite agora; o site tenta de novo sozinho.' : 'Chave do Gemini salva e testada. Modelo escolhido: ' . $t['modelo'] . '. O assistente já responde com o Gemini.']);
   }
   $f = iaArq('ANTHROPIC.key');
   if (isset($corpo['modelo'])) { $mo = in_array($corpo['modelo'], ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], true) ? $corpo['modelo'] : 'claude-opus-5-5'; @file_put_contents(iaArq('ANTHROPIC.modelo'), $mo); if ($k === '' && empty($corpo['apagar'])) sai(['ok' => true, 'msg' => 'Modelo salvo.']); }
@@ -1327,10 +1329,11 @@ case 'chave_ia': {
 case 'ia_info': {
   exigeMaster(); $pdo = banco();
   sai(['ok' => true, 'provedor' => provedorIA(), 'escolhido' => trim((string)@file_get_contents(iaArq('IA.provedor'))), 'ligado' => provedorIA() !== '', 'gemini' => chaveGemini() !== '', 'claude' => chaveIA() !== '',
-    'sdk' => is_file(__DIR__ . '/vendor/autoload.php'), 'modelo' => modeloIA(), 'modeloGemini' => modeloGemini(), 'cfg' => iaCfg(),
+    'sdk' => is_file(__DIR__ . '/vendor/autoload.php'), 'modelo' => modeloIA(), 'modeloGemini' => modeloGemini(), 'modeloManual' => trim((string)@file_get_contents(iaArq('GEMINI.modelo'))), 'cfg' => iaCfg(),
     'mes' => (int)$pdo->query("SELECT v FROM meta WHERE k = 'ia:" . date('Y-m') . "'")->fetchColumn(),
     'erro' => json_decode((string)$pdo->query("SELECT v FROM meta WHERE k = 'ia:erro'")->fetchColumn(), true),
     'robo' => json_decode((string)$pdo->query("SELECT v FROM meta WHERE k = 'ia:robo'")->fetchColumn(), true),
+    'semBusca' => (string)$pdo->query("SELECT v FROM meta WHERE k = 'ia:semBusca'")->fetchColumn(),
     'sugestoes' => count(array_filter(iaSugestoes(), fn($x) => ($x['status'] ?? '') === 'pendente'))]);
 }
 case 'ia_teste': {
@@ -1347,7 +1350,7 @@ case 'ia_teste': {
 case 'ia_robo': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405); @set_time_limit(300);
   if (chaveGemini() === '') erro('As atualizações com IA usam o Gemini. Cole a chave do Gemini primeiro.');
-  $r = roboIA(hojeDallas(), max(0, min(5, (int)($corpo['quantos'] ?? 3))), !empty($corpo['eventos']));
+  $r = roboIA(hojeDallas(), max(0, min(5, (int)($corpo['quantos'] ?? 3))), !empty($corpo['eventos']), true);
   sai(['ok' => true] + $r);
 }
 case 'ia_sugestoes': { exigeMaster(); sai(['ok' => true, 'itens' => array_values(array_filter(iaSugestoes(), fn($x) => ($x['status'] ?? '') === 'pendente'))]); }
@@ -1791,7 +1794,19 @@ function envia(string $para, string $assunto, string $miolo, string $token): boo
 /* ===== IA: Gemini (Google, plano gratuito) ou Claude (Anthropic). As chaves ficam só no servidor (pasta dados/), nunca no site. ===== */
 function iaArq(string $n): string { global $CFG; return dirname($CFG['db']) . '/' . $n; }
 function chaveGemini(): string { global $CFG; $k = trim((string)($CFG['gemini_key'] ?? '')); if ($k === '') $k = trim((string)@file_get_contents(iaArq('GEMINI.key'))); return $k; }
-function modeloGemini(): string { $m = trim((string)@file_get_contents(iaArq('GEMINI.modelo'))); return preg_match('/^gemini-[a-z0-9.\-]{2,60}$/', $m) ? $m : 'gemini-flash-latest'; }
+function modeloGemini(): string { foreach (['GEMINI.modelo', 'GEMINI.auto'] as $f) { $m = trim((string)@file_get_contents(iaArq($f))); if (preg_match('/^gemini-[a-z0-9.\-]{2,60}$/', $m)) return $m; } return 'gemini-flash-lite-latest'; }
+/* ordem de tentativa: o modelo em uso e, se ele estiver aposentado, lotado ou no limite, os seguintes (cada modelo tem a sua cota grátis) */
+/* o "lite" vem primeiro: responde em ~1 s, tem mais cota grátis e dá conta de escolher lugares da lista do guia */
+function modelosGemini(string $primeiro = ''): array { return array_values(array_unique(array_filter([$primeiro ?: modeloGemini(), 'gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-3.5-flash', 'gemini-3.1-flash-lite', 'gemini-2.5-flash']))); }
+function geminiEscolheModelo(string $k): array {
+  $t = ['erro' => 'Sem resposta do Gemini.', 'cod' => 0];
+  foreach (modelosGemini(trim((string)@file_get_contents(iaArq('GEMINI.modelo')))) as $mo) {
+    $t = gemini('', [['role' => 'user', 'content' => 'Responda apenas: ok']], ['chave' => $k, 'max' => 256, 'timeout' => 25, 'modelo' => $mo, 'semReserva' => true]);
+    if (!isset($t['erro']) || !empty($t['recusa'])) return ['modelo' => $mo] + $t;
+    if (stripos((string)$t['erro'], 'API key not valid') !== false || in_array((int)($t['cod'] ?? 0), [400, 401, 403], true)) return $t;   // chave com problema: não adianta trocar de modelo
+  }
+  return $t;
+}
 function provedorIA(): string {
   $p = trim((string)@file_get_contents(iaArq('IA.provedor'))); $g = chaveGemini() !== ''; $c = chaveIA() !== '' && is_file(__DIR__ . '/vendor/autoload.php');
   if ($p === 'claude' && $c) return 'claude'; if ($p === 'gemini' && $g) return 'gemini';
@@ -1805,10 +1820,11 @@ function gemini(string $sistema, array $msgs, array $op = []): array {
   $k = (string)($op['chave'] ?? chaveGemini()); if ($k === '') return ['erro' => 'Sem chave do Gemini.', 'cod' => 0];
   $conts = []; foreach ($msgs as $m) $conts[] = ['role' => ($m['role'] ?? '') === 'assistant' ? 'model' : 'user', 'parts' => [['text' => (string)$m['content']]]];
   $corpo = ['contents' => $conts, 'generationConfig' => ['temperature' => $op['temp'] ?? 0.4, 'maxOutputTokens' => $op['max'] ?? 2048]];
+  if (!empty($op['json']) && empty($op['busca'])) $corpo['generationConfig']['responseMimeType'] = 'application/json';   // pede JSON puro (com a busca no Google ligada o Google não aceita)
   if ($sistema !== '') $corpo['systemInstruction'] = ['parts' => [['text' => $sistema]]];
   if (!empty($op['busca'])) $corpo['tools'] = [['google_search' => new stdClass()]];
   $ult = ['erro' => 'Sem resposta do Gemini.', 'cod' => 0];
-  foreach (array_values(array_unique([(string)($op['modelo'] ?? modeloGemini()), 'gemini-flash-latest', 'gemini-2.5-flash'])) as $mo) {
+  foreach (!empty($op['semReserva']) ? [(string)$op['modelo']] : modelosGemini((string)($op['modelo'] ?? '')) as $mo) {
     $ctx = stream_context_create(['http' => ['method' => 'POST', 'timeout' => $op['timeout'] ?? 40, 'ignore_errors' => true, 'header' => "Content-Type: application/json\r\nx-goog-api-key: $k", 'content' => json_encode($corpo, JSON_UNESCAPED_UNICODE)]]);
     $r = @file_get_contents(rtrim((string)($GLOBALS['CFG']['gemini_url'] ?? 'https://generativelanguage.googleapis.com'), '/') . '/v1beta/models/' . rawurlencode($mo) . ':generateContent', false, $ctx);
     $hs = function_exists('http_get_last_response_headers') ? (http_get_last_response_headers() ?? []) : ($http_response_header ?? []);
@@ -1817,7 +1833,7 @@ function gemini(string $sistema, array $msgs, array $op = []): array {
     if (!is_array($j)) { $ult = ['erro' => 'Sem conexão com o Gemini.', 'cod' => $cod]; continue; }
     if (isset($j['error'])) {
       $ult = ['erro' => (string)($j['error']['message'] ?? 'erro'), 'cod' => (int)($j['error']['code'] ?? $cod), 'status' => (string)($j['error']['status'] ?? '')];
-      if ($ult['cod'] === 404 || $ult['status'] === 'NOT_FOUND') continue;   // modelo aposentado: tenta o próximo
+      if (in_array($ult['cod'], [404, 429, 500, 503], true) || in_array($ult['status'], ['NOT_FOUND', 'UNAVAILABLE', 'RESOURCE_EXHAUSTED'], true)) continue;   // modelo aposentado, lotado ou sem cota: tenta o próximo
       return $ult;
     }
     $c = $j['candidates'][0] ?? null; $txt = '';
@@ -1832,6 +1848,8 @@ function gemini(string $sistema, array $msgs, array $op = []): array {
 function iaErroAmigavel(array $r): string {
   $c = (int)($r['cod'] ?? 0); $s = (string)($r['status'] ?? ''); $m = (string)($r['erro'] ?? '');
   if (stripos($m, 'API key not valid') !== false || stripos($m, 'API_KEY_INVALID') !== false) return 'A chave do Gemini não é válida. Gere outra em aistudio.google.com/apikey e cole de novo.';
+  if ($c === 503 || $s === 'UNAVAILABLE') return 'Os modelos do Gemini estão lotados agora (alta procura). O site tenta outro modelo e de novo mais tarde.';
+  if ($c === 404 || $s === 'NOT_FOUND') return 'O modelo do Gemini escolhido não está disponível para esta chave. Deixe o campo de modelo em branco para o site escolher sozinho.';
   if ($c === 429 || $s === 'RESOURCE_EXHAUSTED') return 'O limite gratuito do Gemini acabou por agora. Ele volta sozinho (por minuto e por dia).';
   if ($c === 403 || $s === 'PERMISSION_DENIED') return 'O Google recusou a chave (permissão). Confira se a Gemini API está ativa no projeto da chave.';
   if ($s === 'FAILED_PRECONDITION') return 'O plano gratuito do Gemini não está disponível para esta conta ou região. Veja o aviso em aistudio.google.com.';
@@ -1874,8 +1892,20 @@ function iaAplica(array $sg): bool {
 }
 /* Robô com IA (Gemini + busca no Google): confere horário, telefone, site e se o lugar fechou; às segundas sugere eventos novos.
    O que ele acha vira sugestão para o master aprovar (ou é aplicado sozinho, se a opção estiver ligada e houver fonte). Fechar um lugar sempre pede aprovação. */
-function roboIA(string $hoje, int $quantos, bool $eventos): array {
+function roboIA(string $hoje, int $quantos, bool $eventos, bool $manual = false): array {
   $pdo = banco(); $cfg = iaCfg(); $feito = []; $erros = []; $sug = iaSugestoes(); $novas = 0; $aplic = 0; $conf = 0;
+  /* plano gratuito sem a busca no Google: não gasta chamadas todo dia; tenta de novo uma vez por semana (ou quando a equipe toca no botão) */
+  $semBusca = (string)$pdo->query("SELECT v FROM meta WHERE k = 'ia:semBusca'")->fetchColumn();
+  if (!$manual && $semBusca !== '' && $semBusca > date('Y-m-d', strtotime($hoje . ' -7 day'))) return ['feito' => [], 'erros' => [], 'em' => agora(), 'pulado' => 'A busca no Google pela IA não está no plano gratuito desta chave; conferência pelas fontes abertas.'];
+  $SEM_BUSCA_MSG = 'A busca no Google pela IA não está liberada no plano gratuito desta chave (o Google responde "cota excedida"). O assistente continua funcionando, e os lugares seguem sendo conferidos pelas fontes abertas (site oficial e OpenStreetMap). Para liberar, ative o faturamento no Google AI Studio.';
+  $testaSemBusca = function (array $r) use ($pdo, $hoje, $SEM_BUSCA_MSG, &$erros): bool {
+    if ((int)($r['cod'] ?? 0) !== 429) return false;
+    $p = gemini('', [['role' => 'user', 'content' => 'Responda apenas: ok']], ['max' => 64, 'timeout' => 20]);
+    if (isset($p['erro'])) return false;   // a chave inteira está no limite: é só esperar
+    $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('ia:semBusca', ?)")->execute([$hoje]); $erros[] = $SEM_BUSCA_MSG;
+    $pdo->prepare("INSERT OR REPLACE INTO meta (k, v) VALUES ('ia:erro', ?)")->execute([json_encode(['msg' => $SEM_BUSCA_MSG, 'em' => agora()], JSON_UNESCAPED_UNICODE)]);
+    return true;
+  };
   $assin = []; foreach ($sug as $x) $assin[($x['lugarId'] ?? $x['evento']['nome'] ?? '') . '|' . ($x['campo'] ?? 'evento') . '|' . iaNorm((string)($x['campo'] ?? ''), (string)($x['novo'] ?? ($x['evento']['dataInicio'] ?? '')))] = 1;
   $salvaL = function (string $id, array $l) use ($pdo) { $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($l, JSON_UNESCAPED_UNICODE), agora(), $id]); };
   $fila = []; $nomes = [];
@@ -1894,7 +1924,8 @@ function roboIA(string $hoje, int $quantos, bool $eventos): array {
       '{"encontrado": true ou false, "fechadoDefinitivo": true ou false, "horario": "horário da semana em português, ex.: Seg a sex 9h–18h · Sáb 10h–14h · Dom fechado", "telefone": "", "site": "https://...", "observacao": "frase curta"}' .
       "\nDeixe o campo vazio (texto vazio) quando não tiver certeza.";
     $r = gemini($sis, [['role' => 'user', 'content' => $pr]], ['busca' => true, 'max' => 2048, 'temp' => 0.1, 'timeout' => 60]);
-    if (isset($r['erro'])) { if (empty($r['recusa'])) { iaErro($r); $erros[] = 'IA: ' . iaErroAmigavel($r); } if ((int)($r['cod'] ?? 0) === 429 || (int)($r['cod'] ?? 0) === 400 || (int)($r['cod'] ?? 0) === 403) break; continue; }
+    if (isset($r['erro'])) { if ($testaSemBusca($r)) break; if (empty($r['recusa'])) { iaErro($r); $erros[] = 'IA: ' . iaErroAmigavel($r); } if ((int)($r['cod'] ?? 0) === 429 || (int)($r['cod'] ?? 0) === 400 || (int)($r['cod'] ?? 0) === 403) break; continue; }
+    if ($semBusca !== '') { $pdo->exec("DELETE FROM meta WHERE k = 'ia:semBusca'"); $semBusca = ''; }   // a busca voltou a funcionar
     $conf++; $l['iaConferidoEm'] = $hoje; $j = iaJson($r['texto']); $fontes = array_slice($r['fontes'], 0, 3);
     if (is_array($j) && !empty($j['encontrado'])) {
       $mud = [];
@@ -1926,7 +1957,7 @@ function roboIA(string $hoje, int $quantos, bool $eventos): array {
         "Liste até 5, só os que têm data e local confirmados em fonte. Responda SOMENTE com um JSON (lista), sem texto fora dele:\n" .
         '[{"nome": "", "dataInicio": "AAAA-MM-DD", "dataFim": "AAAA-MM-DD", "quando": "ex.: sábado, 14h às 20h", "local": "", "endereco": "", "cidade": "", "link": "https://...", "descricao": "uma frase em português"}]';
       $r = gemini($sis, [['role' => 'user', 'content' => $pr]], ['busca' => true, 'max' => 3000, 'temp' => 0.2, 'timeout' => 60]);
-      if (isset($r['erro'])) { if (empty($r['recusa'])) { iaErro($r); $erros[] = 'IA (eventos): ' . iaErroAmigavel($r); } break; }
+      if (isset($r['erro'])) { if ($testaSemBusca($r)) break; if (empty($r['recusa'])) { iaErro($r); $erros[] = 'IA (eventos): ' . iaErroAmigavel($r); } break; }
       $lst = iaJson($r['texto']); if (!is_array($lst) || isset($lst['nome'])) continue;
       foreach (array_slice($lst, 0, 5) as $e) {
         if (!is_array($e) || empty($e['nome']) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)($e['dataInicio'] ?? '')) || $e['dataInicio'] < $hoje || $e['dataInicio'] > $fim) continue;
