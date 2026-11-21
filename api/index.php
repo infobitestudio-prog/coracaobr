@@ -54,7 +54,7 @@ session_name('CBRSESS');
 session_set_cookie_params(['lifetime' => $vida, 'path' => $caminho, 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax']);
 /* Fotos, sitemap, robots, aviso do Mercado Pago e tarefas automáticas não usam sessão: assim não mexem no cookie de login
    (antes, uma foto carregando enquanto a pessoa entrava na conta podia trocar o cookie e "deslogar"). */
-$SEM_SESSAO = ['cep', 'recibo', 'wallet', 'wallet_cfg', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
+$SEM_SESSAO = ['cep', 'clima', 'recibo', 'wallet', 'wallet_cfg', 'foto_site', 'foto_google', 'sitemap', 'robots', 'gverif', 'pix_webhook', 'push_ultima', 'newsletter_cron', 'atualizar_diario', 'push_chave'];
 if (in_array((string)($_GET['acao'] ?? ''), $SEM_SESSAO, true)) {
   $_SESSION = ['csrf' => '', 'visitante' => ''];
 } else {
@@ -1077,6 +1077,19 @@ case 'pix_status': {
   $r = processaPagamento($id); sai(['ok' => true, 'status' => $r['status'], 'pacote' => $r['cobranca']['pacote'] ?? null]);
 }
 /* Busca de CEP (Brasil) ou ZIP code (EUA) para os formulários: endereço, cidade, estado e coordenadas. Público, com limite por IP. */
+case 'clima': {   // previsão de 3 dias (Open-Meteo), guardada 1 hora por local: um pedido por hora em vez de um por visitante
+  $la = round((float)($_GET['lat'] ?? 0), 2); $lo = round((float)($_GET['lng'] ?? 0), 2);
+  if (!$la || !$lo || abs($la) > 90 || abs($lo) > 180) erro('Local inválido.');
+  $k = 'clima:' . $la . ',' . $lo; $pdo = banco();
+  $st = $pdo->prepare('SELECT v FROM meta WHERE k = ?'); $st->execute([$k]); $c = json_decode((string)$st->fetchColumn(), true);
+  if (!is_array($c) || time() - (int)($c['em'] ?? 0) > 3600) {
+    $base = rtrim((string)($CFG['clima_url'] ?? 'https://api.open-meteo.com'), '/');
+    $j = httpJson($base . '/v1/forecast?latitude=' . $la . '&longitude=' . $lo . '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FSao_Paulo&forecast_days=3', 8);
+    if (!empty($j['daily']['time'])) { $c = ['em' => time(), 'daily' => $j['daily']]; $pdo->prepare('INSERT OR REPLACE INTO meta (k, v) VALUES (?, ?)')->execute([$k, json_encode($c)]); }
+    elseif (!is_array($c)) erro('Previsão indisponível agora.', 503);
+  }
+  header('Cache-Control: public, max-age=1800'); sai(['ok' => true, 'daily' => $c['daily']]);
+}
 case 'cep': {
   $cep = zipLimpo((string)($_GET['cep'] ?? ($corpo['cep'] ?? '')));
   if ($cep === '') erro('Digite um CEP do Brasil (8 números) ou um ZIP code dos EUA (5 números).');

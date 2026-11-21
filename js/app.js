@@ -285,11 +285,36 @@
   function perguntaCidade(obrigatorio) {
     var d = $("#dlg"), fotoDe = function (k) { if (CIDADES_GUIA[k].capa) return CIDADES_GUIA[k].capa; var l = primeiro(Store.lista("lugares").filter(function (x) { return regiaoGuia(x) === k && x.tipo !== "estabelecimento" && x.publicado !== false && (x.fotos || []).some(function (f) { return !f.ilustrativa; }); }).sort(ordenaNota))[0]; var f = l && (l.fotos || []).filter(function (f) { return !f.ilustrativa; })[0]; return f ? Store.urlFoto(f.src) || f.src : ""; };
     var n = function (k) { return Store.lista("lugares").filter(function (x) { return regiaoGuia(x) === k && x.publicado !== false && !x.demo && bairroVisivel(x); }).length; };
-    d.innerHTML = '<div class="dlg cq"><div class="cq-top"><span class="cq-logo">Coração<b>BR</b></span><h3 tabindex="-1" autofocus>Qual cidade você quer explorar?</h3><p class="muted">Escolha uma vez. O guia lembra da sua escolha e você troca quando quiser no botão de cidade, lá no topo.</p></div>' +
-      '<button type="button" class="btn cq-gps" data-cq-gps>' + ic("pin") + ' Usar minha localização</button><div class="cq-l">' +
-      regioesVisiveis().map(function (k, i, arr) { var c = CIDADES_GUIA[k], f = fotoDe(k), q = n(k), ant = i ? CIDADES_GUIA[arr[i - 1]] : null, grupo = (!ant || ant.pais !== c.pais || ant.estado !== c.estado) ? '<p class="cq-g">' + esc(c.paisNome + " › " + c.estadoNome) + "</p>" : ""; return grupo + '<button type="button" class="cq-c' + (k === cidadeAtual() && cidadeEscolhida ? " on" : "") + '" data-cq="' + k + '"' + (q ? "" : " disabled") + ">" + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "<i></i>") + "<span><b>" + esc(c.nome) + "</b><small>" + (q ? q + " lugares no guia" : "em breve") + "</small></span></button>"; }).join("") +
-      "</div>" + '<button type="button" class="more cq-mais" data-cq-mais>Outras cidades em breve →</button>' + (obrigatorio ? "" : '<div class="row"><button type="button" class="btn ghost" data-cq-x>Fechar</button></div>') + "</div>";
+    var BANDEIRA = { BR: "🇧🇷", US: "🇺🇸" };
+    var bairros = function (k) { var c = {}; Store.lista("lugares").forEach(function (x) { if (regiaoGuia(x) === k && x.publicado !== false && !x.demo && bairroVisivel(x)) { var r = regiao(x); if (r) c[r] = (c[r] || 0) + 1; } }); return Object.keys(c).sort(function (a, b) { return c[b] - c[a] || a.localeCompare(b); }).slice(0, 10).map(function (b) { return [b, c[b]]; }); };
+    var cidadeBtn = function (k) { var c = CIDADES_GUIA[k], f = fotoDe(k), q = n(k); return '<button type="button" class="cq-c' + (k === cidadeAtual() && cidadeEscolhida ? " on" : "") + '" data-cq="' + k + '"' + (q ? "" : " disabled") + ">" + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "<i></i>") + "<span><b>" + esc(c.nome) + "</b><small>" + (q ? q + " lugares no guia" : "em breve") + "</small></span></button>"; };
+    var paises = []; regioesVisiveis().forEach(function (k) { var p = CIDADES_GUIA[k].pais || "US"; if (paises.indexOf(p) < 0) paises.push(p); });
+    var topo = '<div class="cq-top"><span class="cq-logo">Coração<b>BR</b></span><h3 tabindex="-1" autofocus>Para onde você quer ir?</h3><p class="muted">Escolha o país e depois o estado, a cidade e o bairro. O guia lembra da sua escolha e você troca quando quiser no botão de cidade, lá no topo.</p></div>' +
+      '<button type="button" class="btn cq-gps" data-cq-gps>' + ic("pin") + ' Usar minha localização</button>';
+    var rodape = '<button type="button" class="more cq-mais" data-cq-mais>Outras cidades em breve →</button>' + (obrigatorio ? "" : '<div class="row"><button type="button" class="btn ghost" data-cq-x>Fechar</button></div>');
+    var pinta = function (pais) {
+      var html;
+      if (!pais) {
+        html = '<p class="cq-g">Escolha o país</p><div class="cq-ps">' + paises.map(function (p) {
+          var ks = regioesVisiveis().filter(function (k) { return (CIDADES_GUIA[k].pais || "US") === p; }), tot = ks.reduce(function (a, k) { return a + n(k); }, 0), nome = CIDADES_GUIA[ks[0]].paisNome || p, atual = ks.indexOf(cidadeAtual()) >= 0 && cidadeEscolhida;
+          return '<button type="button" class="cq-p' + (atual ? " on" : "") + '" data-cq-pais="' + p + '"><span class="cq-fl">' + (BANDEIRA[p] || "🏳️") + "</span><span><b>" + esc(nome) + "</b><small>" + ks.length + (ks.length === 1 ? " cidade" : " cidades") + " · " + tot + " lugares</small></span>" + ic("arrow") + "</button>";
+        }).join("") + "</div>";
+      } else {
+        var ks = regioesVisiveis().filter(function (k) { return (CIDADES_GUIA[k].pais || "US") === pais; });
+        html = (paises.length > 1 ? '<button type="button" class="cq-back" data-cq-volta>← Trocar de país</button>' : "") + '<p class="cq-pt">' + (BANDEIRA[pais] || "") + " " + esc(CIDADES_GUIA[ks[0]].paisNome || pais) + "</p>" +
+          ks.map(function (k, i) {
+            var c = CIDADES_GUIA[k], ant = i ? CIDADES_GUIA[ks[i - 1]] : null, est = !ant || ant.estado !== c.estado ? '<p class="cq-g">' + esc(c.estadoNome || c.estado || "") + "</p>" : "";
+            var bs = bairros(k), chips = bs.length > 1 ? '<div class="cq-bs">' + bs.map(function (b) { return '<button type="button" class="cq-b" data-cq-c="' + k + '" data-cq-b="' + esc(b[0]) + '">' + esc(b[0]) + " <i>" + b[1] + "</i></button>"; }).join("") + "</div>" : "";
+            return est + '<div class="cq-cid">' + cidadeBtn(k) + chips + "</div>";
+          }).join("");
+      }
+      d.innerHTML = '<div class="dlg cq">' + topo + '<div class="cq-l">' + html + "</div>" + rodape + "</div>";
+    };
+    pinta(paises.length === 1 ? paises[0] : null);
     d.onclick = function (e) {
+      var ps = e.target.closest("[data-cq-pais]"); if (ps) { pinta(ps.dataset.cqPais); return; }
+      if (e.target.closest("[data-cq-volta]")) { pinta(null); return; }
+      var bb = e.target.closest("[data-cq-b]"); if (bb) { d.close(); trocaCidade(bb.dataset.cqC); if (!cidadeEscolhida) loc("cidade", bb.dataset.cqC); limpaFiltro(); F.local = bb.dataset.cqB; location.hash = "#explorar"; setTimeout(function () { render(false); }, 30); return; }
       var b = e.target.closest("[data-cq]"); if (b && !b.disabled) { d.close(); trocaCidade(b.dataset.cq); if (!cidadeEscolhida) loc("cidade", b.dataset.cq); return; }
       if (e.target.closest("[data-cq-x]")) { d.close(); return; }
       if (e.target.closest("[data-cq-mais]")) { d.close(); if (!cidadeEscolhida) { cidadeEscolhida = cidadeAtual(); loc("cidade", cidadeEscolhida); } if (window.Novidades) setTimeout(Novidades.seletorCidade, 60); return; }
@@ -542,12 +567,45 @@
     var gr = ls.filter(GRUPOS.gratis.f).length, br = ls.filter(GRUPOS.brasileiros.f).length;
     var cot = Number(cfg.cotacao) || 0;
     var t = function (h, k, v, s, i) { return '<a class="pu-it" href="' + h + '"><span class="pu-k">' + ic(i) + k + '</span><b class="pu-v">' + v + '</b><span class="pu-s">' + s + "</span></a>"; };
-    return '<section class="pu" aria-label="Informações úteis">' +
+    return '<section class="pu' + (ehBR() ? " br" : "") + '" aria-label="Informações úteis">' +
       t("#mapa", "Agora em " + cid().principal, '<span id="pu-hora">' + horaDallas() + "</span>", diaDallas(), "clock") +
       (cot && !ehBR() ? t("#custo", "Dólar hoje", "R$ " + cot.toFixed(2).replace(".", ","), cfg.cotacaoEm ? "atualizado " + String(cfg.cotacaoEm).slice(8, 10) + "/" + String(cfg.cotacaoEm).slice(5, 7) : "cotação do guia", "chart") : "") +
       t("#busca-7d-geventos", "Eventos", ev, ev === 1 ? "nos próximos 7 dias" : "nos próximos 7 dias", "ticket") +
+      (ehBR() ? climaCard("cid", "Tempo em " + cid().principal, cid().lat ? [cid().lat, cid().lng] : [-23.5505, -46.6333], null) + climaCard("lit", "Indo para o litoral", [-23.9608, -46.3336], cfg) : "") +
       t("#busca-gratis", "De graça", gr, "passeios sem pagar nada", "leaf") +
       (ehBR() ? "" : t("#busca-gbrasileiros", "Brasileiros", br, "negócios de brasileiros", "flag")) + "</section>";
+  }
+  /* Previsão de 3 dias (Open-Meteo, grátis e sem chave) para a cidade e para o litoral (Santos), + pedágio da descida.
+     Pedágio: tabela oficial da Ecovias Imigrantes (carro, cobrado só na descida); o master pode trocar em config.pedagioLitoral. */
+  var CLIMA = {}, CLIMA_PEDIDO = {};
+  var PEDAGIO_LITORAL = { valor: 40.6, desde: "2026-07-01", via: "Imigrantes ou Anchieta", fonte: "https://www.ecoviasimigrantes.com.br/servicos/tarifas-pedagio" };
+  function wxIcone(c) { c = Number(c); return c === 0 ? ["☀️", "Sol"] : c <= 2 ? ["🌤️", "Sol entre nuvens"] : c === 3 ? ["☁️", "Nublado"] : c <= 48 ? ["🌫️", "Neblina"] : c <= 57 ? ["🌦️", "Garoa"] : c <= 67 ? ["🌧️", "Chuva"] : c <= 77 ? ["🌨️", "Frio intenso"] : c <= 82 ? ["🌦️", "Pancadas de chuva"] : ["⛈️", "Tempestade"]; }
+  function climaBusca(k, ll) {
+    var ch = "clima:" + ll[0].toFixed(2) + "," + ll[1].toFixed(2);
+    if (CLIMA[ch] || CLIMA_PEDIDO[ch]) return CLIMA[ch];
+    try { var c = JSON.parse(sessionStorage.getItem(ch) || "null"); if (c && Date.now() - c.em < 3600000) { CLIMA[ch] = c; return c; } } catch (e) { /* ok */ }
+    CLIMA_PEDIDO[ch] = 1;
+    fetch(st().servidor ? "api/index.php?acao=clima&lat=" + ll[0].toFixed(2) + "&lng=" + ll[1].toFixed(2) : "https://api.open-meteo.com/v1/forecast?latitude=" + ll[0] + "&longitude=" + ll[1] + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FSao_Paulo&forecast_days=3")
+      .then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        if (!j || !j.daily || !j.daily.time) throw 0;
+        var d = j.daily, c = { em: Date.now(), dias: d.time.slice(0, 3).map(function (t, i) { return { t: t, c: d.weather_code[i], max: Math.round(d.temperature_2m_max[i]), min: Math.round(d.temperature_2m_min[i]), chuva: d.precipitation_probability_max ? d.precipitation_probability_max[i] : null }; }) };
+        CLIMA[ch] = c; try { sessionStorage.setItem(ch, JSON.stringify(c)); } catch (e) { /* ok */ }
+        var el = document.querySelector('[data-wx="' + k + '"] .pu-3'); if (el) el.outerHTML = climaDias(c);
+      }).catch(function () { delete CLIMA_PEDIDO[ch]; var el = document.querySelector('[data-wx="' + k + '"] .pu-3'); if (el) el.outerHTML = '<span class="pu-3 off">Previsão indisponível agora</span>'; });
+    return null;
+  }
+  function climaDias(c) {
+    if (!c) return '<span class="pu-3 carregando"><span></span><span></span><span></span></span>';
+    return '<span class="pu-3">' + c.dias.map(function (d, i) {
+      var w = wxIcone(d.c), nm = i === 0 ? "Hoje" : i === 1 ? "Amanhã" : new Intl.DateTimeFormat("pt-BR", { weekday: "short", timeZone: "UTC" }).format(new Date(d.t + "T12:00:00Z")).replace(".", "");
+      return '<span class="pu-d" title="' + w[1] + (d.chuva != null ? " · " + d.chuva + "% de chance de chuva" : "") + '"><i>' + nm + "</i><em>" + w[0] + "</em><b>" + d.max + "°</b><small>" + d.min + "°" + (d.chuva >= 40 ? " · 💧" + d.chuva + "%" : "") + "</small></span>";
+    }).join("") + "</span>";
+  }
+  function climaCard(k, titulo, ll, cfg) {
+    var c = climaBusca(k, ll), ped = null;
+    if (cfg) { var pv = Number(cfg.pedagioLitoral) || PEDAGIO_LITORAL.valor; ped = '<span class="pu-s pu-ped">🚗 Pedágio ' + esc(PEDAGIO_LITORAL.via) + ": <b>R$ " + pv.toFixed(2).replace(".", ",") + "</b> (carro, só na descida)</span>"; }
+    var inner = '<span class="pu-k">' + ic(cfg ? "pin" : "leaf") + titulo + (cfg ? " · Santos" : "") + "</span>" + climaDias(c) + (ped || '<span class="pu-s">Previsão para os próximos 3 dias</span>');
+    return cfg ? '<a class="pu-it pu-wx" data-wx="' + k + '" href="' + PEDAGIO_LITORAL.fonte + '" target="_blank" rel="noopener" title="Previsão: Open-Meteo · Pedágio: tabela oficial da Ecovias">' + inner + "</a>" : '<div class="pu-it pu-wx" data-wx="' + k + '" title="Previsão: Open-Meteo">' + inner + "</div>";
   }
   function horaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: cid().tz || "America/Chicago", hour: "2-digit", minute: "2-digit" }).format(new Date()); } catch (e) { return "--:--"; } }
   function diaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: cid().tz || "America/Chicago", weekday: "long", day: "numeric", month: "short" }).format(new Date()); } catch (e) { return ""; } }
@@ -580,7 +638,7 @@
       '<div class="foot"><div class="wrap"><div class="hrow"><form class="gsearch" id="busca">' + ic("search") + '<input id="q" type="search" placeholder="Restaurante brasileiro, passeio grátis, dentista…" aria-label="Buscar no guia" autocomplete="off"><button type="submit" class="gs-btn">Buscar</button></form>' +
       '<button type="button" class="pchip" data-partida>' + ic("pin") + (Geo.gps ? "Perto de você" : '<span class="pc-pre">Saindo de </span>' + esc(Geo.nome)) + "</button>" +
       (slides.length > 1 ? '<div class="hctl"><button type="button" class="harr" data-dir="-1" aria-label="Slide anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots">' + slides.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-current="' + (i === slideAtual) + '" aria-label="Ir para o slide ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div><button type="button" class="harr" data-dir="1" aria-label="Próximo slide"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>' : "") +
-      "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
+      "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].filter(function (x) { return !(ehBR() && x[0] === "busca-gbrasileiros"); }).map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
       '<div class="sh"><div class="wrap"><div class="gr"></div>' + painelUtil(ls, cfg) +
       '<nav class="menubar mb-home" aria-label="Categorias">' + Object.keys(GRUPOS).filter(function (g) { return g !== "tudo" && !(ehBR() && g === "brasileiros") && ls.some(GRUPOS[g].f); }).map(function (g) { return '<a class="mb-it" href="#explorar" data-grupo="' + g + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></a>"; }).join("") + '<a class="mb-it" href="#metro">' + ic("train") + "<span>Metrô</span></a>" + '<a class="mb-it" href="#fala-portugues">' + ic("flag") + "<span>Fala PT-BR</span></a>" + '<a class="mb-it" href="#chegada">' + ic("pin") + "<span>Chegada</span></a>" + '<a class="mb-it" href="#temas">' + ic("bell") + "<span>Alertas</span></a>" + '<a class="mb-it" href="#assistente">' + ic("chat") + "<span>Pergunte</span></a>" + '<a class="mb-it" href="#perguntas">' + ic("users") + "<span>Perguntas</span></a>" + '<a class="mb-it" href="#pets">' + ic("heart") + "<span>Pets</span></a>" + '<a class="mb-it" href="#clube">' + ic("star") + "<span>Clube</span></a></nav>" +
       (ls.length ? "" : '<section class="block"><div class="panel"><h3>O guia ainda está vazio</h3><p class="muted">Os lugares aparecem aqui assim que forem cadastrados no <a href="#painel">Painel</a>.</p></div></section>') +

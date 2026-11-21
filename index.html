@@ -1089,6 +1089,16 @@ section.block { padding-block: 22px 10px }
 .pu-v { font: 600 1.5rem/1.15 var(--mono); letter-spacing: -.03em }
 .pu-s { font-size: .78rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .pu-it:last-child:nth-child(odd) { grid-column: 1 / -1 }
+.pu-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 6px 0 4px }
+.pu-d { display: grid; justify-items: center; gap: 1px; padding: 6px 2px; border-radius: 12px; background: var(--surface-2); text-align: center; min-width: 0 }
+.pu-d i { font: 600 .7rem var(--body); font-style: normal; color: var(--muted); text-transform: capitalize }
+.pu-d em { font-style: normal; font-size: 1.25rem; line-height: 1.2 }
+.pu-d b { font: 700 1rem/1 var(--body) } .pu-d small { font-size: .68rem; color: var(--muted); white-space: nowrap }
+.pu-3.carregando span { height: 74px; border-radius: 12px; background: linear-gradient(90deg, var(--surface-2), var(--line), var(--surface-2)); background-size: 200% 100%; animation: puLoad 1.2s infinite }
+@keyframes puLoad { to { background-position: -200% 0 } }
+.pu-3.off { display: block; font-size: .8rem; color: var(--muted); padding: 8px 0 }
+.pu-ped { white-space: normal !important; font-size: .76rem } .pu-ped b { color: var(--ink) }
+.pu-wx { grid-column: span 2 } @media (min-width: 860px) { .pu-wx { grid-column: span 1 } .pu.br { grid-template-columns: .9fr .8fr 1.45fr 1.45fr .8fr } }
 @media (min-width: 860px) { .pu { grid-template-columns: repeat(5, minmax(0, 1fr)) } .pu-it:last-child:nth-child(odd) { grid-column: auto } .pu-v { font-size: 1.75rem } }
 
 .head .eyebrow { margin-bottom: 4px }
@@ -1991,6 +2001,16 @@ dialog:has(> .dlg):not([open]){display:none}
 .cq-logo{font:800 1.05rem var(--display,system-ui);color:var(--accent)}.cq-logo b{color:var(--sun)}
 .cq-gps{justify-content:center;width:100%}
 .cq-l{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cq-ps{grid-column:1/-1;display:grid;gap:10px}
+.cq-p{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:border-color .15s,transform .15s}
+.cq-p:hover{border-color:var(--accent-mid,#0B7A35);transform:translateY(-1px)} .cq-p.on{border-color:var(--sponsor,#C9A227);box-shadow:0 0 0 2px var(--sponsor,#C9A227)}
+.cq-fl{font-size:2.4rem;line-height:1} .cq-p b{display:block;font-size:1.15rem} .cq-p small{color:var(--muted);font-size:.85rem} .cq-p svg.i{width:20px;height:20px;color:var(--muted)}
+.cq-back{grid-column:1/-1;justify-self:start;border:0;background:none;color:var(--accent-mid,#0B7A35);font:600 .9rem var(--body);cursor:pointer;padding:4px 0}
+.cq-pt{grid-column:1/-1;margin:0;font:700 1.2rem var(--body)}
+.cq-cid{display:grid;gap:8px;align-content:start;min-width:0}.cq-l:has(.cq-b) .cq-cid{grid-column:1/-1}
+.cq-bs{display:flex;flex-wrap:wrap;gap:6px}
+.cq-b{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 10px;font:600 .8rem var(--body);cursor:pointer;white-space:nowrap}
+.cq-b i{font-style:normal;color:var(--muted);font-weight:500} .cq-b:hover{border-color:var(--accent-mid,#0B7A35)}
 .cq-g{grid-column:1/-1;margin:6px 0 -2px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cq-c{position:relative;display:grid;align-items:end;min-height:132px;border:0;border-radius:18px;overflow:hidden;padding:0;background:#04341A;color:#fff;text-align:left;cursor:pointer;font:inherit;box-shadow:0 0 0 2px transparent;transition:box-shadow .2s,transform .2s}
 .cq-c img,.cq-c i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
