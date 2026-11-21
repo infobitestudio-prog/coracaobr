@@ -917,6 +917,8 @@ case 'atualizar_diario': {
     $salva('lugares', $row['id'], $l);
   }
   if ($nS) $rel['feito'][] = "Imagens oficiais dos sites conferidas: $nS lugares";
+  // 4d) fontes abertas, sem chave nenhuma: horário, telefone e site pelo site oficial (dados estruturados) e pelo OpenStreetMap
+  try { $ra = fontesAbertasRobo($hoje, $CLI ? 40 : 8); if ($ra['feito']) $rel['feito'][] = $ra['feito']; if ($ra['erro']) $rel['erros'][] = $ra['erro']; } catch (Throwable $e) { $rel['erros'][] = 'Fontes abertas: ' . $e->getMessage(); }
   if ($nS) { $mapa = []; foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) { $l = json_decode($row['data'], true); if (!empty($l['fotoSite']['src'])) $mapa[$row['id']] = ['src' => $l['fotoSite']['src'], 'pagina' => $l['fotoSite']['pagina'] ?? '']; } @file_put_contents(__DIR__ . '/../data/fotos-site.json', json_encode($mapa, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)); }
   // 4b) Pix automático: confere cobranças pendentes das últimas 48 h (caso algum aviso do Mercado Pago tenha se perdido)
   if (mpToken() !== '') { $nP = 0; foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'cobrancas'")->fetchAll() as $row) { $c = json_decode($row['data'], true); if (is_array($c) && ($c['status'] ?? '') === 'pendente' && strtotime($c['criadoEm'] ?? 'now') > time() - 172800) { $r = processaPagamento($row['id']); if ($r['status'] === 'aprovado') $nP++; } } $rel['feito'][] = "Pix conferidos: $nP aprovados"; }
@@ -1192,6 +1194,12 @@ case 'foto_google': {
   $u = (string)($j['photoUri'] ?? '');
   if (!preg_match('#^https://[\w.-]+\.(googleusercontent|google|gstatic)\.com/#', $u)) { http_response_code(404); exit; }
   header('Cache-Control: public, max-age=86400'); header('Location: ' . $u, true, 302); exit;
+}
+/* Fontes abertas na hora (painel): confere poucos lugares pelo site oficial e pelo OpenStreetMap, sem chave nenhuma */
+case 'abertas_agora': {
+  exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405); @set_time_limit(180);
+  $r = fontesAbertasRobo(hojeDallas(), max(1, min(10, (int)($corpo['quantos'] ?? 5))));
+  sai(['ok' => true, 'msg' => $r['feito'] ?: 'Nada para conferir agora.', 'erro' => $r['erro']]);
 }
 case 'chave_google': {
   exigeMaster(); if ($metodo !== 'POST') erro('Use POST.', 405);
@@ -2051,6 +2059,108 @@ function enviaPush(string $titulo, string $texto, string $url, string $tema = ''
     if ($st >= 200 && $st < 300) $env++; else { $fal++; if ($st === 404 || $st === 410) $pdo->prepare("DELETE FROM docs WHERE col = 'push' AND id = ?")->execute([$row['id']]); }
   }
   return ['enviados' => $env, 'falhas' => $fal];
+}
+
+/* ---------- Fontes abertas (sem chave): site oficial do lugar + OpenStreetMap ---------- */
+/* Horário no formato do OpenStreetMap/schema.org ("Mo-Fr 09:00-18:00; Sa 10:00-14:00") em português ("Seg a Sex 9h–18h · Sáb 10h–14h"). */
+function horarioPt(string $oh): string {
+  $oh = trim(preg_replace('/\s+/', ' ', $oh)); if ($oh === '') return '';
+  if (preg_match('#^24/7$#', $oh)) return 'Aberto 24 horas, todos os dias';
+  $D = ['Mo' => 'Seg', 'Tu' => 'Ter', 'We' => 'Qua', 'Th' => 'Qui', 'Fr' => 'Sex', 'Sa' => 'Sáb', 'Su' => 'Dom', 'PH' => 'feriados'];
+  $h = fn($t) => (int)substr($t, 0, 2) . 'h' . (substr($t, 3, 2) !== '00' ? substr($t, 3, 2) : '');
+  $t = preg_replace_callback('/\b([0-2]\d):([0-5]\d)\s*-\s*([0-2]\d):([0-5]\d)\b/', fn($m) => $h($m[1] . ':' . $m[2]) . '–' . $h($m[3] . ':' . $m[4]), $oh);
+  $t = preg_replace_callback('/\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\s*-\s*(Mo|Tu|We|Th|Fr|Sa|Su)\b/', fn($m) => $D[$m[1]] . ' a ' . $D[$m[2]], $t);
+  $t = preg_replace_callback('/\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\b/', fn($m) => $D[$m[1]], $t);
+  $t = preg_replace('/\b(off|closed)\b/i', 'fechado', $t);
+  return mb_substr(str_replace([';', ','], [' ·', ', '], $t), 0, 300);
+}
+/* schema.org openingHoursSpecification → mesmo formato, agrupando dias com o mesmo horário */
+function horarioSchema(array $esp): string {
+  $ord = ['Monday' => 'Mo', 'Tuesday' => 'Tu', 'Wednesday' => 'We', 'Thursday' => 'Th', 'Friday' => 'Fr', 'Saturday' => 'Sa', 'Sunday' => 'Su']; $por = [];
+  foreach ($esp as $e) {
+    if (!is_array($e) || empty($e['opens'])) continue;
+    foreach ((array)($e['dayOfWeek'] ?? []) as $d) { $d = preg_replace('#^https?://schema\.org/#', '', (string)$d); if (isset($ord[$d])) $por[$ord[$d]] = substr((string)$e['opens'], 0, 5) . '-' . substr((string)($e['closes'] ?? ''), 0, 5); }
+  }
+  if (!$por) return ''; $partes = []; $dias = array_values($ord); $i = 0;
+  while ($i < 7) { $d = $dias[$i]; if (!isset($por[$d])) { $i++; continue; } $j = $i; while ($j + 1 < 7 && ($por[$dias[$j + 1]] ?? null) === $por[$d]) $j++; $partes[] = ($j > $i ? $d . '-' . $dias[$j] : $d) . ' ' . $por[$d]; $i = $j + 1; }
+  return horarioPt(implode('; ', $partes));
+}
+/* dados estruturados (JSON-LD) do site oficial: telefone e horário que o próprio lugar publica */
+function dadosDoSite(string $html): array {
+  $o = []; if (!preg_match_all('#<script[^>]+application/ld\+json[^>]*>(.*?)</script>#is', $html, $mm)) return $o;
+  $anda = function ($n) use (&$anda, &$o) {
+    if (!is_array($n)) return;
+    if (isset($n['@graph'])) $anda($n['@graph']);
+    if (array_is_list($n)) { foreach ($n as $x) $anda($x); return; }
+    if (empty($o['telefone']) && !empty($n['telephone']) && is_string($n['telephone'])) $o['telefone'] = trim($n['telephone']);
+    if (empty($o['horario'])) {
+      if (!empty($n['openingHoursSpecification'])) $o['horario'] = horarioSchema(array_is_list((array)$n['openingHoursSpecification']) ? (array)$n['openingHoursSpecification'] : [$n['openingHoursSpecification']]);
+      elseif (!empty($n['openingHours'])) $o['horario'] = horarioPt(is_array($n['openingHours']) ? implode('; ', $n['openingHours']) : (string)$n['openingHours']);
+    }
+    foreach ($n as $v) if (is_array($v)) $anda($v);
+  };
+  foreach ($mm[1] as $j) $anda(json_decode(html_entity_decode(trim($j)), true));
+  return array_filter($o);
+}
+/* OpenStreetMap (Overpass, gratuito): o lugar com nome parecido a até 150 m das coordenadas do guia */
+function dadosOsm(array $l): ?array {
+  if (!isset($l['lat'], $l['lng']) || $l['lat'] === '') return null;
+  if (($GLOBALS['osmFora'] ?? 0) >= 3) return null;   // servidores gratuitos fora do ar 3 vezes seguidas: deixa para amanhã
+  $q = '[out:json][timeout:20];nwr(around:150,' . (float)$l['lat'] . ',' . (float)$l['lng'] . ')["name"];out tags center 40;';
+  foreach (array_filter([(string)($GLOBALS['CFG']['overpass_url'] ?? ''), 'https://overpass-api.de/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass.private.coffee/api/interpreter']) as $srv) {
+    $ctx = stream_context_create(['http' => ['method' => 'POST', 'timeout' => 15, 'ignore_errors' => true, 'header' => "Content-Type: application/x-www-form-urlencoded\r\nUser-Agent: CoracaoBR/1.0 (+https://coracaobr.com.br)", 'content' => 'data=' . rawurlencode($q)]]);
+    $j = json_decode((string)@file_get_contents($srv, false, $ctx), true); if (!is_array($j) || !isset($j['elements'])) continue;
+    $GLOBALS['osmFora'] = 0;
+    $alvo = array_filter(explode(' ', preg_replace('/[^a-z0-9 ]/', ' ', semAcento((string)($l['nome'] ?? ''))))); $alvo = array_values(array_filter($alvo, fn($w) => strlen($w) > 2)); if (!$alvo) return null;
+    $melhor = null; $pt = 0;
+    foreach ($j['elements'] as $e) {
+      $t = $e['tags'] ?? []; if (empty($t['name']) || isset($t['highway'])) continue;
+      $nm = array_filter(explode(' ', preg_replace('/[^a-z0-9 ]/', ' ', semAcento((string)$t['name']))), fn($w) => strlen($w) > 2);
+      $c = count(array_intersect($alvo, $nm)) / max(1, count($alvo)); if ($c > $pt) { $pt = $c; $melhor = $e; }
+    }
+    if (!$melhor || $pt < 0.6) return null;
+    $t = $melhor['tags']; $tipo = ['node' => 'node', 'way' => 'way', 'relation' => 'relation'][$melhor['type'] ?? 'node'] ?? 'node';
+    return ['horario' => !empty($t['opening_hours']) ? horarioPt((string)$t['opening_hours']) : '', 'telefone' => trim(explode(';', (string)($t['phone'] ?? ($t['contact:phone'] ?? '')))[0]),
+      'site' => (string)($t['website'] ?? ($t['contact:website'] ?? '')), 'fechado' => (bool)preg_grep('/^(disused|abandoned|was):/', array_keys($t)),
+      'fonte' => ['url' => 'https://www.openstreetmap.org/' . $tipo . '/' . ($melhor['id'] ?? ''), 'titulo' => 'OpenStreetMap']];
+  }
+  $GLOBALS['osmFora'] = ($GLOBALS['osmFora'] ?? 0) + 1;   // nenhum servidor respondeu
+  return null;
+}
+/* horários iguais mesmo escritos de jeitos diferentes: compara só os números das horas */
+function mesmoHorario(string $a, string $b): bool { $n = fn($x) => implode(',', array_map('intval', preg_match_all('/\d{1,2}/', preg_replace('/(\d{1,2})h(\d{2})/', '$1 $2', $x), $m) ? $m[0] : [])); return $n($a) !== '' && $n($a) === $n($b); }
+function fontesAbertasRobo(string $hoje, int $quantos): array {
+  $pdo = banco(); $sug = iaSugestoes(); $vistas = []; foreach ($sug as $x) $vistas[($x['lugarId'] ?? '') . '|' . ($x['campo'] ?? '') . '|' . iaNorm((string)($x['campo'] ?? ''), (string)($x['novo'] ?? ''))] = 1;
+  $fila = [];
+  foreach ($pdo->query("SELECT id, data FROM docs WHERE col = 'lugares'")->fetchAll() as $row) { $l = json_decode($row['data'], true); if (!is_array($l) || ($l['publicado'] ?? true) === false || !empty($l['demo']) || ($l['categoria'] ?? '') === 'evento') continue; $fila[] = [$row['id'], $l, (string)($l['abertoEm'] ?? '')]; }
+  usort($fila, fn($a, $b) => strcmp($a[2], $b[2]));
+  $conf = 0; $auto = 0; $novas = 0; $osmOk = 0;
+  foreach (array_slice($fila, 0, $quantos) as $i => [$id, $l]) {
+    if ($i) usleep(1100000);   // educado com os servidores gratuitos
+    $achados = [];
+    if (!empty($l['site']) && preg_match('#^https?://#i', $l['site'])) {
+      $ctx = stream_context_create(['http' => ['method' => 'GET', 'header' => "User-Agent: Mozilla/5.0 (compatible; CoracaoBR/1.0; +" . baseUrl() . ")\r\nAccept: text/html", 'timeout' => 10, 'ignore_errors' => true, 'follow_location' => 1, 'max_redirects' => 4]]);
+      $html = (string)@file_get_contents($l['site'], false, $ctx, 0, 600000);
+      if ($html !== '') foreach (dadosDoSite($html) as $c => $v) $achados[$c] = [$v, ['url' => $l['site'], 'titulo' => 'Site oficial']];
+    }
+    $osm = dadosOsm($l);
+    if ($osm) { $osmOk++; foreach (['horario', 'telefone', 'site'] as $c) if (!empty($osm[$c]) && !isset($achados[$c])) $achados[$c] = [$osm[$c], $osm['fonte']]; if (!empty($osm['fechado'])) $achados['fechado'] = ['Fechou definitivamente', $osm['fonte']]; }
+    $conf++; $l['abertoEm'] = $hoje;
+    foreach ($achados as $c => [$v, $fonte]) {
+      $v = trim((string)$v); if ($v === '' || ($c === 'site' && !preg_match('#^https?://#i', $v))) continue;
+      $at = trim((string)($l[$c] ?? ''));
+      if ($c !== 'fechado') {
+        if ($at !== '' && ($c === 'horario' ? mesmoHorario($at, $v) : iaNorm($c, $at) === iaNorm($c, $v))) continue;
+        if ($at === '' && ($c !== 'horario' || (empty($l['horas']) && empty($l['horasManual'])))) { $l[$c] = $v; if ($c === 'horario') $l['horarioFonte'] = $fonte['titulo'] . ' · ' . $hoje; $auto++; continue; }   // campo vazio: preenche sozinho
+      }
+      $k = $id . '|' . $c . '|' . iaNorm($c, $v); if (isset($vistas[$k])) continue; $vistas[$k] = 1;
+      $sug[] = ['id' => 'sg' . bin2hex(random_bytes(5)), 'tipo' => 'lugar', 'origem' => 'aberta', 'lugarId' => $id, 'nome' => (string)($l['nome'] ?? ''), 'campo' => $c, 'atual' => $at, 'novo' => $v, 'obs' => 'Encontrado em ' . $fonte['titulo'] . '.', 'fontes' => [$fonte], 'criadoEm' => agora(), 'status' => 'pendente'];
+      $novas++;
+    }
+    $pdo->prepare("UPDATE docs SET data = ?, em = ? WHERE col = 'lugares' AND id = ?")->execute([json_encode($l, JSON_UNESCAPED_UNICODE), agora(), $id]);
+  }
+  if ($novas) iaGravaSugestoes($sug); if ($auto) versao('lugares');
+  return ['feito' => $conf ? "Fontes abertas (site oficial e OpenStreetMap): $conf lugares conferidos" . ($auto ? ", $auto dados preenchidos" : '') . ($novas ? ", $novas sugestões para aprovar" : '') : '', 'erro' => $conf && !$osmOk && $conf >= 5 ? 'OpenStreetMap não respondeu hoje (tenta de novo amanhã).' : ''];
 }
 
 /* ---------- Google Places ---------- */

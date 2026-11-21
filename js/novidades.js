@@ -436,7 +436,7 @@
         var box = $("[data-ia-sug]", ia);
         Store.api("ia_sugestoes").then(function (j) {
           var it = j.itens || [];
-          box.innerHTML = '<div class="row" style="justify-content:space-between"><b>Sugestões da IA para aprovar (' + it.length + ")</b>" + (it.length ? '<button type="button" class="link" data-sg-todas>Ignorar todas</button>' : "") + "</div>" +
+          box.innerHTML = '<div class="row" style="justify-content:space-between"><b>Sugestões para aprovar · IA e fontes abertas (' + it.length + ")</b>" + (it.length ? '<button type="button" class="link" data-sg-todas>Ignorar todas</button>' : "") + "</div>" +
             (it.length ? it.slice(0, 60).map(function (x) {
               var e = x.evento || {}, fts = (x.fontes || []).map(function (f, i) { return '<a href="' + esc(f.url) + '" target="_blank" rel="noopener">' + esc(f.titulo || "fonte " + (i + 1)) + "</a>"; }).join(" · ");
               return '<div class="ia-sg"><div><small class="muted">' + esc(CAMPO[x.campo] || x.campo) + "</small><b>" + esc(x.nome) + "</b>" +
