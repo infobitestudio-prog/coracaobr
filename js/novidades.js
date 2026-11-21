@@ -280,7 +280,7 @@
   var CIDADES = [["orlando", "Orlando", "FL"], ["miami", "Miami", "FL"], ["boston", "Boston", "MA"], ["novayork", "Nova York", "NY"], ["newark", "Newark", "NJ"], ["atlanta", "Atlanta", "GA"], ["charlotte", "Charlotte", "NC"], ["losangeles", "Los Angeles", "CA"]];
   function seletorCidade() {
     var avisos = []; try { avisos = JSON.parse(localStorage.getItem("cidades-aviso") || "[]"); } catch (e) { /* ok */ }
-    var d = dlgAbre('<h3>Próximas cidades</h3><p class="small muted">O CoraçãoBR já está em Dallas–Fort Worth, Houston, Austin e San Antonio e vai chegar a outras cidades com muitos brasileiros. Peça para ser avisado.</p><div class="cid-l">' + CIDADES.map(function (c) {
+    var d = dlgAbre('<h3>Próximas cidades</h3><p class="small muted">O CoraçãoBR já está em ' + esc((G.regioesVisiveis ? G.regioesVisiveis() : []).map(function (k) { return G.CIDADES_GUIA[k].nome; }).join(", ") || "Dallas–Fort Worth") + ' e vai chegar a outras cidades com muitos brasileiros. Peça para ser avisado.</p><div class="cid-l">' + CIDADES.map(function (c) {
       return c[3] ? '<button type="button" class="cid on" data-fecha><b>' + c[1] + "</b><small>" + c[2] + ' · você está aqui</small><span class="pill ok">Ativa</span></button>'
         : '<div class="cid"><b>' + c[1] + "</b><small>" + c[2] + ' · em breve</small><button type="button" class="btn sm' + (avisos.indexOf(c[0]) >= 0 ? " ghost" : "") + '" data-cid-av="' + c[0] + '">' + (avisos.indexOf(c[0]) >= 0 ? "Vamos te avisar ✓" : "Avise-me") + "</button></div>";
     }).join("") + '</div><button class="btn ghost" type="button" data-fecha>Fechar</button>');

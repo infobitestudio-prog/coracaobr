@@ -8,11 +8,18 @@
     dfw: { id: "dfw", nome: "Dallas–Fort Worth", curto: "DFW", principal: "Dallas", capa: "img/hero/klyde-warren-park-m.jpg", lat: 32.7767, lng: -96.797, partidas: [["Centro de Dallas", 32.7767, -96.797], ["Aeroporto DFW", 32.8998, -97.0403], ["Aeroporto Love Field", 32.8471, -96.8518], ["Uptown", 32.8003, -96.8003], ["Plano", 33.0198, -96.6989], ["Frisco", 33.1507, -96.8236], ["Irving / Las Colinas", 32.8686, -96.9395], ["Fort Worth", 32.7555, -97.3308], ["Arlington", 32.7357, -97.1081]] },
     houston: { id: "houston", nome: "Houston", curto: "HOU", principal: "Houston", capa: "fotos_cidades/houston/hou-buffalo-bayou-park/hou-buffalo-bayou-park-1.jpg", lat: 29.7604, lng: -95.3698, partidas: [["Centro de Houston", 29.7604, -95.3698], ["Aeroporto IAH (Bush)", 29.9902, -95.3368], ["Aeroporto Hobby", 29.6454, -95.2789], ["Galleria / Uptown", 29.7398, -95.4614], ["Sugar Land", 29.6197, -95.6349], ["Katy", 29.7858, -95.8245], ["The Woodlands", 30.1658, -95.4613], ["Pearland", 29.5636, -95.286]] },
     austin: { id: "austin", nome: "Austin", curto: "AUS", principal: "Austin", capa: "fotos_cidades/austin/aus-texas-state-capitol/aus-texas-state-capitol-1.jpg", lat: 30.2672, lng: -97.7431, partidas: [["Centro de Austin", 30.2672, -97.7431], ["Aeroporto de Austin (AUS)", 30.1975, -97.6664], ["South Congress", 30.2499, -97.7495], ["The Domain", 30.4021, -97.7253], ["Round Rock", 30.5083, -97.6789], ["Cedar Park", 30.5052, -97.8203], ["Pflugerville", 30.4394, -97.62]] },
-    sanantonio: { id: "sanantonio", nome: "San Antonio", curto: "SAT", principal: "San Antonio", capa: "fotos_cidades/sanantonio/sat-river-walk/sat-river-walk-1.jpg", lat: 29.4241, lng: -98.4936, partidas: [["Centro / River Walk", 29.4241, -98.4936], ["Aeroporto de San Antonio (SAT)", 29.5337, -98.4698], ["Alamo Heights", 29.4849, -98.4655], ["Stone Oak", 29.6366, -98.4913], ["The Rim / La Cantera", 29.6052, -98.6034], ["New Braunfels", 29.703, -98.1245]] }
+    sanantonio: { id: "sanantonio", nome: "San Antonio", curto: "SAT", principal: "San Antonio", capa: "fotos_cidades/sanantonio/sat-river-walk/sat-river-walk-1.jpg", lat: 29.4241, lng: -98.4936, partidas: [["Centro / River Walk", 29.4241, -98.4936], ["Aeroporto de San Antonio (SAT)", 29.5337, -98.4698], ["Alamo Heights", 29.4849, -98.4655], ["Stone Oak", 29.6366, -98.4913], ["The Rim / La Cantera", 29.6052, -98.6034], ["New Braunfels", 29.703, -98.1245]] },
+    spzl: { id: "spzl", nome: "São Paulo · Zona Leste", curto: "SP-ZL", principal: "São Paulo", pais: "BR", paisNome: "Brasil", estado: "SP", estadoNome: "São Paulo", tz: "America/Sao_Paulo", km: true, capa: "fotos_cidades/spzl/spzl-parque-ceret/spzl-parque-ceret-1.jpg", lat: -23.5615, lng: -46.5602, partidas: [["Shopping Anália Franco", -23.5615, -46.5602], ["Parque CERET", -23.5585, -46.5557], ["Estação Tatuapé (metrô)", -23.5403, -46.5766], ["Mooca", -23.559, -46.599], ["Penha", -23.525, -46.544], ["Itaquera / Arena", -23.5453, -46.4742], ["Centro de São Paulo (Sé)", -23.5503, -46.634], ["Aeroporto de Guarulhos (GRU)", -23.4356, -46.4731], ["Aeroporto de Congonhas (CGH)", -23.6266, -46.6554]] }
   };
+  /* Hierarquia país › estado › cidade (região do guia) › bairro. O master escolhe no Painel → Regiões do guia o que aparece. */
+  Object.keys(CIDADES_GUIA).forEach(function (k) { var c = CIDADES_GUIA[k]; if (!c.pais) { c.pais = "US"; c.paisNome = "Estados Unidos"; c.estado = "TX"; c.estadoNome = "Texas"; c.tz = "America/Chicago"; } });
+  function cfgRegioes() { try { var g = (window.Store && Store.obter && Store.obter("config", "geral")) || {}; return g.regioes || {}; } catch (e) { return {}; } }
+  function regiaoVisivel(k) { return !!CIDADES_GUIA[k] && (cfgRegioes().ocultas || []).indexOf(k) < 0; }
+  function regioesVisiveis() { var v = Object.keys(CIDADES_GUIA).filter(regiaoVisivel); return v.length ? v : ["dfw"]; }
+  function bairroVisivel(l) { var o = (cfgRegioes().bairrosOcultos || {})[regiaoGuia(l)]; return !(o && o.length && o.indexOf(regiao(l)) >= 0); }
   function lerLocal(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   var cidadeEscolhida = CIDADES_GUIA[lerLocal("cidade")] ? lerLocal("cidade") : null;
-  function cidadeAtual() { return cidadeEscolhida || "dfw"; }
+  function cidadeAtual() { var c = cidadeEscolhida || "dfw"; return regiaoVisivel(c) ? c : regioesVisiveis()[0]; }
   function cid() { return CIDADES_GUIA[cidadeAtual()]; }
   function regiaoGuia(l) { return (l && l.regiaoGuia) || "dfw"; }
   var CENTRO = { lat: cid().lat, lng: cid().lng };
@@ -220,6 +227,13 @@
   var PARTIDAS = cid().partidas.slice();
   var MODOS = { carro: { nome: "Carro", maps: "driving" }, pe: { nome: "A pé", maps: "walking" }, bike: { nome: "Bicicleta", maps: "bicycling" } };
   var Geo = { lat: CENTRO.lat, lng: CENTRO.lng, nome: PARTIDAS[0][0], gps: false, modo: "carro", estado: "inicial" };
+  var cidAplicada = cidadeEscolhida || "dfw";
+  function sincCidade() {
+    var k = cidadeAtual(); if (k === cidAplicada) return; cidAplicada = k; var c = CIDADES_GUIA[k];
+    CENTRO.lat = c.lat; CENTRO.lng = c.lng; PARTIDAS.length = 0; c.partidas.forEach(function (p) { PARTIDAS.push(p); });
+    if (!Geo.gps || dist(Geo, c) > 250) { Geo.gps = false; Geo.nome = PARTIDAS[0][0]; Geo.lat = PARTIDAS[0][1]; Geo.lng = PARTIDAS[0][2]; }
+    document.documentElement.dataset.cidade = k; document.dispatchEvent(new CustomEvent("cidade", { detail: c })); pintada = null;
+  }
   function loc(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   (function () { var m = loc("modo"), o = loc("partida"); if (MODOS[m]) Geo.modo = m; var p = PARTIDAS.filter(function (x) { return x[0] === o; })[0]; if (p) { Geo.nome = p[0]; Geo.lat = p[1]; Geo.lng = p[2]; } })();
   function kmDe(l) { return dist(Geo, l); }
@@ -251,11 +265,11 @@
     function erro() { Geo.estado = "negado"; if (manual) { toast("O navegador não liberou a localização. Escolha um ponto de partida."); escolherPartida(); manual = false; } render(true); }
     try { navigator.geolocation.getCurrentPosition(ok, erro, { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }); if (vigia == null) vigia = navigator.geolocation.watchPosition(ok, function () {}, { maximumAge: 60000 }); } catch (e) { erro(); }
   }
-  function cidadeMaisPerto(c) { var m = null, md = 1e9; Object.keys(CIDADES_GUIA).forEach(function (k) { var d = dist(c, CIDADES_GUIA[k]); if (d < md) { md = d; m = CIDADES_GUIA[k]; } }); return md < 250 ? m : null; }
+  function cidadeMaisPerto(c) { var m = null, md = 1e9; regioesVisiveis().forEach(function (k) { var d = dist(c, CIDADES_GUIA[k]); if (d < md) { md = d; m = CIDADES_GUIA[k]; } }); return md < 250 ? m : null; }
   /* Troca a cidade do guia: lista, pontos de partida, mapa e textos passam a ser da cidade escolhida. */
   function trocaCidade(id, porGps) {
     if (!CIDADES_GUIA[id]) return;
-    var mudou = id !== cidadeAtual(); cidadeEscolhida = id; loc("cidade", id);
+    var mudou = id !== cidadeAtual(); cidadeEscolhida = id; cidAplicada = id; loc("cidade", id);
     var c = CIDADES_GUIA[id]; CENTRO.lat = c.lat; CENTRO.lng = c.lng; PARTIDAS.length = 0; c.partidas.forEach(function (p) { PARTIDAS.push(p); });
     if (!Geo.gps || dist(Geo, c) > 250) { Geo.gps = false; Geo.nome = PARTIDAS[0][0]; Geo.lat = PARTIDAS[0][1]; Geo.lng = PARTIDAS[0][2]; }
     limpaFiltro(); document.documentElement.dataset.cidade = id;
@@ -266,10 +280,10 @@
   /* Na primeira visita o site pergunta a cidade (com atalho pela localização). */
   function perguntaCidade(obrigatorio) {
     var d = $("#dlg"), fotoDe = function (k) { if (CIDADES_GUIA[k].capa) return CIDADES_GUIA[k].capa; var l = primeiro(Store.lista("lugares").filter(function (x) { return regiaoGuia(x) === k && x.tipo !== "estabelecimento" && x.publicado !== false && (x.fotos || []).some(function (f) { return !f.ilustrativa; }); }).sort(ordenaNota))[0]; var f = l && (l.fotos || []).filter(function (f) { return !f.ilustrativa; })[0]; return f ? Store.urlFoto(f.src) || f.src : ""; };
-    var n = function (k) { return Store.lista("lugares").filter(function (x) { return regiaoGuia(x) === k && x.publicado !== false && !x.demo; }).length; };
+    var n = function (k) { return Store.lista("lugares").filter(function (x) { return regiaoGuia(x) === k && x.publicado !== false && !x.demo && bairroVisivel(x); }).length; };
     d.innerHTML = '<div class="dlg cq"><div class="cq-top"><span class="cq-logo">Coração<b>BR</b></span><h3 tabindex="-1" autofocus>Qual cidade você quer explorar?</h3><p class="muted">Escolha uma vez. O guia lembra da sua escolha e você troca quando quiser no botão de cidade, lá no topo.</p></div>' +
       '<button type="button" class="btn cq-gps" data-cq-gps>' + ic("pin") + ' Usar minha localização</button><div class="cq-l">' +
-      Object.keys(CIDADES_GUIA).map(function (k) { var c = CIDADES_GUIA[k], f = fotoDe(k), q = n(k); return '<button type="button" class="cq-c' + (k === cidadeAtual() && cidadeEscolhida ? " on" : "") + '" data-cq="' + k + '"' + (q ? "" : " disabled") + ">" + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "<i></i>") + "<span><b>" + esc(c.nome) + "</b><small>" + (q ? q + " lugares no guia" : "em breve") + "</small></span></button>"; }).join("") +
+      regioesVisiveis().map(function (k, i, arr) { var c = CIDADES_GUIA[k], f = fotoDe(k), q = n(k), ant = i ? CIDADES_GUIA[arr[i - 1]] : null, grupo = (!ant || ant.pais !== c.pais || ant.estado !== c.estado) ? '<p class="cq-g">' + esc(c.paisNome + " › " + c.estadoNome) + "</p>" : ""; return grupo + '<button type="button" class="cq-c' + (k === cidadeAtual() && cidadeEscolhida ? " on" : "") + '" data-cq="' + k + '"' + (q ? "" : " disabled") + ">" + (f ? '<img src="' + esc(f) + '" alt="" loading="lazy">' : "<i></i>") + "<span><b>" + esc(c.nome) + "</b><small>" + (q ? q + " lugares no guia" : "em breve") + "</small></span></button>"; }).join("") +
       "</div>" + '<button type="button" class="more cq-mais" data-cq-mais>Outras cidades em breve →</button>' + (obrigatorio ? "" : '<div class="row"><button type="button" class="btn ghost" data-cq-x>Fechar</button></div>') + "</div>";
     d.onclick = function (e) {
       var b = e.target.closest("[data-cq]"); if (b && !b.disabled) { d.close(); trocaCidade(b.dataset.cq); if (!cidadeEscolhida) loc("cidade", b.dataset.cq); return; }
@@ -304,8 +318,8 @@
   /* ---------- dados derivados ---------- */
   /* Anúncio pago some quando a assinatura foi cancelada e o mês já pago terminou. */
   function assinaturaAtiva(l) { if (l._dono && window.Pag) return Pag.visivel(l); var a = l.assinatura; if (l._dono && !a) return false; return !a || a.status === "ativa" || (a.proximaCobranca || "") >= hojeISO(); }
-  function lugares() { var c = cidadeAtual(); return Store.lista("lugares").filter(function (l) { return l.publicado !== false && !l.demo && regiaoGuia(l) === c && assinaturaAtiva(l); }); }
-  function todosLugares() { return Store.lista("lugares").filter(function (l) { return l.publicado !== false && !l.demo && assinaturaAtiva(l); }); }
+  function lugares() { var c = cidadeAtual(); return Store.lista("lugares").filter(function (l) { return l.publicado !== false && !l.demo && regiaoGuia(l) === c && bairroVisivel(l) && assinaturaAtiva(l); }); }
+  function todosLugares() { return Store.lista("lugares").filter(function (l) { return l.publicado !== false && !l.demo && regiaoVisivel(regiaoGuia(l)) && bairroVisivel(l) && assinaturaAtiva(l); }); }
   /* Índice de avaliações por lugar, refeito só quando a coleção muda (evita varrer tudo a cada comparação de ordenação). */
   var idxAv = null;
   Store.assinar(function (col) { if (!col || col === "avaliacoes") idxAv = null; });
@@ -481,8 +495,8 @@
       t("#busca-gratis", "De graça", gr, "passeios sem pagar nada", "leaf") +
       t("#busca-gbrasileiros", "Brasileiros", br, "negócios de brasileiros", "flag") + "</section>";
   }
-  function horaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Chicago", hour: "2-digit", minute: "2-digit" }).format(new Date()); } catch (e) { return "--:--"; } }
-  function diaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Chicago", weekday: "long", day: "numeric", month: "short" }).format(new Date()); } catch (e) { return ""; } }
+  function horaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: cid().tz || "America/Chicago", hour: "2-digit", minute: "2-digit" }).format(new Date()); } catch (e) { return "--:--"; } }
+  function diaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: cid().tz || "America/Chicago", weekday: "long", day: "numeric", month: "short" }).format(new Date()); } catch (e) { return ""; } }
   setInterval(function () { var h = document.getElementById("pu-hora"); if (h) h.textContent = horaDallas(); }, 20000);
   function viewInicio() {
     var ls = lugares(), by = function (g) { return primeiro(ls.filter(GRUPOS[g].f).sort(ordenaNota)); };
@@ -766,15 +780,15 @@
   function tile(icn, rot, val, extra, cls) { return '<div class="tile ' + (cls || "") + '"><span class="tic">' + ic(icn) + '</span><div><small>' + rot + "</small><b>" + val + "</b>" + (extra || "") + "</div></div>"; }
   /* Avaliações de outras plataformas: só por API oficial (gravadas pelo robô com atribuição) e links diretos para cada site. */
   function externas(l) {
-    var q = encodeURIComponent(l.nome + " " + (l.cidade || (CIDADES_GUIA[regiaoGuia(l)] || cid()).principal) + " TX"), lista = Array.isArray(l.avaliacoesExternas) ? l.avaliacoesExternas.filter(function (r) { return r && r.texto && r.autor; }).slice(0, 6) : [];
+    var rgL = CIDADES_GUIA[regiaoGuia(l)] || cid(), q = encodeURIComponent(l.nome + " " + (l.cidade || rgL.principal) + " " + rgL.estado), lista = Array.isArray(l.avaliacoesExternas) ? l.avaliacoesExternas.filter(function (r) { return r && r.texto && r.autor; }).slice(0, 6) : [];
     var nota = l.notaExterna && Number(l.notaExterna.media) ? '<p class="small">' + stars(l.notaExterna.media) + ' <b>' + Number(l.notaExterna.media).toFixed(1) + "</b> no " + esc(l.notaExterna.fonte || "Google") + (l.notaExterna.total ? " · " + Number(l.notaExterna.total).toLocaleString("pt-BR") + " avaliações" : "") + "</p>" : "";
     return '<div class="panel stack ext" style="gap:10px"><h3>' + (lista.length ? "Avaliações reais do Google" : "O que dizem em outros sites") + "</h3>" + (l.categoria === "evento" && lista.length ? '<p class="small muted">Avaliações do local onde o evento acontece.</p>' : "") + nota +
       lista.map(function (r) { return '<div class="rv"><span class="av">' + esc(String(r.autor).charAt(0).toUpperCase()) + '</span><div><div class="row" style="gap:8px"><b>' + esc(r.autor) + "</b>" + (r.nota ? stars(r.nota, true) : "") + '</div><small class="muted">' + esc(r.fonte || "Google") + (r.data ? " · " + esc(r.data) : "") + "</small><p>" + esc(String(r.texto).slice(0, 400)) + "</p>" + (url(r.link) ? '<a class="small" href="' + esc(r.link) + '" target="_blank" rel="noopener">ver no ' + esc(r.fonte || "Google") + "</a>" : "") + "</div></div>"; }).join("") +
-      '<div class="row"><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">Google</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.yelp.com/search?find_desc=' + encodeURIComponent(l.nome) + "&find_loc=" + encodeURIComponent((l.cidade || (CIDADES_GUIA[regiaoGuia(l)] || cid()).principal) + ", TX") + '">Yelp</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Search?q=' + q + '">Tripadvisor</a></div></div>';
+      '<div class="row"><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">Google</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.yelp.com/search?find_desc=' + encodeURIComponent(l.nome) + "&find_loc=" + encodeURIComponent((l.cidade || rgL.principal) + ", " + rgL.estado) + '">Yelp</a><a class="btn sm ghost" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Search?q=' + q + '">Tripadvisor</a></div></div>';
   }
   /* Mapa do Google embutido, sem chave: mostra o lugar com a nota e o atalho para as avaliações no próprio Google */
   function mapaGoogle(l, alt) {
-    var q = encodeURIComponent([l.nome, l.endereco || ((l.cidade || (CIDADES_GUIA[regiaoGuia(l)] || cid()).principal) + ", TX")].filter(Boolean).join(", "));
+    var rgM = CIDADES_GUIA[regiaoGuia(l)] || cid(), q = encodeURIComponent([l.nome, l.endereco || ((l.cidade || rgM.principal) + ", " + rgM.estado)].filter(Boolean).join(", "));
     return '<div class="gmap"><iframe title="' + esc(l.nome) + ' no Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=' + q + '&hl=pt-BR&z=15&output=embed" style="height:' + (alt || 300) + 'px"></iframe>' +
       '<div class="gmap-a"><a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=' + q + '">' + ic("star") + " Ver avaliações e fotos no Google</a></div></div>";
   }
@@ -883,7 +897,7 @@
       ((l.horario || l.semana || l.horas) ? '<div class="sb-card sb-hor"><p class="xp-t">' + ic("clock") + " Horário</p>" + (window.Horario ? Horario.html(l, esc) : "<b>" + esc(l.horario) + "</b>") + "</div>" : "") +
       '<div class="attrs"><div>' + ic("ticket") + "<b>" + esc(precoBar) + "</b><small>" + (pz && !pz.gratis ? (pz.med ? "a partir de · média " + usd(pz.med) : "a partir de") : est ? "Faixa de preço" : "Entrada") + "</small></div>" +
       "<div>" + ic("clock") + "<b>" + esc(l.quando ? l.quando : est ? (window.Extras && Extras.aberto(l) != null ? (Extras.aberto(l) ? "Aberto" : "Fechado") : "Ver horário") : (l.tempoVisita || "Livre")) + "</b><small>" + (l.quando ? "Quando" : est ? "Agora" : "Tempo de visita") + "</small></div>" +
-      "<div>" + ic("pin") + "<b>" + (mi == null ? "–" : tempo(l)) + "</b><small>" + (mi == null ? "Distância" : esc(MODOS[Geo.modo].nome.toLowerCase()) + " · " + (mi < 10 ? mi.toFixed(1).replace(".", ",") : mi.toFixed(0)) + " mi") + "</small></div>" +
+      "<div>" + ic("pin") + "<b>" + (mi == null ? "–" : tempo(l)) + "</b><small>" + (mi == null ? "Distância" : esc(MODOS[Geo.modo].nome.toLowerCase()) + " · " + (cid().km ? (mi * 1.609 < 10 ? (mi * 1.609).toFixed(1).replace(".", ",") : (mi * 1.609).toFixed(0)) + " km" : (mi < 10 ? mi.toFixed(1).replace(".", ",") : mi.toFixed(0)) + " mi")) + "</small></div>" +
       "<div>" + (n.guia != null && window.Reacoes ? Reacoes.icone(n.guia, "rx-tile") : ic("star")) + "<b>" + (n.guia != null ? (window.Reacoes ? Reacoes.texto(n.guia) + " · " : "") + n.guia.toFixed(1) : "–") + "</b><small>" + esc(n.fonte || "sem avaliações") + "</small></div></div>" +
       (l.cupom ? '<div class="ticket"><span class="tic">' + ic("ticket") + '</span><div><span class="sponsor">Oferta para quem vem pelo guia</span><b>' + esc(l.cupom) + '</b><span class="small muted">Mostre esta tela no atendimento.</span>' + (window.Comunidade ? Comunidade.botaoCupom(l) : "") + '</div></div>' : "") +
       (l.descontoClube ? (function () { var mb = !!(Store.uid() && window.Novidades && Novidades.membro && Novidades.membro(Store.uid())); return '<div class="ticket tk-clube"><span class="tic">' + ic("star") + '</span><div><span class="sponsor">Clube CoraçãoBR</span><b>' + esc(l.descontoClube) + '</b><span class="small muted">' + (mb ? "Você é membro: mostre a carteirinha digital no balcão." : "Desconto para membros do Clube, com carteirinha digital no celular.") + '</span><div class="tk-acoes"><a class="btn sm" href="#clube">' + (mb ? "Abrir minha carteirinha" : "Conhecer o Clube") + "</a>" + (mb && window.Wallet ? Wallet.botao("clube", Store.uid(), { nome: (Store.conta() || {}).nome || "", linha: "Membro do Clube CoraçãoBR" }) : "") + "</div></div></div>"; })() : "") +
@@ -1041,7 +1055,7 @@
     app.innerHTML = '<section class="block an"><div class="wrap">' +
       '<div class="an-hero"><div class="an-copy"><p class="eyebrow">Para negócios e profissionais</p>' + (promo ? '<a class="an-promo" href="#promo">' + ic("sparkle") + esc(promo) + " Ver a promoção →</a>" : "") + '<h1 class="page-h">Seu negócio na frente de quem fala português.</h1><p class="an-sub">Restaurante, mercado, salão, handyman, babá, limpeza: monte seu anúncio em minutos e entre no ar na hora, no guia que os brasileiros usam para decidir.</p>' +
       '<div class="row an-cta"><a class="btn" href="#anunciante" data-acesso="anunciar">Anunciar agora ' + ic("arrow") + '</a>' + (window.Promo && Promo.ativa() ? '<a class="btn ghost" href="#promo">Promoção: ' + reais(Promo.cfg().preco) + " = 1 anúncio + " + Promo.cfg().curadorias + " depoimentos</a>" : "") + '</div>' +
-      '<dl class="an-st"><div><dt>Lugares no guia</dt><dd>' + todosLugares().length + '</dd></div><div><dt>Regiões do Texas</dt><dd>' + Object.keys(CIDADES_GUIA).filter(function (k) { return todosLugares().some(function (l) { return regiaoGuia(l) === k; }); }).length + '</dd></div><div><dt>Idiomas</dt><dd>3</dd></div></dl></div>' +
+      '<dl class="an-st"><div><dt>Lugares no guia</dt><dd>' + todosLugares().length + '</dd></div><div><dt>Regiões do guia</dt><dd>' + regioesVisiveis().filter(function (k) { return todosLugares().some(function (l) { return regiaoGuia(l) === k; }); }).length + '</dd></div><div><dt>Idiomas</dt><dd>3</dd></div></dl></div>' +
       '<aside class="an-plan"><p class="an-pl">Pacote mensal</p><div class="an-pv">' + preco + '<small>/' + npk + ' anúncios</small></div>' +
       '<ul class="an-ck">' + cks([npk + " anúncios por 1 mês · pacotes somam", "Até 20 fotos, banner, WhatsApp, redes sociais e site", "1 banner no carrossel por pacote", "Pin verde no mapa e topo das buscas", "Publicações no feed e no Mural", "Página com fotos, cardápio, horário e contatos", "Cupom com QR Code e painel de métricas"]) + '</ul>' +
       '<a class="btn an-go" href="#anunciante" data-acesso="anunciar">Começar por ' + preco + '</a><p class="an-fine">' + (promo ? esc(promo) + " · " : "") + 'Pagamento por Pix, em reais · sem fidelidade</p></aside></div>' +
@@ -1148,9 +1162,9 @@
     var im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.semFoto) return;
     im.dataset.semFoto = "1"; im.removeAttribute("srcset"); im.src = FOTO_VAZIA; im.classList.add("sem-foto");
   }, true);
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
-  function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
+  function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { sincCidade(); render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ligar); else setTimeout(ligar, 0);
 })();

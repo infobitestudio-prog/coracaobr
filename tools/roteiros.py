@@ -14,6 +14,7 @@ L = [l for l in json.loads((ROOT / "data" / "seed.json").read_text())["lugares"]
 CID = {
     "dfw": ("Dallas–Fort Worth", 32.7767, -96.797, 60), "houston": ("Houston", 29.7604, -95.3698, 55),
     "austin": ("Austin", 30.2672, -97.7431, 45), "sanantonio": ("San Antonio", 29.4241, -98.4936, 45),
+    "spzl": ("Zona Leste", -23.5585, -46.5557, 15),
 }
 def mi(a, b):
     R = 3958.8; la1, la2 = math.radians(a["lat"]), math.radians(b["lat"]); dl = la2 - la1; dg = math.radians(b["lng"] - a["lng"])
@@ -70,6 +71,20 @@ TEMAS = [
     ("texas", "raiz texana", lambda l: l["categoria"] in {"bbq", "tex-mex", "steakhouse", "comida-sulista", "historico", "esporte"} or kw(l, "cowboy", "rodeo", "rodeio", "stockyard", "western", "texano", "texas"), False, (4, 5), 8, "10h", "Churrasco texano, cowboys e Tex-Mex"),
     ("cafe", "de cafés e brunch", lambda l: l["categoria"] in {"brunch-cafe", "acai-cafe", "padaria", "bairro", "parque"}, False, (4, 5), 4, "8h30", "Manhã sem pressa: café, brunch e passeio leve"),
 ]
+# São Paulo · Zona Leste: só parques públicos e shoppings, então temas próprios
+PQ = lambda l: l["categoria"] == "parque"; SH = lambda l: l["categoria"] == "compras"
+TEMAS_SP = [
+    ("parque-shopping", "parque e shopping", lambda l: PQ(l) or SH(l), False, (2, 3), 3.5, "9h", "Manhã no parque, almoço e tarde no shopping"),
+    ("natureza", "ao ar livre", PQ, False, (2, 3), 4.5, "8h", "Os parques públicos da Zona Leste"),
+    ("compras", "de compras", SH, False, (2, 3), 4, "11h", "Shoppings vizinhos, sem atravessar a cidade"),
+    ("criancas", "com crianças", lambda l: PQ(l) or SH(l), False, (2, 3), 3, "9h30", "Parque para gastar energia e shopping para o lanche"),
+]
+DICAS_SP = {
+    "parque-shopping": ["Vá ao parque cedo, antes do sol forte, e almoce na praça de alimentação do shopping.", "De metrô: estações Tatuapé, Carrão e Corinthians-Itaquera (Linha 3-Vermelha) ficam perto dos shoppings."],
+    "natureza": ["Os parques municipais abrem cedo; confira o horário do dia no site da Prefeitura de São Paulo.", "Leve água e protetor solar; nos fins de semana os parques enchem a partir das 9h."],
+    "compras": ["O Shopping Metrô Tatuapé e o Boulevard Tatuapé ficam colados na estação Tatuapé.", "Fins de semana à tarde são os horários mais cheios; prefira a manhã ou os dias de semana."],
+    "criancas": ["Leve lanche, protetor solar e uma muda de roupa para os pequenos.", "Muitos shoppings têm espaço kids e fraldário; confira no site de cada um."],
+}
 COMER = lambda l: l["categoria"] in COMIDA and l["categoria"] not in {"bar"}
 LEVE = {"padaria", "acai-cafe", "mercado-brasileiro", "brunch-cafe", "mercado"}
 REFEICAO = lambda l: l["categoria"] in COMIDA and l["categoria"] not in LEVE and l["categoria"] != "bar"
@@ -121,6 +136,7 @@ def frase(nome_cid, tema, r):
         "noite": f"Fim de tarde em {n[0]} e noite seguindo para {n[-1]}.",
         "texas": f"O Texas de verdade: {n[0]}, {n[1]} e o melhor da comida local.",
         "cafe": f"Manhã tranquila: café em {n[0]} e passeio leve até {n[-1]}.",
+        "parque-shopping": f"Comece com uma caminhada em {n[0]} e siga para {n[-1]}, a poucos minutos, para almoçar e passear.",
     }[tema]
     if comida and tema not in ("brasil", "cafe", "noite", "texas"): base += f" A refeição fica em {comida[0]['nome']}."
     return base
@@ -142,7 +158,7 @@ def gera():
     for k, (nome_cid, *_rest) in CID.items():
         reg = [l for l in L if l["_r"] == k and l["categoria"] not in NAO_ROTEIRO]
         principal = nome_cid.split("–")[0]
-        for tid, tnome, filt, refeicao, (nmin, nmax), salto, ini, sub in TEMAS:
+        for tid, tnome, filt, refeicao, (nmin, nmax), salto, ini, sub in (TEMAS_SP if k == "spzl" else TEMAS):
             cands = [l for l in reg if filt(l)]
             if len(cands) < nmin: continue
             seeds = sorted(cands, key=lambda l: -pontos(l))[:14]
@@ -151,6 +167,10 @@ def gera():
                 r = rota_de(s, cands, nmin, nmax, salto, set())
                 if not r: continue
                 r = ordena(r)
+                if tid in ("parque-shopping", "criancas") and k == "spzl":
+                    if not (any(PQ(p) for p in r) and any(SH(p) for p in r)): continue
+                    pqs = [p for p in r if PQ(p)]; shs = [p for p in r if SH(p)]; r = pqs[:]
+                    while shs: prox = min(shs, key=lambda x: mi(r[-1], x)); r.append(prox); shs.remove(prox)
                 if refeicao: r = com_refeicao(r, reg, usados_ref)
                 ids = {p["id"] for p in r}
                 if any(len(ids & v) / len(ids | v) > 0.5 for v in vistos): continue
@@ -165,7 +185,7 @@ def gera():
                 nomes.add(nome)
                 km = comprimento(r)
                 out.append({"id": f"{k}-{tid}-{feitos}", "regiao": k, "tema": tid, "nome": nome, "sub": sub, "texto": frase(principal, tid, r),
-                            "inicio": ini, "fim": hhmm(fim), "distMi": round(km, 1), "area": area, "dicas": DICAS[tid], "paradas": ag})
+                            "inicio": ini, "fim": hhmm(fim), "distMi": round(km, 1), "area": area, "dicas": (DICAS_SP if k == "spzl" else DICAS)[tid], "paradas": ag})
                 if feitos >= (3 if tid in ("essencial", "gratis", "brasil") else 2): break
     return out
 

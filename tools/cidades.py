@@ -10,14 +10,14 @@ import json, math, re, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CENTROS = {"houston": (29.7604, -95.3698), "austin": (30.2672, -97.7431), "sanantonio": (29.4241, -98.4936)}
-PREFIXO = {"houston": "hou-", "austin": "aus-", "sanantonio": "sat-"}
+CENTROS = {"houston": (29.7604, -95.3698), "austin": (30.2672, -97.7431), "sanantonio": (29.4241, -98.4936), "spzl": (-23.5614, -46.5602)}
+PREFIXO = {"houston": "hou-", "austin": "aus-", "sanantonio": "sat-", "spzl": "spzl-"}
 CATS = set("""museu parque historico mirante bairro esporte familia compras arte natureza restaurante-brasileiro churrascaria padaria
 mercado-brasileiro acai-cafe bbq tex-mex steakhouse hamburguer brunch-cafe comida-sulista asiatico pizza bar mercado evento show governo
 transporte saude comunidade servico igreja hotel""".split())
 ESTAB = {"restaurante-brasileiro", "churrascaria", "padaria", "mercado-brasileiro", "acai-cafe", "bbq", "tex-mex", "steakhouse", "hamburguer",
          "brunch-cafe", "comida-sulista", "asiatico", "pizza", "bar", "mercado"}
-CAMPOS = ["id", "regiaoGuia", "tipo", "nome", "categoria", "brasileiro", "cidade", "bairro", "endereco", "lat", "lng", "telefone", "site", "instagram",
+CAMPOS = ["id", "regiaoGuia", "tipo", "nome", "categoria", "brasileiro", "pais", "estado", "cidade", "bairro", "endereco", "lat", "lng", "telefone", "site", "instagram",
           "horario", "historia", "dica", "gratuito", "preco", "precoMin", "faixaPreco", "tempoVisita", "quando", "dataInicio", "dataFim",
           "notaCuradoria", "notaProvisoria", "menu", "fotos", "atualizadoEm", "publicado"]
 

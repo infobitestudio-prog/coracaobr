@@ -1,0 +1,82 @@
+{
+ "Parque CERET, São Paulo": {
+  "lat": -23.558522,
+  "lng": -46.555692,
+  "endereco": "Rua Canuto de Abreu, s/n, Jardim Anália Franco, São Paulo - SP, 03336-060"
+ },
+ "Parque Piqueri, Tatuapé, São Paulo": {
+  "lat": -23.52841,
+  "lng": -46.573698,
+  "endereco": "Rua Tuiuti 515, Tatuapé, São Paulo - SP, 03081-003"
+ },
+ "Parque Ecológico do Tietê, São Paulo": {
+  "lat": -23.5021,
+  "lng": -46.5386,
+  "endereco": "Rua Guirá Acangatara 70, Engenheiro Goulart, São Paulo - SP, 03719-000"
+ },
+ "Parque do Carmo, São Paulo": {
+  "lat": -23.5787,
+  "lng": -46.4581,
+  "endereco": "Avenida Afonso de Sampaio e Sousa 951, Itaquera, São Paulo - SP, 08270-000"
+ },
+ "Parque Linear Tiquatira, São Paulo": {
+  "lat": -23.514329,
+  "lng": -46.546402,
+  "endereco": "Avenida Governador Carvalho Pinto, Penha, São Paulo - SP, 03732-160"
+ },
+ "Parque Raul Seixas, São Paulo": {
+  "lat": -23.5527,
+  "lng": -46.4436,
+  "endereco": "Rua Murmúrios da Tarde 211, José Bonifácio, São Paulo - SP, 08250-610"
+ },
+ "Parque Chico Mendes, São Paulo": {
+  "lat": -23.5073,
+  "lng": -46.4274,
+  "endereco": "Rua Cembira 1201, Vila Curuçá, São Paulo - SP, 08030-000"
+ },
+ "Parque Belém, São Paulo": {
+  "lat": -23.53431,
+  "lng": -46.588762,
+  "endereco": "Avenida Celso Garcia 2231, Belém, São Paulo - SP"
+ },
+ "Shopping Anália Franco, São Paulo": {
+  "lat": -23.56146,
+  "lng": -46.56016,
+  "endereco": "Avenida Regente Feijó 1739, Vila Formosa, São Paulo - SP, 03342-900"
+ },
+ "Shopping Metrô Tatuapé, São Paulo": {
+  "lat": -23.541689,
+  "lng": -46.577046,
+  "endereco": "Rua Domingos Agostim 91, Tatuapé, São Paulo - SP, 03314-030"
+ },
+ "Boulevard Tatuapé, São Paulo": {
+  "lat": -23.53867,
+  "lng": -46.578514,
+  "endereco": "Rua Henrique Sertório 388, Tatuapé, São Paulo - SP, 03066-065"
+ },
+ "Mooca Plaza Shopping, São Paulo": {
+  "lat": -23.57974,
+  "lng": -46.594246,
+  "endereco": "Rua Capitão Pacheco e Chaves 313, Vila Prudente, São Paulo - SP, 03126-000"
+ },
+ "Shopping Aricanduva, São Paulo": {
+  "lat": -23.565994,
+  "lng": -46.504011,
+  "endereco": "Avenida Aricanduva 5555, Vila Matilde, São Paulo - SP, 03527-900"
+ },
+ "Shopping Penha, São Paulo": {
+  "lat": -23.525178,
+  "lng": -46.546752,
+  "endereco": "Rua Doutor João Ribeiro 304, Penha, São Paulo - SP, 03634-000"
+ },
+ "Shopping Metrô Itaquera, São Paulo": {
+  "lat": -23.540753,
+  "lng": -46.470533,
+  "endereco": "Rua Engenheiro Sidney Aparecido de Moraes, Itaquera, São Paulo - SP, 08295-005"
+ },
+ "Central Plaza Shopping, São Paulo": {
+  "lat": -23.593613,
+  "lng": -46.585624,
+  "endereco": "Avenida Doutor Francisco Mesquita 1000, Vila Prudente, São Paulo - SP, 03153-001"
+ }
+}

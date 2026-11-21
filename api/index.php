@@ -1160,8 +1160,8 @@ case 'assistente': {
   if (mb_strlen($perg) < 3) erro('Escreva sua pergunta.');
   $quem = eu() ? eu()['id'] : ip();
   if (!limite('ia:' . $quem, 30, 3600)) erro('Muitas perguntas seguidas. Tente de novo daqui a pouco.', 429); marca('ia:' . $quem);
-  $reg = in_array($corpo['cidade'] ?? '', ['dfw', 'houston', 'austin', 'sanantonio'], true) ? $corpo['cidade'] : 'dfw';
-  $nomeReg = ['dfw' => 'Dallas–Fort Worth', 'houston' => 'Houston', 'austin' => 'Austin', 'sanantonio' => 'San Antonio'][$reg];
+  $reg = in_array($corpo['cidade'] ?? '', ['dfw', 'houston', 'austin', 'sanantonio', 'spzl'], true) ? $corpo['cidade'] : 'dfw';
+  $nomeReg = ['dfw' => 'Dallas–Fort Worth', 'houston' => 'Houston', 'austin' => 'Austin', 'sanantonio' => 'San Antonio', 'spzl' => 'São Paulo · Zona Leste'][$reg];
   $cands = buscaLugares($perg, 30, $reg);
   $ids = array_map(fn($l) => $l['id'], array_slice($cands, 0, 8));
   $key = chaveIA();
@@ -1181,7 +1181,7 @@ case 'assistente': {
       (!empty($l['gratuito']) ? ' | grátis' : '') . (!empty($l['falaPortugues']) || !empty($l['portugues']) ? ' | fala português' : '') . (!empty($l['cupom']) ? ' | cupom: ' . mb_substr((string)$l['cupom'], 0, 60) : '') .
       ' | ' . mb_substr(preg_replace('/\s+/', ' ', strip_tags((string)($l['descricao'] ?? $l['resumo'] ?? ''))), 0, 160);
   }
-  $sistema = "Você é o assistente do CoraçãoBR, guia em português para brasileiros que moram ou estão de passagem no Texas (Dallas–Fort Worth, Houston, Austin e San Antonio).\n" .
+  $sistema = "Você é o assistente do CoraçãoBR, guia em português para brasileiros no Texas (Dallas–Fort Worth, Houston, Austin e San Antonio) e em São Paulo (Zona Leste: parques públicos e shoppings).\n" .
     "Responda sempre em português do Brasil, de forma calorosa, direta e curta (no máximo 120 palavras).\n" .
     "Para recomendar lugares, eventos ou serviços, use SOMENTE os itens da lista enviada junto com a pergunta e cite cada um com o código entre colchetes duplos, por exemplo [[abc123]]; o site transforma o código em link.\n" .
     "Nunca invente telefone, preço, horário, endereço ou data que não esteja na lista. Se a lista não tiver o que a pessoa procura, diga isso e sugira procurar no Explorar do guia.\n" .

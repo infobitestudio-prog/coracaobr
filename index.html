@@ -547,6 +547,17 @@ footer.fcom .brand-f > span { color: #fff }
 .clb-p.com-foto .clb-pt { color: var(--ink); font-weight: 400 } .clb-p.com-foto .clb-pt b { font-weight: 700 } .clb-p.com-foto .clb-pt small { color: var(--muted) }
 .wl-bt { display: inline-flex; align-items: center; gap: 6px } .wl-bt .i { width: 16px; height: 16px }
 .clb-wl { display: flex; justify-content: center }
+.rg-tree { display: grid; gap: 14px }
+.rg-pa { border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; background: var(--surface) }
+.rg-h1, .rg-h2, .rg-h3 { display: flex; align-items: center; gap: 8px; cursor: pointer; flex-wrap: wrap }
+.rg-h1 { font-weight: 800; font-size: 1.05rem } .rg-h2 { font-weight: 700; margin-top: 8px }
+.rg-es { margin: 6px 0 0 6px; padding-left: 14px; border-left: 2px solid var(--line) }
+.rg-cd { margin: 8px 0 0 4px; padding: 10px 12px; border-radius: 12px; background: var(--bg) }
+.rg-h3 { font-weight: 700 } .rg-cd details { margin-top: 6px } .rg-cd summary { cursor: pointer; font-size: .9rem; font-weight: 600 }
+.rg-bl { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px }
+.rg-b { display: flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 10px; font-size: .88rem; cursor: pointer; background: var(--surface) }
+.rg-b span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap } .rg-b small { color: var(--muted) }
+.rg-tree input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--brand, #087A36); flex: none }
 .wl-passos { margin: 4px 0 6px; padding-left: 18px; display: grid; gap: 6px; line-height: 1.55 } .wl-passos input[type=file] { max-width: 100%; margin-top: 4px }
 .rbars i { display: block; height: 100%; background: var(--sun); border-radius: 9px; transform-origin: left; animation: barx .7s cubic-bezier(.2,.7,.2,1) both }
 /* ---------- reações (❤️ 👍 😐 😢 😡 no lugar das estrelas) ---------- */
@@ -1936,6 +1947,7 @@ dialog:has(> .dlg):not([open]){display:none}
 .cq-logo{font:800 1.05rem var(--display,system-ui);color:var(--accent)}.cq-logo b{color:var(--sun)}
 .cq-gps{justify-content:center;width:100%}
 .cq-l{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cq-g{grid-column:1/-1;margin:6px 0 -2px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cq-c{position:relative;display:grid;align-items:end;min-height:132px;border:0;border-radius:18px;overflow:hidden;padding:0;background:#04341A;color:#fff;text-align:left;cursor:pointer;font:inherit;box-shadow:0 0 0 2px transparent;transition:box-shadow .2s,transform .2s}
 .cq-c img,.cq-c i{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cq-c i{background:radial-gradient(120% 120% at 100% 0,#0B7A35,#021D0E)}

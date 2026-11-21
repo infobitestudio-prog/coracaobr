@@ -34,9 +34,9 @@
   function viewParcerias() {
     var s = G.sac ? G.sac() : { email: email(), wa: function () { return "#"; }, zapTxt: "" };
     var card = function (ic2, tit, txt, ass, href) { return '<a class="pc-c" href="' + (href || mailto(ass)) + '"' + (href && /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : "") + '><span class="pc-ic">' + ic2 + "</span><b>" + tit + "</b><small>" + txt + "</small><em>" + (href === "#anuncie" ? "Ver planos" : "Falar com a equipe") + " →</em></a>"; };
-    var regioes = G.CIDADES_GUIA ? Object.keys(G.CIDADES_GUIA).map(function (k) { return G.CIDADES_GUIA[k].nome; }) : [];
+    var vis = G.CIDADES_GUIA ? (G.regioesVisiveis ? G.regioesVisiveis() : Object.keys(G.CIDADES_GUIA || {})) : [], regioes = vis.map(function (k) { return G.CIDADES_GUIA[k].nome; });
     pagina("Parcerias e expansão", "Cresça com o CoraçãoBR",
-      '<p class="lead">Somos uma plataforma brasileira em expansão. Hoje no Texas (' + esc(regioes.join(", ")) + '); em breve, novas regiões nos EUA e no Brasil, começando por São Paulo. Se você tem um negócio, uma marca, um espaço ou quer levar o CoraçãoBR para a sua cidade, fale com a gente.</p>' +
+      '<p class="lead">Somos uma plataforma brasileira em expansão. Hoje em ' + esc(regioes.join(", ")) + '; em breve, novas regiões nos EUA e no Brasil. Se você tem um negócio, uma marca, um espaço ou quer levar o CoraçãoBR para a sua cidade, fale com a gente.</p>' +
       '<div class="pc-g">' +
       card("🏪", "Anuncie seu negócio", "Restaurantes, mercados, serviços e eventos: apareça para quem fala português, com fotos, mapa, cupom e métricas.", "", "#anuncie") +
       card("🤝", "Parcerias e patrocínio", "Marcas, criadores e eventos: patrocínio de seções, banner no rodízio da página inicial e ações com a comunidade.", "parceria e patrocínio") +

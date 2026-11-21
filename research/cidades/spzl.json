@@ -1,0 +1,564 @@
+[
+ {
+  "id": "spzl-parque-ceret",
+  "regiaoGuia": "spzl",
+  "nome": "Parque CERET",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Rua Canuto de Abreu, s/n, Jardim Anália Franco, São Paulo - SP, 03336-060",
+  "lat": -23.558522,
+  "lng": -46.555692,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "O Centro Esportivo, Recreativo e Educativo do Trabalhador é um dos parques mais queridos da Zona Leste, entre o Jardim Anália Franco e o Tatuapé. Tem lago, pistas de caminhada e corrida arborizadas, quadras, campos e muito espaço verde para piquenique.",
+  "dica": "Vá cedo no fim de semana: as pistas ficam cheias a partir das 9h. Fica a poucos minutos a pé do Shopping Anália Franco.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret/spzl-parque-ceret-1.jpg",
+    "credito": "Roger cassi",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Ceret_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret/spzl-parque-ceret-2.jpg",
+    "credito": "mauroguanandi",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mimosa_bimucronata_in_Ceret_S%C3%A3o_Paulo_003.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ceret/spzl-parque-ceret-3.jpg",
+    "credito": "mauroguanandi",
+    "licenca": "CC BY 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mimosa_bimucronata_in_Ceret_S%C3%A3o_Paulo_004.jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-piqueri",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Piqueri",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Tuiuti 515, Tatuapé, São Paulo - SP, 03081-003",
+  "lat": -23.52841,
+  "lng": -46.573698,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "Área verde tranquila no Tatuapé, com bosque, lago, playground e pista de caminhada. Ótimo para uma pausa com as crianças perto das estações Tatuapé e Carrão do metrô.",
+  "dica": "Combine com o Shopping Metrô Tatuapé ou o Boulevard Tatuapé, que ficam pertinho.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-piqueri/spzl-parque-piqueri-1.jpg",
+    "credito": "Bernard DUPONT from FRANCE",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Blue-throated_Piping_Guan_(Pipile_cumanensis)_(31841308005)_(cropped).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-piqueri/spzl-parque-piqueri-2.jpg",
+    "credito": "Bernard DUPONT from FRANCE",
+    "licenca": "CC BY-SA 2.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Black_Vultures_(Coragyps_atratus)_at_the_beach_..._(31801446366).jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-ecologico-do-tiete",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Ecológico do Tietê",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Penha",
+  "endereco": "Rua Guirá Acangatara 70, Engenheiro Goulart, São Paulo - SP, 03719-000",
+  "lat": -23.5021,
+  "lng": -46.5386,
+  "site": "https://www.infraestruturameioambiente.sp.gov.br/",
+  "historia": "Parque estadual enorme às margens do Rio Tietê, com lagos, ciclovia, quadras, áreas de churrasco e muita fauna: é comum ver capivaras e aves. Um dos melhores passeios ao ar livre da Zona Leste.",
+  "dica": "Leve bicicleta ou alugue no parque nos fins de semana. Tem estacionamento e lanchonetes.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete/spzl-parque-ecologico-do-tiete-1.jpg",
+    "credito": "Albert Carlos S Domingos",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Ecol%C3%B3gico_do_Tiet%C3%AA_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete/spzl-parque-ecologico-do-tiete-2.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Ecol%C3%B3gico_do_Tiet%C3%AA_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-ecologico-do-tiete/spzl-parque-ecologico-do-tiete-3.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_Ecol%C3%B3gico_do_Tiet%C3%AA_-_panoramio_(5).jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-do-carmo",
+  "regiaoGuia": "spzl",
+  "nome": "Parque do Carmo",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "endereco": "Avenida Afonso de Sampaio e Sousa 951, Itaquera, São Paulo - SP, 08270-000",
+  "lat": -23.5787,
+  "lng": -46.4581,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "Um dos maiores parques da cidade, com bosques, lagos e grandes gramados. Fica famoso no inverno pelas cerejeiras floridas e pela tradicional Festa das Cerejeiras da comunidade japonesa.",
+  "dica": "Para ver as cerejeiras, a florada costuma acontecer entre julho e agosto. O parque é grande: use calçado confortável.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo/spzl-parque-do-carmo-1.jpg",
+    "credito": "Icleao",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Parque_do_Carmo_Sao_Paulo.JPG"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-do-carmo/spzl-parque-do-carmo-3.jpg",
+    "credito": "Cecioka",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cerejeiras_Parque_do_Carmo_07.jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-tiquatira",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Linear Tiquatira",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Penha",
+  "endereco": "Avenida Governador Carvalho Pinto, Penha, São Paulo - SP, 03732-160",
+  "lat": -23.514329,
+  "lng": -46.546402,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "Parque linear que acompanha o córrego Tiquatira, com ciclovia, pista de caminhada, aparelhos de ginástica e quadras ao longo de um corredor verde comprido na região da Penha.",
+  "dica": "Bom para pedalar: a ciclovia é contínua e plana. Leve água, há trechos com pouca sombra.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-tiquatira/spzl-parque-tiquatira-1.jpg",
+    "credito": "Albert Carlos S Domingos",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_3.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-tiquatira/spzl-parque-tiquatira-2.jpg",
+    "credito": "Albert Carlos S Domingos",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_4.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-parque-tiquatira/spzl-parque-tiquatira-3.jpg",
+    "credito": "Albert Carlos S Domingos",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Tiquatira_13.jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-raul-seixas",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Raul Seixas",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "endereco": "Rua Murmúrios da Tarde 211, José Bonifácio, São Paulo - SP, 08250-610",
+  "lat": -23.5527,
+  "lng": -46.4436,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "Parque de bairro em Itaquera com área verde, playground, quadras e espaço para caminhada, muito usado pelas famílias da região.",
+  "dica": "Programa leve para uma manhã com as crianças. Fica perto do Shopping Metrô Itaquera.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-chico-mendes",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Chico Mendes",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "São Miguel Paulista",
+  "endereco": "Rua Cembira 1201, Vila Curuçá, São Paulo - SP, 08030-000",
+  "lat": -23.5073,
+  "lng": -46.4274,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "Parque arborizado no extremo leste, com lago, trilhas, viveiro e muitas espécies de árvores. Um respiro verde para quem mora na região de São Miguel Paulista e Vila Curuçá.",
+  "dica": "Ótimo para observar aves logo cedo. Leve repelente perto do lago.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-parque-belem",
+  "regiaoGuia": "spzl",
+  "nome": "Parque Belém",
+  "categoria": "parque",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Belém",
+  "endereco": "Avenida Celso Garcia 2231, Belém, São Paulo - SP",
+  "lat": -23.53431,
+  "lng": -46.588762,
+  "site": "https://www.prefeitura.sp.gov.br/cidade/secretarias/meio_ambiente/parques/",
+  "historia": "Área verde no bairro do Belém, perto da Mooca e do Tatuapé, com pista de caminhada, playground e espaço para descanso.",
+  "dica": "Bom ponto de partida para um passeio pela Zona Leste mais próxima do centro.",
+  "horario": "Parques municipais de São Paulo costumam abrir todos os dias, das 5h às 20h. Confira o horário do dia no site da Prefeitura antes de ir.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-shopping-analia-franco",
+  "regiaoGuia": "spzl",
+  "nome": "Shopping Anália Franco",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Anália Franco",
+  "endereco": "Avenida Regente Feijó 1739, Vila Formosa, São Paulo - SP, 03342-900",
+  "lat": -23.56146,
+  "lng": -46.56016,
+  "site": "https://www.shoppinganaliafranco.com.br/",
+  "historia": "Um dos maiores e mais completos shoppings da Zona Leste, no Jardim Anália Franco. Reúne grandes lojas de departamento, marcas nacionais e internacionais, restaurantes, cinema e serviços.",
+  "dica": "Fins de semana à tarde são os horários mais cheios. O Parque CERET fica a poucos minutos a pé.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-analia-franco/spzl-shopping-analia-franco-1.jpg",
+    "credito": "Larry LaRose",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_An%C3%A1lia_Franco_and_surrounding_area_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-analia-franco/spzl-shopping-analia-franco-2.jpg",
+    "credito": "Larry LaRose",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_An%C3%A1lia_Franco_and_surrounding_area_-_panoramio_(3).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-analia-franco/spzl-shopping-analia-franco-3.jpg",
+    "credito": "Larry LaRose",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_An%C3%A1lia_Franco_Mall_and_surrounding_area_-_panoramio_(13).jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-shopping-metro-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "Shopping Metrô Tatuapé",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Domingos Agostim 91, Tatuapé, São Paulo - SP, 03314-030",
+  "lat": -23.541689,
+  "lng": -46.577046,
+  "site": "https://www.shoppingtatuape.com.br/",
+  "historia": "Shopping ligado direto à estação Tatuapé do metrô e da CPTM, com lojas populares e de marca, praça de alimentação e cinema. Prático para quem chega de transporte público.",
+  "dica": "Desça na estação Tatuapé e entre sem sair na rua. Do outro lado fica o Boulevard Tatuapé.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-metro-tatuape/spzl-shopping-metro-tatuape-1.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_Metr%C3%B4_Tatuap%C3%A9_-_Avenida_Radial_Leste,_esquina_com_a_Rua_Tuiuti_(Integrado_%C3%A0_Esta%C3%A7%C3%A3o_Tatuap%C3%A9_do_Metr%C3%B4)_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-metro-tatuape/spzl-shopping-metro-tatuape-2.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_Metr%C3%B4_Tatuap%C3%A9_-_Avenida_Radial_Leste,_esquina_com_a_Rua_Tuiuti_(Integrado_%C3%A0_Esta%C3%A7%C3%A3o_Tatuap%C3%A9_do_Metr%C3%B4)_-_panoramio_(2).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-metro-tatuape/spzl-shopping-metro-tatuape-3.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_Metr%C3%B4_Tatuap%C3%A9_-_Avenida_Radial_Leste,_esquina_com_a_Rua_Tuiuti_(Integrado_%C3%A0_Esta%C3%A7%C3%A3o_Tatuap%C3%A9_do_Metr%C3%B4)_-_panoramio_(1).jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-boulevard-tatuape",
+  "regiaoGuia": "spzl",
+  "nome": "Boulevard Tatuapé",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Tatuapé",
+  "endereco": "Rua Henrique Sertório 388, Tatuapé, São Paulo - SP, 03066-065",
+  "lat": -23.53867,
+  "lng": -46.578514,
+  "site": "https://www.boulevardtatuape.com.br/",
+  "historia": "Shopping vizinho à estação Tatuapé, com lojas, academia, restaurantes e cinema, formando com o Shopping Metrô Tatuapé um grande polo de compras da região.",
+  "dica": "Dá para visitar os dois shoppings do Tatuapé no mesmo passeio, a pé pela estação.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-boulevard-tatuape/spzl-boulevard-tatuape-1.jpg",
+    "credito": "Ajmcbarreto",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cinemark_Boulevard_Tatuap%C3%A9_-_2.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-boulevard-tatuape/spzl-boulevard-tatuape-2.jpg",
+    "credito": "Ajmcbarreto",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cinemark_Boulevard_Tatuap%C3%A9_-_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-boulevard-tatuape/spzl-boulevard-tatuape-3.jpg",
+    "credito": "Ajmcbarreto",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cinemark_Boulevard_Tatuap%C3%A9_-_3.jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-mooca-plaza-shopping",
+  "regiaoGuia": "spzl",
+  "nome": "Mooca Plaza Shopping",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Mooca",
+  "endereco": "Rua Capitão Pacheco e Chaves 313, Vila Prudente, São Paulo - SP, 03126-000",
+  "lat": -23.57974,
+  "lng": -46.594246,
+  "site": "https://www.moocaplaza.com.br/",
+  "historia": "Shopping moderno na Mooca, com lojas de grandes marcas, restaurantes, cinema e área de lazer, servindo a Mooca, a Vila Prudente e o Ipiranga.",
+  "dica": "Combine com um passeio pelas cantinas italianas tradicionais da Mooca.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-mooca-plaza-shopping/spzl-mooca-plaza-shopping-2.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mooca_Plaza_Shopping,_S%C3%A3o_Paulo,_Brasil_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mooca-plaza-shopping/spzl-mooca-plaza-shopping-1.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mooca_Plaza_Shopping_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-mooca-plaza-shopping/spzl-mooca-plaza-shopping-3.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Mooca_Plaza_Shopping,_S%C3%A3o_Paulo,_Brasil_-_panoramio_(9).jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-shopping-aricanduva",
+  "regiaoGuia": "spzl",
+  "nome": "Shopping Aricanduva",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Aricanduva",
+  "endereco": "Avenida Aricanduva 5555, Vila Matilde, São Paulo - SP, 03527-900",
+  "lat": -23.565994,
+  "lng": -46.504011,
+  "site": "https://www.shoppingaricanduva.com.br/",
+  "historia": "Complexo de compras gigante na Avenida Aricanduva, com centenas de lojas, hipermercado, lojas de construção e móveis, restaurantes e cinema. Um dos maiores centros de compras do país.",
+  "dica": "É enorme: anote em qual estacionamento deixou o carro e vá com tempo.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-aricanduva/spzl-shopping-aricanduva-1.jpg",
+    "credito": "Raphael Igor",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Shopping_Aricanduva.JPG"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-aricanduva/spzl-shopping-aricanduva-2.jpg",
+    "credito": "Raphael Igor",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Aricanduva.JPG"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-shopping-penha",
+  "regiaoGuia": "spzl",
+  "nome": "Shopping Center Penha",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Penha",
+  "endereco": "Rua Doutor João Ribeiro 304, Penha, São Paulo - SP, 03634-000",
+  "lat": -23.525178,
+  "lng": -46.546752,
+  "site": "https://www.shoppingpenha.com.br/",
+  "historia": "Shopping tradicional da Penha, com lojas, serviços, praça de alimentação e cinema, perto do centro histórico do bairro.",
+  "dica": "Aproveite para conhecer a Basílica da Penha, um dos marcos da região.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-shopping-metro-itaquera",
+  "regiaoGuia": "spzl",
+  "nome": "Shopping Metrô Itaquera",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Itaquera",
+  "endereco": "Rua Engenheiro Sidney Aparecido de Moraes, Itaquera, São Paulo - SP, 08295-005",
+  "lat": -23.540753,
+  "lng": -46.470533,
+  "site": "https://www.shoppingmetroitaquera.com.br/",
+  "historia": "Shopping ao lado da estação Corinthians-Itaquera e da Neo Química Arena, com lojas, restaurantes e cinema.",
+  "dica": "Em dia de jogo do Corinthians a região fica cheia; prefira outro dia ou chegue cedo.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-metro-itaquera/spzl-shopping-metro-itaquera-1.jpg",
+    "credito": "Ajmcbarreto",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cin%C3%A9polis_Metr%C3%B4_Itaquera_-_2.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-metro-itaquera/spzl-shopping-metro-itaquera-2.jpg",
+    "credito": "Ajmcbarreto",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cin%C3%A9polis_Metr%C3%B4_Itaquera_-_1.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-metro-itaquera/spzl-shopping-metro-itaquera-3.jpg",
+    "credito": "Ajmcbarreto",
+    "licenca": "CC BY-SA 4.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Cin%C3%A9polis_Metr%C3%B4_Itaquera_-_5.jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ },
+ {
+  "id": "spzl-shopping-central-plaza",
+  "regiaoGuia": "spzl",
+  "nome": "Central Plaza Shopping",
+  "categoria": "compras",
+  "tipo": "atracao",
+  "pais": "Brasil",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "bairro": "Vila Prudente",
+  "endereco": "Avenida Doutor Francisco Mesquita 1000, Vila Prudente, São Paulo - SP, 03153-001",
+  "lat": -23.593613,
+  "lng": -46.585624,
+  "site": "https://www.centralplaza.com.br/",
+  "historia": "Shopping na Vila Prudente, perto da Avenida do Estado, com lojas, serviços, alimentação e cinema para a região da Vila Prudente, Mooca e Ipiranga.",
+  "dica": "Fica perto do monotrilho (Linha 15-Prata) e de vias rápidas.",
+  "horario": "Lojas: segunda a sábado, das 10h às 22h; domingos e feriados, em geral das 14h às 20h. Praça de alimentação e cinema têm horário próprio; confira no site do shopping.",
+  "gratuito": true,
+  "preco": "Entrada gratuita",
+  "fotos": [
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-central-plaza/spzl-shopping-central-plaza-1.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Central_Plaza_Shopping_-_Avenida_Dr._Francisco_Mesquita,_1000_-_panoramio.jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-central-plaza/spzl-shopping-central-plaza-2.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Central_Plaza_Shopping_-_Avenida_Dr._Francisco_Mesquita,_1000_-_panoramio_(2).jpg"
+   },
+   {
+    "src": "fotos_cidades/spzl/spzl-shopping-central-plaza/spzl-shopping-central-plaza-3.jpg",
+    "credito": "CORRETOR-CARVALHO",
+    "licenca": "CC BY-SA 3.0",
+    "pagina": "https://commons.wikimedia.org/wiki/File:Central_Plaza_Shopping_-_Avenida_Dr._Francisco_Mesquita,_1000_-_panoramio_(1).jpg"
+   }
+  ],
+  "atualizadoEm": "2026-11"
+ }
+]

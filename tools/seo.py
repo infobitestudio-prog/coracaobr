@@ -117,12 +117,16 @@ def pagina(destino, rel, titulo, desc, h1, sub, itens, links, raiz):
              '<script type="application/ld+json">%s</script></head><body><header><div class="w"><a href="%s">Coração<b>BR</b></a></div></header>'
              '<main class="w"><h1>%s</h1><p class="sub">%s</p><ol class="l">%s</ol>'
              '<div class="cta">Mapa, horários, avaliações de brasileiros e cupons: <a href="%s">abra o guia CoraçãoBR</a>.</div>%s</main>'
-             '<footer class="w">CoraçãoBR · o guia dos brasileiros no Texas: Dallas–Fort Worth, Houston, Austin e San Antonio. Informações conferidas pela equipe; confirme horários antes de ir.</footer></body></html>') % (
+             '<footer class="w">CoraçãoBR · o guia dos brasileiros no Texas (Dallas–Fort Worth, Houston, Austin e San Antonio) e na Zona Leste de São Paulo. Informações conferidas pela equipe; confirme horários antes de ir.</footer></body></html>') % (
         e(titulo), e(desc), e(titulo), e(desc), raiz, CSS, json.dumps(ld, ensure_ascii=False).replace("</", "<\\/"), raiz, e(h1), e(sub), "".join(lista), raiz, links)
     p = destino / rel
     p.mkdir(parents=True, exist_ok=True)
     (p / "index.html").write_text(corpo)
 
+
+ZL = "Zona Leste de São Paulo"
+def cidade_de(l): return ZL if (l.get("regiaoGuia") or "") == "spzl" else l.get("cidade")
+def onde(ci): return ("na " + ZL, "SP") if ci == ZL else ("em %s, Texas" % ci, "TX")
 
 def gerar(destino, lugares, hoje):
     destino = Path(destino)
@@ -132,9 +136,10 @@ def gerar(destino, lugares, hoje):
     for l in ok:
         if (l.get("regiaoGuia") or "dfw") == "dfw":
             por_cat.setdefault(l["categoria"], []).append(l)
-        if l.get("cidade"):
-            por_cid_cat.setdefault((l["cidade"], l["categoria"]), []).append(l)
-            por_cid.setdefault(l["cidade"], []).append(l)
+        ci = cidade_de(l)
+        if ci:
+            por_cid_cat.setdefault((ci, l["categoria"]), []).append(l)
+            por_cid.setdefault(ci, []).append(l)
     ordena = lambda xs: sorted(xs, key=lambda l: (-nota(l), l["nome"]))
     paginas = []
     # por categoria em toda a DFW
@@ -158,8 +163,9 @@ def gerar(destino, lugares, hoje):
         if outras:
             links += '<h2>Mais em %s</h2><ul class="tags">%s</ul>' % (html.escape(ci), "".join('<li><a href="../%s/">%s</a></li>' % (slug(k), html.escape(CATS[k])) for k in outras))
         rel = "guia/%s/%s/" % (slug(ci), slug(c))
-        pagina(destino, rel, "%s em %s, Texas · CoraçãoBR" % (CATS[c], ci), "%s em %s (TX) para brasileiros: %s. Nota, endereço e dicas em português." % (CATS[c], ci, ", ".join(l["nome"] for l in xs[:3])),
-               "%s em %s, Texas" % (CATS[c], ci), "%d opções em %s, com nota, endereço e dicas em português." % (len(xs), ci), xs, links, "../../../")
+        o, uf = onde(ci)
+        pagina(destino, rel, "%s %s · CoraçãoBR" % (CATS[c], o), "%s %s (%s) para brasileiros: %s. Nota, endereço e dicas em português." % (CATS[c], o, uf, ", ".join(l["nome"] for l in xs[:3])),
+               "%s %s" % (CATS[c], o), "%d opções em %s, com nota, endereço e dicas em português." % (len(xs), ci), xs, links, "../../../")
         paginas.append(rel)
     # índice
     e = html.escape
@@ -170,7 +176,7 @@ def gerar(destino, lugares, hoje):
             idx += '<h2>%s</h2><ul class="tags">%s</ul>' % (e(ci), "".join('<li><a href="%s/%s/">%s</a></li>' % (slug(ci), slug(k), e(CATS[k])) for k in ks))
     top = ordena(ok)[:10]
     pagina(destino, "guia/", "Guia dos brasileiros no Texas · CoraçãoBR", "Restaurantes brasileiros, mercados, eventos, igrejas, serviços em português e passeios em Dallas–Fort Worth, Houston, Austin e San Antonio.",
-           "Guia dos brasileiros no Texas", "Dallas–Fort Worth, Houston, Austin e San Antonio: os lugares mais bem avaliados do CoraçãoBR e todas as categorias por cidade.", top, idx, "../")
+           "Guia dos brasileiros no Texas", "Dallas–Fort Worth, Houston, Austin, San Antonio e a Zona Leste de São Paulo: os lugares mais bem avaliados do CoraçãoBR e todas as categorias por cidade.", top, idx, "../")
     paginas.insert(0, "guia/")
     (destino / "guia" / "paginas.json").write_text(json.dumps(paginas, ensure_ascii=False))
     return paginas

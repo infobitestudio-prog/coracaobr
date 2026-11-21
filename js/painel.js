@@ -29,7 +29,8 @@
       { id: "anunciantes", nome: "Anunciantes", ic: "store", grupo: "Pessoas", sub: "Empresas com anúncio, métricas e acesso ao painel de cada uma." },
       { id: "avisos", nome: "Avisos", ic: "bell", grupo: "Pessoas", n: naoLidos() || "", sub: "Cadastros, pagamentos e denúncias, na hora em que acontecem." },
       { id: "comunidade", nome: "Comunidade", ic: "chat", grupo: "Pessoas" },
-      { id: "lugares", nome: "Lugares", ic: "pin", grupo: "Conteúdo", n: Store.lista("lugares").length, sub: "Lugares e eventos das 4 cidades: fotos, notas, cardápio e status." },
+      { id: "lugares", nome: "Lugares", ic: "pin", grupo: "Conteúdo", n: Store.lista("lugares").length, sub: "Lugares e eventos de todas as regiões: fotos, notas, cardápio e status." },
+      { id: "regioes", nome: "Regiões do guia", ic: "pin", grupo: "Conteúdo", sub: "País › estado › cidade › bairro: escolha o que aparece no site." },
       { id: "avaliacoes", nome: "Avaliações", ic: "star", grupo: "Conteúdo" },
       { id: "publicacoes", nome: "Publicações do feed", ic: "mega", grupo: "Conteúdo" },
       { id: "banners", nome: "Banners", ic: "image", grupo: "Conteúdo" },
@@ -76,7 +77,7 @@
   }
   function corpo() {
     var el = $("#aba", raiz); if (!el) return;
-    ({ resumo: abaResumo, avisos: abaAvisos, aparencia: abaAparencia, financas: abaFinancas, receita: function (x) { if (window.Novidades) Novidades.abaReceita(x); }, novidades: function (x) { if (window.Novidades) Novidades.abaNovidades(x); }, comunidade: abaComunidade, anunciantes: abaAnunciantes, pagamentos: function (x) { if (window.Pag) Pag.abaMaster(x); }, lugares: abaLugares, anuncios: abaAnuncios, avaliacoes: abaAvaliacoes, config: abaConfig, usuarios: function (x) { if (window.Auth) Auth.abaUsuarios(x); }, recursos: function (x) { PainelRecursos.recursos(x); }, banners: function (x) { if (window.Social) Social.abaBanners(x); }, publicacoes: function (x) { if (window.Social) Social.abaPosts(x); }, parceiros: function (x) { PainelRecursos.parceiros(x); }, newsletter: function (x) { PainelRecursos.newsletter(x); }, pesquisa: function (x) { PainelRecursos.pesquisa(x); } })[aba](el);
+    ({ resumo: abaResumo, avisos: abaAvisos, aparencia: abaAparencia, financas: abaFinancas, receita: function (x) { if (window.Novidades) Novidades.abaReceita(x); }, novidades: function (x) { if (window.Novidades) Novidades.abaNovidades(x); }, comunidade: abaComunidade, regioes: abaRegioes, anunciantes: abaAnunciantes, pagamentos: function (x) { if (window.Pag) Pag.abaMaster(x); }, lugares: abaLugares, anuncios: abaAnuncios, avaliacoes: abaAvaliacoes, config: abaConfig, usuarios: function (x) { if (window.Auth) Auth.abaUsuarios(x); }, recursos: function (x) { PainelRecursos.recursos(x); }, banners: function (x) { if (window.Social) Social.abaBanners(x); }, publicacoes: function (x) { if (window.Social) Social.abaPosts(x); }, parceiros: function (x) { PainelRecursos.parceiros(x); }, newsletter: function (x) { PainelRecursos.newsletter(x); }, pesquisa: function (x) { PainelRecursos.pesquisa(x); } })[aba](el);
   }
 
   function naoLidos() { return Store.lista("avisos").filter(function (a) { return !a.lido; }).length; }
@@ -431,6 +432,51 @@
       box.querySelector("[data-diario-todos]").onclick = function (e) { var b = e.target; b.disabled = true; b.textContent = "Buscando no Google… (alguns minutos)"; fetch("api/index.php?acao=atualizar_diario&forcar=1&todos=1", { credentials: "same-origin" }).then(function (x) { return x.json(); }).then(function (x) { b.disabled = false; b.textContent = "Buscar fotos e avaliações do Google para o guia inteiro"; G.toast((x.feito || []).concat(x.erros || []).join(" · ") || x.erro || "Pronto."); }).catch(function () { b.disabled = false; b.textContent = "Tentar de novo"; G.toast("O servidor demorou para responder. Veja o resultado em alguns minutos."); }); };
       box.querySelector("[data-diario]").onclick = function (e) { var b = e.target; b.disabled = true; b.textContent = "Rodando…"; fetch("api/index.php?acao=atualizar_diario&forcar=1", { credentials: "same-origin" }).then(function (x) { return x.json(); }).then(function (x) { G.toast((x.feito || []).join(" · ") || x.msg || x.erro || "Pronto."); setTimeout(painelDiario, 1500); }).catch(function () { G.toast("Não foi possível rodar agora."); b.disabled = false; b.textContent = "Rodar agora"; }); };
     }).catch(function (er) { box.innerHTML = '<p class="small muted">' + esc(er.message || "Indisponível.") + "</p>"; });
+  }
+  /* ---------- Regiões do guia: país › estado › cidade › bairro. O que estiver desmarcado some do site (nada é apagado). ---------- */
+  function abaRegioes(el) {
+    var CG = G.CIDADES_GUIA || {}, rc = G.config().regioes || {}, ocultas = rc.ocultas || [], bo = rc.bairrosOcultos || {}, arv = {};
+    var ls = Store.lista("lugares").filter(function (l) { return !l.demo; });
+    Object.keys(CG).forEach(function (k) { var c = CG[k], pa = c.paisNome || "Estados Unidos", es = c.estadoNome || "Texas"; arv[pa] = arv[pa] || {}; (arv[pa][es] = arv[pa][es] || []).push(k); });
+    var bairros = function (k) { var m = {}; ls.forEach(function (l) { if (G.regiaoGuia(l) !== k) return; var b = G.regiao(l) || CG[k].principal; m[b] = (m[b] || 0) + 1; }); return Object.keys(m).sort(function (a, b) { return a.localeCompare(b, "pt-BR"); }).map(function (b) { return [b, m[b]]; }); };
+    var dosPais = function (pa) { return [].concat.apply([], Object.keys(arv[pa]).map(function (es) { return arv[pa][es]; })); };
+    el.innerHTML = '<div class="stack in" style="max-width:900px"><div class="panel stack" style="gap:12px"><h3>Regiões do guia</h3><p class="small muted">Organizado por país › estado › cidade › bairro. Desmarque o que não deve aparecer no site: a cidade some do seletor de cidades, das listas, do mapa, dos roteiros e da busca; o bairro desmarcado esconde só os lugares dele. Nada é apagado: marque de novo quando quiser.</p><div class="rg-tree">' +
+      Object.keys(arv).map(function (pa) {
+        return '<div class="rg-pa"><label class="rg-h1"><input type="checkbox" data-rg-pa="' + esc(pa) + '"> ' + esc(pa) + "</label>" + Object.keys(arv[pa]).map(function (es) {
+          return '<div class="rg-es"><label class="rg-h2"><input type="checkbox" data-rg-es="' + esc(pa + "|" + es) + '"> ' + esc(es) + "</label>" + arv[pa][es].map(function (k) {
+            var bs = bairros(k), tot = bs.reduce(function (s2, b) { return s2 + b[1]; }, 0), escondidos = (bo[k] || []).length;
+            return '<div class="rg-cd"><label class="rg-h3"><input type="checkbox" data-rg-cid="' + k + '"' + (ocultas.indexOf(k) < 0 ? " checked" : "") + "> " + esc(CG[k].nome) + ' <small class="muted">' + tot + " lugares</small></label>" +
+              '<details' + (k === "spzl" ? " open" : "") + '><summary>' + (CG[k].pais === "BR" ? "Bairros" : "Cidades e bairros") + " (" + bs.length + ')<span class="small muted" data-rg-n="' + k + '">' + (escondidos ? " · " + escondidos + " oculto" + (escondidos > 1 ? "s" : "") : "") + "</span></summary>" +
+              '<div class="row" style="gap:6px;margin:8px 0"><button type="button" class="btn sm ghost" data-rg-todos="' + k + '">Marcar todos</button><button type="button" class="btn sm ghost" data-rg-nenhum="' + k + '">Desmarcar todos</button></div><div class="rg-bl">' +
+              bs.map(function (b) { return '<label class="rg-b"><input type="checkbox" data-rg-b="' + k + '" value="' + esc(b[0]) + '"' + ((bo[k] || []).indexOf(b[0]) < 0 ? " checked" : "") + "> <span>" + esc(b[0]) + "</span> <small>" + b[1] + "</small></label>"; }).join("") + "</div></details></div>";
+          }).join("") + "</div>";
+        }).join("") + "</div>";
+      }).join("") + '</div><div class="row" style="gap:10px;align-items:center"><button type="button" class="btn" data-rg-salvar>Salvar regiões</button><span class="small muted" data-rg-res></span></div></div></div>';
+    var cx = function (q) { return Array.prototype.slice.call(el.querySelectorAll(q)); }, ck = function (k) { return el.querySelector('[data-rg-cid="' + k + '"]'); };
+    var marca = function (inp, ks) { var on = ks.filter(function (k) { return ck(k).checked; }).length; inp.checked = on === ks.length; inp.indeterminate = on > 0 && on < ks.length; };
+    var atualiza = function () {
+      cx("[data-rg-es]").forEach(function (x) { var p = x.dataset.rgEs.split("|"); marca(x, arv[p[0]][p[1]]); });
+      cx("[data-rg-pa]").forEach(function (x) { marca(x, dosPais(x.dataset.rgPa)); });
+      cx("[data-rg-n]").forEach(function (x) { var n = cx('[data-rg-b="' + x.dataset.rgN + '"]').filter(function (b) { return !b.checked; }).length; x.textContent = n ? " · " + n + " oculto" + (n > 1 ? "s" : "") : ""; });
+      var vis = Object.keys(CG).filter(function (k) { return ck(k).checked; });
+      el.querySelector("[data-rg-res]").textContent = vis.length ? "No site: " + vis.map(function (k) { return CG[k].nome; }).join(", ") : "Marque pelo menos uma cidade.";
+    };
+    el.onchange = function (e) {
+      var t = e.target;
+      if (t.dataset.rgPa != null) dosPais(t.dataset.rgPa).forEach(function (k) { ck(k).checked = t.checked; });
+      else if (t.dataset.rgEs != null) { var p = t.dataset.rgEs.split("|"); arv[p[0]][p[1]].forEach(function (k) { ck(k).checked = t.checked; }); }
+      atualiza();
+    };
+    el.onclick = function (e) {
+      var b = e.target.closest("[data-rg-todos],[data-rg-nenhum]");
+      if (b) { var k = b.dataset.rgTodos || b.dataset.rgNenhum; cx('[data-rg-b="' + k + '"]').forEach(function (x) { x.checked = !!b.dataset.rgTodos; }); atualiza(); return; }
+      if (!e.target.closest("[data-rg-salvar]")) return;
+      var oc = Object.keys(CG).filter(function (k) { return !ck(k).checked; });
+      if (oc.length >= Object.keys(CG).length) { G.toast("Deixe pelo menos uma cidade marcada."); return; }
+      var bo2 = {}; cx("[data-rg-b]").forEach(function (x) { if (!x.checked) (bo2[x.dataset.rgB] = bo2[x.dataset.rgB] || []).push(x.value); });
+      salvaCfg({ regioes: { ocultas: oc, bairrosOcultos: bo2, atualizadoEm: new Date().toISOString() } }, "Regiões salvas. O site já mostra só o que está marcado.");
+    };
+    atualiza();
   }
   function abaComunidade(el) {
     var c = G.config(), dm = c.destaqueMes || {}, robo = Store.obter("config", "robo") || {}, TA = window.Comunidade ? Comunidade.TIPOS_AL : {};
