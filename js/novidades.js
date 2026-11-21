@@ -242,7 +242,8 @@
   /* ======================= Perguntas e respostas da comunidade ======================= */
   var TEMAS_Q = { documentos: "Documentos e imigração", moradia: "Moradia", trabalho: "Trabalho", saude: "Saúde", escola: "Escola e filhos", carro: "Carro e carteira", dinheiro: "Dinheiro e impostos", lazer: "Lazer", outros: "Outros" };
   var filtroQ = "";
-  function perguntasTodas() { return Store.lista("perguntas").filter(function (q) { return q.tipo === "pergunta"; }).sort(function (a, b) { return String(b.criadoEm || "").localeCompare(String(a.criadoEm || "")); }); }
+  function doPaisAtual(q) { var cg = G.CIDADES_GUIA || {}, r = cg[q.regiao || "dfw"] || cg.dfw || {}; return (r.pais || "US") === (G.cid ? G.cid().pais : "US"); }
+  function perguntasTodas() { return Store.lista("perguntas").filter(function (q) { return q.tipo === "pergunta" && doPaisAtual(q); }).sort(function (a, b) { return String(b.criadoEm || "").localeCompare(String(a.criadoEm || "")); }); }
   function respostasDe(id) { return Store.lista("perguntas").filter(function (r) { return r.tipo === "resposta" && r.perguntaId === id; }).sort(function (a, b) { return String(a.criadoEm || "").localeCompare(String(b.criadoEm || "")); }); }
   function viewPerguntas(r) {
     var abre = r && r.indexOf("pergunta-") === 0 ? decodeURIComponent(r.slice(9)) : "", uid = Store.uid();
@@ -275,7 +276,7 @@
       '<div class="field"><label for="q-x">Detalhes (opcional)</label><textarea id="q-x" name="texto" rows="3" maxlength="800"></textarea></div><p class="small muted">Não publique documentos, endereço completo ou dados pessoais.</p><div class="row"><button class="btn" type="submit">Publicar pergunta</button><button class="btn ghost" type="button" data-fecha>Cancelar</button></div></form>');
     $("[data-q-form]", d).onsubmit = function (ev) {
       ev.preventDefault(); var f = this, id = Store.novoId("q");
-      Store.gravar("perguntas", id, { tipo: "pergunta", titulo: f.titulo.value.trim(), tema: f.tema.value, texto: f.texto.value.trim(), nome: nomeConta().split(" ")[0] || "Membro", criadoEm: new Date().toISOString() })
+      Store.gravar("perguntas", id, { tipo: "pergunta", regiao: G.cidadeAtual ? G.cidadeAtual() : "dfw", titulo: f.titulo.value.trim(), tema: f.tema.value, texto: f.texto.value.trim(), nome: nomeConta().split(" ")[0] || "Membro", criadoEm: new Date().toISOString() })
         .then(function () { d.close(); G.toast("Pergunta publicada."); viewPerguntas(); }).catch(function (er) { G.toast(er.message || "Não deu para publicar agora."); });
     };
   }

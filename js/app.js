@@ -13,6 +13,10 @@
   };
   /* Hierarquia país › estado › cidade (região do guia) › bairro. O master escolhe no Painel → Regiões do guia o que aparece. */
   Object.keys(CIDADES_GUIA).forEach(function (k) { var c = CIDADES_GUIA[k]; if (!c.pais) { c.pais = "US"; c.paisNome = "Estados Unidos"; c.estado = "TX"; c.estadoNome = "Texas"; c.tz = "America/Chicago"; } });
+  /* Dois formatos: cidade do Brasil (sem dólar, conversão e nada dos EUA) ou dos EUA (como sempre foi) */
+  function ehBR() { return cid().pais === "BR"; }
+  function marcaPais() { document.documentElement.dataset.pais = ehBR() ? "BR" : "US"; }
+  var SO_EUA = ["custo", "chegada", "conversor", "metro"];
   function cfgRegioes() { try { var g = (window.Store && Store.obter && Store.obter("config", "geral")) || {}; return g.regioes || {}; } catch (e) { return {}; } }
   function regiaoVisivel(k) { return !!CIDADES_GUIA[k] && (cfgRegioes().ocultas || []).indexOf(k) < 0; }
   function regioesVisiveis() { var v = Object.keys(CIDADES_GUIA).filter(regiaoVisivel); return v.length ? v : ["dfw"]; }
@@ -184,7 +188,7 @@
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function url(u) { return /^https?:\/\//i.test(u || "") ? u : ""; }
   function reais(n) { n = Number(n) || 0; return "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
-  function usd(n) { n = Number(n) || 0; return "US$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
+  function usd(n) { n = Number(n) || 0; return (ehBR() ? "R$ " : "US$ ") + n.toLocaleString("pt-BR", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
   /* configuração: padrões + o que a equipe salvou. Valores antigos em dólar (antes de moedaAnuncio "BRL") são trocados pelos novos em reais. */
   var PIX_PADRAO = { pix: "coracaobr.oficial@gmail.com", pixNome: "Danilo Araujo Santos Desenvolvedor", pixCidade: "BRASIL" };
   /* Todo recebimento cai no Pix do e-mail oficial (conta Mercado Pago). A chave CNPJ antiga, se ainda estiver salva, é trocada sozinha. */
@@ -211,7 +215,7 @@
     return c;
   }
   /* Valor aproximado em reais, destacado nas cores do Brasil. A cotação é de referência e se edita no Painel. */
-  function brl(n) { var c = Number(config().cotacao) || CONFIG_PADRAO.cotacao; n = Number(n); return c > 0 && n > 0 ? ' <span class="brl" title="Cotação de referência: R$ ' + c.toFixed(2).replace(".", ",") + ' por dólar">≈ R$ ' + (n * c).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</span>" : ""; }
+  function brl(n) { if (ehBR()) return ""; var c = Number(config().cotacao) || CONFIG_PADRAO.cotacao; n = Number(n); return c > 0 && n > 0 ? ' <span class="brl" title="Cotação de referência: R$ ' + c.toFixed(2).replace(".", ",") + ' por dólar">≈ R$ ' + (n * c).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "</span>" : ""; }
   function toast(msg) { var t = $("#toast"), dl = document.querySelector("dialog[open]"); (dl || document.body).appendChild(t); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 3200); }
   function sess(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
 
@@ -227,12 +231,12 @@
   var PARTIDAS = cid().partidas.slice();
   var MODOS = { carro: { nome: "Carro", maps: "driving" }, pe: { nome: "A pé", maps: "walking" }, bike: { nome: "Bicicleta", maps: "bicycling" } };
   var Geo = { lat: CENTRO.lat, lng: CENTRO.lng, nome: PARTIDAS[0][0], gps: false, modo: "carro", estado: "inicial" };
-  var cidAplicada = cidadeEscolhida || "dfw";
+  var cidAplicada = cidadeEscolhida || "dfw"; marcaPais();
   function sincCidade() {
     var k = cidadeAtual(); if (k === cidAplicada) return; cidAplicada = k; var c = CIDADES_GUIA[k];
     CENTRO.lat = c.lat; CENTRO.lng = c.lng; PARTIDAS.length = 0; c.partidas.forEach(function (p) { PARTIDAS.push(p); });
     if (!Geo.gps || dist(Geo, c) > 250) { Geo.gps = false; Geo.nome = PARTIDAS[0][0]; Geo.lat = PARTIDAS[0][1]; Geo.lng = PARTIDAS[0][2]; }
-    document.documentElement.dataset.cidade = k; document.dispatchEvent(new CustomEvent("cidade", { detail: c })); pintada = null;
+    document.documentElement.dataset.cidade = k; marcaPais(); document.dispatchEvent(new CustomEvent("cidade", { detail: c })); pintada = null;
   }
   function loc(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
   (function () { var m = loc("modo"), o = loc("partida"); if (MODOS[m]) Geo.modo = m; var p = PARTIDAS.filter(function (x) { return x[0] === o; })[0]; if (p) { Geo.nome = p[0]; Geo.lat = p[1]; Geo.lng = p[2]; } })();
@@ -272,7 +276,7 @@
     var mudou = id !== cidadeAtual(); cidadeEscolhida = id; cidAplicada = id; loc("cidade", id);
     var c = CIDADES_GUIA[id]; CENTRO.lat = c.lat; CENTRO.lng = c.lng; PARTIDAS.length = 0; c.partidas.forEach(function (p) { PARTIDAS.push(p); });
     if (!Geo.gps || dist(Geo, c) > 250) { Geo.gps = false; Geo.nome = PARTIDAS[0][0]; Geo.lat = PARTIDAS[0][1]; Geo.lng = PARTIDAS[0][2]; }
-    limpaFiltro(); document.documentElement.dataset.cidade = id;
+    limpaFiltro(); document.documentElement.dataset.cidade = id; marcaPais();
     document.dispatchEvent(new CustomEvent("cidade", { detail: c }));
     if (mudou) toast((porGps ? "Você está perto de " : "Mostrando ") + c.nome + (porGps ? ". Mostrando o guia de lá." : "."));
     pintada = null; render(false); window.scrollTo(0, 0);
@@ -490,10 +494,10 @@
     var t = function (h, k, v, s, i) { return '<a class="pu-it" href="' + h + '"><span class="pu-k">' + ic(i) + k + '</span><b class="pu-v">' + v + '</b><span class="pu-s">' + s + "</span></a>"; };
     return '<section class="pu" aria-label="Informações úteis">' +
       t("#mapa", "Agora em " + cid().principal, '<span id="pu-hora">' + horaDallas() + "</span>", diaDallas(), "clock") +
-      (cot ? t("#custo", "Dólar hoje", "R$ " + cot.toFixed(2).replace(".", ","), cfg.cotacaoEm ? "atualizado " + String(cfg.cotacaoEm).slice(8, 10) + "/" + String(cfg.cotacaoEm).slice(5, 7) : "cotação do guia", "chart") : "") +
+      (cot && !ehBR() ? t("#custo", "Dólar hoje", "R$ " + cot.toFixed(2).replace(".", ","), cfg.cotacaoEm ? "atualizado " + String(cfg.cotacaoEm).slice(8, 10) + "/" + String(cfg.cotacaoEm).slice(5, 7) : "cotação do guia", "chart") : "") +
       t("#busca-7d-geventos", "Eventos", ev, ev === 1 ? "nos próximos 7 dias" : "nos próximos 7 dias", "ticket") +
       t("#busca-gratis", "De graça", gr, "passeios sem pagar nada", "leaf") +
-      t("#busca-gbrasileiros", "Brasileiros", br, "negócios de brasileiros", "flag") + "</section>";
+      (ehBR() ? "" : t("#busca-gbrasileiros", "Brasileiros", br, "negócios de brasileiros", "flag")) + "</section>";
   }
   function horaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: cid().tz || "America/Chicago", hour: "2-digit", minute: "2-digit" }).format(new Date()); } catch (e) { return "--:--"; } }
   function diaDallas() { try { return new Intl.DateTimeFormat("pt-BR", { timeZone: cid().tz || "America/Chicago", weekday: "long", day: "numeric", month: "short" }).format(new Date()); } catch (e) { return ""; } }
@@ -528,7 +532,7 @@
       (slides.length > 1 ? '<div class="hctl"><button type="button" class="harr" data-dir="-1" aria-label="Slide anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="dots">' + slides.map(function (s, i) { return '<button type="button" data-i="' + i + '" aria-current="' + (i === slideAtual) + '" aria-label="Ir para o slide ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div><button type="button" class="harr" data-dir="1" aria-label="Próximo slide"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>' : "") +
       "</div>" + '<nav class="hquick" aria-label="Atalhos">' + [["busca-agora", "Acontecendo agora"], ["busca-fds", "Este fim de semana"], ["busca-gratis", "Grátis"], ["busca-gcomer", "Onde comer"], ["busca-gbrasileiros", "Negócios brasileiros"]].map(function (q) { return '<a href="#' + q[0] + '">' + q[1] + "</a>"; }).join("") + "</nav></div></div></section>" +
       '<div class="sh"><div class="wrap"><div class="gr"></div>' + painelUtil(ls, cfg) +
-      '<nav class="menubar mb-home" aria-label="Categorias">' + Object.keys(GRUPOS).filter(function (g) { return g !== "tudo" && ls.some(GRUPOS[g].f); }).map(function (g) { return '<a class="mb-it" href="#explorar" data-grupo="' + g + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></a>"; }).join("") + '<a class="mb-it" href="#metro">' + ic("train") + "<span>Metrô</span></a>" + '<a class="mb-it" href="#fala-portugues">' + ic("flag") + "<span>Fala PT-BR</span></a>" + '<a class="mb-it" href="#chegada">' + ic("pin") + "<span>Chegada</span></a>" + '<a class="mb-it" href="#temas">' + ic("bell") + "<span>Alertas</span></a>" + '<a class="mb-it" href="#assistente">' + ic("chat") + "<span>Pergunte</span></a>" + '<a class="mb-it" href="#perguntas">' + ic("users") + "<span>Perguntas</span></a>" + '<a class="mb-it" href="#pets">' + ic("heart") + "<span>Pets</span></a>" + '<a class="mb-it" href="#clube">' + ic("star") + "<span>Clube</span></a></nav>" +
+      '<nav class="menubar mb-home" aria-label="Categorias">' + Object.keys(GRUPOS).filter(function (g) { return g !== "tudo" && !(ehBR() && g === "brasileiros") && ls.some(GRUPOS[g].f); }).map(function (g) { return '<a class="mb-it" href="#explorar" data-grupo="' + g + '">' + ic(GRUPOS[g].ic) + "<span>" + GRUPOS[g].nome + "</span></a>"; }).join("") + '<a class="mb-it" href="#metro">' + ic("train") + "<span>Metrô</span></a>" + '<a class="mb-it" href="#fala-portugues">' + ic("flag") + "<span>Fala PT-BR</span></a>" + '<a class="mb-it" href="#chegada">' + ic("pin") + "<span>Chegada</span></a>" + '<a class="mb-it" href="#temas">' + ic("bell") + "<span>Alertas</span></a>" + '<a class="mb-it" href="#assistente">' + ic("chat") + "<span>Pergunte</span></a>" + '<a class="mb-it" href="#perguntas">' + ic("users") + "<span>Perguntas</span></a>" + '<a class="mb-it" href="#pets">' + ic("heart") + "<span>Pets</span></a>" + '<a class="mb-it" href="#clube">' + ic("star") + "<span>Clube</span></a></nav>" +
       (ls.length ? "" : '<section class="block"><div class="panel"><h3>O guia ainda está vazio</h3><p class="muted">Os lugares aparecem aqui assim que forem cadastrados no <a href="#painel">Painel</a>.</p></div></section>') +
       montaSecoes(cfg, tx, ls, by, gratis, perto, ad, servN) + "</div></div>";
     $("#busca").addEventListener("submit", function (e) { e.preventDefault(); var tq = $("#q").value.trim(); if (window.Recursos && Recursos.buscar(tq)) return; limpaFiltro(); F.q = tq; location.hash = "explorar"; });
@@ -571,6 +575,7 @@
         [["handyman", "doc"], ["baba", "heart"], ["piscina", "leaf"], ["limpeza", "briefcase"], ["mercado-brasileiro", "cart"], ["servico", "globe"]].map(function (t) { var n = servN(t[0]); return '<a href="' + (n ? "#explorar" : "#anuncie") + '"' + (n ? ' data-grupo="servicos" data-cat="' + t[0] + '"' : "") + '><span class="ic">' + ic(t[1]) + "</span><b>" + CATS[t[0]] + "</b><small>" + (n ? n + (n === 1 ? " opção" : " opções") : "Cadastre sua empresa") + "</small></a>"; }).join("") + "</div></section>",
       anunciante: '<section class="block reveal"><a class="bn" href="#anuncie"><i></i><small>Para donos de negócio</small><b>' + esc(tx("anunciante", "Apareça primeiro para quem está decidindo aonde ir")) + "</b><span>Ver planos " + ic("arrow") + "</span></a></section>"
     };
+    if (ehBR()) ["chegada", "custo", "texano", "brasil", "morar", "destaqueMes", "promo"].forEach(function (k) { html[k] = ""; });
     var ordem = (cfg.secoes && cfg.secoes.length ? cfg.secoes : Object.keys(SECOES)).filter(function (k) { return SECOES[k]; });
     Object.keys(SECOES).forEach(function (k) { if (ordem.indexOf(k) < 0) ordem.push(k); });
     var ocultas = cfg.ocultas || [];
@@ -1105,6 +1110,7 @@
   }
   function render(viaDados, col) {
     var st = Store.estado, r = rota();
+    if (ehBR() && SO_EUA.indexOf(r) >= 0) { location.replace("#inicio"); toast("Essa página é das cidades dos EUA."); return; }
     if (st.pronto) { var tt = tituloDe(r); if (document.title !== tt) document.title = tt; }
     $("#aviso").hidden = !st.aviso; $("#aviso-txt").textContent = st.aviso || "";
     if (!st.pronto) return;
@@ -1162,7 +1168,7 @@
     var im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.semFoto) return;
     im.dataset.semFoto = "1"; im.removeAttribute("srcset"); im.src = FOTO_VAZIA; im.classList.add("sem-foto");
   }, true);
-  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
+  window.Guia = { chavePix: chavePix, sac: sac, sacHtml: sacHtml, cidadeAtual: cidadeAtual, cid: cid, CIDADES_GUIA: CIDADES_GUIA, regiaoGuia: regiaoGuia, ehBR: ehBR, regiaoVisivel: regiaoVisivel, regioesVisiveis: regioesVisiveis, bairroVisivel: bairroVisivel, trocaCidade: trocaCidade, perguntaCidade: perguntaCidade, cidadeMaisPerto: cidadeMaisPerto, escolheuCidade: function () { return !!cidadeEscolhida; }, todosLugares: todosLugares, fotosDe: fotosDe, reais: reais, chaveLocal: chaveLocal, eventosDoLocal: eventosDoLocal, minutos: minutos, SECOES: SECOES, unificaEventos: unificaEventos, card: card, linha: linha, lugares: lugares, primeiro: primeiro, dist: dist, kmDe: kmDe, tempo: tempo, foto: foto, regiao: regiao, GRUPOS: GRUPOS, F: F, limpaFiltro: limpaFiltro, folha: function () { if (aberto && L.id) folha(L.id, true); }, medir: medir, PARTIDAS: PARTIDAS, Geo: Geo, ic: ic, views: views, SERVICOS: SERVICOS, CAT_GRUPOS: CAT_GRUPOS, CAT_SIN: CAT_SIN, norm: norm, COMIDA: COMIDA, hojeISO: hojeISO, loc: loc, app: app, esc: esc, usd: usd, notifica: notifica, precos: precos, precoCurto: precoCurto, mediaCategoria: mediaCategoria, CATS: CATS, config: config, CONFIG_PADRAO: CONFIG_PADRAO, toast: toast, notas: notas, stars: stars, avaliacoesDe: avaliacoesDe, render: render, url: url, brl: brl, ordenaNota: ordenaNota, destaque: destaque, falaPt: falaPt, IC: IC };
   var ligado = false;
   function ligar() { if (ligado) return; ligado = true; document.documentElement.dataset.cidade = cidadeAtual(); Store.assinar(function (col) { sincCidade(); render(true, col); if (!perguntou && !cidadeEscolhida && Store.estado.pronto && !/^#(lugar-|clube-validar-|redefinir-|painel|pergunta-)/.test(location.hash)) { perguntou = true; setTimeout(function tenta() { if (document.getElementById("intro")) { setTimeout(tenta, 500); return; } if (!cidadeEscolhida && !document.querySelector("dialog[open]")) perguntaCidade(true); }, 2300); } }); Store.iniciar(); pedirLocal(false); }
   var perguntou = false;

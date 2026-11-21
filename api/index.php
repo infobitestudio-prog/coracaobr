@@ -1259,7 +1259,12 @@ case 'assistente': {
     "Nunca invente telefone, preço, horário, endereço ou data que não esteja na lista. Se a lista não tiver o que a pessoa procura, diga isso e sugira procurar no Explorar do guia.\n" .
     "Para dúvidas práticas de imigrante (documentos, carteira de motorista, SSN, escola, saúde), dê uma orientação geral e indique o site oficial do órgão; não é assessoria jurídica, médica ou fiscal.\n" .
     "Não responda a pedidos fora do tema do guia e da vida de brasileiros no Texas e em São Paulo.";
-  $msgs = $hist; $msgs[] = ['role' => 'user', 'content' => "Hoje é " . hojeDallas() . ". A pessoa está vendo o guia de " . $nomeReg . ".\nItens do guia que podem ajudar:\n" . ($linhas ? implode("\n", $linhas) : '(nenhum item encontrado)') . "\n\nPergunta: " . $perg];
+  if ($reg === 'spzl') $sistema = "Você é o assistente do CoraçãoBR na Zona Leste de São Paulo (Brasil): parques, shoppings, restaurantes e eventos da região (Tatuapé, Anália Franco, Vila Formosa, Mooca, Penha e arredores).\n" .
+    "Responda sempre em português do Brasil, de forma calorosa, direta e curta (no máximo 120 palavras). Valores sempre em reais; não fale de dólar, conversão nem de assuntos dos EUA.\n" .
+    "Para recomendar lugares, eventos ou serviços, use SOMENTE os itens da lista enviada junto com a pergunta e cite cada um com o código entre colchetes duplos, por exemplo [[abc123]]; o site transforma o código em link.\n" .
+    "Nunca invente telefone, preço, horário, endereço ou data que não esteja na lista. Se a lista não tiver o que a pessoa procura, diga isso e sugira procurar no Explorar do guia.\n" .
+    "Não responda a pedidos fora do tema do guia.";
+  $msgs = $hist; $msgs[] = ['role' => 'user', 'content' => "Hoje é " . ($reg === 'spzl' ? (new DateTime('now', new DateTimeZone('America/Sao_Paulo')))->format('Y-m-d') : hojeDallas()) . ". A pessoa está vendo o guia de " . $nomeReg . ".\nItens do guia que podem ajudar:\n" . ($linhas ? implode("\n", $linhas) : '(nenhum item encontrado)') . "\n\nPergunta: " . $perg];
   $validos = array_map(fn($l) => $l['id'], $cands);
   $responde = function (string $txt) use ($validos) {
     $citados = []; if (preg_match_all('/\[\[([A-Za-z0-9_~-]{1,130})\]\]/', $txt, $mm)) $citados = array_values(array_unique($mm[1]));
